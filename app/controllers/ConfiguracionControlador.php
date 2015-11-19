@@ -18,7 +18,7 @@
 
 
 			
-			return View::make($this->department.".main", $this->data)->nest('child','sistemas.main_configuracion',$dataModule);
+			return View::make($this->department.".main", $this->data)->nest('child','sistemas.configuracion',$dataModule);
         }
         public function postEditEmpresa(){
 
@@ -148,7 +148,6 @@ public function postNuevanotacredito(){
 
         	//validar formulario
 			$rules = array(
-					'cliente' => 'required',
 					'cliente_id' => 'required',
 					'descuento'=>'required|digits_between:0,100',
 					'descripcion'=>'required',
@@ -179,7 +178,7 @@ public function postNuevanotacredito(){
   		 	$nota->porcentaje = Input::get('porcentaje');
   		 	
 			$nota->save();
-			return Redirect::back()->with('status', 'nota_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
+			return Redirect::to('configuracion-general/index')->with('status', 'nota_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
 
 
 

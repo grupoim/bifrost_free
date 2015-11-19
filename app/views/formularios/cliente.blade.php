@@ -30,7 +30,7 @@
 					</span>
 				</div>
 				@else
-					<input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control buscapersonas" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off">
+					<input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control buscaPersonas" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off">
 				@endif
 			</div>
 		</div>

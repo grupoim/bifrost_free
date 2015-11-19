@@ -1,12 +1,3 @@
-@section('scripts')
- <script type="text/javascript">
-                                window.setTimeout(function() {
-                                $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                                $(this).remove();
-                                   });
-                                      }, 4000);
-                    </script>
-@stop
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -54,7 +45,13 @@
                   @if(Session::has('login_errors'))
                     <div class="alert alert-danger alert-dismissible" role="alert">
 
-                  
+                   <script type="text/javascript">
+                                window.setTimeout(function() {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                                   });
+                                      }, 4000);
+                    </script>
 
                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 

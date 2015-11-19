@@ -14,7 +14,7 @@
   <!-- Stylesheets -->
   <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Font awesome icon -->
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <!-- Calendar -->
   <link rel="stylesheet" href="{{ URL::asset('css/fullcalendar.css') }}">
   <!-- prettyPhoto -->
@@ -32,11 +32,7 @@
   <!-- Main stylesheet -->
   <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
   <!-- Widgets stylesheet -->
-  <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">
-  <!--*naza-->
-  <link href="{{ URL::asset('css/prism.css') }}" rel="stylesheet">
-  <link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">   
-  <!--*naza-->
+  <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">   
   
   <script src="{{ URL::asset('js/respond.min.js') }}"></script>
   <!--[if lt IE 9]>
@@ -254,11 +250,25 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav">
       <!-- Main menu with font awesome icon -->
-      @section('nav')
+      <!--@{{section('nav')}}-->
       <li>
-        <a href="/"><i class="fa fa-home"></i> Panel de Control</a>
+        <!--<a href="/"><i class="fa fa-home"></i> Panel de Control</a>-->
+        <a href="{{ action('QuejaControlador@getIndex') }}"><i class="fa fa-bullhorn"></i> Quejas</a>
       </li>
-      @show
+
+      <li class="has_sub">
+          <a href="#"><i class="fa fa-sitemap"></i> Inventario Recub.  <span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+          <ul>
+            @include('menu.submenu.alta_material')
+            @include('menu.submenu.baja_material')
+            @include('menu.submenu.reportes_invetario')            
+            @include('menu.submenu.catalogo_materiales')
+            @include('menu.submenu.proveedores')
+
+          </ul>
+        </li>
+
+      <!--@{{show}}-->
     </ul>
   </div>
 

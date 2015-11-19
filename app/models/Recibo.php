@@ -7,15 +7,7 @@ class Recibo extends Eloquent {
 		return $this->hasMany('Pago');
 	}
 
-	public function evento() {
-		return $this->hasMany('Evento');
-	}
-
 	public function venta() {
 		return $this->belongsTo('Venta');
-	}
-
-	public function getCreatedAtAttribute($fecha){
-		return date('d/m/Y', strtoTime($fecha));
 	}
 }

@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('InventarioRecubControlador@getReportes'); ?>"><i class="fa fa-bar-chart"></i> Reportes</a></li>

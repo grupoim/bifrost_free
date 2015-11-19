@@ -1,1 +1,0 @@
-@extends('administracion.cobranza')

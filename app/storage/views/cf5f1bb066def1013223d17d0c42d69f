@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <!-- Title and other stuffs -->
+  <title><?php echo e($module); ?> - BifrostPFG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+
+
+  <!-- Stylesheets -->
+  <link href="<?php echo URL::asset('css/bootstrap.min.css'); ?>" rel="stylesheet">
+  <!-- Font awesome icon -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Calendar -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/fullcalendar.css'); ?>">
+  <!-- prettyPhoto -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/prettyPhoto.css'); ?>">  
+  <!-- Star rating -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/rateit.css'); ?>">
+  <!-- Date picker --> 
+  <link rel="stylesheet" href="<?php echo URL::asset('css/bootstrap-datetimepicker.min.css'); ?>">
+  <!-- CLEditor -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.cleditor.css'); ?>">  
+  <!-- Data tables -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.dataTables.css'); ?>"> 
+  <!-- Bootstrap toggle -->
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.onoff.css'); ?>">
+  <!-- Main stylesheet -->
+  <link href="<?php echo URL::asset('css/style.css'); ?>" rel="stylesheet">
+  <!-- Widgets stylesheet -->
+  <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">   
+  
+  <script src="<?php echo URL::asset('js/respond.min.js'); ?>"></script>
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="<?php echo URL::asset('img/favicon/favicon.png'); ?>">
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+
+    <div class="conjtainer">
+      <!-- Menu button for smallar screens -->
+      <div class="navbar-header">
+        <button class="navbar-toggle btn-navbar" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span>Menu</span>
+        </button>
+        <!-- Site name for smallar screens -->
+        <a href="/" class="navbar-brand hidden-lg">BifrostPFG</a>
+      </div>
+      
+      
+      <!-- Navigation starts -->
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">         
+
+        <ul class="nav navbar-nav">  
+
+          <!-- Upload to server link. Class "dropdown-big" creates big dropdown -->
+          <li class="dropdown dropdown-big">
+
+            <a href="#" class="dropdown-toggle" id="progreso_cobranza" data-toggle="dropdown">
+              <span class="label label-success"><i class="fa fa-line-chart"></i></span>  Cobranza
+            </a>
+            <!-- Dropdown -->
+            <ul class="dropdown-menu">
+              <li id="cobranza-mes">
+                <p></p>
+                <div class="progress progress-striped active">
+                  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                  </div>
+                </div>
+                <hr />
+              </li>
+              <li id="cobranza-dia">
+                <p></p>
+                <div class="progress progress-striped active">
+                  <div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                  </div>
+                </div>
+                <hr />
+              </li>
+              <li>
+                <div class="drop-foot">
+                  <a href="<?php echo action('CobranzaControlador@getIndex'); ?>">Ver detalle de cobranza</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Search form -->
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" id="buscador" size="30"  placeholder="Buscar personas">
+          </div>
+        </form>
+        <!-- Links -->
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown pull-right">            
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+              <i class="fa fa-user"></i> <?php echo Auth::user()->persona->nombres; ?> <b class="caret"></b>              
+            </a>
+            
+            <!-- Dropdown menu -->
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+              <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+              <li><a href="<?php echo action('LoginControlador@getSalir'); ?>"><i class="fa fa-sign-out"></i> Logout</a></li>
+            </ul>
+          </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <!-- Header starts -->
+  <header>
+    <div class="container">
+      <div class="row">
+
+        <!-- Logo section -->
+        <div class="col-md-4">
+          <!-- Logo. -->
+          <div class="logo">
+            <h1><a href="/">Bifrost<span class="bold">PFG</span></a></h1>
+            <p class="meta">Sistema Integral para Capillas y Panteones</p>
+          </div>
+          <!-- Logo ends -->
+        </div>
+
+        <!-- Button section -->
+        <div class="col-md-3">
+
+          <!-- Buttons -->
+          <ul class="nav nav-pills">
+
+            <!-- Comment button with number of latest comments count -->
+            <li class="dropdown dropdown-big">
+              <a id="notificacion_cotizacion" class="dropdown-toggle" disabled href="#" data-toggle="dropdown">
+                <i class="fa fa-shopping-cart"></i> Cotizaciones <span class="label label-default">0</span> 
+              </a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <h5><i class="fa fa-shopping-cart"></i> Cotizaciones</h5>
+                  <hr />
+                </li>
+                <li>
+                  <div class="drop-foot">
+                    <a href="<?php echo action('CotizacionControlador@getIndex'); ?>">Ver todas</a>
+                  </div>
+                </li>                                    
+              </ul>
+            </li>
+
+
+            <!-- Message button with number of latest messages count-->
+            <li class="dropdown dropdown-big">
+              <a id="notificacion_queja" class="dropdown-toggle" href="#"  data-toggle="dropdown">
+                <i class="fa fa-bullhorn"></i> Quejas <span class="label label-default">0</span> 
+              </a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <!-- Heading - h5 -->
+                  <h5><i class="fa fa-bullhorn"></i> Por atender </h5>
+                  <!-- Use hr tag to add border -->
+                  <hr />
+                </li>
+                <li>
+                  <div class="drop-foot">
+                    <a href="<?php echo action('QuejaControlador@getIndex'); ?>">Ver todas</a>
+                  </div>
+                </li>
+              </ul>
+            </li> 
+          </ul>
+        </div>
+
+        <!-- Data section -->
+
+        <div class="col-md-5">
+          <div class="header-data">
+
+            <!-- Traffic data -->
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with red background -->
+                <i class="fa fa-bar-chart bred"></i> 
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors -->
+                <p id="estadisticos-ventas"><a href="#"></a> <em></em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- Members data -->
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with blue background -->
+                <i class="fa fa-money bgreen"></i> 
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors -->
+                <p id="estadisticos-ingresos"><a href="#"></a> <em></em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- revenue data 
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with green background 
+                <i class="fa fa-gavel borange"></i> 
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors 
+                <p><a href="#">Vencido</a><em>$2,457,623</em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>     -->                   
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Header ends -->
+
+  <!-- Main content starts -->
+
+  <div class="content">
+
+   <!-- Sidebar -->
+   <div class="sidebar">
+    <div class="sidebar-dropdown"><a href="#">Navigation</a></div>
+
+    <!--- Sidebar navigation -->
+    <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
+    <ul id="nav">
+      <!-- Main menu with font awesome icon -->
+      <!--{{section('nav')}}-->
+      <li>
+        <!--<a href="/"><i class="fa fa-home"></i> Panel de Control</a>-->
+        <a href="<?php echo action('QuejaControlador@getIndex'); ?>"><i class="fa fa-bullhorn"></i> Quejas</a>
+      </li>
+
+      <li class="has_sub">
+          <a href="#"><i class="fa fa-sitemap"></i> Inventario Recub.  <span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+          <ul>
+            <?php echo $__env->make('menu.submenu.alta_material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.baja_material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.reportes_invetario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>            
+            <?php echo $__env->make('menu.submenu.catalogo_materiales', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.proveedores', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+          </ul>
+        </li>
+
+      <!--{{show}}-->
+    </ul>
+  </div>
+
+  <!-- Sidebar ends -->
+
+  <!-- Main bar -->
+  <div class="mainbar">
+
+    <!-- Page heading -->
+    <div class="page-head">
+      <h2 class="pull-left"><i class="fa fa-<?php echo e(isset($icon) ? $icon : 'home'); ?>"></i> <?php echo e($module); ?></h2>
+
+      <!-- Breadcrumb -->
+      <div class="bread-crumb pull-right">
+        <a href="#"><i class="fa fa-home"></i> Inicio</a> 
+        <!-- Divider -->
+        <span class="divider">/</span> 
+        <a href="#" class="bread-current"><?php echo e($module); ?></a>
+      </div>
+
+      <div class="clearfix"></div>
+
+    </div>
+    <!-- Page heading ends -->
+
+
+    <!-- Matter -->
+    <div class="matter">
+      <div class="container">
+        <?php $__env->startSection('module'); ?>
+        <div class="row">
+          <div class="col-md-12">
+
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Title</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                  <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+
+          </div>
+        </div> 
+        <?php echo $__env->yieldSection(); ?>
+      </div>
+    </div>
+
+    <!-- Matter ends -->
+
+  </div>
+
+  <div class="clearfix"></div>
+
+</div>
+<!-- Content ends -->
+
+<!-- Footer starts -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Copyright info -->
+        <p class="copy">Copyright &copy; 2015 | BifrostPFG <a href="#">www.grupoim.mx</a> </p>
+      </div>
+    </div>
+  </div>
+</footer>   
+
+<!-- Footer ends -->
+
+<!-- Scroll to top -->
+<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+
+<!-- JS -->
+<script src="<?php echo URL::asset('js/jquery.js'); ?>"></script> <!-- jQuery -->
+<script src="<?php echo URL::asset('js/bootstrap.min.js'); ?>"></script> <!-- Bootstrap -->
+<script src="<?php echo URL::asset('js/jquery-ui.min.js'); ?>"></script> <!-- jQuery UI -->
+<script src="<?php echo URL::asset('js/fullcalendar.min.js'); ?>"></script> <!-- Full Google Calendar - Calendar -->
+<script src="<?php echo URL::asset('js/jquery.rateit.min.js'); ?>"></script> <!-- RateIt - Star rating -->
+<script src="<?php echo URL::asset('js/jquery.prettyPhoto.js'); ?>"></script> <!-- prettyPhoto -->
+<script src="<?php echo URL::asset('js/jquery.slimscroll.min.js'); ?>"></script> <!-- jQuery Slim Scroll -->
+<script src="<?php echo URL::asset('js/jquery.dataTables.min.js'); ?>"></script> <!-- Data tables -->
+
+<!-- jQuery Flot -->
+<script src="<?php echo URL::asset('js/excanvas.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.resize.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.pie.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.stack.js'); ?>"></script>
+
+<!-- jQuery Notification - Noty -->
+<script src="<?php echo URL::asset('js/jquery.noty.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/themes/default.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/bottom.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/topRight.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/top.js'); ?>"></script> <!-- jQuery Notify -->
+<!-- jQuery Notification ends -->
+
+<script src="<?php echo URL::asset('js/sparklines.js'); ?>"></script> <!-- Sparklines -->
+<script src="<?php echo URL::asset('js/jquery.cleditor.min.js'); ?>"></script> <!-- CLEditor -->
+<script src="<?php echo URL::asset('js/bootstrap-datetimepicker.min.js'); ?>"></script> <!-- Date picker -->
+<script src="<?php echo URL::asset('js/jquery.onoff.min.js'); ?>"></script> <!-- Bootstrap Toggle -->
+<script src="<?php echo URL::asset('js/filter.js'); ?>"></script> <!-- Filter for support page -->
+<script src="<?php echo URL::asset('js/custom.js'); ?>"></script> <!-- Custom codes -->
+<script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
+<script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
+<script src="<?php echo URL::asset('js/app.js'); ?>"></script>
+<?php echo $__env->yieldContent('scripts', ''); ?>
+</body>
+</html>

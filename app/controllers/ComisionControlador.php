@@ -11,6 +11,6 @@ class ComisionControlador extends ModuloControlador{
 		$total = Comision::where('cancelada', '0')->where('pagada', 0)->sum('total');
 		$dataModule["comisiones"] = Comision::with('asesor.persona', 'venta.cliente.persona')->where('cancelada', 0)->where('pagada', 0)->get();
 		$dataModule["total"] = number_format($total, 2, ".", ",");
-		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.comision' , $dataModule);
+		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.comision' , $dataModule);
 	}
 }

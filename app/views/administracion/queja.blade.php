@@ -12,30 +12,13 @@
 			});
 		});
 
-
-$('.modalSubmit').on("click", function(){
-		 	$.post('{{ action('QuejaControlador@postAgregar') }}',
-		 		$(this).parent().parent().find('form').serialize()
-		 		).done(function(data){
-		 			if(data.length > 0){	
-		 				$('#queja').html('');		 				
-		 				$.each(data, function(index, object){
-		 					$('#queja').append('<tr>'		 						
-		 						+ '<td class="lead">' + object.rubro_id + '</td>'
-		 						+ '<td class="lead">' + object.usuario_id + '</td>'
-		 						+ '<td class="lead">' + object.descripcion + '</td>'
-		 						+ '</tr>');		 					
-		 				});		 				
-		 			}
-		 		});
-		 	$(this).parent().parent().parent().parent().modal('hide');
-  		});
-
+ 
 </script>
 @stop
 @section('module')
 
- <div class="row">
+ <div class="row"> 
+ 
 	<div class="col-md-12">
 		<div class="btn-group pull-left">
 		{{--<a href="#agregarQueja" data-toggle="modal" rel="#modal-form"><i class="fa fa-plus-square-o"></i> Nuevo</a>--}}
@@ -49,7 +32,7 @@ $('.modalSubmit').on("click", function(){
 		<div class="widget">
 			<div class="widget-head">			
 		<div class="btn-group pull-right">
-		<a href="#myModal" class="btn btn-default" data-toggle="modal"><i class="fa fa-cog fa-spin"></i> Nueva Queja </a></div>
+		<a href="#myModal" class="btn btn-primary" data-toggle="modal"><i class="fa fa-bullhorn"></i> Nueva Queja </a></div>
     	<?php $status=Session::pull('status'); ?>
     	@if($status=='no_aplica')
     	<div class="alert alert-danger alert-dismissible" role="alert" align="center">
@@ -87,7 +70,7 @@ $('.modalSubmit').on("click", function(){
 									<!-- Table Page -->
 					<div class="page-tables">
 						<!-- Table -->
-						<div class="table-responsive">
+						<div class="table-responsive" id="StudentTableContainer">
 							<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 								<thead>
 									<tr>
@@ -98,59 +81,38 @@ $('.modalSubmit').on("click", function(){
 										<th>Usuario</th>										
 										<th>Descripcion corta</th>
 										<th>Estatus</th>
-										<th>Historial</th>
 										<th>Acciones</th>
 
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($quejas as $queja)
-
-									
-									<tr> 
+									@foreach($quejas as $queja)									
+									<tr @if($queja->aplica == 1) class="disabled" @elseif($queja->gravedad == 1) class="gravedad" @endif> 
 										<td> {{{$queja->id}}}</td>
-										<td>{{{date("d-m-Y", strtotime($queja->created_at))}}}</td>										
-										<td>{{{$queja->rubro->descripcion}}}</td>
+										<td>{{{ $queja->created_at->format('d/m/Y') }}}</td>										
+										<td> {{{$queja->rubro->descripcion}}}</td>
 										<td>{{{$queja->rubro->departamento->nombre}}}</td>
 										<td> {{{Str::title($queja->usuario->nombre)}}}</td>																				
 										<td title="{{{$queja->descripcion}}}"> {{{str_limit($queja->descripcion, $limit = 25, $end = '...')}}}</td>
 										
-										<td> @if ( $queja->cerrada == 0 )										
+										<td class="text-center"> @if ( $queja->cerrada == 1 )									
+													<span class="label label-danger">Cerrada</span> </td>	
 
-													<span class="label label-success">Activa</span> @if ($queja->gravedad == 1) <span class="label label-warning"><i class="fa fa-exclamation-triangle"></i> Prioridad</span>@endif</td>												
-
-
-												@else												
-												<span class="label label-danger">Cerrada</span></td>
-												
+												@else							@if($queja->numero_mensajes > 0)
+														<span class="label label-success">Activa</span>
+													@else
+													<span class="label label-primary">Nueva</span>
 													@endif
+												@endif
 																	 
-													
-										<td>@if ($queja->numero_mensajes > 0 and $queja->aplica == 0 and $queja->cerrada == 0 )
-																						
-													<span class="label label-info">Atendiendo</span></td>												
-
-												@elseif ($queja->aplica == 1 )
-																								
-												<span class="label label-default">No aplica</span></td>
-												
-												@elseif ( $queja->aplica == 0 and $queja->cerrada == 0)
-													
-													<span class="label label-warning">Pendiente</span></td>
-
-												@elseif ( $queja->aplica == 0 and $queja->cerrada == 1)
-													
-													<span class="label label-success">Finalizada</span></td>
-
-												@elseif ( $queja->aplica == 0 and $queja->cerrada == 1 and $queja->numero_mensajes < 0 )
-													
-													<span class="label label-success">Finalizada</span></td> <!--finalizada con historial-->
-
-													@endif			
-									<td>
-										@if ($queja->aplica == 0 and $queja->cerrada == 0)										
+										</td>			
+										<td>
+										@if ($queja->aplica == 0 and $queja->cerrada == 0 )										
+										
+										@if(Auth::user()->jefe == 1 and Auth::user()->id <> $queja->usuario_id )
 										<a class="btn btn-xs btn-default" href="{{action('QuejaControlador@getCerrar', $queja->id)}}" title="Cerrar queja"><i class="fa fa-check"></i></a>
 										<a class="btn btn-xs btn-default" href="{{action('QuejaControlador@getNoaplica', $queja->id)}}" title="No aplica como queja"><i class="fa fa-thumbs-o-down"></i></a>
+										@endif
 										@else
 										@endif
 										<a class="btn btn-xs btn-default" href="{{action('QuejaControlador@getRecupera', $queja->id)}}" class="btn btn-info " title="Ver Historial"><i class="fa fa-search"></i></a> 											
@@ -181,32 +143,73 @@ $('.modalSubmit').on("click", function(){
                     	<h4 class="modal-title">Registrar una Queja</h4>
                 </div>
                 <div class="modal-body"> <!-- en action mando a llamar el Controlador@function (anteponiendo el post) -->
-               		{{ Form::open(array('action' => 'QuejaControlador@postAgregar', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'new_queja','files' => true )) }}
-<div class="form-group">
-	<label for="sector" class="col-md-3 control-label">Asunto de la queja </label>
-	<div class="col-md-9">
-			<select class="form-control" name="rubro_id" id="rubro_id" >                                
-            
-             	@foreach($rubros as $rubro)
+               		<!-- contenido modal -->
 
-				
-            		<option value="{{$rubro->id}}"> {{{$rubro->descripcion}}}</option>
-             	
+{{ Form::open(array('action' => 'QuejaControlador@postAgregar', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'new_queja','files' => true )) }}
+					
+					<div class="form-group">
+	                  <label class="col-md-2 control-label">Rubro</label>
+	                  <div class="col-md-5">
+	                    <div class="input-group">                   
 
-            	 @endforeach 
-       
-         </select> <br>   
-		
-	</div>
-</div>
-<div class="form-group">
-	<label for="queja" class="col-md-3 control-label">Queja </label>
-	<div class="col-md-9">
-		<textarea id="descripcion" name="descripcion" focus placeholder="Escriba su queja"  class="form-control" required></textarea>
-		<input type="hidden" name="usuario_id" value="{{ Auth::user()->id}}">
-		
-	</div>
-	 <div class="form-group">
+                                <select class="form-control" name="rubro_id">
+
+									<optgroup label="Administración">
+									@foreach($rubros as $rubro)
+									@if ($rubro->departamento_id == 6 )
+									<option value="{{{$rubro->id}}}">{{{$rubro->descripcion}}}</option>                                      
+									@endif
+									@endforeach
+									</optgroup>
+
+									<optgroup label="Mantenimiento">
+									@foreach($rubros as $rubro)
+									@if ($rubro->departamento_id == 2)
+									<option value="{{{$rubro->id}}}">{{{$rubro->descripcion}}}</option>                                      
+									@endif
+									@endforeach
+									</optgroup>
+
+									<optgroup label="Recubrimientos">
+									@foreach($rubros as $rubro)
+									@if ($rubro->departamento_id == 3)
+									<option value="{{{$rubro->id}}}">{{{$rubro->descripcion}}}</option>                                      
+									@endif
+									@endforeach
+									</optgroup>
+
+									<optgroup label="Ventas">
+									@foreach($rubros as $rubro)
+									@if ($rubro->departamento_id == 5)
+									<option value="{{{$rubro->id}}}">{{{$rubro->descripcion}}}</option>                                      
+									@endif
+									@endforeach
+									</optgroup>
+
+									<optgroup label="Trámites">
+									@foreach($rubros as $rubro)
+									@if ($rubro->departamento_id == 4 or $rubro->departamento_id == 7 )
+									<option value="{{{$rubro->id}}}">{{{$rubro->descripcion}}}</option>                                      
+									@endif
+									@endforeach
+									</optgroup>
+
+									
+									</select>
+
+					        </div>
+					    </div>
+					</div>
+
+					<div class="form-group">
+                                  <label class="col-lg-2 control-label">Queja</label>
+                                  <div class="col-lg-10">
+                                    <textarea id="descripcion" name="descripcion" focus placeholder="Escriba su queja"  class="form-control" required></textarea>
+									<input type="hidden" name="usuario_id" value="{{ Auth::user()->id}}">
+                                  </div>
+                                </div>
+
+                <div class="form-group">
 	            <label class="col-lg-2 control-label">Gravedad</label>
 	            <div class="col-lg-5">							             	                
 	                
@@ -222,14 +225,18 @@ $('.modalSubmit').on("click", function(){
 	              							              
 	         	</div>
 	         	</div>
+
 	         	 <div class="form-group">
 	            <label class="col-lg-2 control-label">Evidencia</label>
-	            <div class="col-lg-5"> 
-	            {{ Form::file('foto') }}	              
+	            <div class="col-lg-10"> 
+	            	<span class="btn btn-info btn-file">
+                            <i class="fa fa-photo"></i> Examinar... <input type="file" name="foto">
+                        </span> 	
+                        <span class="feedback"></span>             
 	         	</div>
-	         	</div>
-</div>
- 
+	         	</div>	
+
+               		<!-- contenido modal -->
                 </div>
                 <div class="modal-footer">
                 	<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>

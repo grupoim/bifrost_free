@@ -1,0 +1,363 @@
+<?php $__env->startSection('scripts'); ?>
+
+    <?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+
+ <div class="row">  
+                   
+<?php if($inventario): ?>
+            <div class="col-md-12">
+<?php echo e($pag->links()); ?>
+
+              <!-- User widget -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left"><h3>Lámina <?php echo e($inventario->folio_lamina); ?> <?php echo e($inventario->material_color); ?> </h3></div>
+                  <div class="widget-icons pull-right"> Costo de Material $<?php echo e(number_format($inventario->costo_produccion, 2, '.', ',')); ?> 
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"> </i></a> 
+                  
+                    
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd">
+
+                    
+                     <div class="alert  alert-dismissible <?php if($inventario->utilidad < 0): ?> alert-danger <?php elseif($inventario->utilidad > 0): ?> alert-success <?php elseif($inventario->utilidad == 0): ?> alert-default   <?php endif; ?>" role="alert" align="center">
+     
+                   <strong><h3> <i class="fa fa-calculator"></i> Utilidad $<?php echo e(number_format($inventario->utilidad, 2, '.', ',')); ?> </h3></strong>
+                  </div>
+                   <!-- tabla de inventario--> 
+                   <div class="col-md-3">
+                        <div class="well">
+                          <h4><i class="fa fa-database"></i> Inventario $<?php echo e(number_format($inventario->precio_stock, 2, '.', ',')); ?></h4>
+                          
+                          
+
+                        </div>
+                      </div>
+
+                      
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h4> <i class="fa fa-money"></i>  Ventas: $<?php echo e(number_format($inventario->ventas, 2, '.', ',')); ?> </h4>                                                  
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h4> <i class="fa fa-cubes"></i>  Stock: $<?php echo e(number_format($inventario->stock, 2, '.', ',')); ?> </h4>                                                  
+                        </div>
+                      </div>
+
+                    <div class="col-md-3">
+                        <div class="well">
+                          <h4> <i class="fa fa-exchange"></i>  Reposicion: $<?php echo e(number_format($inventario->perdida_reposicion, 2, '.', ',')); ?> </h4>                                                  
+                        </div>
+                      </div>
+
+
+          <!-- tabla de inventario -->
+                    <div class="clearfix"></div>
+                  </div> <!-- end pad-->
+                  <div class="widget-foot">
+                   <p class="p-meta">
+                                                            <!-- Due date & % Completed -->
+                                                           <h3> <span><?php if($inventario->lamina_completa == 0): ?><span class="label label-info">Retazo</span> <?php endif; ?>   Disponible: <?php echo e(number_format($inventario->area_stock, 2, '.', ',')); ?> m<sup>2</sup> </span> </h3>
+                                                                                        
+                                                          </p>
+                                                    <div class="progress progress-animated progress-striped active">
+                                                  <div class="progress-bar <?php if($inventario->porcentaje_restante == 100): ?> progress-bar-success <?php elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ): ?> progress-bar-warning <?php elseif($inventario->porcentaje_restante <= 30): ?> progress-bar-danger  <?php endif; ?>"  data-percentage="<?php echo e($inventario->porcentaje_restante); ?>">
+                                                    <span class="sr-only">100% Complete</span>
+                                                  </div>
+                                              </div>  
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+            </div>
+            <?php endif; ?>
+
+
+            <div class="col-md-4">
+              <!-- Quick setting -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left"> <i class="fa fa-money"></i> Ventas</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  
+                 
+                   <div class="padd invoice">
+                    
+
+                    <div class="row">
+
+                      <div class="col-md-12">
+                      <table class="table table-striped table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              <th>#</th>                           
+                              <th>Pieza</th>
+                              <th>Cantidad</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              
+                            
+                              <?php $__empty_1 = true; foreach($totales as $ctr => $total): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>                 
+                 <td> <?php echo e($total->pieza); ?></td>
+                 <td><?php echo e($total->piezas); ?></td>                 
+                 <?php endforeach; if ($__empty_1): ?>
+               <div class="alert alert-info alert-dismissible " role="alert" align="center">
+     
+                        <strong><h4> No hay registros aún </h4></strong>
+                  </div> 
+                 <?php endif; ?>
+                              
+                                                                                                                                                                                           
+                            <tr>                                                             
+                              <td></td>
+                              
+                              <td align="left"> <strong>Total</strong></td>
+                              <td><strong><?php echo e($totales->sum('piezas')); ?></strong></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      
+                        <hr />
+                        <table class="table table-striped table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Venta</th>
+                              <th>Pieza</th>
+                             
+                              <th>Precio</th>                              
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                              
+                            
+                              <?php $__empty_1 = true; foreach($ventas_detalle as $ctr => $detalle): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e($detalle->folio); ?></td>
+                 <td> <?php echo e($detalle->pieza); ?></td>
+                 
+                 <td>$<?php echo e(number_format($detalle->precio_pieza, 2, '.', ',')); ?></td> 
+                 </tr>
+                 <?php endforeach; if ($__empty_1): ?>
+                 <div class="alert alert-info alert-dismissible " role="alert" align="center">
+     
+                        <strong><h4> No hay registros aún </h4></strong>
+                  </div>                 
+                 <?php endif; ?>
+                              
+                                                                                                                                                                                           
+                            <tr>  
+                              
+                              <td></td>
+                              <td></td>
+                              
+                              <td align="left"> <strong>Total</strong></td>
+                              <td><strong>$<?php echo e(number_format($ventas_detalle->sum('precio_pieza'), 2, '.', ',')); ?></strong></td>
+                            
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  </div>  
+                    
+
+                 
+                  <div class="widget-foot">
+                  Se <?php if($totales->sum('piezas') > 1): ?> han <?php else: ?> ha <?php endif; ?> creado <?php echo e($totales->sum('piezas')); ?> <?php if($totales->sum('piezas') > 1): ?>piezas <?php else: ?> pieza <?php endif; ?>
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+
+            </div>
+
+            <div class="col-md-8">
+              <!-- Quick setting -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left"><i class="fa fa-exchange"></i> Reposiciones</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                    <div class="padd invoice">
+                    
+
+                    <div class="row">
+
+                      <div class="col-md-12">                      
+                      
+                        <hr />
+                        <table class="table table-striped table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Fecha</th>                             
+                              <th>Pieza</th>
+                             <th>Motivos</th>
+                             <th>Requerido</th>
+                             <th>Costo</th>
+                              <th>Precio</th>
+                                                           
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                              
+                            
+                              <?php $__empty_1 = true; foreach($reposiciones as $ctr => $reposicion): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e(date("d-m-Y", strtotime($reposicion->created_at))); ?></td>
+                 <td> <?php echo e($reposicion->pieza); ?></td>                 
+                 <td><?php echo e($reposicion->motivos); ?></td>
+                 <td><?php echo e($reposicion->area_requerida); ?> m<sup>2</sup></td>
+                 <td>$<?php echo e(number_format($reposicion->costo_material_usado, 2, '.', ',')); ?></td>                 
+                 <td>$<?php echo e(number_format($reposicion->precio_reposicion, 2, '.', ',')); ?></td> 
+                 
+                 </tr>
+                 <?php endforeach; if ($__empty_1): ?>
+                  <div class="alert alert-info alert-dismissible " role="alert" align="center">
+     
+                        <strong><h4> No hay registros aún </h4></strong>
+                  </div> 
+                 <?php endif; ?>
+                              
+                                                                                                                                                                                           
+                            <tr>  
+                              
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td align="left"> <strong>Total</strong></td>
+                              <td><?php echo e($reposiciones->sum('area_requerida')); ?> m<sup>2</sup></td>
+                              <td><strong>$<?php echo e(number_format($reposiciones->sum('costo_material_usado'),2, '.', ',')); ?></strong></td>
+                              <td><strong>$<?php echo e(number_format($reposiciones->sum('precio_reposicion'),2, '.', ',')); ?></strong></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  </div>  
+                    
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+
+            </div>
+
+            <div class="col-md-8">
+              <!-- Quick setting -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left"><i class="fa fa-database"></i> Stock</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd invoice">
+                    
+
+                    <div class="row">
+
+                      <div class="col-md-12">                      
+                                              
+                        <table class="table table-striped table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Fecha</th>
+                              <th>Folio</th>                             
+                              <th>Pieza</th>                             
+                             <th>Requerido</th>
+                             <th>Costo</th>
+                              <th>Precio</th>
+                                                           
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                              
+                            
+                              <?php $__empty_1 = true; foreach($stock as $ctr => $s): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e(date("d-m-Y", strtotime($s->created_at))); ?></td>
+                 <td><?php echo e($s->folio); ?></td>
+                 <td> <?php echo e($s->pieza); ?></td>                                 
+                 <td><?php echo e($s->area_requerida); ?> m<sup>2</sup></td>
+                 <td>$<?php echo e(number_format($s->costo_material_usado, 2, '.', ',')); ?></td>                 
+                 <td>$<?php echo e(number_format($s->precio_venta, 2, '.', ',')); ?></td> 
+                 
+                 </tr>
+                 <?php endforeach; if ($__empty_1): ?>
+                  <div class="alert alert-info alert-dismissible " role="alert" align="center">
+     
+                        <strong><h4> No hay registros aún </h4></strong>
+                  </div> 
+                 <?php endif; ?>
+                              
+                                                                                                                                                                                           
+                            <tr>  
+                              
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td align="left"> <strong>Total</strong></td>
+                              <td><?php echo e($stock->sum('area_requerida')); ?> m<sup>2</sup></td>
+                              <td><strong>$<?php echo e(number_format($stock->sum('costo_material_usado'),2, '.', ',')); ?></strong></td>
+                              <td><strong>$<?php echo e(number_format($stock->sum('precio_venta'),2, '.', ',')); ?></strong></td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+
+            </div>           
+
+
+
+          </div>            
+<?php $__env->stopSection(); ?>

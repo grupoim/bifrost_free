@@ -1,0 +1,1 @@
+<li><a href="{{ action('InventarioRecubControlador@getIndex') }}"><i class="fa fa-plus-square"></i> Alta de material</a></li>

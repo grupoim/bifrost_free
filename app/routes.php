@@ -39,7 +39,7 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/persona', 'PersonaControlador');
 	Route::controller('/venta', 'VentaControlador');
 	Route::controller('/colonia', 'ColoniaControlador');
-	Route::controller('/perfil-usuario', 'PerfilControlador');
+	Route::controller('/inventario-recub', 'InventarioRecubControlador');
 });
 Route::controller('/login', 'LoginControlador');
 

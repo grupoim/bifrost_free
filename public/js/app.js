@@ -1,3 +1,5 @@
+var baseUrl = "http://192.168.10.249/";
+
 function Notification(settings){
 	this.settings = settings;
 	this.interval;
@@ -36,7 +38,7 @@ Notification.prototype.showDetail = function(result){
 	if(jsonResult.length > 0){
 		$.each(jsonResult, function(index, object){
 			$(caller.settings.target + ' + ul > li:first').after('<li class="dynamic"> ' 
-				+'<h6><a href=""><i class="fa fa-calendar"></i> ' + new Date(object[caller.settings.display]).toLocaleDateString() +  '</a></h6>'
+				+'<h6><a href="' + caller.settings.link + object.id + '"><i class="fa fa-calendar"></i> ' + new Date(object[caller.settings.display]).toLocaleDateString() +  '</a></h6>'
 				+'<p>'  + object[caller.settings.description] +  '</p>'
 				+ '<hr />'
 				+ '</li>');
@@ -142,23 +144,11 @@ DropdownProgress.prototype.show = function(result){
 		'width': result[this.settings.percentaje] + '%'
 	});
 }
-
-Number.prototype.formatMoney = function(c, d, t){
-var n = this, 
-    c = isNaN(c = Math.abs(c)) ? 2 : c, 
-    d = d == undefined ? "." : d, 
-    t = t == undefined ? "," : t, 
-    s = n < 0 ? "-" : "", 
-    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
-    j = (j = i.length) > 3 ? j % 3 : 0;
-   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
- };
-
 //Set Dropdown progress
 
 var cobranzaMes = new DropdownProgress({
 	target: '#cobranza-mes',
-	url: 'http://localhost:8000/cobranza/estadisticosmes',
+	url: baseUrl + 'cobranza/estadisticosmes',
 	total: 'esperado',
 	value: 'cobrado',
 	percentaje: 'porcentaje',
@@ -167,7 +157,7 @@ var cobranzaMes = new DropdownProgress({
 
 var cobranzaDia = new DropdownProgress({
 	target: '#cobranza-dia',
-	url: 'http://localhost:8000/cobranza/estadisticosdia',
+	url: baseUrl + 'cobranza/estadisticosdia',
 	total: 'esperado',
 	value: 'cobrado',
 	percentaje: 'porcentaje',
@@ -178,8 +168,9 @@ var cobranzaDia = new DropdownProgress({
 
 var quejas = new Notification({
 	target: '#notificacion_queja',
-	urlTotal: 'http://localhost:8000/queja/total',
-	urlDetail: 'http://localhost:8000/queja/all',
+	urlTotal: baseUrl + 'queja/total',
+	urlDetail: baseUrl  + 'queja/all',
+	link: baseUrl + 'queja/recupera/',
 	label: 'danger',
 	display: 'created_at',
 	description: 'descripcion'
@@ -187,15 +178,16 @@ var quejas = new Notification({
 
 var cotizaciones = new Notification({
 	target: '#notificacion_cotizacion',
-	urlTotal: 'http://localhost:8000/cotizacion/total',
-	urlDetail: 'http://localhost:8000/cotizacion/all',
+	urlTotal: baseUrl + 'cotizacion/total',
+	urlDetail: baseUrl  + 'cotizacion/all',
+	link: baseUrl  + 'contizacion/index/',
 	label: 'success',
 	display: 'fecha',
 	description: 'nombre'
 }).start();
 
 $(document).on('ready', function(){
-	$.ajax("http://localhost:8000/persona/all")
+	$.ajax(baseUrl + "persona/all")
 	.success(function(data){
 		$('#buscador').typeahead({
 			source: data,
@@ -209,11 +201,11 @@ $(document).on('ready', function(){
 			source: data,
 			display: 'nombre',
 			itemSelected: function(item){
-				window.location.replace("http://localhost:8000/cliente/edit/" + item);
+				window.location.replace(baseUrl  + "cliente/edit/" + item);
 			}
 		});
 	});
-	$.ajax("http://localhost:8000/venta/estadisticos")
+	$.ajax(baseUrl + "venta/estadisticos")
 	.success(function(data){
 		$('#estadisticos-ventas > a').html('Ventas');
 		$('#estadisticos-ventas > em').html('$ ' + data.ventas);
@@ -223,5 +215,7 @@ $(document).on('ready', function(){
 	});
 
 });
+
+
 
 

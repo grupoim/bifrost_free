@@ -1,0 +1,332 @@
+<?php $__env->startSection('scripts'); ?>
+
+<style type="text/css">
+    #legendDiv ul {
+    list-style: none;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 12px;
+}
+
+#legendDiv ul span {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    margin-right: 0.5em;
+}
+
+ #legendDivbar ul {
+    list-style: none;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 12px;
+}
+
+#legendDivbar ul span {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    margin-right: 0.5em;
+}
+
+</style>
+<!-- Scripts for this page -->
+<script type="text/javascript">
+
+$(document).ready(function () {
+   
+
+    var barChartData = {
+        labels : [<?php foreach($estadisticos_laminas as $lamina): ?> "<?php echo e($lamina->material_color); ?>", <?php endforeach; ?>],
+        datasets : [
+            
+             {
+                //barra de ventas                
+               
+                fillColor : "<?php echo e($color_grafica->grafica_color_ventas); ?>",
+                strokeColor : "#ffffff",
+                highlightFill: "<?php echo e($color_grafica->grafica_sobre_ventas); ?>",
+                highlightStroke: "#ffffff", 
+                label: 'Ventas',            
+                data : [<?php foreach($estadisticos_laminas as $lamina): ?> <?php echo e($lamina->venta); ?>, <?php endforeach; ?>]
+ 
+
+            },
+           
+
+            {
+                
+                //barra de stock                
+                 
+                fillColor : "<?php echo e($color_grafica->grafica_color_stock); ?>",
+                strokeColor : "#ffffff",
+                highlightFill: "<?php echo e($color_grafica->grafica_sobre_stock); ?>",
+                highlightStroke: "#ffffff",
+                label: 'Stock',            
+                data : [<?php foreach($estadisticos_laminas as $lamina): ?> <?php echo e($lamina->stock); ?>, <?php endforeach; ?>]
+
+                
+
+            },
+             {
+                
+                //barra de reposiciones                
+               
+                fillColor : "<?php echo e($color_grafica->grafica_color_reposiciones); ?>",
+                strokeColor : "#ffffff",
+                highlightFill: "<?php echo e($color_grafica->grafica_sobre_reposiciones); ?>",
+                highlightStroke: "#ffffff", 
+                label: 'Reposicion',
+                data : [<?php foreach($estadisticos_laminas as $lamina): ?> <?php echo e($lamina->reposicion); ?>, <?php endforeach; ?>]
+
+                
+
+            },
+           
+            
+            
+        ]
+
+    }
+
+    //FUNCION PARA SACAR COLORES RANDOM
+function get_random_color() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.round(Math.random() * 15)];
+                }
+                return color;
+}
+    var pieData = [
+                <?php foreach($estadisticos_colores as $color): ?>
+                {
+                     
+                        value: <?php echo e($color->movimientos); ?>,
+                        color:get_random_color(),
+                        highlight: "#0c62ab",
+                        label: '<?php echo e($color->material_color); ?>'
+                    },
+                     <?php endforeach; ?>       
+                    ];
+
+
+
+var ctx3 = document.getElementById("chart-area3").getContext("2d");
+var ctx = document.getElementById("chart-area").getContext("2d");              
+window.myPie = new Chart(ctx).Pie(pieData, {
+                                            
+                                            //Number - The percentage of the chart that we cut out of the middle
+                                            percentageInnerCutout : 0, // This is 0 for Pie charts
+                                            animateScale: true,
+                                             // String - Template string for single tooltips
+                                            tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + ' ' %>",
+                                            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+                                            showTooltips: true,
+ 
+
+                                                    }); 
+window.myBar = new Chart(ctx3).Bar(barChartData, {
+                                                    responsive:true,
+                                                    //Number - Spacing between data sets within X values
+                                                    barDatasetSpacing : 0,
+                                                    tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> Trabajos",
+                                                    scaleLabel: "<%=value%>",
+                                                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                                                    showTooltips: true,
+                                                 });
+ document.getElementById("legendDiv").innerHTML  = window.myPie.generateLegend();
+ document.getElementById("legendDivbar").innerHTML  = window.myBar.generateLegend();
+
+
+});
+
+
+</script>
+
+
+    <?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+
+ <div class="row">
+
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h2><i class="fa fa-database"></i> Inventario $<?php echo e(number_format($costo_inventario, 2, '.', ',')); ?></h2>
+                          
+                          
+
+                        </div>
+                      </div>
+
+                      
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h2> <i class="fa fa-money"></i>  Ventas: $<?php echo e(number_format($costo_venta, 2, '.', ',')); ?> </h2>                                                  
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h2> <i class="fa fa-cubes"></i>  Stock: $<?php echo e(number_format($costo_stock, 2, '.', ',')); ?> </h2>                                                  
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-3">
+                        <div class="well">
+                          <h2> <i class="fa fa-exchange"></i>  Reposicion: $<?php echo e(number_format($costo_reposicion, 2, '.', ',')); ?> </h2>                                                  
+                        </div>
+                      </div>
+
+                      
+                   
+
+            <div class="col-md-12">
+
+              <!-- User widget -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left">Inventario General </div>
+                  <div class="widget-icons pull-right"> Costo de Material $<?php echo e(number_format($costo_produccion, 2, '.', ',')); ?> 
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"> </i></a> 
+                  
+                    
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd">
+                   <!-- tabla de inventario--> 
+                   
+ <div class="page-tables">
+                        <!-- Table -->
+                        <div class="table-responsive" id="StudentTableContainer">
+                            <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
+                                <thead>
+                                    <tr>                                                                        
+                                        <th>Lámina</th>
+                                        <th>Factura</th>
+                                        <th>Descripción</th>
+                                        <th>Usado</th>
+                                        <th>Lamina</th>
+                                        <th>Inventario</th>
+                                        <th>Ventas</th>
+                                        <th>Stock</th>
+                                        <th>Reposicion</th>
+                                        <th>Utilidad</th>
+                                        <th>Detalles</th>
+
+                                                                                                                                                                                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($inventarios as $crt => $inventario): ?>                                   
+                                                                       
+                                        <?php /* <td>
+                                         <?php echo $crt+1; ?>   
+                                        </td> */ ?>
+                                        <td><?php echo e($inventario->folio_lamina); ?> </td>                                        
+                                         <td><?php echo e($inventario->folio_factura); ?> </td>
+                                         <td>
+                                    <!-- Checkbox -->
+                                                            
+
+                                                          <p class="p-meta">
+                                                            <!-- Due date & % Completed -->
+                                                            <span><?php if($inventario->lamina_completa == 0): ?><span class="label label-info">Retazo</span> <?php endif; ?>  <?php echo e($inventario->material_color); ?> <?php if($inventario->porcentaje_restante == 100): ?> <?php echo e($inventario->porcentaje_restante); ?> <?php else: ?> <?php echo e(number_format($inventario->porcentaje_restante, 2, '.', ',')); ?> <?php endif; ?> %  Disp.: <?php echo e(number_format($inventario->area_stock, 2, '.', ',')); ?> m<sup>2</sup> </span> 
+                                                                                        
+                                                          </p>
+                                                    <div class="progress progress-animated progress-striped active">
+                                                  <div class="progress-bar <?php if($inventario->porcentaje_restante == 100): ?> progress-bar-success <?php elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ): ?> progress-bar-warning <?php elseif($inventario->porcentaje_restante <= 30): ?> progress-bar-danger  <?php endif; ?>"  data-percentage="<?php echo e($inventario->porcentaje_restante); ?>">
+                                                    <span class="sr-only">100% Complete</span>
+                                                  </div>
+                                              </div>        
+                                        </td>
+                                        <td><?php echo e(number_format($inventario->area_usada, 2, '.', ',')); ?>m<sup>2</sup></td>                                        
+                                        <td>$<?php echo e(number_format($inventario->precio_inicial, 2, '.', ',')); ?></td>                                        
+                                        <td>$<?php echo e(number_format($inventario->precio_stock, 2, '.', ',')); ?></td>                                        
+                                        <td>$<?php echo e(number_format($inventario->ventas, 2, '.', ',')); ?></td>
+                                        <td>$<?php echo e(number_format($inventario->stock, 2, '.', ',')); ?></td>                                        
+                                        <td>$<?php echo e(number_format($inventario->perdida_reposicion, 2, '.', ',')); ?></td>
+
+                                        <td><span class="label <?php if($inventario->utilidad < 0): ?> label-danger <?php elseif($inventario->utilidad > 0): ?> label-success <?php elseif($inventario->utilidad == 0): ?> label-default   <?php endif; ?>">$<?php echo e(number_format($inventario->utilidad, 2, '.', ',')); ?> </td>
+                                        <td>
+                                        <a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getLamina', $inventario->inventario_recubrimientos_id); ?>" name="inventario_recubrimientos_id" value="<?php echo e($inventario->inventario_recubrimientos_id); ?>"  title="Ver detalles de movimientos por lamina"> <i class="fa fa-search"></i> Ver</a>
+                                        
+                                        
+                                        </td>                                
+                                    </tr>
+                                    <?php endforeach; ?>
+
+                                </tbody>
+                                
+                            </table> </div>
+                            <div class="clearfix"></div>
+          <!-- tabla de inventario -->
+                    
+                  </div> <!-- end pad-->
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+            </div>
+
+
+            <div class="col-md-4">
+              <!-- Quick setting -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left">Movimientos de material por color</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd">
+                 
+                      <canvas id="chart-area" width="300" height="300"></canvas>
+                      <div id="legendDiv"></div> 
+
+                  </div>
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+
+            </div>
+
+            <div class="col-md-8">
+              <!-- Quick setting -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left">Movimientos de material por lámina</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd">
+                 
+                    <div align="center"><canvas align = "center" id="chart-area3" width="400" height="250"></canvas><div>
+                    <div align="left" id="legendDivbar"></div>
+                    
+
+                  </div>
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+
+            </div>
+
+          </div>            
+<?php $__env->stopSection(); ?>

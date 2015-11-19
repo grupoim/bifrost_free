@@ -10,7 +10,7 @@ class CotizacionControlador extends ModuloControlador{
 
 	public function getIndex(){
 		$dataModule["cotizaciones"] = Venta::with('cliente.persona')->where('cotizacion', 1)->get();
-		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.cotizacion', $dataModule);
+		return View::make($this->department.".main", $this->data)->nest('child', 'ventas.cotizacion', $dataModule);
 	}
 
 	public function getTotal(){

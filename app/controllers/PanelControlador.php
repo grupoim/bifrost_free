@@ -16,6 +16,6 @@
 			$this->data["products"] = $this->products;
 			$this->data["currentMonth"] = $months[date('n') - 1];
 			$this->data["graphs"] = $panel->get();
-			return View::make($this->department.".main", $this->data);
+			return View::make("sistemas.main", $this->data);
 		}
 	}
