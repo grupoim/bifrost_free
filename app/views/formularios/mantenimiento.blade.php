@@ -1,6 +1,10 @@
 @extends('modal')
 @section('modal-content')
 {{ Form::open(array('action' => 'CotizacionControlador@postAgregarProducto', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'producto')) }}
+
+
+
+
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Buscar</label>
 	<div class="col-md-9">
@@ -27,6 +31,6 @@
 			<p>El cliente se encuentra <span class="label label-info">INHUMADO</span> en Estrellas Norte Fila 3, Lote 24.</p>
 		</div>
 	</div>
-</div>
+</div> 
 {{ Form::close() }}
 @overwrite

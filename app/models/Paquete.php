@@ -3,12 +3,12 @@
 class Paquete extends Eloquent {
 	protected $table = 'paquete';
 	public $timestamps = false;
-
+	
+	
 	public function producto() {
-		return $this->belongsTo('Producto');
+		return $this->belongsTo('Producto', 'paquete_id');
 	}
 
-	public function paquete() { /* TENGO DUDAS AQUI COMO INTERPRELTARLO */
-		return $this->belongsTo('Paquete', 'paquete', 'id')
-	}
+	
+
 }

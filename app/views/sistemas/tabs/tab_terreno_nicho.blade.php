@@ -3,7 +3,7 @@
                         <p><!-- Matter -->
                 
 
-            <div class="col-md-4">
+            <div class="col-md-7">
 
 
               <div class="widget wgreen">
@@ -117,6 +117,15 @@
                       <input type="text" class="form-control" name="porcentaje_comision" id="porcentaje_comision" placeholder="00" aria-describedby="basic-addon2" value="{{Input::old('porcentaje_comision')}}">
                     </div>
                   </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 control-label">Minimo para comision</label>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <span class="input-group-addon">%</span>
+                      <input type="text" class="form-control" name="porcentaje_minimo_comisionable" id="porcentaje_minimo_comisionable" placeholder="00" aria-describedby="basic-addon2" value="{{Input::old('porcentaje_minimo_comisionable')}}">
+                    </div>
+                  </div>
                 </div>                               
                              
                               
@@ -207,6 +216,16 @@
                       <span class="input-group-addon">%</span>
                       <input type="text" class="form-control" name="porcentaje_comision" id="porcentaje_comision" placeholder="00" aria-describedby="basic-addon2" value="{{Input::old('porcentaje_comision')}}">
                       @if($errors->has('porcentaje_comision')) <div align="center" class="alert alert-danger">{{$errors->first('porcentaje_comision')}}</div> @endif
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-2 control-label">Minimo para comision</label>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <span class="input-group-addon">%</span>
+                      <input type="text" class="form-control" name="porcentaje_minimo_comisionable" id="porcentaje_minimo_comisionable" placeholder="00" aria-describedby="basic-addon2" value="{{Input::old('porcentaje_minimo_comisionable')}}">
                     </div>
                   </div>
                 </div>                               

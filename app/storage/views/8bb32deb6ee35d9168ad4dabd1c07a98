@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('LoteFunerarioControlador@getIndex'); ?>">Lotes Funerarios</a></li>

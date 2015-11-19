@@ -7,17 +7,36 @@
 			$this->data["module"] = "Captura de nuevos productos";			
 			$this->data["icon"] = "cart-plus";			
 			$this->department = Auth::user()->departamento->nombre;
-		}		
+		}	
+
+			
 
 		public function getIndex(){				
 			
-			$dataModule['construcciones'] = Construccion::join('mantenimiento','mantenimiento.construccion_id', '=', 'construccion.id')->groupby('construccion_id')->get();			
 			
-			$dataModule['mantenimientos'] = Mantenimiento::leftjoin('producto', 'mantenimiento.producto_id', '=', 'producto.id')
-															->leftjoin('construccion', 'mantenimiento.construccion_id', '=', 'construccion.id')
-															->leftjoin('precio', 'producto.id', '=', 'precio.producto_id')->get();
+			$dataModule['construcciones'] = Construccion::groupby('descripcion')->orderby('descripcion')->get();
+			
+			$dataModule['mantenimientos'] = VistaPreciosMantenimiento::all();
 
-			$dataModule['productos'] = Producto::all();
+			$dataModule["config_gral"] = ConfiguracionGeneral::where('activo',1)->firstorfail();
+			
+			$dataModule['paquetes'] = Paquete::groupby('paquete_id')->get();
+
+			$dataModule['productos_combo'] = Producto::where('combo',1)->get();
+
+			$dataModule['productos'] = Producto::with('precio')->get();
+
+			$dataModule['precio_paquete'] = Producto::select('producto.id', 'precio.monto')
+													->leftjoin('precio', 'producto.id', '=', 'precio.producto_id')
+													->where('precio.activo', 1)
+													->get();
+
+			$dataModule['departamentos']= Departamento::all();
+
+			$dataModule['contenido_paquete'] = Paquete::select('paquete.id','paquete.paquete_id','paquete.producto_id as item_id','producto.nombre as nombre_paquete','px.nombre as item')
+														->leftjoin('producto','paquete.paquete_id','=','producto.id' )							
+														->leftjoin('producto as px', 'paquete.producto_id', '=', 'px.id')	
+														->get();		
 			
 			return View::make($this->department.".main", $this->data)->nest('child','sistemas.main_productos',$dataModule);
 			
@@ -90,6 +109,7 @@ if ($mtto3) {
 			$producto->departamento_id = $departamento; //es un producto del departamento de ventas
 			$producto->nombre = $product_name3;
 			$producto->porcentaje_comision = 0;
+			$producto->porcentaje_minimo_comisionable = 0;
 			$producto->save();
 
 /////////////////////////////precio/////////////////////
@@ -121,6 +141,7 @@ if ($mtto6) {
 			$producto->departamento_id = $departamento; //es un producto del departamento de ventas
 			$producto->nombre = $product_name6;
 			$producto->porcentaje_comision = 0;
+			$producto->porcentaje_minimo_comisionable = 0;
 			$producto->save();
 
 /////////////////////////////precio/////////////////////
@@ -152,6 +173,7 @@ if ($mtto12) {
 			$producto->departamento_id = $departamento; //es un producto del departamento de ventas
 			$producto->nombre = $product_name12;
 			$producto->porcentaje_comision = 0;
+			$producto->porcentaje_minimo_comisionable = 0;
 			$producto->save();
 
 /////////////////////////////precio/////////////////////
@@ -177,7 +199,11 @@ if ($mtto12) {
 						
 
 
-		} //fin de funcion producto
+		} 
+
+		public function postMttaumento(){
+
+		}
 
 
 public function postTerreno(){	
@@ -188,6 +214,7 @@ public function postTerreno(){
 					'osarios' => 'numeric',
 					'monto'=>'required|numeric',
 					'porcentaje_comision'=>'required|numeric',
+					'porcentaje_minimo_comisionable'=>'required|numeric',
 					'construccion_medidas'=>'required',					
 					
 				);
@@ -255,7 +282,8 @@ public function postTerreno(){
 		$producto = new Producto;
 			$producto->departamento_id = $departamento; //es un producto del departamento de ventas
 			$producto->nombre = $product_name;
-			$producto->porcentaje_comision = Input::get('porcentaje_comision');
+			$producto->porcentaje_comision = Input::get('porcentaje_comision');			
+			$producto->porcentaje_minimo_comisionable = Input::get('porcentaje_minimo_comisionable');
 			$producto->save();
 		
 		$precio = new Precio;
@@ -313,7 +341,8 @@ public function postNicho(){
 					'fila_n'=>'required',
 					'columna'=>'required',					
 					'monto'=>'required|numeric',
-					'porcentaje_comision'=>'required|numeric',					
+					'porcentaje_comision'=>'required|numeric',
+					'porcentaje_minimo_comisionable'=>'required|numeric',					
 				);
 
 				$messages = array(
@@ -348,6 +377,7 @@ public function postNicho(){
 			$producto->departamento_id = $departamento; //es un producto del departamento de ventas
 			$producto->nombre = $product_name;
 			$producto->porcentaje_comision = Input::get('porcentaje_comision');
+			$producto->porcentaje_minimo_comisionable = Input::get('porcentaje_minimo_comisionable');
 			$producto->save();
 
 		$precio = new Precio;
@@ -371,15 +401,58 @@ public function postNicho(){
 
 }//fin post nicho
 
-public function postPaquete(){
+public function postCombo(){
+	
+	
+	$combo = new Producto;
+	$combo->nombre = Input::get('nombre_producto');
+	$combo->departamento_id = Input::get('departamento_id');
+	$combo->porcentaje_comision = Input::get('porcentaje_comision');
+	$combo->porcentaje_minimo_comisionable = Input::get('porcentaje_minimo_comisionable');
+	$combo->save();
 
+	$precio = new Precio;
+	$precio->producto_id = $combo->id;
+	$precio->monto = Input::get('monto');
+	$precio->save();
+
+	$productos = Input::get('producto');
+	foreach ($productos as $p) {
+		$paquete = new Paquete();
+		$paquete->paquete_id = $combo->id;
+		$paquete->producto_id = $p;
+		$paquete->descuento = 0;
+		$paquete->descripcion = '';
+		$paquete->save();
+
+	}
+
+	return Redirect::back()->with('status', 'paquete_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
+		
+	}
+
+
+public function postProductocombo(){
+
+	$producto_combo = new Producto;
+
+	$producto_combo->nombre = Input::get('nombre_producto_c');
+	$producto_combo->departamento_id = Input::get('departamento_id_producto');
+	$producto_combo->servicio = Input::get('tipo_producto');
+	$producto_combo->porcentaje_comision = Input::get('porcentaje_comision_producto');
+	$producto_combo->porcentaje_minimo_comisionable = Input::get('porcentaje_minimo_comisionable_producto');
+	$producto_combo->combo = 1;
+
+	$producto_combo->save();
+
+	$precio_producto = new Precio;
+	$precio_producto->producto_id = $producto_combo->id;
+	$precio_producto->monto = Input::get('monto_producto');
+
+
+return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
 
 
 }
 
-
-
 } // fin controlador----------------
-
-
-			

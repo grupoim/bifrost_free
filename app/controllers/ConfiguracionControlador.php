@@ -207,7 +207,7 @@ public function postNuevanotacredito(){
 
 
         }
-        /** fin estatus plan de pago **/ 
+        
 
 
 
