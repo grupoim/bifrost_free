@@ -1,0 +1,1 @@
+<li><a href="{{ action('ConfiguracionControlador@getIndex') }}">Configuraciones Generales</a></li>

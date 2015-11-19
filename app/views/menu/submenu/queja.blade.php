@@ -1,0 +1,1 @@
+<li><a href="{{ action('QuejaControlador@getIndex') }}">Quejas</a></li>

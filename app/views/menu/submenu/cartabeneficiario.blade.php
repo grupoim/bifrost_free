@@ -1,0 +1,1 @@
+<li><a href="{{ action('CartaBeneficiarioControlador@getIndex') }}">Carta de Beneficiario</a></li>

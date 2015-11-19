@@ -1,0 +1,1 @@
+<li><a href="{{ action('AlmacenControlador@getIndex') }}">Almacén</a></li>

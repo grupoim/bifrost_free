@@ -1,0 +1,1 @@
+<li><a href="{{ action('CobranzaControlador@getIndex') }}">Cobranza</a></li>

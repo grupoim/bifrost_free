@@ -1,0 +1,1 @@
+<li><a href="{{ action('AsesorControlador@getIndex') }}">Promotores y Asesores</a></li>

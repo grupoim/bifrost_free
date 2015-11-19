@@ -1,0 +1,1 @@
+<li><a href="{{ action('ExhumacionControlador@getIndex') }}">Exhumación</a></li>

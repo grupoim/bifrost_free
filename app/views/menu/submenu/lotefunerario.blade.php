@@ -1,0 +1,1 @@
+<li><a href="{{ action('LoteFunerarioControlador@getIndex') }}">Lotes Funerarios</a></li>

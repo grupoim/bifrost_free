@@ -1,0 +1,1 @@
+<li><a href="{{ action('PlanPagoControlador@getIndex') }}">Planes de Pago</a></li>

@@ -1,0 +1,1 @@
+<li><a href="{{ action('TituloPropiedadControlador@getIndex') }}">Título de Propiedad</a></li>

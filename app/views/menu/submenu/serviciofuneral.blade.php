@@ -1,0 +1,1 @@
+<li><a href="{{ action('ServicioFuneralControlador@getIndex') }}">Servicio Funeral</a></li>

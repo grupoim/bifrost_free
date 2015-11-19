@@ -1,0 +1,1 @@
+<li><a href="{{ action('PersonalOperativoControlador@getIndex') }}">Personal Operativo</a></li>

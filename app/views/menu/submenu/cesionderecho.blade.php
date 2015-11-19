@@ -1,0 +1,1 @@
+<li><a href="{{ action('CesionDerechoControlador@getIndex') }}">Cesión de Derecho</a></li>

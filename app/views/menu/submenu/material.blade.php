@@ -1,0 +1,1 @@
+<li><a href="{{ action('MaterialControlador@getIndex') }}">Materiales</a></li>

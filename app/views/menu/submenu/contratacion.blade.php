@@ -1,0 +1,1 @@
+<li><a href="{{ action('ContratacionControlador@getIndex') }}">Contratación</a></li>

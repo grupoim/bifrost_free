@@ -1,0 +1,7 @@
+create view vista_empleado as
+select empleado.id, persona.nombres, persona.apellido_paterno, persona.apellido_materno, puesto.nombre as puesto, departamento.nombre as departamento, empleado.fecha_ingreso, empleado.activo
+from empleado
+left join persona on empleado.persona_id = persona.id
+left join puesto on empleado.puesto_id = puesto.id
+left join departamento on puesto.departamento_id = departamento.id
+order by empleado.id

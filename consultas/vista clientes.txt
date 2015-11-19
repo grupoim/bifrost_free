@@ -1,0 +1,23 @@
+create view vista_clientes as
+SELECT persona.nombres, 
+persona.apellido_paterno, 
+persona.apellido_materno,
+cliente.calle,
+cliente.numero_exterior,
+cliente.numero_interior,
+colonia.codigo_postal,
+referencias,
+municipio.nombre as municipio,
+estado.nombre as estado,
+pais.nombre as pais,
+email,
+estado_civil.descripcion as estado_civil,
+latitud,
+longitud
+from cliente
+left join persona on cliente.persona_id = persona.id
+left join colonia on cliente.colonia_id = colonia.id
+left join municipio on colonia.municipio_id = municipio.id
+left join estado on municipio.estado_id = estado.id
+left join pais on estado.pais_id = pais.id
+left join estado_civil on cliente.estado_civil_id = estado_civil.id

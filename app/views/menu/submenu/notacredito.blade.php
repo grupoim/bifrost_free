@@ -1,0 +1,1 @@
+<li><a href="{{ action('NotaCreditoControlador@getIndex') }}">Notas de Crédito</a></li>
