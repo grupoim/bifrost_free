@@ -113,6 +113,7 @@
 
     @stop
 @section('module')
+@if(Auth::user()->departamento->id == 1)
 <a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getBoom')}}" name="folio" value=""  title="Borrar todos los registros del inventario"> <i class="fa fa-bomb"></i> Boom!!</a>
   <div class="row">
 @if($boom=='apocalipsis')
@@ -121,6 +122,7 @@
      <P><strong><h4> <i class="fa fa-exclamation-triangle"></i> Explotaste la bomba ATÓMICA, se acabará el mundo mi chavo, acabas de borrar todo el inventario  <i class="fa fa-exclamation-triangle"></i></h4></strong></P>
     </div>  
 
+      @endif
       @endif
             <div class="col-md-4">
 				@if($factura_error=='error')
