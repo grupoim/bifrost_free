@@ -40,15 +40,14 @@ use Carbon\Carbon;
 		}
 
 		}
-
-
 		
 		public function getAbreperiodo($lista_id){
 			if ((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )) {
 			$lista = Lista::find($lista_id);
 			$lista->activa = 1;
 			$lista->save();
-			return Redirect::to('personal-operativo/lista');
+			return Redirect::to('personal-operativo/asistencia/'.$lista_id);
+
 		}
 
 		}
@@ -263,6 +262,15 @@ use Carbon\Carbon;
 					$empleado->activo = "0";
 					$empleado->save();
 					return Redirect::to('personal-operativo')->with('status', 'ok_cancel');
+
+				}
+
+				public function getBajalista($empleado_id){
+
+					$empleado = Empleado::find($empleado_id);
+					$empleado->activo = "0";
+					$empleado->save();
+					return Redirect::back();
 
 				}
 						public function getActivar($id){

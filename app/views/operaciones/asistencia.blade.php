@@ -20,6 +20,7 @@
 	$(document).on('ready', function(){
 		@if($lista->activa == 0)
 		$('.activa').prop('disabled', true);
+
 		@endif
    	});	
 </script>
@@ -86,9 +87,16 @@
 	<!-- Button Group -->
     	<div class="btn-group pull-right">
     	@if($lista->activa == 1) 
+
+    	@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
     	<a  type="btn" href="{{URL::to('personal-operativo/cierraperiodo/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-unlock"></i> Cerrar asistencia</a>
+		@endif
+		@else
+		@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
+		<a  type="btn" href="{{URL::to('personal-operativo/abreperiodo/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-lock"></i> Abrir asistencia</a>
 		@else
 		<a  type="btn" href="#" class="btn btn-m btn-danger" title="Esta lista se encuentra cerrada, ya fue revisada por Julio"><i class="fa fa-lock"></i> Lista Revisada</a>
+		@endif
 		@endif
     	</div>
 
@@ -107,13 +115,13 @@
 									<th>#</th>
 									<th><strong>Nombre</strong></th>
 									<th><strong>Departamento</strong></th>
-									<th>Sa</th>
-									<th>Do</th>
-									<th>Lu</th>
-									<th>Ma</th>
-									<th>Mi</th>
-									<th>Ju</th>
-									<th>Vi</th>
+									<th>Sabado</th>
+									<th>Domingo</th>
+									<th>Lunes</th>
+									<th>Martes</th>
+									<th>Miercoles</th>
+									<th>Jueves</th>
+									<th>Viernes</th>
 									<th align="center"><strong>Observaciones</strong></th>
 									<th>Operaciones</th>
 																		
@@ -138,7 +146,10 @@
 										 <td>
 											  <input  type="checkbox" name="Todo" class="activa" id="marcarTodo{{{$empleado->id}}}" title="Marcar toda la semana" />
 											   <button type="submit" class="btn btn-m btn-default activa" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 
-											  </p></td>
+											 @if($lista->activa == 1)
+											 <a id="activa" class="btn btn-m btn-default activa" href="{{URL::to('personal-operativo/bajalista/'.$empleado->empleado_id)}}" title="Dar de Baja a  {{{Str::title($empleado->empleado)}}}"> <i class="fa fa-times activa"></i></a>
+											@endif
+										</td>
 
 							<input type="hidden" name="asistencia_id" value="{{{$empleado->id}}}">
 							<input type="hidden" name="empleado_id" value="{{{$empleado->empleado_id}}}">

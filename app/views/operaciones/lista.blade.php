@@ -55,7 +55,7 @@
 
 
             <div class="pull-left"> <strong>Listas de asistencia</strong> </div>
-	
+			<div class="pull-right"><a  type="btn" href="{{{URL::to('personal-operativo/agregarperiodo')}}}" class="btn btn-m btn-default" id="btn_send" title="Agregar un nuevo periodo"><i class="fa fa-plus"></i> Agregar periodo</a> </div>
 
             <div class="clearfix"></div>
         </div>
@@ -96,7 +96,23 @@
 												<span class="label label-warning">Cerrada</span></td>
 												
 													@endif
-										<td> <a  type="btn" href="{{URL::to('personal-operativo/asistencia/'.$lista->id)}}" class="btn btn-sm btn-default" id="btn_send" title="Clic"><i class="fa fa-search"></i></a> </td>										
+										<td> <a  type="btn" href="{{URL::to('personal-operativo/asistencia/'.$lista->id)}}" class="btn btn-sm btn-default" id="btn_send" title="ver detalles"><i class="fa fa-search"></i></a> 
+												@if($lista->activa == 1) 
+
+										    	@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
+										    	<a  type="btn" href="{{URL::to('personal-operativo/cierraperiodo/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Cierra periodo"><i class="fa fa-lock"></i> Cerrar</a>
+												@else
+												<span class="label label-info">Abierta</span></td>
+												@endif
+
+												@else
+												@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
+												<a  type="btn" href="{{URL::to('personal-operativo/abreperiodo/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Abre periodo"><i class="fa fa-unlock"></i> Abrir</a>
+												@else
+												<span class="label label-warning">Revisada</span></td>
+												@endif
+												@endif
+										</td>										
 										                   
 										
 							@endforeach								
