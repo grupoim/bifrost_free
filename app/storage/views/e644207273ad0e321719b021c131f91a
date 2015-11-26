@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <!-- Title and other stuffs -->
-  <title>{{{ $module }}} - BifrostPFG</title>
+  <title><?php echo e($module); ?> - BifrostPFG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -12,35 +12,35 @@
 
 
   <!-- Stylesheets -->
-  <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/bootstrap.min.css'); ?>" rel="stylesheet">
   <!-- Font awesome icon -->
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <!-- Calendar -->
-  <link rel="stylesheet" href="{{ URL::asset('css/fullcalendar.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/fullcalendar.css'); ?>">
   <!-- prettyPhoto -->
-  <link rel="stylesheet" href="{{ URL::asset('css/prettyPhoto.css') }}">  
+  <link rel="stylesheet" href="<?php echo URL::asset('css/prettyPhoto.css'); ?>">  
   <!-- Star rating -->
-  <link rel="stylesheet" href="{{ URL::asset('css/rateit.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/rateit.css'); ?>">
   <!-- Date picker --> 
-  <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-datetimepicker.min.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/bootstrap-datetimepicker.min.css'); ?>">
   <!-- CLEditor -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.cleditor.css') }}">  
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.cleditor.css'); ?>">  
   <!-- Data tables -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.dataTables.css') }}"> 
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.dataTables.css'); ?>"> 
   <!-- Bootstrap toggle -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.onoff.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.onoff.css'); ?>">
   <!-- Main stylesheet -->
-  <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/style.css'); ?>" rel="stylesheet">
   <!-- Widgets stylesheet -->
-  <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">   
+  <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">   
   
-  <script src="{{ URL::asset('js/respond.min.js') }}"></script>
+  <script src="<?php echo URL::asset('js/respond.min.js'); ?>"></script>
   <!--[if lt IE 9]>
   <script src="js/html5shiv.js"></script>
   <![endif]-->
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="{{ URL::asset('img/favicon/favicon.png') }}">
+  <link rel="shortcut icon" href="<?php echo URL::asset('img/favicon/favicon.png'); ?>">
 </head>
 
 <body>
@@ -89,7 +89,7 @@
               </li>
               <li>
                 <div class="drop-foot">
-                  <a href="{{ action('CobranzaControlador@getIndex') }}">Ver detalle de cobranza</a>
+                  <a href="<?php echo action('CobranzaControlador@getIndex'); ?>">Ver detalle de cobranza</a>
                 </div>
               </li>
             </ul>
@@ -106,14 +106,14 @@
         <ul class="nav navbar-nav pull-right">
           <li class="dropdown pull-right">            
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-              <i class="fa fa-user"></i> {{ Auth::user()->persona->nombres }} <b class="caret"></b>              
+              <i class="fa fa-user"></i> <?php echo Auth::user()->persona->nombres; ?> <b class="caret"></b>              
             </a>
             
             <!-- Dropdown menu -->
             <ul class="dropdown-menu">
               <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
               <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
-              <li><a href="{{ action('LoginControlador@getSalir') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+              <li><a href="<?php echo action('LoginControlador@getSalir'); ?>"><i class="fa fa-sign-out"></i> Logout</a></li>
             </ul>
           </li>
           
@@ -155,7 +155,7 @@
                 </li>
                 <li>
                   <div class="drop-foot">
-                    <a href="{{ action('CotizacionControlador@getIndex') }}">Ver todas</a>
+                    <a href="<?php echo action('CotizacionControlador@getIndex'); ?>">Ver todas</a>
                   </div>
                 </li>                                    
               </ul>
@@ -177,7 +177,7 @@
                 </li>
                 <li>
                   <div class="drop-foot">
-                    <a href="{{ action('QuejaControlador@getIndex') }}">Ver todas</a>
+                    <a href="<?php echo action('QuejaControlador@getIndex'); ?>">Ver todas</a>
                   </div>
                 </li>
               </ul>
@@ -250,33 +250,33 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav">
       <!-- Main menu with font awesome icon -->
-      <!--@{{section('nav')}}-->
+      <!--{{section('nav')}}-->
       <li>
         <!--<a href="/"><i class="fa fa-home"></i> Panel de Control</a>-->
-        <a href="{{ action('QuejaControlador@getIndex') }}"><i class="fa fa-bullhorn"></i> Quejas</a>
+        <a href="<?php echo action('QuejaControlador@getIndex'); ?>"><i class="fa fa-bullhorn"></i> Quejas</a>
       </li>
 
       <li class="has_sub">
           <a href="#"><i class="fa fa-sitemap"></i> Inventario Recub.  <span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
           <ul>
-            @include('menu.submenu.alta_material')
-            @include('menu.submenu.baja_material')
-            @include('menu.submenu.reportes_invetario')            
-            @include('menu.submenu.catalogo_materiales')
-            @include('menu.submenu.proveedores')
+            <?php echo $__env->make('menu.submenu.alta_material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.baja_material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.reportes_invetario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>            
+            <?php echo $__env->make('menu.submenu.catalogo_materiales', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.proveedores', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
           </ul>
         </li>
             <li class="has_sub">
           <a href="#"><i class="fa fa-wrench"></i> Operaciones<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
           <ul>
-            @include('menu.submenu.personaloperativo')
-            @include('menu.submenu.lista')
+            <?php echo $__env->make('menu.submenu.personaloperativo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <?php echo $__env->make('menu.submenu.lista', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
           </ul>
         </li>
 
-      <!--@{{show}}-->
+      <!--{{show}}-->
     </ul>
   </div>
 
@@ -287,14 +287,14 @@
 
     <!-- Page heading -->
     <div class="page-head">
-      <h2 class="pull-left"><i class="fa fa-{{{ $icon or 'home'}}}"></i> {{{ $module }}}</h2>
+      <h2 class="pull-left"><i class="fa fa-<?php echo e(isset($icon) ? $icon : 'home'); ?>"></i> <?php echo e($module); ?></h2>
 
       <!-- Breadcrumb -->
       <div class="bread-crumb pull-right">
         <a href="#"><i class="fa fa-home"></i> Inicio</a> 
         <!-- Divider -->
         <span class="divider">/</span> 
-        <a href="#" class="bread-current">{{{ $module }}}</a>
+        <a href="#" class="bread-current"><?php echo e($module); ?></a>
       </div>
 
       <div class="clearfix"></div>
@@ -306,7 +306,7 @@
     <!-- Matter -->
     <div class="matter">
       <div class="container">
-        @section('module')
+        <?php $__env->startSection('module'); ?>
         <div class="row">
           <div class="col-md-12">
 
@@ -331,7 +331,7 @@
 
           </div>
         </div> 
-        @show
+        <?php echo $__env->yieldSection(); ?>
       </div>
     </div>
 
@@ -362,39 +362,39 @@
 <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
 
 <!-- JS -->
-<script src="{{ URL::asset('js/jquery.js') }}"></script> <!-- jQuery -->
-<script src="{{ URL::asset('js/bootstrap.min.js') }}"></script> <!-- Bootstrap -->
-<script src="{{ URL::asset('js/jquery-ui.min.js') }}"></script> <!-- jQuery UI -->
-<script src="{{ URL::asset('js/fullcalendar.min.js') }}"></script> <!-- Full Google Calendar - Calendar -->
-<script src="{{ URL::asset('js/jquery.rateit.min.js') }}"></script> <!-- RateIt - Star rating -->
-<script src="{{ URL::asset('js/jquery.prettyPhoto.js') }}"></script> <!-- prettyPhoto -->
-<script src="{{ URL::asset('js/jquery.slimscroll.min.js') }}"></script> <!-- jQuery Slim Scroll -->
-<script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script> <!-- Data tables -->
+<script src="<?php echo URL::asset('js/jquery.js'); ?>"></script> <!-- jQuery -->
+<script src="<?php echo URL::asset('js/bootstrap.min.js'); ?>"></script> <!-- Bootstrap -->
+<script src="<?php echo URL::asset('js/jquery-ui.min.js'); ?>"></script> <!-- jQuery UI -->
+<script src="<?php echo URL::asset('js/fullcalendar.min.js'); ?>"></script> <!-- Full Google Calendar - Calendar -->
+<script src="<?php echo URL::asset('js/jquery.rateit.min.js'); ?>"></script> <!-- RateIt - Star rating -->
+<script src="<?php echo URL::asset('js/jquery.prettyPhoto.js'); ?>"></script> <!-- prettyPhoto -->
+<script src="<?php echo URL::asset('js/jquery.slimscroll.min.js'); ?>"></script> <!-- jQuery Slim Scroll -->
+<script src="<?php echo URL::asset('js/jquery.dataTables.min.js'); ?>"></script> <!-- Data tables -->
 
 <!-- jQuery Flot -->
-<script src="{{ URL::asset('js/excanvas.min.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.resize.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.pie.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.stack.js') }}"></script>
+<script src="<?php echo URL::asset('js/excanvas.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.resize.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.pie.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.stack.js'); ?>"></script>
 
 <!-- jQuery Notification - Noty -->
-<script src="{{ URL::asset('js/jquery.noty.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/themes/default.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/bottom.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/topRight.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/top.js') }}"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/jquery.noty.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/themes/default.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/bottom.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/topRight.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/top.js'); ?>"></script> <!-- jQuery Notify -->
 <!-- jQuery Notification ends -->
 
-<script src="{{ URL::asset('js/sparklines.js') }}"></script> <!-- Sparklines -->
-<script src="{{ URL::asset('js/jquery.cleditor.min.js') }}"></script> <!-- CLEditor -->
-<script src="{{ URL::asset('js/bootstrap-datetimepicker.min.js') }}"></script> <!-- Date picker -->
-<script src="{{ URL::asset('js/jquery.onoff.min.js') }}"></script> <!-- Bootstrap Toggle -->
-<script src="{{ URL::asset('js/filter.js') }}"></script> <!-- Filter for support page -->
-<script src="{{ URL::asset('js/custom.js') }}"></script> <!-- Custom codes -->
-<script src="{{ URL::asset('js/bootstrap-typeahead.js') }}"></script>  <!-- Typahead plugin-->
-<script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
-<script src="{{ URL::asset('js/app.js') }}"></script>
-@yield('scripts', '')
+<script src="<?php echo URL::asset('js/sparklines.js'); ?>"></script> <!-- Sparklines -->
+<script src="<?php echo URL::asset('js/jquery.cleditor.min.js'); ?>"></script> <!-- CLEditor -->
+<script src="<?php echo URL::asset('js/bootstrap-datetimepicker.min.js'); ?>"></script> <!-- Date picker -->
+<script src="<?php echo URL::asset('js/jquery.onoff.min.js'); ?>"></script> <!-- Bootstrap Toggle -->
+<script src="<?php echo URL::asset('js/filter.js'); ?>"></script> <!-- Filter for support page -->
+<script src="<?php echo URL::asset('js/custom.js'); ?>"></script> <!-- Custom codes -->
+<script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
+<script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
+<script src="<?php echo URL::asset('js/app.js'); ?>"></script>
+<?php echo $__env->yieldContent('scripts', ''); ?>
 </body>
 </html>

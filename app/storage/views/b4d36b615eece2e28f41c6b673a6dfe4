@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('RecubrimientoControlador@getIndex'); ?>">Recubrimientos</a></li>
