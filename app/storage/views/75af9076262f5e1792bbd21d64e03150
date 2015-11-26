@@ -137,7 +137,8 @@
 										<td> <?php echo e(Str::title($empleado->departamento)); ?></td>	
 																				
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="chs<?php echo e($empleado->id); ?>" name="sabado" <?php if($empleado->sa == 1): ?> checked="true"  <?php endif; ?> > </div></td>                 
-										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="domingo" <?php if($empleado->do == 1): ?> checked="true"  <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="domingo" <?php if($empleado->do == 1): ?> checked="true"  <?php endif; ?> > </div>
+										</td>
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="lunes" <?php if($empleado->lu == 1): ?> checked="true"    <?php endif; ?> > </div></td>
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="martes" <?php if($empleado->ma == 1): ?> checked="true"   <?php endif; ?> > </div></td>
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="miercoles" <?php if($empleado->mi == 1): ?> checked="true" <?php endif; ?> > </div></td>

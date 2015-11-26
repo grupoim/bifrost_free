@@ -36,6 +36,22 @@ use Carbon\Carbon;
 			$lista->activa = 0;
 			$lista->save();
 
+			$detalles = VistaListaAsistencia::where('lista_id',$lista_id)->get();
+			$faltas = $detalles->sum('faltas');
+			$primas = $detalles->sum('prima');
+			//enviar mail de confirmacion
+					Mail::send('emails.new_lista', array('fecha_inicio'=> $lista->fecha_inicio,
+											 'fecha_fin'=>$lista->fecha_fin,
+											 'faltas'=>$faltas,
+											 'primas'=>$primas,
+											 'lista' => $lista_id,
+											 ), function($message) {
+			    /*$message->to('elnazavalderrama@gmail.com')->subject('Asistencia del $lista->fecha_inicio al $lista->fecha_fin ');*/
+			   $message->to('notificaciones@parquefuneralguadalupe.com.mx')->subject('Nuevo reporte de Asistencia');
+			});
+
+					//fin mail confirmación	
+
 			return Redirect::to('personal-operativo/lista');
 		}
 

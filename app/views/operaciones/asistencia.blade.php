@@ -136,7 +136,8 @@
 										<td> {{{Str::title($empleado->departamento)}}}</td>	
 																				
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="chs{{{$empleado->id}}}" name="sabado" @if($empleado->sa == 1) checked="true"  @endif > </div></td>                 
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="domingo" @if($empleado->do == 1) checked="true"  @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="domingo" @if($empleado->do == 1) checked="true"  @endif > </div>
+										</td>
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="lunes" @if($empleado->lu == 1) checked="true"    @endif > </div></td>
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="martes" @if($empleado->ma == 1) checked="true"   @endif > </div></td>
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="miercoles" @if($empleado->mi == 1) checked="true" @endif > </div></td>
