@@ -110,11 +110,6 @@
 	    </button>                             
        <a href= "{{ action('PersonalOperativoControlador@getIndex') }}" class="btn btn-primary" >Regresar</a> 
 
-     </div>                            
- 
-    
-  
-
-                  
+     </div>       
 
 @stop

@@ -18,10 +18,12 @@
 	<li class="has_sub">
 		@include('menu.operaciones')
 		<ul>
+			@include('menu.submenu.listaasistencia')
+			@include('menu.submenu.personaloperativo')
 			@include('menu.submenu.inhumacion')
 			@include('menu.submenu.exhumacion')
 			@include('menu.submenu.lotefunerario')
-			@include('menu.submenu.personaloperativo')
+			
 		</ul>
 	</li>
 @stop

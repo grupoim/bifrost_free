@@ -1,4 +1,5 @@
 <?php 
+use Carbon\Carbon;
 	class PersonalOperativoControlador extends ModuloControlador{
 		public $moduleName = "Personal Operativo";
 		public $moduleIcon= 'users';	
@@ -7,7 +8,7 @@
 		public function getIndex(){
 			
 			$dataModule["empleados"] = VistaEmpleado::all();
-			$dataModule["puestos"]=Puesto::all();			
+
 			$data["module"] = $this->moduleName;								
  			$data["icon"]= $this->moduleIcon;		
  			return View::make(Auth::user()
@@ -15,7 +16,119 @@
  				->nombre.".main", $data)
  				->nest('child', 'operaciones.personaloperativo', $dataModule);
 					
-		}	
+		}
+
+		public function getLista(){
+			$dataModule["empleados"] = VistaEmpleado::where('activo',1)->get();						
+			$dataModule["listas"] = Lista::all();
+			$data["module"] = $this->moduleName;								
+ 			$data["icon"]= $this->moduleIcon;		
+ 			return View::make(Auth::user()
+ 				->departamento
+ 				->nombre.".main", $data)
+ 				->nest('child', 'operaciones.lista', $dataModule);
+
+		}
+
+		public function getCierraperiodo($lista_id){
+			if ((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )) {
+			$lista = Lista::find($lista_id);
+			$lista->activa = 0;
+			$lista->save();
+
+			return Redirect::to('personal-operativo/lista');
+		}
+
+		}
+
+
+		
+		public function getAbreperiodo($lista_id){
+			if ((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )) {
+			$lista = Lista::find($lista_id);
+			$lista->activa = 1;
+			$lista->save();
+			return Redirect::to('personal-operativo/lista');
+		}
+
+		}
+
+		public function getAsistencia($lista_id){
+			$dataModule["asistencias"] = VistaListaAsistencia::where('lista_id',$lista_id)->get();
+			$dataModule["lista"] = Lista::find($lista_id);		
+			$data["module"] = $this->moduleName;								
+ 			$data["icon"]= $this->moduleIcon;		
+ 			return View::make(Auth::user()
+ 				->departamento
+ 				->nombre.".main", $data)
+ 				->nest('child', 'operaciones.asistencia', $dataModule);
+
+		}
+	
+
+		public function postAsis(){
+			
+			if (Input::has('lunes')){
+				$lunes = 1;
+			}
+			else{
+				$lunes = 0;
+			}
+			if (Input::has('martes')){
+				$martes = 1;
+			}
+			else{
+				$martes = 0;
+			}
+			if (Input::has('miercoles')){
+				$miercoles = 1;
+			}
+			else{
+				$miercoles = 0;
+			}
+			if (Input::has('jueves')){
+				$jueves = 1;
+			}
+			else{
+				$jueves = 0;
+			}
+			if (Input::has('viernes')){
+				$viernes = 1;
+			}
+			else{
+				$viernes = 0;
+			}
+			if (Input::has('sabado')){
+				$sabado = 1;
+			}
+			else{
+				$sabado = 0;
+			}
+
+			if (Input::has('domingo')){
+				$domingo = 1;
+			}
+			else{
+				$domingo = 0;
+			}
+
+			$asistencia = Asistencia::find(Input::get('asistencia_id'));
+			$asistencia->empleado_id = Input::get('empleado_id');
+			$asistencia->sa = $sabado;
+			$asistencia->do = $domingo;
+			$asistencia->lu = $lunes;
+			$asistencia->ma = $martes;
+			$asistencia->mi = $miercoles;
+			$asistencia->ju = $jueves;
+			$asistencia->vi = $viernes;
+			if(Input::has('observaciones')){
+				$asistencia->observaciones = Input::get('observaciones');
+			}
+			$asistencia->save();
+
+ 			return Redirect::back();
+
+		}
 	
 
 		public function getAgregar(){
@@ -30,6 +143,20 @@
  				->departamento
  				->nombre.".main", $data)
  				->nest('child','formularios.personaloperativo', $data);
+		}
+
+		public function getAgregarperiodo(){
+
+				$data["module"] = $this->moduleName.'/ Agregar Periodo';
+				$data["empleados"] = VistaEmpleado::all();				
+				$data["puestos"]=Puesto::all();								
+ 				$data["icon"]= 'user-plus';
+ 				$data["puestos"] = Puesto::all(); 				
+ 				$data["agregar"]= true;					
+				return View::make(Auth::user()
+ 				->departamento
+ 				->nombre.".main", $data)
+ 				->nest('child','formularios.periodo', $data);
 		}
 	
 			public function getRecupera($id){			
@@ -146,6 +273,34 @@
 					return Redirect::to('personal-operativo')->with('status', 'ok_activar');
 
 				}	
+				
+				public function postCrealista(){
+					$fecha_fin = Input::get('fecha');
+					$fecha_fin_carbon = Carbon::parse($fecha_fin);
+					$fecha_inicio_carbon = $fecha_fin_carbon->subDays(Input::get('tipo_lista'))->toDateString();
+					
+					$lista = new Lista;
+					$lista->fecha_inicio = $fecha_inicio_carbon;
+					$lista->fecha_fin = $fecha_fin;
+					$lista->save();
+
+					$trabajadores_activos = VistaEmpleado::where('activo',1)->count();
+					$trabajadores = VistaEmpleado::where('activo',1)->get();
+		
+
+					foreach($trabajadores as $trabajador){
+					$asistencia = new Asistencia;
+					$asistencia->lista_id = $lista->id;
+					$asistencia->empleado_id = $trabajador->id;
+					$asistencia->save();
+					}					
+
+					
+					return Redirect::to('personal-operativo/asistencia/'.$lista->id);
+
+
+				}
+
 				
 	}
  

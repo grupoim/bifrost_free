@@ -1,0 +1,168 @@
+<?php $__env->startSection('scripts'); ?>
+<script type="text/javascript">	
+      
+
+
+ <?php foreach($asistencias as  $empleado): ?>
+   $("#marcarTodo<?php echo e($empleado->id); ?>").change(function () {
+    if ($(this).is(':checked')) {
+        //$("input[type=checkbox]").prop('checked', true); //todos los check
+        $("#diasHabilitados<?php echo e($empleado->id); ?> input[type=checkbox]").prop('checked', true); //solo los del objeto #diasHabilitados
+    } else {
+        //$("input[type=checkbox]").prop('checked', false);//todos los check
+        $("#diasHabilitados<?php echo e($empleado->id); ?> input[type=checkbox]").prop('checked', false);//solo los del objeto #diasHabilitados
+    }
+});
+   <?php endforeach; ?>  
+
+</script>
+<script type="text/javascript">
+	$(document).on('ready', function(){
+		<?php if($lista->activa == 0): ?>
+		$('.activa').prop('disabled', true);
+		<?php endif; ?>
+   	});	
+</script>
+
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+<?php /* ocultar mensajes de alerta automaticamente =======*/ ?>
+    
+<script type="text/javascript">
+      window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 2000);
+    </script>
+    <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
+
+
+<!-- Matter -->
+	<div class="widget">
+    	<div class="widget-head">
+    	<!-- mensaje de exito al ingresar registro -->
+		
+		<?php $status=Session::pull('status'); ?>
+		<?php if($status=='ok_create'): ?>
+    	<div class="alert alert-success alert-dismissible" role="alert" align="center">
+		 
+		  <strong><h4> El registro se agregó con éxito</h4></strong> 
+		</div>	    	
+
+    	<?php endif; ?>
+
+    	<!-- mensaje de exito al cancelar registro -->
+		
+    	<?php if($status=='ok_cancel'): ?>
+    	<div class="alert alert-danger alert-dismissible" role="alert" align="center">
+		 
+		  <strong><h4> El registro se ha dado de baja</h4></strong>
+		  </div>		  	
+
+    	<?php endif; ?>
+    	<!-- mensaje de exito al Activar registro -->
+
+    	<?php if($status=='ok_activar'): ?>
+    	<div class="alert alert-success alert-dismissible" role="alert" align="center">
+		 
+		 <strong><h4> El registro se reactivado</h4></strong>
+		</div>    	
+
+    	<?php endif; ?>
+<!-- mensaje de exito al editar registro -->
+
+    		<?php if($status=='ok_update'): ?>
+    	<div class="alert alert-info alert-dismissible" role="alert" align="center">
+		 
+		 <strong><h4> Registro actualizado!!</h4></strong>
+		</div>	
+
+    	<?php endif; ?>
+
+
+            <div class="pull-left"> <strong>Lista de asistencia del <?php echo e(date("d/M/Y", strtotime($lista->fecha_inicio))); ?> al <?php echo e(date("d/M/Y", strtotime($lista->fecha_fin))); ?></strong> </div>
+	<!-- Button Group -->
+    	<div class="btn-group pull-right">
+    	<?php if($lista->activa == 1): ?> 
+    	<a  type="btn" href="<?php echo URL::to('personal-operativo/cierraperiodo/'.$lista->id); ?>" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-unlock"></i> Cerrar asistencia</a>
+		<?php else: ?>
+		<a  type="btn" href="#" class="btn btn-m btn-danger" title="Esta lista se encuentra cerrada, ya fue revisada por Julio"><i class="fa fa-lock"></i> Lista Revisada</a>
+		<?php endif; ?>
+    	</div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="widget-content">
+            <div class="padd"> 
+                                                       
+				<!-- Table Page -->
+				<div class="page-tables">
+					<!-- Table -->
+					<div class="table-responsive">
+						<table cellpadding="0" cellspacing="0" border="0"  width="100%" align="center" >
+							<thead>
+								<tr>
+									<th>#</th>
+									<th><strong>Nombre</strong></th>
+									<th><strong>Departamento</strong></th>
+									<th>Sa</th>
+									<th>Do</th>
+									<th>Lu</th>
+									<th>Ma</th>
+									<th>Mi</th>
+									<th>Ju</th>
+									<th>Vi</th>
+									<th align="center"><strong>Observaciones</strong></th>
+									<th>Operaciones</th>
+																		
+								</tr>
+							</thead>
+							<tbody> 
+							<?php foreach($asistencias as $ctr => $empleado): ?>
+							<?php echo Form::open(array('action' => 'PersonalOperativoControlador@postAsis', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'historial','files' => true)); ?>
+
+									<tr>
+										<td> <?php echo e($ctr+1); ?> </td>										
+										<td> <?php echo e(Str::title($empleado->empleado)); ?></td>	
+										<td> <?php echo e(Str::title($empleado->departamento)); ?></td>	
+																				
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="chs<?php echo e($empleado->id); ?>" name="sabado" <?php if($empleado->sa == 1): ?> checked="true"  <?php endif; ?> > </div></td>                 
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="domingo" <?php if($empleado->do == 1): ?> checked="true"  <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="lunes" <?php if($empleado->lu == 1): ?> checked="true"    <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="martes" <?php if($empleado->ma == 1): ?> checked="true"   <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="miercoles" <?php if($empleado->mi == 1): ?> checked="true" <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="jueves" <?php if($empleado->ju == 1): ?> checked="true" <?php endif; ?> > </div></td>
+										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="viernes" <?php if($empleado->vi == 1): ?> checked="true" <?php endif; ?> > </div></td>
+										 <td> <textarea class="activa" name="observaciones"> <?php if($empleado->revisado == 1): ?> <?php echo e($empleado->observaciones); ?> <?php endif; ?></textarea> </td>
+										 <td>
+											  <input  type="checkbox" name="Todo" class="activa" id="marcarTodo<?php echo e($empleado->id); ?>" title="Marcar toda la semana" />
+											   <button type="submit" class="btn btn-m btn-default activa" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 
+											  </p></td>
+
+							<input type="hidden" name="asistencia_id" value="<?php echo e($empleado->id); ?>">
+							<input type="hidden" name="empleado_id" value="<?php echo e($empleado->empleado_id); ?>">
+							<input type="hidden" name= "lista_activa" value="<?php echo e($lista->activa); ?>">	
+							<?php echo form::close(); ?>
+
+							<?php endforeach; ?>
+
+															
+							</tbody>
+							<tfoot>
+							
+							</tfoot>
+						</table>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>				
+        </div>
+        <div class="widget-foot">
+           
+        </div>
+        
+    </div> 
+
+<?php $__env->stopSection(); ?>
