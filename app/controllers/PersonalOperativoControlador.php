@@ -1,33 +1,24 @@
 <?php 
 use Carbon\Carbon;
 	class PersonalOperativoControlador extends ModuloControlador{
-		public $moduleName = "Personal Operativo";
-		public $moduleIcon= 'users';	
-
 		
+		
+		function __construct(){
+		$this->data["module"] = 'Personal Operativo';
+		$this->data["icon"] ='users';
+		$this->department = camel_case(Auth::user()->departamento->nombre);
+		}
 		public function getIndex(){
 			
-			$dataModule["empleados"] = VistaEmpleado::all();
-
-			$data["module"] = $this->moduleName;								
- 			$data["icon"]= $this->moduleIcon;		
- 			return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child', 'operaciones.personaloperativo', $dataModule);
-					
+			$dataModule["empleados"] = VistaEmpleado::all();					 			
+			return View::make($this->department.".main", $this->data)->nest('child', 'operaciones.personaloperativo', $dataModule);		
 		}
 
 		public function getLista(){
 			$dataModule["empleados"] = VistaEmpleado::where('activo',1)->get();						
 			$dataModule["listas"] = Lista::all();
-			$data["module"] = $this->moduleName;								
- 			$data["icon"]= $this->moduleIcon;		
- 			return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child', 'operaciones.lista', $dataModule);
-
+					 			
+ 			return View::make($this->department.".main", $this->data)->nest('child', 'operaciones.lista', $dataModule);		
 		}
 
 		public function getCierraperiodo($lista_id){
@@ -71,12 +62,8 @@ use Carbon\Carbon;
 		public function getAsistencia($lista_id){
 			$dataModule["asistencias"] = VistaListaAsistencia::where('lista_id',$lista_id)->get();
 			$dataModule["lista"] = Lista::find($lista_id);		
-			$data["module"] = $this->moduleName;								
- 			$data["icon"]= $this->moduleIcon;		
- 			return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child', 'operaciones.asistencia', $dataModule);
+					
+ 			return View::make($this->department.".main", $this->data)->nest('child', 'operaciones.asistencia', $dataModule);		
 
 		}
 	
@@ -148,43 +135,31 @@ use Carbon\Carbon;
 
 		public function getAgregar(){
 
-				$data["module"] = $this->moduleName.'/ Agregar empleado';
+			
 				$data["empleados"] = VistaEmpleado::all();				
-				$data["puestos"]=Puesto::all();								
- 				$data["icon"]= 'user-plus';
+				$data["puestos"]=Puesto::all();	
  				$data["puestos"] = Puesto::all(); 				
  				$data["agregar"]= true;					
-				return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child','formularios.personaloperativo', $data);
+				return View::make($this->department.".main", $this->data)->nest('child', 'formularios.personaloperativo', $dataModule);		
 		}
 
 		public function getAgregarperiodo(){
-
-				$data["module"] = $this->moduleName.'/ Agregar Periodo';
+				
 				$data["empleados"] = VistaEmpleado::all();				
 				$data["puestos"]=Puesto::all();								
- 				$data["icon"]= 'user-plus';
  				$data["puestos"] = Puesto::all(); 				
  				$data["agregar"]= true;					
-				return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child','formularios.periodo', $data);
+				return View::make($this->department.".main", $this->data)->nest('child', 'formularios.periodo', $dataModule);		
 		}
 	
 			public function getRecupera($id){			
 		
-			$data["module"] = $this->moduleName.'/ Editar empleado';
+			
 			$data["empleado_r"] = VistaEmpleado::find($id);
 			$data["puestos"]= Puesto::all();
-			$data["icon"]= 'pencil';			
+						
 			$data["agregar"]= false;
-			return View::make(Auth::user()
- 				->departamento
- 				->nombre.".main", $data)
- 				->nest('child','formularios.personaloperativo', $data);
+			return View::make($this->department.".main", $this->data)->nest('child', 'formularios.personaloperativo', $dataModule);		
 			}	
 
 		
