@@ -115,13 +115,13 @@
 									<th>#</th>
 									<th><strong>Nombre</strong></th>
 									<th><strong>Departamento</strong></th>
-									<th>Sabado</th>
-									<th>Domingo</th>
-									<th>Lunes</th>
-									<th>Martes</th>
-									<th>Miercoles</th>
-									<th>Jueves</th>
-									<th>Viernes</th>
+									<th>Sa</th>
+									<th>Do</th>
+									<th>Lu</th>
+									<th>Ma</th>
+									<th>Mi</th>
+									<th>Ju</th>
+									<th>Vi</th>
 									<th align="center"><strong>Observaciones</strong></th>
 									<th>Operaciones</th>
 																		
