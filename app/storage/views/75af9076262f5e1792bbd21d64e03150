@@ -160,6 +160,11 @@
 											 <?php if($lista->activa == 1): ?>
 											 <a id="activa" class="btn btn-m btn-default activa" href="<?php echo URL::to('personal-operativo/bajalista/'.$empleado->empleado_id); ?>" title="Dar de Baja a  <?php echo e(Str::title($empleado->empleado)); ?>"> <i class="fa fa-times activa"></i></a>
 											<?php endif; ?>
+											<?php if($empleado->revisado == 1): ?>
+											<span class="label label-success"><i class="fa fa-check"></i> R</span>
+											<?php else: ?>
+											<span class="label label-danger"><i class="fa fa-times "></i> P</span>
+											<?php endif; ?>
 										</td>
 
 							<input type="hidden" name="asistencia_id" value="<?php echo e($empleado->id); ?>">

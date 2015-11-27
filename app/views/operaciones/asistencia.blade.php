@@ -158,6 +158,11 @@
 											 @if($lista->activa == 1)
 											 <a id="activa" class="btn btn-m btn-default activa" href="{{URL::to('personal-operativo/bajalista/'.$empleado->empleado_id)}}" title="Dar de Baja a  {{{Str::title($empleado->empleado)}}}"> <i class="fa fa-times activa"></i></a>
 											@endif
+											@if($empleado->revisado == 1)
+											<span class="label label-success"><i class="fa fa-check"></i> R</span>
+											@else
+											<span class="label label-danger"><i class="fa fa-times "></i> P</span>
+											@endif
 										</td>
 
 							<input type="hidden" name="asistencia_id" value="{{{$empleado->id}}}">
