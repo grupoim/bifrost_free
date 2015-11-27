@@ -46,10 +46,12 @@
 	<li class="has_sub">
 		<?php echo $__env->make('menu.operaciones', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 		<ul>
+			<?php echo $__env->make('menu.submenu.listaasistencia', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.personaloperativo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('menu.submenu.inhumacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('menu.submenu.exhumacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('menu.submenu.lotefunerario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-			<?php echo $__env->make('menu.submenu.personaloperativo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			
 		</ul>
 	</li>
 	<li class="has_sub">
@@ -60,6 +62,7 @@
 			<?php echo $__env->make('menu.submenu.planpago', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('menu.submenu.notacredito', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->make('menu.submenu.asesor', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			
 		</ul>
 	</li>
 <?php $__env->stopSection(); ?>

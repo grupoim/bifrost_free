@@ -109,12 +109,12 @@
 				<div class="page-tables">
 					<!-- Table -->
 					<div class="table-responsive">
-						<table cellpadding="0" cellspacing="0" border="0"  width="100%" align="center" >
+						 <table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
 									<th>#</th>
 									<th><strong>Nombre</strong></th>
-									<th><strong>Departamento</strong></th>
+									<th><strong>Depto.</strong></th>
 									<th>Sa</th>
 									<th>Do</th>
 									<th>Lu</th>
@@ -133,7 +133,12 @@
 									<tr>
 										<td> {{{$ctr+1}}} </td>										
 										<td> {{{Str::title($empleado->empleado)}}}</td>	
-										<td> {{{Str::title($empleado->departamento)}}}</td>	
+										<td> @if(Str::title($empleado->departamento) == 'Mantenimiento')Mtto.
+											@elseif(Str::title($empleado->departamento) == 'Operaciones')Serv.
+											@elseif(Str::title($empleado->departamento) == 'Recubrimientos')Recub.
+											@else {{{Str::title($empleado->departamento)}}}
+											@endif	
+											</td>
 																				
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="chs{{{$empleado->id}}}" name="sabado" @if($empleado->sa == 1) checked="true"  @endif > </div></td>                 
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="domingo" @if($empleado->do == 1) checked="true"  @endif > </div>
