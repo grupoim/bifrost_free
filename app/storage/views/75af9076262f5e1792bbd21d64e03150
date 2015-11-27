@@ -136,7 +136,11 @@
 							<?php echo Form::open(array('action' => 'PersonalOperativoControlador@postAsis', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'historial','files' => true)); ?>
 
 									<tr>
-										<td> <?php echo e($ctr+1); ?> </td>										
+										<td> <?php echo e($ctr+1); ?> <?php if($empleado->revisado == 1): ?>
+											<span class="label label-info"><i class="fa fa-check"></i></span>
+											<?php else: ?>
+											<span class="label label-warning"><i class="fa fa-warning "></i></span>
+											<?php endif; ?></td>										
 										<td> <?php echo e(Str::title($empleado->empleado)); ?></td>	
 										<td> <?php if(Str::title($empleado->departamento) == 'Mantenimiento'): ?>Mtto.
 											<?php elseif(Str::title($empleado->departamento) == 'Operaciones'): ?>Serv.
@@ -160,11 +164,7 @@
 											 <?php if($lista->activa == 1): ?>
 											 <a id="activa" class="btn btn-m btn-default activa" href="<?php echo URL::to('personal-operativo/bajalista/'.$empleado->empleado_id); ?>" title="Dar de Baja a  <?php echo e(Str::title($empleado->empleado)); ?>"> <i class="fa fa-times activa"></i></a>
 											<?php endif; ?>
-											<?php if($empleado->revisado == 1): ?>
-											<span class="label label-success"><i class="fa fa-check"></i> R</span>
-											<?php else: ?>
-											<span class="label label-danger"><i class="fa fa-times "></i> P</span>
-											<?php endif; ?>
+											
 										</td>
 
 							<input type="hidden" name="asistencia_id" value="<?php echo e($empleado->id); ?>">

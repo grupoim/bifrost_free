@@ -135,7 +135,11 @@
 							@foreach($asistencias as $ctr => $empleado)
 							{{ Form::open(array('action' => 'PersonalOperativoControlador@postAsis', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'historial','files' => true)) }}
 									<tr>
-										<td> {{{$ctr+1}}} </td>										
+										<td> {{{$ctr+1}}} @if($empleado->revisado == 1)
+											<span class="label label-info"><i class="fa fa-check"></i></span>
+											@else
+											<span class="label label-warning"><i class="fa fa-warning "></i></span>
+											@endif</td>										
 										<td> {{{Str::title($empleado->empleado)}}}</td>	
 										<td> @if(Str::title($empleado->departamento) == 'Mantenimiento')Mtto.
 											@elseif(Str::title($empleado->departamento) == 'Operaciones')Serv.
@@ -158,11 +162,7 @@
 											 @if($lista->activa == 1)
 											 <a id="activa" class="btn btn-m btn-default activa" href="{{URL::to('personal-operativo/bajalista/'.$empleado->empleado_id)}}" title="Dar de Baja a  {{{Str::title($empleado->empleado)}}}"> <i class="fa fa-times activa"></i></a>
 											@endif
-											@if($empleado->revisado == 1)
-											<span class="label label-success"><i class="fa fa-check"></i> R</span>
-											@else
-											<span class="label label-danger"><i class="fa fa-times "></i> P</span>
-											@endif
+											
 										</td>
 
 							<input type="hidden" name="asistencia_id" value="{{{$empleado->id}}}">
