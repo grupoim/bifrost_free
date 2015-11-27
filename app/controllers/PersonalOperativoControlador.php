@@ -136,29 +136,29 @@ use Carbon\Carbon;
 		public function getAgregar(){
 
 			
-				$data["empleados"] = VistaEmpleado::all();				
-				$data["puestos"]=Puesto::all();	
- 				$data["puestos"] = Puesto::all(); 				
- 				$data["agregar"]= true;					
+				$dataModule["empleados"] = VistaEmpleado::all();				
+				$dataModule["puestos"]=Puesto::all();	
+ 				$dataModule["puestos"] = Puesto::all(); 				
+ 				$dataModule["agregar"]= true;					
 				return View::make($this->department.".main", $this->data)->nest('child', 'formularios.personaloperativo', $dataModule);		
 		}
 
 		public function getAgregarperiodo(){
 				
-				$data["empleados"] = VistaEmpleado::all();				
-				$data["puestos"]=Puesto::all();								
- 				$data["puestos"] = Puesto::all(); 				
- 				$data["agregar"]= true;					
+				$dataModule["empleados"] = VistaEmpleado::all();				
+				$dataModule["puestos"]=Puesto::all();								
+ 				$dataModule["puestos"] = Puesto::all(); 				
+ 				$dataModule["agregar"]= true;					
 				return View::make($this->department.".main", $this->data)->nest('child', 'formularios.periodo', $dataModule);		
 		}
 	
 			public function getRecupera($id){			
 		
 			
-			$data["empleado_r"] = VistaEmpleado::find($id);
-			$data["puestos"]= Puesto::all();
+			$dataModule["empleado_r"] = VistaEmpleado::find($id);
+			$dataModule["puestos"]= Puesto::all();
 						
-			$data["agregar"]= false;
+			$dataModule["agregar"]= false;
 			return View::make($this->department.".main", $this->data)->nest('child', 'formularios.personaloperativo', $dataModule);		
 			}	
 
