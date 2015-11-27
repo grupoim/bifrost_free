@@ -1,4 +1,8 @@
 @section('scripts')
+<script type="text/javascript">
+	
+</script>
+
 <script type="text/javascript">	
       
 
@@ -148,7 +152,7 @@
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="miercoles" @if($empleado->mi == 1) checked="true" @endif > </div></td>
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="jueves" @if($empleado->ju == 1) checked="true" @endif > </div></td>
 										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="viernes" @if($empleado->vi == 1) checked="true" @endif > </div></td>
-										 <td> <textarea class="activa" name="observaciones"> @if($empleado->revisado == 1) {{{$empleado->observaciones}}} @endif</textarea> </td>
+										 <td><textarea class="activa" name="observaciones"> @if($empleado->revisado == 1) {{{$empleado->observaciones}}} @endif</textarea></td>
 										 <td>
 											  <input  type="checkbox" name="Todo" class="activa" id="marcarTodo{{{$empleado->id}}}" title="Marcar toda la semana" />
 											   <button type="submit" class="btn btn-m btn-default activa" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 

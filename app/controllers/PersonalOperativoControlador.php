@@ -123,6 +123,7 @@ use Carbon\Carbon;
 			$asistencia->mi = $miercoles;
 			$asistencia->ju = $jueves;
 			$asistencia->vi = $viernes;
+			$asistencia->revisado = 1;
 			if(Input::has('observaciones')){
 				$asistencia->observaciones = Input::get('observaciones');
 			}

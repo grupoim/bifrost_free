@@ -1,4 +1,8 @@
 <?php $__env->startSection('scripts'); ?>
+<script type="text/javascript">
+	
+</script>
+
 <script type="text/javascript">	
       
 
@@ -150,7 +154,7 @@
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="miercoles" <?php if($empleado->mi == 1): ?> checked="true" <?php endif; ?> > </div></td>
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="jueves" <?php if($empleado->ju == 1): ?> checked="true" <?php endif; ?> > </div></td>
 										<td><div id="diasHabilitados<?php echo e($empleado->id); ?>"> <input class="activa" type="checkbox" id="ch<?php echo e($empleado->id); ?>" name="viernes" <?php if($empleado->vi == 1): ?> checked="true" <?php endif; ?> > </div></td>
-										 <td> <textarea class="activa" name="observaciones"> <?php if($empleado->revisado == 1): ?> <?php echo e($empleado->observaciones); ?> <?php endif; ?></textarea> </td>
+										 <td><textarea class="activa" name="observaciones"> <?php if($empleado->revisado == 1): ?> <?php echo e($empleado->observaciones); ?> <?php endif; ?></textarea></td>
 										 <td>
 											  <input  type="checkbox" name="Todo" class="activa" id="marcarTodo<?php echo e($empleado->id); ?>" title="Marcar toda la semana" />
 											   <button type="submit" class="btn btn-m btn-default activa" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 
