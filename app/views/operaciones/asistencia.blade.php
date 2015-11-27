@@ -144,14 +144,13 @@
 											@endif	
 											</td>
 																				
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="chs{{{$empleado->id}}}" name="sabado" @if($empleado->sa == 1) checked="true"  @endif > </div></td>                 
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="domingo" @if($empleado->do == 1) checked="true"  @endif > </div>
-										</td>
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="lunes" @if($empleado->lu == 1) checked="true"    @endif > </div></td>
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="martes" @if($empleado->ma == 1) checked="true"   @endif > </div></td>
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="miercoles" @if($empleado->mi == 1) checked="true" @endif > </div></td>
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="jueves" @if($empleado->ju == 1) checked="true" @endif > </div></td>
-										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="viernes" @if($empleado->vi == 1) checked="true" @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="chs{{{$empleado->id}}}"name="sabado" title="Sábado" @if($empleado->sa == 1) checked="true"  @endif > </div></td>                 
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="domingo" title="Domingo" @if($empleado->do == 1) checked="true"  @endif > </div>										</td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="lunes" title="Lunes" @if($empleado->lu == 1) checked="true"    @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="martes"  title="Martes" @if($empleado->ma == 1) checked="true"   @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="miercoles"  title="Miercoles" @if($empleado->mi == 1) checked="true" @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="jueves" title="Jueves" @if($empleado->ju == 1) checked="true" @endif > </div></td>
+										<td><div id="diasHabilitados{{{$empleado->id}}}"> <input class="activa" type="checkbox" id="ch{{{$empleado->id}}}" name="viernes" title="Viernes" @if($empleado->vi == 1) checked="true" @endif > </div></td>
 										 <td><textarea class="activa" name="observaciones"> @if($empleado->revisado == 1) {{{$empleado->observaciones}}} @endif</textarea></td>
 										 <td>
 											  <input  type="checkbox" name="Todo" class="activa" id="marcarTodo{{{$empleado->id}}}" title="Marcar toda la semana" />
