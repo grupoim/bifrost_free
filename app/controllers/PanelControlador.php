@@ -12,7 +12,7 @@
 
 		public function index(){
 			$panel = PanelFactory::build($this->department);
-			$months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Noviembre', 'Diciembre'];
+			$months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre','Noviembre', 'Diciembre'];
 			$this->data["products"] = $this->products;
 			$this->data["currentMonth"] = $months[date('n') - 1];
 			$this->data["graphs"] = $panel->get();
