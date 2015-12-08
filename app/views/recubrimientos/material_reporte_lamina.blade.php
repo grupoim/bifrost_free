@@ -7,7 +7,6 @@
                    
 @if($inventario)
             <div class="col-md-12">
-{{{$pag->links()}}}
               <!-- User widget -->
               <div class="widget">
                 <div class="widget-head">
