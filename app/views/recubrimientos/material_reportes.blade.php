@@ -235,11 +235,11 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                                             <span>@if($inventario->lamina_completa == 0)<span class="label label-info">Retazo</span> @endif  {{{ $inventario->material_color}}} @if($inventario->porcentaje_restante == 100) {{{$inventario->porcentaje_restante}}} @else {{{number_format($inventario->porcentaje_restante, 2, '.', ',')}}} @endif %  Disp.: {{{number_format($inventario->area_stock, 2, '.', ',')}}} m<sup>2</sup> </span> 
                                                                                         
                                                           </p>
-                                                    <div class="progress progress-animated progress-striped active">
-                                                  <div class="progress-bar @if($inventario->porcentaje_restante == 100) progress-bar-success @elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ) progress-bar-warning @elseif($inventario->porcentaje_restante <= 30) progress-bar-danger  @endif"  data-percentage="{{{$inventario->porcentaje_restante}}}">
-                                                    <span class="sr-only">100% Complete</span>
-                                                  </div>
-                                              </div>        
+                                                    <div class="progress progress-striped active">
+                                <div class="progress-bar @if($inventario->porcentaje_restante == 100) progress-bar-success @elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ) progress-bar-warning @elseif($inventario->porcentaje_restante <= 30) progress-bar-danger  @endif"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{{$inventario->porcentaje_restante}}}%">
+                                <span class="sr-only">100% Complete</span>
+                                </div>
+                                </div>        
                                         </td>
                                         <td>{{{number_format($inventario->area_usada, 2, '.', ',')}}}m<sup>2</sup></td>                                        
                                         <td>${{{number_format($inventario->precio_inicial, 2, '.', ',')}}}</td>                                        
