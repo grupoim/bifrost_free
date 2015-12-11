@@ -207,12 +207,14 @@
 						case '2': 
 								//verifica si los imput traen valores si no, se brinca a las validaciones segun el tipo de baja
 								if (Input::get('material_disponible')) {
+								//obtiene el id del corte especial
+									$pieza_marmoleria = PiezaMarmoleria::where('nombre', '=', 'Corte especial')->firstorfail();
 								//saca el area de venta con la pieza añadida al folio
 								$area_venta = Input::get('largo') * Input::get('alto');
 								//costo del material usado 
 								$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
 								$costo_material = ($inventario->precio_inicial * $area_venta)/ $inventario->area_total;
-								$pieza_marmoleria_id = 5;
+								$pieza_marmoleria_id = $pieza_marmoleria->id;
 									# code...
 								//validar formulario para corte especial
 								$rules = array(
