@@ -240,8 +240,7 @@ use Carbon\Carbon;
 
 			$persona->nombres = Input::get('nombres');
 			$persona->apellido_paterno = Input::get('apellido_paterno');
-			$persona->apellido_materno = Input::get('apellido_materno');
-			$persona->sexo = Input::get('sexo');
+			$persona->apellido_materno = Input::get('apellido_materno');			
 			$persona->save();
 
    			return Redirect::to('personal-operativo')->with('status', 'ok_update')->with('status', 'ok_update');
