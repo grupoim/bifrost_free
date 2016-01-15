@@ -20,7 +20,11 @@ $("#fecha").datepicker({ minDate: 0 });
 }, 9000);
 	$("#folio_venta").show();
 	$("#pieza_entera").show();
+  $("#pieza_entera_p").hide();
+  $("#pieza_entera_p").hide();
 	$(".corte_especial").hide();
+  $("#area_uso_p").hide();
+  $("#").hide();
 	$(".stock").show();
 	$("#motivo_de_reposicion").hide();
 	$("#cantidad_stock").hide();
@@ -53,6 +57,14 @@ $("#fecha").datepicker({ minDate: 0 });
     });
        
       $("#r2corte").click(function () {
+       $("#pieza_entera").hide();
+       $(".corte_especial").show();
+       $(".stock").hide();
+       $(".stock").disable();
+       
+    });
+
+       $("#r3corte").click(function () {
        $("#pieza_entera").hide();
        $(".corte_especial").show();
        $(".stock").hide();
@@ -267,6 +279,16 @@ $("#fecha").datepicker({ minDate: 0 });
                     <hr>
                    
 
+ <div class="form-group">
+                        <label class="col-lg-3 control-label"></label>
+                        <div class="col-lg-9">
+                                    <label class="radio-inline"><input type="radio" name="proporcion_corte" value="1" id="r3corte" checked="true">Medida estándar</label>
+                          <label class="radio-inline"><input type="radio" name="proporcion_corte" value="2" id="r3corte">Medida especial</label>
+                          
+                                            
+                        </div>
+                      </div>
+
 					 <div class="form-group" id="pieza_entera">
                             <label class="col-lg-3 control-label">Pieza a crear</label>
                                   <div class="col-lg-8">
@@ -279,6 +301,26 @@ $("#fecha").datepicker({ minDate: 0 });
                                          </select>
                                   </div>
                                 </div>
+
+                                <div class="form-group" id="pieza_entera_p">
+                            <label class="col-lg-3 control-label">Pieza a crear</label>
+                                  <div class="col-lg-8">
+                                   <select class="form-control proveedor chosen-select" data-placeholder="Selecciona una opción" name="pieza_marmoleria_id_p" id="proveedor" >                                
+                       
+                                      @foreach($piezas as $pieza)
+                                        
+                                        <option value="{{{$pieza->id}}}" > {{{$pieza->nombre}}}</option>
+                                       @endforeach
+                                         </select>
+                                  </div>
+                                </div>
+
+                                 <div class="form-group" id="area_uso_p">
+                        <label class="col-lg-3 control-label">Área de uso</label>
+                      <div class="col-lg-9">                      
+                        <input type="text" class="form-control" name="area_uso_p" placeholder="m2 usados" >
+                      </div>
+                    </div>
 
                                 <div class="form-group corte_especial">
                         <label class="col-lg-3 control-label">Justificacion de corte</label>
