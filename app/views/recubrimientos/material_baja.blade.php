@@ -406,7 +406,7 @@ $("#fecha").datepicker({ minDate: 0 });
 								<thead>
 									<tr>
 									
-										{{--<th>#</th>--}}
+										<th>#</th>
 										<th>Venta</th>
 										<th>Fecha</th>
 										<th>Precio</th>
@@ -421,7 +421,7 @@ $("#fecha").datepicker({ minDate: 0 });
 									<tr>
 									@foreach($ventas as $crt => $venta)	
 									
-										{{--<td>{{ $crt+1 }} </td> --}}
+										<td>{{ $crt+1 }} </td>
 										<td>{{{ $venta->folio}}}</td>										
 										<td> {{{date("d-m-Y", strtotime($venta->created_at))}}} </td>
 										<td>${{{number_format($venta->total_venta, 2, '.', ',')}}}</td>	
