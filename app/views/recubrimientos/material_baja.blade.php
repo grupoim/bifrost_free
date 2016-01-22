@@ -114,7 +114,7 @@ $("#fecha").datepicker({ minDate: 0 });
     @stop
 @section('module')
  <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
 @if($venta_error=='error')
       <div class="alert alert-warning alert-dismissible alerta" role="alert" align="center">
      
@@ -189,7 +189,7 @@ $("#fecha").datepicker({ minDate: 0 });
                     </div> --}}
                      <div class="form-group" id = "motivo_de_reposicion">
                         <label class="col-lg-3 control-label">Motivo de Reposicion</label>
-                      <div class="col-lg-9">                        
+                      <div class="col-lg-5">                        
                         <textarea type="textarea" row = "5" class="form-control"  name="motivo_de_reposicion" placeholder="" title="¿Por que se quiere reportar una reposicion?"></textarea>
                        
                       </div>
@@ -197,7 +197,7 @@ $("#fecha").datepicker({ minDate: 0 });
                       	
                       <div class="form-group" id="folio_venta">
                         <label class="col-lg-3 control-label">Folio de venta</label>
-                      <div class="col-lg-9">
+                      <div class="col-lg-5">
                        @if($errors->has('folio_venta')) <div align="center" class="alert alert-danger alerta">{{$errors->first('folio_venta')}}</div> @endif
                         <input type="text" @if($status == 'add') value="{{{ $venta_r->folio}}}"@else value="{{Input::old('folio_venta')}}" @endif class="form-control" name="folio_venta" placeholder="" title="Ingrese folio de venta">
                       </div>
@@ -205,14 +205,14 @@ $("#fecha").datepicker({ minDate: 0 });
 
                      <div class="form-group" id="cantidad_stock">
                                   <label class="col-lg-3 control-label">Cantidad</label>                                  
-                                  <div class="col-lg-6">
+                                  <div class="col-lg-5">
                                     <input type="number" min="1" max="10" class="form-control" placeholder="0" name="cantidad"   required value="1">
                                   </div>                                  
                                 </div>
                     
                     <div class="form-group">
 										    <label for="numero_exterior" class="col-lg-3 control-label">Precio de venta </label>
-  										<div class="col-lg-9">
+  										<div class="col-lg-5">
   										 @if($errors->has('precio_venta')) <div align="center" class="alert alert-danger alerta">{{$errors->first('precio_venta')}}</div> @endif
   											 <input type="number"  min="10" max="50000"name="precio_venta" class="form-control" required placeholder="Costo de venta de la pieza a crear" aria-describedby="basic-addon2">
   										</div>
@@ -223,7 +223,7 @@ $("#fecha").datepicker({ minDate: 0 });
                                    
                         <div class="form-group">
                         <label class="col-lg-3 control-label"></label>
-                        <div class="col-lg-9">
+                        <div class="col-lg-5">
                                     <label class="radio-inline"><input type="radio" name="proporcion_corte" value="1" id="r3corte" checked="true">Medida estándar</label>
                           <label class="radio-inline"><input type="radio" name="proporcion_corte" value="2" id="r4corte">Medida especial</label>
                                            
@@ -232,7 +232,7 @@ $("#fecha").datepicker({ minDate: 0 });
 
            <div class="form-group select_pieza_estandar">
                             <label class="col-lg-3 control-label">Pieza a crear</label>
-                                  <div class="col-lg-8">
+                                  <div class="col-lg-5">
                                    <select class="form-control proveedor chosen-select" data-placeholder="Selecciona una opción" name="pieza_marmoleria_id" id="proveedor" >                                
                        
                                       @foreach($piezas as $pieza)
@@ -247,7 +247,7 @@ $("#fecha").datepicker({ minDate: 0 });
 
                                 <div class="form-group select_pieza_especial">
                             <label class="col-lg-3 control-label">Pieza a crear</label>
-                                  <div class="col-lg-8">
+                                  <div class="col-lg-5">
                                    <select class="form-control proveedor chosen-select" data-placeholder="Selecciona una opción" name="pieza_marmoleria_id_p" id="proveedor" >                                
                        
                                       @foreach($piezas as $pieza)
@@ -260,32 +260,32 @@ $("#fecha").datepicker({ minDate: 0 });
 
                                  <div class="form-group area_uso_p" >
                         <label class="col-lg-3 control-label">Área de uso</label>
-                      <div class="col-lg-9">                      
+                      <div class="col-lg-5">                      
                         <input type="text" class="form-control" name="area_uso_p" placeholder="m2 usados" >
                       </div>
                     </div>
 
                                 <div class="form-group corte_especial">
                         <label class="col-lg-3 control-label">Justificacion de corte</label>
-                      <div class="col-lg-9">                        
+                      <div class="col-lg-5">                        
                         <textarea type="textarea" row = "5" class="form-control"  name="justificacion_de_corte" placeholder="" title="¿Por que se quiere cortar la sección de material?"></textarea>
                        
                       </div>
                     </div>
                         <div class="form-group corte_especial">
                                   <label class="col-lg-3 control-label">Largo/Alto</label>                                  
-                                  <div class="col-lg-4">
+                                  <div class="col-lg-2">
                                   
                                     <input type="number" min="0.06" step="any" class="form-control" placeholder="Largo" name="largo" id="largo" >
                                   </div>
                                   
-                                  <div class="col-lg-4">
+                                  <div class="col-lg-2">
                                     
                                     <input type="number" min="0.06" step="any" class="form-control" placeholder="Alto" name="alto" id="alto" >
                                   </div>
                                 </div>
 								<div class="form-group">
-                                  <label class="col-lg-9 control-label"><h3>---<strong>Material Disponible</strong>---</h3></label>
+                                  <label class="col-lg-5 control-label"><h3>---<strong>Material Disponible</strong>---</h3></label>
                                   
                                 </div>
 								@if($errors->has('material_disponible')) <div align="center" class="alert alert-warning alerta">{{$errors->first('material_disponible')}}</div> @endif
@@ -293,6 +293,7 @@ $("#fecha").datepicker({ minDate: 0 });
                                 <div class="page-tables">
 						<!-- Table -->
 						<div class="table-responsive" id="StudentTableContainer">
+            <div class="padd scroll-chat">
 							<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 								<thead>
 									<tr>
@@ -343,7 +344,9 @@ $("#fecha").datepicker({ minDate: 0 });
 
 								</tbody>
 								
-							</table> </div>
+							</table> 
+            
+              </div>
 							<div class="clearfix"></div>
                                 
                                                           
@@ -351,6 +354,7 @@ $("#fecha").datepicker({ minDate: 0 });
                   </div>
 					
 
+                  </div>
                   </div>
                   <div class="widget-foot">
                      <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-scissors"></i> Cortar</button>
@@ -365,7 +369,7 @@ $("#fecha").datepicker({ minDate: 0 });
 
             <!-- post sidebar -->
 
-            <div class="col-md-8">
+            <div class="col-md-12">
 
               <div class="widget">
                 <div class="widget-head">
