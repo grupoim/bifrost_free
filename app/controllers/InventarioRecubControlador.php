@@ -1,4 +1,5 @@
 <?php 
+use Carbon\Carbon;
 	class InventarioRecubControlador extends ModuloControlador{
 		public $department;
 
@@ -15,7 +16,7 @@
 			$dataModule["proveedores"]= Proveedor::where('activo',1)->get();
 			$dataModule["material_colores"]= VistaMaterialColor::get();
 			$dataModule["altas"]= VistaFactura::orderBy('fecha_alta','ASC')->get();
-
+			$dataModule["hoy"] = Carbon::now();
  			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_alta', $dataModule);
 
 
@@ -32,6 +33,7 @@
 			$dataModule["ventas_detalle"]= VistaDetalleVentaMaterial::all();
 			$dataModule["reposiciones"] = VistaReposiciones::all();
 			$dataModule["stocks"] = VistaStock::all();
+			$dataModule["hoy"] = Carbon::now();			
  			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_baja', $dataModule);
 
 
@@ -65,6 +67,7 @@
 			$dataModule["stock"]= VistaStock::where('inventario_recubrimientos_id', $inventario_recubrimientos_id)->get();
 			$dataModule["totales"]= VistaVentasTotalesLamina::where('inventario_recubrimientos_id', $inventario_recubrimientos_id)->get();
 			$dataModule["ventas_detalle"]= VistaDetalleVentaMaterial::where('inventario_recubrimientos_id', $inventario_recubrimientos_id)->get();
+			$dataModule["hoy"] = Carbon::now();
 			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_reporte_lamina', $dataModule);			
 
 		}
@@ -145,7 +148,7 @@
 		for ($i= 0; $i < Input::get('cantidad'); $i++) { 
 			$lamina = new LaminaAlta;
 
-			$area_total = Input::get('alto')*Input::get('largo');
+			$area_total = round(Input::get('alto')*Input::get('largo'), 2) ;
 			$precio_total = Input::get('precio_total');
 			$lamina->folio_factura = Input::get('folio_factura');
 			$lamina->folio_lamina = 0000;
@@ -178,6 +181,7 @@
 			$inventario->lamina_alta_id = $lamina->id;
 			$inventario->area_stock = $area_total;
 			$inventario->precio_stock = $precio_total;
+			$inventario->updated_at = Input::get('hoy');
 			$inventario->save();
 
 		}
@@ -191,30 +195,64 @@
 
 
 					switch (Input::get('tipo_corte')) {
-						case '1': 
-							//verifica si los imput traen valores si no, se brinca a las validaciones segun el tipo de baja
-								if (Input::get('pieza_marmoleria_id') and Input::get('material_disponible') ) {
+						case '1': //pieza entera
+							
+								
+								//checa si el tipo de corte es con medida estandar o medida especial
+								switch (Input::get('proporcion_corte')) {
+										//corte estandar
+										case '1':
+										//verifica si los input traen valores si no, se brinca a las validaciones segun el tipo de baja
+										if (Input::get('pieza_marmoleria_id') and Input::get('material_disponible') ) {
 										//saca el area de venta con la pieza añadida al folio
-								$area_venta_r = PiezaMarmoleria::find(Input::get('pieza_marmoleria_id'));
-								$area_venta = $area_venta_r->area_requerida;
-								//costo del material usado 
-								$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
-								$costo_material = ($inventario->precio_inicial * $area_venta )/ $inventario->area_total;
-								$pieza_marmoleria_id = Input::get('pieza_marmoleria_id');
+										$area_venta_r = PiezaMarmoleria::find(Input::get('pieza_marmoleria_id'));
+										$area_venta = $area_venta_r->area_requerida;
+										//costo del material usado 
+										$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
+										$costo_material = ($inventario->precio_inicial * $area_venta )/ $inventario->area_total;
+										$pieza_marmoleria_id = Input::get('pieza_marmoleria_id');
+										$medida_estandar = 1;
+								
+								}
+											break;
+
+										case '2':
+										//verifica si los input traen valores si no, se brinca a las validaciones segun el tipo de baja
+										if (Input::get('pieza_marmoleria_id_p') and Input::get('material_disponible') ) {
+										//saca el area de venta con la pieza añadida al folio
+										$area_venta_r = PiezaMarmoleria::find(Input::get('pieza_marmoleria_id_p'));
+										$area_venta = Input::get('area_uso_p');
+										//costo del material usado 
+										$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
+										$costo_material = ($inventario->precio_inicial * $area_venta )/ $inventario->area_total;
+										$pieza_marmoleria_id = Input::get('pieza_marmoleria_id_p');
+										$medida_estandar = 0;
+										}
+										break;
+										
+										default:{
+
+										}
+											# code...
+											break;
+									
 								}
 
+								
 							break;
-						case '2': 
+						case '2': //corte especial
 								//verifica si los imput traen valores si no, se brinca a las validaciones segun el tipo de baja
 								if (Input::get('material_disponible')) {
 								//obtiene el id del corte especial
 									$pieza_marmoleria = PiezaMarmoleria::where('nombre', '=', 'Corte especial')->firstorfail();
 								//saca el area de venta con la pieza añadida al folio
-								$area_venta = Input::get('largo') * Input::get('alto');
+
+								$area_venta = round(Input::get('largo') * Input::get('alto'),2);
 								//costo del material usado 
 								$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
 								$costo_material = ($inventario->precio_inicial * $area_venta)/ $inventario->area_total;
 								$pieza_marmoleria_id = $pieza_marmoleria->id;
+								$medida_estandar = 0;
 									# code...
 								//validar formulario para corte especial
 								$rules = array(
@@ -303,8 +341,6 @@
 		//fin validar formulario
 				
 
-
-				
 				//genera baja
 				$lamina_baja = new MaterialBaja;
 
@@ -316,7 +352,9 @@
 				if(Input::get('tipo_corte') == 2){
 					$lamina_baja->observaciones = Input::get('largo').' de largo por '.Input::get('alto'). ' m. de alto';
 					$lamina_baja->pieza_completa = 0;
+					$medida_estandar = 0;
 				}
+				$lamina_baja->medida_estandar = $medida_estandar;
 				$lamina_baja->save();
 				//determina si la venta existe, 
 				$count_venta_material  = VentaMaterial::where('folio', '=', Input::get('folio_venta'))->count();
@@ -344,6 +382,7 @@
 
 				//actualiza inventario en la linea #84 ya lo tengo
 					$inventario->area_stock = $inventario->area_stock - $area_venta;
+					$inventario->updated_at = Input::get('hoy');
 					$inventario->precio_stock = $inventario->precio_stock - $costo_material;
 					$inventario->area_usada = $inventario->area_usada + $area_venta;			
 					//desactiva el inventario de la lamina al llegar al menos de .06, no es suficiente material para crear un liston
@@ -395,7 +434,9 @@
 					if(Input::get('tipo_corte') == 2){
 					$lamina_baja->observaciones = Input::get('largo').' de largo por '.Input::get('alto'). ' m. de alto';
 					$lamina_baja->pieza_completa = 0;
+					$medida_estandar = 0;
 				} 
+					$lamina_baja->medida_estandar = $medida_estandar;
 					$lamina_baja->save();
 
 					//Genera detalles de reposicion
@@ -415,7 +456,8 @@
 					//actualiza inventario en la linea #84 ya lo tengo
 					$inventario->area_stock = $inventario->area_stock - $area_venta;
 					$inventario->precio_stock = $inventario->precio_stock - $costo_material; 
-					$inventario->area_usada = $inventario->area_usada + $area_venta;		
+					$inventario->area_usada = $inventario->area_usada + $area_venta;
+					$inventario->updated_at = Input::get('hoy');
 					//desactiva el inventario de la lamina al llegar al menos de .06, no es suficiente material para crear un liston
 					if ($inventario->area_stock  < .06) {
 						$inventario->activo = 0;
@@ -463,7 +505,9 @@
 					if(Input::get('tipo_corte') == 2){
 					$lamina_baja->observaciones = Input::get('largo').'m. de largo por '.Input::get('alto'). ' m. de alto '.Input::get('justificacion_de_corte') ;
 					$lamina_baja->pieza_completa = 0;
+					$lamina_baja->medida_estandar = 0;
 				} 
+					$lamina_baja->medida_estandar = $medida_estandar;
 					$lamina_baja->save();
 
 					$lamina_baja_update = MaterialBaja::find($lamina_baja->id);
@@ -479,7 +523,9 @@
 					//actualiza inventario en la linea #84 ya lo tengo
 					$inventario->area_stock = $inventario->area_stock - $area_venta;
 					$inventario->precio_stock = $inventario->precio_stock - $costo_material; 
-					$inventario->area_usada = $inventario->area_usada + $area_venta;			
+					$inventario->area_usada = $inventario->area_usada + $area_venta;
+					$inventario->updated_at = Input::get('hoy');
+					$medida_estandar = 0;			
 					//desactiva el inventario de la lamina al llegar al menos de .06, no es suficiente material para crear un liston
 					if ($inventario->area_stock  < .06) {
 						$inventario->activo = 0;
@@ -512,6 +558,7 @@
 					$dataModule["material_colores"] = VistaMaterialColor::get();
 					$dataModule["altas"]= VistaFactura::all();					
 					$dataModule["alta_r"] = VistaFactura::where('folio_factura', '=', $folio_factura)->firstorfail();
+					$dataModule["hoy"] = Carbon::now();
 				return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_alta', $dataModule);
 
 				}
@@ -528,6 +575,7 @@
 					$dataModule["ventas_detalle"]= VistaDetalleVentaMaterial::all();
 					$dataModule["reposiciones"] = VistaReposiciones::all();
 					$dataModule["stocks"] = VistaStock::all();
+					$dataModule["hoy"] = Carbon::now();
 				return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_baja', $dataModule);
 
 				}
