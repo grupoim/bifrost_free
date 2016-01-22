@@ -428,7 +428,9 @@ $("#fecha").datepicker({ minDate: 0 });
 														<li>
 															{{{$detalle->pieza}}} {{{$detalle->material_color}}} 
 																@if($detalle->medida_estandar == 0)
+                                    @if($detalle->pieza_completa == 1)
                                   <P><span class="label label-info sm">Especial</span></P>
+                                  @endif
                                   @else
                                  <P> <span class="label label-success">Estándar</span></P>
                                 @endif
