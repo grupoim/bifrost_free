@@ -1,8 +1,8 @@
-@section('scripts')
-<script src="{{ URL::asset('js/chosen.jquery.js') }}"> </script>
-<link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">
-<script src="{{ URL::asset('js/jquery.growl.js') }}" ></script>
-<link rel="stylesheet" href="{{ URL::asset('css/jquery.growl.css') }}"> 
+<?php $__env->startSection('scripts'); ?>
+<script src="<?php echo URL::asset('js/chosen.jquery.js'); ?>"> </script>
+<link href="<?php echo URL::asset('css/chosen.css'); ?>" rel="stylesheet">
+<script src="<?php echo URL::asset('js/jquery.growl.js'); ?>" ></script>
+<link rel="stylesheet" href="<?php echo URL::asset('css/jquery.growl.css'); ?>"> 
 <script>
 $(function() {
 $("#fecha").datepicker({ minDate: 0 });
@@ -111,25 +111,25 @@ $("#fecha").datepicker({ minDate: 0 });
   </script>
  
 
-    @stop
-@section('module')
+    <?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
  <div class="row">
             <div class="col-md-4">
-@if($venta_error=='error')
+<?php if($venta_error=='error'): ?>
       <div class="alert alert-warning alert-dismissible alerta" role="alert" align="center">
      
      <strong><h4> No se puede agregar producto a esa venta </h4></strong>
     </div>  
 
-      @endif
+      <?php endif; ?>
 
-@if($material_error =='error')
+<?php if($material_error =='error'): ?>
       <div class="alert alert-danger alert-dismissible alerta" role="alert" align="center">
      
      <strong><h4> No hay suficiente material </h4></strong>
     </div>  
 
-      @endif      
+      <?php endif; ?>      
               <div class="widget">
                 <div class="widget-head">
                   <div class="pull-left">Detalles del corte de material </div>
@@ -139,21 +139,21 @@ $("#fecha").datepicker({ minDate: 0 });
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    {{ Form::open(array('action' => 'InventarioRecubControlador@postBaja', 'class' => 'form-horizontal', 'role' => 'form')) }} 
+                    <?php echo Form::open(array('action' => 'InventarioRecubControlador@postBaja', 'class' => 'form-horizontal', 'role' => 'form')); ?> 
 
-                     @if($errors->has('motivo_de_reposicion')) <div align="center" class="alert alert-danger alerta">{{$errors->first('motivo_de_reposicion')}}</div> @endif
-                     @if($errors->has('justificacion_de_corte')) <div align="center" class="alert alert-danger alerta">{{$errors->first('justificacion_de_corte')}}</div> @endif
-                     @if($errors->has('largo')) <div align="center" class="alert alert-danger alerta">{{$errors->first('largo')}}</div> @endif
-					 @if($errors->has('alto')) <div align="center" class="alert alert-danger alerta">{{$errors->first('alto')}}</div> @endif
+                     <?php if($errors->has('motivo_de_reposicion')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('motivo_de_reposicion'); ?></div> <?php endif; ?>
+                     <?php if($errors->has('justificacion_de_corte')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('justificacion_de_corte'); ?></div> <?php endif; ?>
+                     <?php if($errors->has('largo')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('largo'); ?></div> <?php endif; ?>
+					 <?php if($errors->has('alto')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('alto'); ?></div> <?php endif; ?>
                       <div class="form-group">
                                   <label class="col-lg-3 control-label">Fecha</label>
                                   <div class="col-lg-8">
-                                   @if($errors->has('fecha')) 
+                                   <?php if($errors->has('fecha')): ?> 
 
 
-                                   <div align="center" class="alert alert-danger alerta">{{$errors->first('fecha')}}</div> @endif
+                                   <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('fecha'); ?></div> <?php endif; ?>
                                         <div id="datetimepicker1" class="input-append input-group dtpicker">
-              										        <input name="fecha" id="fecha" data-format="yyyy-MM-dd" type="text" @if($status == 'add') value="{{{ date("Y-m-d")}}}"@else value="{{Input::old('fecha')}}" @endif class="form-control" required>
+              										        <input name="fecha" id="fecha" data-format="yyyy-MM-dd" type="text" <?php if($status == 'add'): ?> value="<?php echo e(date("Y-m-d")); ?>"<?php else: ?> value="<?php echo Input::old('fecha'); ?>" <?php endif; ?> class="form-control" required>
                         										<span class="input-group-addon add-on">
                         											<i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
                         										</span>
@@ -181,12 +181,12 @@ $("#fecha").datepicker({ minDate: 0 });
                         </div>
                       </div>
 
-                      {{-- <div class="form-group" id = "password">
+                      <?php /* <div class="form-group" id = "password">
                         <label class="col-lg-3 control-label">Autorización</label>
                       <div class="col-lg-9">
                         <input type="password" class="form-control" name="password" placeholder="Ingrese Password de autorización" title="password Autorización">                        
                       </div>
-                    </div> --}}
+                    </div> */ ?>
                      <div class="form-group" id = "motivo_de_reposicion">
                         <label class="col-lg-3 control-label">Motivo de Reposicion</label>
                       <div class="col-lg-9">                        
@@ -198,8 +198,8 @@ $("#fecha").datepicker({ minDate: 0 });
                       <div class="form-group" id="folio_venta">
                         <label class="col-lg-3 control-label">Folio de venta</label>
                       <div class="col-lg-9">
-                       @if($errors->has('folio_venta')) <div align="center" class="alert alert-danger alerta">{{$errors->first('folio_venta')}}</div> @endif
-                        <input type="text" @if($status == 'add') value="{{{ $venta_r->folio}}}"@else value="{{Input::old('folio_venta')}}" @endif class="form-control" name="folio_venta" placeholder="" title="Ingrese folio de venta">
+                       <?php if($errors->has('folio_venta')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('folio_venta'); ?></div> <?php endif; ?>
+                        <input type="text" <?php if($status == 'add'): ?> value="<?php echo e($venta_r->folio); ?>"<?php else: ?> value="<?php echo Input::old('folio_venta'); ?>" <?php endif; ?> class="form-control" name="folio_venta" placeholder="" title="Ingrese folio de venta">
                       </div>
                     </div>
 
@@ -213,7 +213,7 @@ $("#fecha").datepicker({ minDate: 0 });
                     <div class="form-group">
 										    <label for="numero_exterior" class="col-lg-3 control-label">Precio de venta </label>
   										<div class="col-lg-9">
-  										 @if($errors->has('precio_venta')) <div align="center" class="alert alert-danger alerta">{{$errors->first('precio_venta')}}</div> @endif
+  										 <?php if($errors->has('precio_venta')): ?> <div align="center" class="alert alert-danger alerta"><?php echo $errors->first('precio_venta'); ?></div> <?php endif; ?>
   											 <input type="number"  min="10" max="50000"name="precio_venta" class="form-control" required placeholder="Costo de venta de la pieza a crear" aria-describedby="basic-addon2">
   										</div>
 									  </div>
@@ -235,10 +235,10 @@ $("#fecha").datepicker({ minDate: 0 });
                                   <div class="col-lg-8">
                                    <select class="form-control proveedor chosen-select" data-placeholder="Selecciona una opción" name="pieza_marmoleria_id" id="proveedor" >                                
                        
-                                      @foreach($piezas as $pieza)
+                                      <?php foreach($piezas as $pieza): ?>
                                         
-                                        <option value="{{{$pieza->id}}}" > {{{$pieza->nombre}}} -- {{{$pieza->area_requerida}}} m2 </option>
-                                       @endforeach
+                                        <option value="<?php echo e($pieza->id); ?>" > <?php echo e($pieza->nombre); ?> -- <?php echo e($pieza->area_requerida); ?> m2 </option>
+                                       <?php endforeach; ?>
                                          </select>
                                   </div>
                                 </div>                  
@@ -250,10 +250,10 @@ $("#fecha").datepicker({ minDate: 0 });
                                   <div class="col-lg-8">
                                    <select class="form-control proveedor chosen-select" data-placeholder="Selecciona una opción" name="pieza_marmoleria_id_p" id="proveedor" >                                
                        
-                                      @foreach($piezas as $pieza)
+                                      <?php foreach($piezas as $pieza): ?>
                                         
-                                        <option value="{{{$pieza->id}}}" > {{{$pieza->nombre}}}</option>
-                                       @endforeach
+                                        <option value="<?php echo e($pieza->id); ?>" > <?php echo e($pieza->nombre); ?></option>
+                                       <?php endforeach; ?>
                                          </select>
                                   </div>
                                 </div>
@@ -288,7 +288,7 @@ $("#fecha").datepicker({ minDate: 0 });
                                   <label class="col-lg-9 control-label"><h3>---<strong>Material Disponible</strong>---</h3></label>
                                   
                                 </div>
-								@if($errors->has('material_disponible')) <div align="center" class="alert alert-warning alerta">{{$errors->first('material_disponible')}}</div> @endif
+								<?php if($errors->has('material_disponible')): ?> <div align="center" class="alert alert-warning alerta"><?php echo $errors->first('material_disponible'); ?></div> <?php endif; ?>
                                 <hr>
                                 <div class="page-tables">
 						<!-- Table -->
@@ -297,49 +297,49 @@ $("#fecha").datepicker({ minDate: 0 });
 								<thead>
 									<tr>
 									<th><i class="fa fa-check"></i></th>
-									{{-- <th>#</th> --}}
+									<?php /* <th>#</th> */ ?>
 										<th>Folio</th>
 										<th>Descripción</th>
-										{{--<th>Disponible</th>--}}
+										<?php /*<th>Disponible</th>*/ ?>
 										
 																																																	
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($inventarios as $crt => $inventario)									
+									<?php foreach($inventarios as $crt => $inventario): ?>									
 									
 									<td>                                     
-                      <label class="radio-inline"><input type="radio" name="material_disponible"  value="{{{$inventario->id}}}" required></label></td>
-										{{-- <td>
-										 {{ $crt+1 }} 	
-										</td> --}}
-										<td>{{{ $inventario->folio_lamina}}} @if($inventario->lamina_completa == 0)<span class="label label-info">Retazo</span> @endif</td>
-										{{--<td> @if($inventario->lamina_completa == 0)<span class="label label-info">Retazo</span> @endif {{{ $inventario->material_color}}} </td>--}}
+                      <label class="radio-inline"><input type="radio" name="material_disponible"  value="<?php echo e($inventario->id); ?>" required></label></td>
+										<?php /* <td>
+										 <?php echo $crt+1; ?> 	
+										</td> */ ?>
+										<td><?php echo e($inventario->folio_lamina); ?> <?php if($inventario->lamina_completa == 0): ?><span class="label label-info">Retazo</span> <?php endif; ?></td>
+										<?php /*<td> <?php if($inventario->lamina_completa == 0): ?><span class="label label-info">Retazo</span> <?php endif; ?> <?php echo e($inventario->material_color); ?> </td>*/ ?>
 										 <td>
 									<!-- Checkbox -->
 									                        
 
 									                      <p class="p-meta">
 									                        <!-- Due date & % Completed -->
-									                        <span> {{{ $inventario->material_color}}} @if($inventario->porcentaje_restante == 100) {{{$inventario->porcentaje_restante}}} @else {{{number_format($inventario->porcentaje_restante, 2, '.', ',')}}} @endif %  Disp.: {{{number_format($inventario->area_stock, 2, '.', ',')}}} m<sup>2</sup> </span> 
+									                        <span> <?php echo e($inventario->material_color); ?> <?php if($inventario->porcentaje_restante == 100): ?> <?php echo e($inventario->porcentaje_restante); ?> <?php else: ?> <?php echo e(number_format($inventario->porcentaje_restante, 2, '.', ',')); ?> <?php endif; ?> %  Disp.: <?php echo e(number_format($inventario->area_stock, 2, '.', ',')); ?> m<sup>2</sup> </span> 
 									                      								
 									                      </p>
 															
 															<!-- Progress bar -->
 									                      <div class="progress progress-striped active">
-															  <div class="progress-bar @if($inventario->porcentaje_restante == 100) progress-bar-success @elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ) progress-bar-warning @elseif($inventario->porcentaje_restante <= 30) progress-bar-danger  @endif"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{{$inventario->porcentaje_restante}}}%">
+															  <div class="progress-bar <?php if($inventario->porcentaje_restante == 100): ?> progress-bar-success <?php elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ): ?> progress-bar-warning <?php elseif($inventario->porcentaje_restante <= 30): ?> progress-bar-danger  <?php endif; ?>"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo e($inventario->porcentaje_restante); ?>%">
 																<span class="sr-only">100% Complete</span>
 															  </div>
 														    </div>
-													{{--{{{$inventario->area_stock}}} m<sup>2</sup> <br> <div class="progress progress-animated progress-striped active">
-												  <div class="progress-bar @if($inventario->porcentaje_restante == 100) progress-bar-success @elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ) progress-bar-warning @elseif($inventario->porcentaje_restante <= 30) progress-bar-danger  @endif"  data-percentage="{{{$inventario->porcentaje_restante}}}">
+													<?php /*<?php echo e($inventario->area_stock); ?> m<sup>2</sup> <br> <div class="progress progress-animated progress-striped active">
+												  <div class="progress-bar <?php if($inventario->porcentaje_restante == 100): ?> progress-bar-success <?php elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ): ?> progress-bar-warning <?php elseif($inventario->porcentaje_restante <= 30): ?> progress-bar-danger  <?php endif; ?>"  data-percentage="<?php echo e($inventario->porcentaje_restante); ?>">
 													<span class="sr-only">100% Complete</span>
 												  </div>
-											  </div> --}}		
+											  </div> */ ?>		
 					  					</td>										
 										
 									</tr>
-									@endforeach
+									<?php endforeach; ?>
 
 								</tbody>
 								
@@ -354,9 +354,10 @@ $("#fecha").datepicker({ minDate: 0 });
                   </div>
                   <div class="widget-foot">
                      <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-scissors"></i> Cortar</button>
-                    <a  type="btn" href="{{action('InventarioRecubControlador@getBaja')}}" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-refresh"></i> Reestablecer</a>
-                     <input type="hidden" name="hoy" value="{{{$hoy}}}">
-					{{form::close()}}
+                    <a  type="btn" href="<?php echo action('InventarioRecubControlador@getBaja'); ?>" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-refresh"></i> Reestablecer</a>
+                     <input type="hidden" name="hoy" value="<?php echo e($hoy); ?>">
+					<?php echo form::close(); ?>
+
                   </div>
                 </div>
               </div>   
@@ -388,13 +389,13 @@ $("#fecha").datepicker({ minDate: 0 });
                       <div id="myTabContent" class="tab-content">
                        <!-- tab de ventas--> 
                        <div class="tab-pane fade in active" id="home">
-                          <p> @if(count($ventas) == 0)
+                          <p> <?php if(count($ventas) == 0): ?>
                           <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
      <strong><h4> No hay registros aún </h4></strong>
     </div> 
                            <!-- empieza contenido tab de ventas -->
-							@else	                          
+							<?php else: ?>	                          
                           <div class="page-tables">
 						<!-- Table -->
 						<div class="table-responsive" id="StudentTableContainer">
@@ -402,7 +403,7 @@ $("#fecha").datepicker({ minDate: 0 });
 								<thead>
 									<tr>
 									
-										{{--<th>#</th>--}}
+										<?php /*<th>#</th>*/ ?>
 										<th>Venta</th>
 										<th>Fecha</th>
 										<th>Precio</th>
@@ -415,80 +416,80 @@ $("#fecha").datepicker({ minDate: 0 });
 								</thead>
 								<tbody>
 									<tr>
-									@foreach($ventas as $crt => $venta)	
+									<?php foreach($ventas as $crt => $venta): ?>	
 									
-										{{--<td>{{ $crt+1 }} </td> --}}
-										<td>{{{ $venta->folio}}}</td>										
-										<td> {{{date("d-m-Y", strtotime($venta->created_at))}}} </td>
-										<td>${{{number_format($venta->total_venta, 2, '.', ',')}}}</td>	
+										<?php /*<td><?php echo $crt+1; ?> </td> */ ?>
+										<td><?php echo e($venta->folio); ?></td>										
+										<td> <?php echo e(date("d-m-Y", strtotime($venta->created_at))); ?> </td>
+										<td>$<?php echo e(number_format($venta->total_venta, 2, '.', ',')); ?></td>	
 										<td>
-											@foreach($ventas_detalle as $detalle)
-												@if($venta->folio == $detalle->folio) 
+											<?php foreach($ventas_detalle as $detalle): ?>
+												<?php if($venta->folio == $detalle->folio): ?> 
 													<ul>
 														<li>
-															{{{$detalle->pieza}}} {{{$detalle->material_color}}} 
-																@if($detalle->medida_estandar == 0)
+															<?php echo e($detalle->pieza); ?> <?php echo e($detalle->material_color); ?> 
+																<?php if($detalle->medida_estandar == 0): ?>
                                   <P><span class="label label-info sm">Especial</span></P>
-                                  @else
+                                  <?php else: ?>
                                  <P> <span class="label label-success">Estándar</span></P>
-                                @endif
+                                <?php endif; ?>
 														</li> 
-														@if($detalle->pieza_completa == 0) 
-															<p> {{{$detalle->observaciones}}} 
-																	lámina {{{$detalle->folio_lamina}}}</p> 
+														<?php if($detalle->pieza_completa == 0): ?> 
+															<p> <?php echo e($detalle->observaciones); ?> 
+																	lámina <?php echo e($detalle->folio_lamina); ?></p> 
 
-														@endif
+														<?php endif; ?>
 													</ul> 
-												@endif  
-											@endforeach 
+												<?php endif; ?>  
+											<?php endforeach; ?> 
 										</td>
 										<td>
 											
-											@if(date("d-m-Y", strtotime($venta->created_at)) < date("d-m-Y") and ($venta->venta_normal == 1) )
+											<?php if(date("d-m-Y", strtotime($venta->created_at)) < date("d-m-Y") and ($venta->venta_normal == 1) ): ?>
 															<span class="label label-success">Venta Normal</span>
-											@elseif (date("d-m-Y", strtotime($venta->created_at)) == date("d-m-Y") and ($venta->venta_normal == 1) )
-											<a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getRecuperaventa', $venta->folio )}}" name="folio" value="$venta->folio" class="btn btn-info " title="Añadir a la factura"><i class="fa fa-plus-circle"></i></a>
+											<?php elseif(date("d-m-Y", strtotime($venta->created_at)) == date("d-m-Y") and ($venta->venta_normal == 1) ): ?>
+											<a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getRecuperaventa', $venta->folio ); ?>" name="folio" value="$venta->folio" class="btn btn-info " title="Añadir a la factura"><i class="fa fa-plus-circle"></i></a>
 											<span class="label label-success">Venta Normal</span>
-											@elseif (date("d-m-Y", strtotime($venta->created_at)) > date("d-m-Y") and ($venta->venta_normal == 0) )
-											<a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getRecuperaventa', $venta->folio )}}" name="folio" value="$venta->folio" class="btn btn-info " title="Añadir a la factura"><i class="fa fa-plus-circle"></i></a>
+											<?php elseif(date("d-m-Y", strtotime($venta->created_at)) > date("d-m-Y") and ($venta->venta_normal == 0) ): ?>
+											<a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getRecuperaventa', $venta->folio ); ?>" name="folio" value="$venta->folio" class="btn btn-info " title="Añadir a la factura"><i class="fa fa-plus-circle"></i></a>
 											<span class="label label-warning">Corte especial</span>
 											
-											@elseif ($venta->venta_normal == 0)  
+											<?php elseif($venta->venta_normal == 0): ?>  
 											<span class="label label-info"> Venta Stock</span>
-											@endif	
+											<?php endif; ?>	
 										</td>
 
 									</tr>
-									@endforeach
+									<?php endforeach; ?>
 
 								</tbody>
 								
 							</table> </div>
 							<div class="clearfix"></div>
 
-                                 {{--
+                                 <?php /*
                                  <div class="form-group">
                                   <label class="col-lg-3 control-label">Tipo de baja</label>
                                   <div class="col-lg-9">
-                                    @foreach($piezas as $pieza)
-                                    <label class="radio-inline"><input type="radio" name="lamina_completa" ><a href="#">{{{$pieza->nombre}}} Requerido {{{$pieza->area_requerida}}} m<sup>2</sup>  </a></label>
-									 @endforeach
+                                    <?php foreach($piezas as $pieza): ?>
+                                    <label class="radio-inline"><input type="radio" name="lamina_completa" ><a href="#"><?php echo e($pieza->nombre); ?> Requerido <?php echo e($pieza->area_requerida); ?> m<sup>2</sup>  </a></label>
+									 <?php endforeach; ?>
                                     
                                   </div>
-                                </div> --}}
+                                </div> */ ?>
                                                           
 
-                  </div> @endif </p> <!-- fin contenido tab de ventas-->
+                  </div> <?php endif; ?> </p> <!-- fin contenido tab de ventas-->
                         </div> <!-- fin tab de ventas -->
                         <div class="tab-pane fade" id="profile">
                           <p> 
-						@if(count($reposiciones) == 0)
+						<?php if(count($reposiciones) == 0): ?>
                           <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
 					     <strong><h4> No hay registros aún </h4></strong>
 					    </div> 
                            <!-- empieza contenido tab de ventas -->
-							@else
+							<?php else: ?>
                           <div class="page-tables">
 						<!-- Table -->
 						<div class="table-responsive" id="StudentTableContainer">
@@ -496,11 +497,11 @@ $("#fecha").datepicker({ minDate: 0 });
 								<thead>
 									<tr>
 									
-										{{--<th>#</th>--}}										
-										{{--<th>Fecha</th>--}}
+										<?php /*<th>#</th>*/ ?>										
+										<?php /*<th>Fecha</th>*/ ?>
 										<th>Lámina</th>
 										<th>Pieza</th>										
-										{{--<th>Area</th>--}}
+										<?php /*<th>Area</th>*/ ?>
 										<th>Material</th>
 										<th>Pieza</th>
 										<th>Motivos</th>
@@ -511,20 +512,20 @@ $("#fecha").datepicker({ minDate: 0 });
 								</thead>
 								<tbody>
 									<tr>
-									@foreach($reposiciones as $crt => $reposicion)	
+									<?php foreach($reposiciones as $crt => $reposicion): ?>	
 									
-										{{--<td>{{ $crt+1 }} </td> --}}
+										<?php /*<td><?php echo $crt+1; ?> </td> */ ?>
 																				
-										{{--<td> {{{date("d-m-Y", strtotime($reposicion->created_at))}}} </td>--}}
-										<td>{{{$reposicion->folio_lamina}}}</td>
-										<td>{{{$reposicion->pieza}}} de {{{$reposicion->material_color}}}</td>										
-										{{--<td>{{{$reposicion->area_requerida}}}</td>--}}
-										<td>${{{number_format($reposicion->costo_material_usado, 2, '.', ',')}}}</td>
-										<td>${{{number_format($reposicion->precio_reposicion, 2, '.', ',')}}}</td>
-										<td>{{{date("d-m-Y", strtotime($reposicion->created_at))}}} {{{$reposicion->motivos}}}</td>
+										<?php /*<td> <?php echo e(date("d-m-Y", strtotime($reposicion->created_at))); ?> </td>*/ ?>
+										<td><?php echo e($reposicion->folio_lamina); ?></td>
+										<td><?php echo e($reposicion->pieza); ?> de <?php echo e($reposicion->material_color); ?></td>										
+										<?php /*<td><?php echo e($reposicion->area_requerida); ?></td>*/ ?>
+										<td>$<?php echo e(number_format($reposicion->costo_material_usado, 2, '.', ',')); ?></td>
+										<td>$<?php echo e(number_format($reposicion->precio_reposicion, 2, '.', ',')); ?></td>
+										<td><?php echo e(date("d-m-Y", strtotime($reposicion->created_at))); ?> <?php echo e($reposicion->motivos); ?></td>
 
 									</tr>
-									@endforeach
+									<?php endforeach; ?>
 
 								</tbody>
 								
@@ -532,19 +533,19 @@ $("#fecha").datepicker({ minDate: 0 });
 							<div class="clearfix"></div>                              
                                                           
 
-                  </div> @endif
+                  </div> <?php endif; ?>
                   </p>
                         </div>
                         <div class="tab-pane fade" id="cont">
                         
                           <p> 
-                          @if(count($stocks) == 0)
+                          <?php if(count($stocks) == 0): ?>
                           <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
      <strong><h4> No hay registros aún </h4></strong>
     </div> 
                            <!-- empieza contenido tab de ventas -->
-							@else
+							<?php else: ?>
                           <div class="page-tables">
 						<!-- Table -->
 						<div class="table-responsive" id="StudentTableContainer">
@@ -552,7 +553,7 @@ $("#fecha").datepicker({ minDate: 0 });
 								<thead>
 									<tr>
 									
-										{{--<th>#</th>--}}
+										<?php /*<th>#</th>*/ ?>
 										<th>Folio</th>
 										<th>Pieza</th>
 										<th>Lámina</th>
@@ -566,40 +567,40 @@ $("#fecha").datepicker({ minDate: 0 });
 								</thead>
 								<tbody>
 									<tr>
-									@foreach($stocks as $crt => $stock)	
+									<?php foreach($stocks as $crt => $stock): ?>	
 									
-										{{--<td>{{ $crt+1 }} </td> --}}
-										<td>{{{ $stock->folio}}}</td>
-										<td> {{{$stock->pieza}}} {{{$stock->material_color}}}</td>
-										<td>{{{$stock->folio_lamina}}}</td>		
-										{{--<td> {{{date("d-m-Y", strtotime($venta->created_at))}}} </td>--}}
-										<td>${{{number_format($stock->precio_venta, 2, '.', ',')}}}</td>
-										<td>${{{number_format($stock->costo_material_usado, 2, '.', ',')}}}</td>
-										<td><a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getVentastock', $stock->id )}}" name="stock_id" value="" class="btn btn-info " title="Venta"><i class="fa fa-cart-arrow-down"></i></a>
-											<a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getVentareposicion', $stock->id )}}" name="stock_id" value="" class="btn btn-info " title="Reposicion"><i class="fa fa-exchange"></i></a>
+										<?php /*<td><?php echo $crt+1; ?> </td> */ ?>
+										<td><?php echo e($stock->folio); ?></td>
+										<td> <?php echo e($stock->pieza); ?> <?php echo e($stock->material_color); ?></td>
+										<td><?php echo e($stock->folio_lamina); ?></td>		
+										<?php /*<td> <?php echo e(date("d-m-Y", strtotime($venta->created_at))); ?> </td>*/ ?>
+										<td>$<?php echo e(number_format($stock->precio_venta, 2, '.', ',')); ?></td>
+										<td>$<?php echo e(number_format($stock->costo_material_usado, 2, '.', ',')); ?></td>
+										<td><a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getVentastock', $stock->id ); ?>" name="stock_id" value="" class="btn btn-info " title="Venta"><i class="fa fa-cart-arrow-down"></i></a>
+											<a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getVentareposicion', $stock->id ); ?>" name="stock_id" value="" class="btn btn-info " title="Reposicion"><i class="fa fa-exchange"></i></a>
 											</td>
 									</tr>
-									@endforeach
+									<?php endforeach; ?>
 
 								</tbody>
 								
 							</table> </div>
 							<div class="clearfix"></div>
 
-                                 {{--
+                                 <?php /*
                                  <div class="form-group">
                                   <label class="col-lg-3 control-label">Tipo de baja</label>
                                   <div class="col-lg-9">
-                                    @foreach($piezas as $pieza)
-                                    <label class="radio-inline"><input type="radio" name="lamina_completa" ><a href="#">{{{$pieza->nombre}}} Requerido {{{$pieza->area_requerida}}} m<sup>2</sup>  </a></label>
-									 @endforeach
+                                    <?php foreach($piezas as $pieza): ?>
+                                    <label class="radio-inline"><input type="radio" name="lamina_completa" ><a href="#"><?php echo e($pieza->nombre); ?> Requerido <?php echo e($pieza->area_requerida); ?> m<sup>2</sup>  </a></label>
+									 <?php endforeach; ?>
                                     
                                   </div>
-                                </div> --}}
+                                </div> */ ?>
                                                           
 
                   </div> 
-                  @endif
+                  <?php endif; ?>
                   </p>
                         </div>
                       </div>
@@ -620,6 +621,6 @@ $("#fecha").datepicker({ minDate: 0 });
  
           
 
-@include('_assets.modals.modal-crud')
-@include('_assets.modals.modal-delete')           
-@stop
+<?php echo $__env->make('_assets.modals.modal-crud', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('_assets.modals.modal-delete', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>           
+<?php $__env->stopSection(); ?>

@@ -1,17 +1,17 @@
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 
-    @stop
-@section('module')
+    <?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
 
  <div class="row">  
                    
-@if($inventario)
+<?php if($inventario): ?>
             <div class="col-md-12">
               <!-- User widget -->
               <div class="widget">
                 <div class="widget-head">
-                  <div class="pull-left"><h3>Lámina {{{$inventario->folio_lamina}}} {{{ $inventario->material_color}}} </h3></div>
-                  <div class="widget-icons pull-right"> Costo de Material ${{{number_format($inventario->costo_produccion, 2, '.', ',')}}} 
+                  <div class="pull-left"><h3>Lámina <?php echo e($inventario->folio_lamina); ?> <?php echo e($inventario->material_color); ?> </h3></div>
+                  <div class="widget-icons pull-right"> Costo de Material $<?php echo e(number_format($inventario->costo_produccion, 2, '.', ',')); ?> 
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"> </i></a> 
                   
                     
@@ -22,14 +22,14 @@
                   <div class="padd">
 
                     
-                     <div class="alert  alert-dismissible @if($inventario->utilidad < 0) alert-danger @elseif($inventario->utilidad > 0) alert-success @elseif($inventario->utilidad == 0) alert-default   @endif" role="alert" align="center">
+                     <div class="alert  alert-dismissible <?php if($inventario->utilidad < 0): ?> alert-danger <?php elseif($inventario->utilidad > 0): ?> alert-success <?php elseif($inventario->utilidad == 0): ?> alert-default   <?php endif; ?>" role="alert" align="center">
      
-                   <strong><h3> <i class="fa fa-calculator"></i> Utilidad ${{{number_format($inventario->utilidad, 2, '.', ',')}}} </h3></strong>
+                   <strong><h3> <i class="fa fa-calculator"></i> Utilidad $<?php echo e(number_format($inventario->utilidad, 2, '.', ',')); ?> </h3></strong>
                   </div>
                    <!-- tabla de inventario--> 
                    <div class="col-md-3">
                         <div class="well">
-                          <h4><i class="fa fa-database"></i> Inventario ${{{number_format($inventario->precio_stock, 2, '.', ',')}}}</h4>
+                          <h4><i class="fa fa-database"></i> Inventario $<?php echo e(number_format($inventario->precio_stock, 2, '.', ',')); ?></h4>
                           
                           
 
@@ -39,19 +39,19 @@
                       
                       <div class="col-md-3">
                         <div class="well">
-                          <h4> <i class="fa fa-money"></i>  Ventas: ${{{number_format($inventario->ventas, 2, '.', ',')}}} </h4>                                                  
+                          <h4> <i class="fa fa-money"></i>  Ventas: $<?php echo e(number_format($inventario->ventas, 2, '.', ',')); ?> </h4>                                                  
                         </div>
                       </div>
 
                       <div class="col-md-3">
                         <div class="well">
-                          <h4> <i class="fa fa-cubes"></i>  Stock: ${{{number_format($inventario->stock, 2, '.', ',')}}} </h4>                                                  
+                          <h4> <i class="fa fa-cubes"></i>  Stock: $<?php echo e(number_format($inventario->stock, 2, '.', ',')); ?> </h4>                                                  
                         </div>
                       </div>
 
                     <div class="col-md-3">
                         <div class="well">
-                          <h4> <i class="fa fa-exchange"></i>  Reposicion: ${{{number_format($inventario->perdida_reposicion, 2, '.', ',')}}} </h4>                                                  
+                          <h4> <i class="fa fa-exchange"></i>  Reposicion: $<?php echo e(number_format($inventario->perdida_reposicion, 2, '.', ',')); ?> </h4>                                                  
                         </div>
                       </div>
 
@@ -62,11 +62,11 @@
                   <div class="widget-foot">
                    <p class="p-meta">
                                                             <!-- Due date & % Completed -->
-                                                           <h3> <span>@if($inventario->lamina_completa == 0)<span class="label label-info">Retazo</span> @endif   Disponible: {{{number_format($inventario->area_stock, 2, '.', ',')}}} m<sup>2</sup> </span> </h3>
+                                                           <h3> <span><?php if($inventario->lamina_completa == 0): ?><span class="label label-info">Retazo</span> <?php endif; ?>   Disponible: <?php echo e(number_format($inventario->area_stock, 2, '.', ',')); ?> m<sup>2</sup> </span> </h3>
                                                                                         
                                                           </p>
                                                     <div class="progress progress-animated progress-striped active">
-                                                  <div class="progress-bar @if($inventario->porcentaje_restante == 100) progress-bar-success @elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ) progress-bar-warning @elseif($inventario->porcentaje_restante <= 30) progress-bar-danger  @endif"  data-percentage="{{{$inventario->porcentaje_restante}}}">
+                                                  <div class="progress-bar <?php if($inventario->porcentaje_restante == 100): ?> progress-bar-success <?php elseif($inventario->porcentaje_restante == 50 or $inventario->porcentaje_restante >= 31 ): ?> progress-bar-warning <?php elseif($inventario->porcentaje_restante <= 30): ?> progress-bar-danger  <?php endif; ?>"  data-percentage="<?php echo e($inventario->porcentaje_restante); ?>">
                                                     <span class="sr-only">100% Complete</span>
                                                   </div>
                                               </div>  
@@ -76,7 +76,7 @@
               </div>  
 
             </div>
-            @endif
+            <?php endif; ?>
 
 
             <div class="col-md-4">
@@ -110,23 +110,23 @@
                           <tbody>
                               
                             
-                              @forelse($totales as $ctr => $total)
-                 <tr><td>{{{$ctr+1}}}</td>                 
-                 <td> {{{$total->pieza}}}</td>
-                 <td>{{{$total->piezas}}}</td>                 
-                 @empty
+                              <?php $__empty_1 = true; foreach($totales as $ctr => $total): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>                 
+                 <td> <?php echo e($total->pieza); ?></td>
+                 <td><?php echo e($total->piezas); ?></td>                 
+                 <?php endforeach; if ($__empty_1): ?>
                <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
                         <strong><h4> No hay registros aún </h4></strong>
                   </div> 
-                 @endforelse
+                 <?php endif; ?>
                               
                                                                                                                                                                                            
                             <tr>                                                             
                               <td></td>
                               
                               <td align="left"> <strong>Total</strong></td>
-                              <td><strong>{{{$totales->sum('piezas')}}}</strong></td>
+                              <td><strong><?php echo e($totales->sum('piezas')); ?></strong></td>
                             </tr>
                           </tbody>
                         </table>
@@ -146,19 +146,19 @@
                           <tbody>
                               
                             
-                              @forelse($ventas_detalle as $ctr => $detalle)
-                 <tr><td>{{{$ctr+1}}}</td>
-                 <td>{{{$detalle->folio}}}</td>
-                 <td> {{{$detalle->pieza}}} @if($detalle->medida_estandar == 0) <span class="label label-info xs">Especial</span> @endif </td>
+                              <?php $__empty_1 = true; foreach($ventas_detalle as $ctr => $detalle): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e($detalle->folio); ?></td>
+                 <td> <?php echo e($detalle->pieza); ?> <?php if($detalle->medida_estandar == 0): ?> <span class="label label-info xs">Especial</span> <?php endif; ?> </td>
                  
-                 <td>${{{number_format($detalle->precio_pieza, 2, '.', ',')}}}</td> 
+                 <td>$<?php echo e(number_format($detalle->precio_pieza, 2, '.', ',')); ?></td> 
                  </tr>
-                 @empty
+                 <?php endforeach; if ($__empty_1): ?>
                  <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
                         <strong><h4> No hay registros aún </h4></strong>
                   </div>                 
-                 @endforelse
+                 <?php endif; ?>
                               
                                                                                                                                                                                            
                             <tr>  
@@ -167,7 +167,7 @@
                               <td></td>
                               
                               <td align="left"> <strong>Total</strong></td>
-                              <td><strong>${{{number_format($ventas_detalle->sum('precio_pieza'), 2, '.', ',')}}}</strong></td>
+                              <td><strong>$<?php echo e(number_format($ventas_detalle->sum('precio_pieza'), 2, '.', ',')); ?></strong></td>
                             
                             </tr>
                           </tbody>
@@ -182,7 +182,7 @@
 
                  
                   <div class="widget-foot">
-                  Se @if($totales->sum('piezas') > 1) han @else ha @endif creado {{{$totales->sum('piezas')}}} @if($totales->sum('piezas') > 1)piezas @else pieza @endif
+                  Se <?php if($totales->sum('piezas') > 1): ?> han <?php else: ?> ha <?php endif; ?> creado <?php echo e($totales->sum('piezas')); ?> <?php if($totales->sum('piezas') > 1): ?>piezas <?php else: ?> pieza <?php endif; ?>
                     <!-- Footer goes here -->
                   </div>
                 </div>
@@ -228,22 +228,22 @@
                           <tbody>
                               
                             
-                              @forelse($reposiciones as $ctr => $reposicion)
-                 <tr><td>{{{$ctr+1}}}</td>
-                 <td>{{{date("d-m-Y", strtotime($reposicion->created_at))}}}</td>
-                 <td> {{{$reposicion->pieza}}}</td>                 
-                 <td>{{{$reposicion->motivos}}}</td>
-                 <td>{{{$reposicion->area_requerida}}} m<sup>2</sup></td>
-                 <td>${{{number_format($reposicion->costo_material_usado, 2, '.', ',')}}}</td>                 
-                 <td>${{{number_format($reposicion->precio_reposicion, 2, '.', ',')}}}</td> 
+                              <?php $__empty_1 = true; foreach($reposiciones as $ctr => $reposicion): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e(date("d-m-Y", strtotime($reposicion->created_at))); ?></td>
+                 <td> <?php echo e($reposicion->pieza); ?></td>                 
+                 <td><?php echo e($reposicion->motivos); ?></td>
+                 <td><?php echo e($reposicion->area_requerida); ?> m<sup>2</sup></td>
+                 <td>$<?php echo e(number_format($reposicion->costo_material_usado, 2, '.', ',')); ?></td>                 
+                 <td>$<?php echo e(number_format($reposicion->precio_reposicion, 2, '.', ',')); ?></td> 
                  
                  </tr>
-                 @empty
+                 <?php endforeach; if ($__empty_1): ?>
                   <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
                         <strong><h4> No hay registros aún </h4></strong>
                   </div> 
-                 @endforelse
+                 <?php endif; ?>
                               
                                                                                                                                                                                            
                             <tr>  
@@ -252,9 +252,9 @@
                               <td></td>
                               <td></td>
                               <td align="left"> <strong>Total</strong></td>
-                              <td>{{{$reposiciones->sum('area_requerida')}}} m<sup>2</sup></td>
-                              <td><strong>${{{number_format($reposiciones->sum('costo_material_usado'),2, '.', ',')}}}</strong></td>
-                              <td><strong>${{{number_format($reposiciones->sum('precio_reposicion'),2, '.', ',')}}}</strong></td>
+                              <td><?php echo e($reposiciones->sum('area_requerida')); ?> m<sup>2</sup></td>
+                              <td><strong>$<?php echo e(number_format($reposiciones->sum('costo_material_usado'),2, '.', ',')); ?></strong></td>
+                              <td><strong>$<?php echo e(number_format($reposiciones->sum('precio_reposicion'),2, '.', ',')); ?></strong></td>
                             </tr>
                           </tbody>
                         </table>
@@ -310,22 +310,22 @@
                           <tbody>
                               
                             
-                              @forelse($stock as $ctr => $s)
-                 <tr><td>{{{$ctr+1}}}</td>
-                 <td>{{{date("d-m-Y", strtotime($s->created_at))}}}</td>
-                 <td>{{{$s->folio}}}</td>
-                 <td> {{{$s->pieza}}}</td>                                 
-                 <td>{{{$s->area_requerida}}} m<sup>2</sup></td>
-                 <td>${{{number_format($s->costo_material_usado, 2, '.', ',')}}}</td>                 
-                 <td>${{{number_format($s->precio_venta, 2, '.', ',')}}}</td> 
+                              <?php $__empty_1 = true; foreach($stock as $ctr => $s): $__empty_1 = false; ?>
+                 <tr><td><?php echo e($ctr+1); ?></td>
+                 <td><?php echo e(date("d-m-Y", strtotime($s->created_at))); ?></td>
+                 <td><?php echo e($s->folio); ?></td>
+                 <td> <?php echo e($s->pieza); ?></td>                                 
+                 <td><?php echo e($s->area_requerida); ?> m<sup>2</sup></td>
+                 <td>$<?php echo e(number_format($s->costo_material_usado, 2, '.', ',')); ?></td>                 
+                 <td>$<?php echo e(number_format($s->precio_venta, 2, '.', ',')); ?></td> 
                  
                  </tr>
-                 @empty
+                 <?php endforeach; if ($__empty_1): ?>
                   <div class="alert alert-info alert-dismissible " role="alert" align="center">
      
                         <strong><h4> No hay registros aún </h4></strong>
                   </div> 
-                 @endforelse
+                 <?php endif; ?>
                               
                                                                                                                                                                                            
                             <tr>  
@@ -334,9 +334,9 @@
                               <td></td>
                               <td></td>
                               <td align="left"> <strong>Total</strong></td>
-                              <td>{{{$stock->sum('area_requerida')}}} m<sup>2</sup></td>
-                              <td><strong>${{{number_format($stock->sum('costo_material_usado'),2, '.', ',')}}}</strong></td>
-                              <td><strong>${{{number_format($stock->sum('precio_venta'),2, '.', ',')}}}</strong></td>
+                              <td><?php echo e($stock->sum('area_requerida')); ?> m<sup>2</sup></td>
+                              <td><strong>$<?php echo e(number_format($stock->sum('costo_material_usado'),2, '.', ',')); ?></strong></td>
+                              <td><strong>$<?php echo e(number_format($stock->sum('precio_venta'),2, '.', ',')); ?></strong></td>
                             </tr>
                           </tbody>
                         </table>
@@ -358,4 +358,4 @@
 
 
           </div>            
-@stop
+<?php $__env->stopSection(); ?>

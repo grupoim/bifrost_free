@@ -113,7 +113,7 @@
 
     @stop
 @section('module')
-{{--
+
 @if(Auth::user()->departamento->id == 1)
 <a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getBoom')}}" name="folio" value=""  title="Borrar todos los registros del inventario"> <i class="fa fa-bomb"></i> Boom!!</a>
   <div class="row">
@@ -125,7 +125,7 @@
 
       @endif
       @endif
-      --}}
+      
             <div class="col-md-4">
 				@if($factura_error=='error')
       <div class="alert alert-danger alert-dismissible alerta" role="alert" align="center">
@@ -247,7 +247,7 @@
                   <div class="widget-foot">
                     <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> Guardar</button>
                     <a  type="btn" href="{{action('InventarioRecubControlador@getIndex')}}" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-refresh"></i> Reestablecer</a>
-                    
+                    <input type="hidden" name="hoy" value="{{{$hoy}}}">
 {{form::close()}}
                     <!-- Footer goes here -->
                   </div>
