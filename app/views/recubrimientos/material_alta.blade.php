@@ -114,6 +114,7 @@
     @stop
 @section('module')
 
+{{--
 @if(Auth::user()->departamento->id == 1)
 <a class="btn btn-xs btn-default" href="{{action('InventarioRecubControlador@getBoom')}}" name="folio" value=""  title="Borrar todos los registros del inventario"> <i class="fa fa-bomb"></i> Boom!!</a>
   <div class="row">
@@ -124,7 +125,7 @@
     </div>  
 
       @endif
-      @endif
+      @endif --}}
       
             <div class="col-md-4">
 				@if($factura_error=='error')
