@@ -35,7 +35,7 @@ $(document).ready(function () {
    
 
     var barChartData = {
-        labels : [@foreach($estadisticos_laminas as $lamina) "{{{$lamina->material_color}}}", @endforeach],
+        labels : [@foreach($estadisticos_laminas as $lamina) "{{{$lamina->folio_lamina}}}", @endforeach],
         datasets : [
             
              {
