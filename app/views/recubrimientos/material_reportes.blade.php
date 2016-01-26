@@ -299,7 +299,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                 <thead>
                                     <tr>                                                                        
                                         <th>#</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha Corte</th>
                                         <th>Lámina</th>
                                         <th>Pieza</th>
                                         <th>Motivo</th>
