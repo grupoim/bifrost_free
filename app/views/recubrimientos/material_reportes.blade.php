@@ -32,6 +32,7 @@
 <script type="text/javascript">
 
 $(document).ready(function () {
+  $("#cortes").hide();
    
 
     var barChartData = {
@@ -193,7 +194,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                   </div>  
                   <div class="clearfix"></div>
                 </div>
-                <div class="widget-content">
+                <div class="widget-content" id="inventario_general">
                   <div class="padd">
                    <!-- tabla de inventario--> 
                    
@@ -272,6 +273,75 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
 
             </div>
 
+            <!-- todos los cortes -->
+
+            <div class="col-md-12">
+
+              <!-- User widget -->
+              <div class="widget">
+                <div class="widget-head">
+                  <div class="pull-left">Historial de cortes </div>
+                  <div class="widget-icons pull-right"> Total de cortes {{{$cortes->count()}}} 
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"> </i></a> 
+                  
+                    
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content" id="cortes">
+                  <div class="padd">
+                   <!-- tabla de inventario--> 
+                   
+ <div class="page-tables">
+                        <!-- Table -->
+                        <div class="table-responsive" >
+                            <table cellpadding="0" cellspacing="0" border="0" id="data-table2" width="100%">
+                                <thead>
+                                    <tr>                                                                        
+                                        <th>#</th>
+                                        <th>Fecha</th>
+                                        <th>Lámina</th>
+                                        <th>Pieza</th>
+                                        <th>Motivo</th>
+                                        <th>Tipo de corte</th>
+                                        <th>Área</th>
+                                        <th>Costo</th>
+                                        <th>Captura</th>
+                                                                                                                                                                                                                                          
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($cortes as $crt => $corte)                                   
+                                                                       
+                                        <td>{{ $crt+1 }} </td>
+                                        <td> {{{date("d-m-Y", strtotime($corte->fecha))}}} </td>
+                                        <td><span class="badge">{{{$corte->lamina}}} </span></td>
+                                        <td>{{{$corte->nombre}}}</td>
+                                        
+                                        <td><span class="label @if($corte->tipo_baja == 'Venta') label-success @elseif($corte->tipo_baja == 'Stock') label-info @elseif ($corte->tipo_baja == 'Reposicion') label-danger @endif">{{{$corte->tipo_baja}}}</span></td>
+                                        <td>{{{$corte->tipo_corte}}}</td>                                       
+                                        <td>{{{number_format($corte->area_venta, 2, '.', ',')}}}m<sup>2</sup></td>
+                                        <td>${{{number_format($corte->costo, 2, '.', ',')}}}</td>
+                                         <td>{{{$corte->fecha_captura}}}</td>                          
+                                    </tr>
+                                    @endforeach
+
+                                </tbody>
+                                
+                            </table> </div>
+                            <div class="clearfix"></div>
+          <!-- tabla de inventario -->
+                    
+                  </div> <!-- end pad-->
+                  <div class="widget-foot">
+                    <!-- Footer goes here -->
+                  </div>
+                </div>
+              </div>  
+
+            </div>
+            <!-- fin todos los cortes -->
+
 
             <div class="col-md-4">
               <!-- Quick setting -->
@@ -279,12 +349,11 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                 <div class="widget-head">
                   <div class="pull-left">Movimientos de material por color</div>
                   <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>                 
                   </div>  
                   <div class="clearfix"></div>
                 </div>
-                <div class="widget-content">
+                <div class="widget-content" id="grafica_pastel">
                   <div class="padd">
                  
                       <canvas id="chart-area" width="300" height="300"></canvas>
@@ -300,18 +369,17 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
 
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-8" >
               <!-- Quick setting -->
               <div class="widget">
                 <div class="widget-head">
                   <div class="pull-left">Movimientos de material por lámina</div>
                   <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>                    
                   </div>  
                   <div class="clearfix"></div>
                 </div>
-                <div class="widget-content">
+                <div class="widget-content" id="grafica_barras">
                   <div class="padd">
                  
                     <div align="center"><canvas align = "center" id="chart-area3" width="400" height="250"></canvas><div>

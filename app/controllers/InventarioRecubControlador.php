@@ -52,6 +52,7 @@ use Carbon\Carbon;
 			$dataModule["estadisticos_laminas"] = VistaEstadisticosLamina::all();
 			$dataModule["color_grafica"] = ConfiguracionGeneral::firstorfail();
  			$dataModule["estadisticos_colores"] = VistaEstadisticoColorMaterial::all();
+ 			$dataModule["cortes"] = VistaMaterialBaja::all();
  			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.material_reportes', $dataModule);
 
 		}
