@@ -1,10 +1,13 @@
-USE bifrost_pfg;
-CREATE VIEW `vista_material_baja` AS SELECT material_baja.id as baja_id, lamina_alta.folio_lamina as lamina, material_baja.fecha, pieza_marmoleria.nombre, material_baja.area_venta, 
+CREATE VIEW `vista_material_baja` AS SELECT material_baja.id as baja_id, lamina_alta.folio_lamina as lamina, vista_material_color.material_color, material_baja.fecha, pieza_marmoleria.nombre, material_baja.area_venta, 
 material_baja.created_at as fecha_captura, material_baja.costo_material_usado as costo,
 if (venta = 1,'Venta', if(reposicion = 1, 'Reposicion', 'Stock')) as tipo_baja,
 concat(if (pieza_completa = 1, 'Pieza completa', 'Corte'),' ', if (medida_estandar = 1, 'medida estandar', 'medida especial')) as tipo_corte
 FROM pfg_bifrost.material_baja
 left join pieza_marmoleria on material_baja.pieza_marmoleria_id = pieza_marmoleria.id
 left join inventario_recubrimientos on material_baja.inventario_recubrimientos_id = inventario_recubrimientos.id
-left join lamina_alta on inventario_recubrimientos.lamina_alta_id = lamina_alta.id
+
+left join lamina_alta on inventario_recubrimientos.lamina_alta_id = lamina_alta.id 
+left join vista_material_color on lamina_alta.material_color_id = vista_material_color.id 
+
+
 order by fecha desc

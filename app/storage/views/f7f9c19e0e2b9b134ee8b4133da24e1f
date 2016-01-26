@@ -299,8 +299,9 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                 <thead>
                                     <tr>                                                                        
                                         <th>#</th>
-                                        <th>Fecha</th>
+                                        <th>Fecha Corte</th>
                                         <th>Lámina</th>
+                                        <th>Material</th>
                                         <th>Pieza</th>
                                         <th>Motivo</th>
                                         <th>Tipo de corte</th>
@@ -316,13 +317,14 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                         <td><?php echo $crt+1; ?> </td>
                                         <td> <?php echo e(date("d-m-Y", strtotime($corte->fecha))); ?> </td>
                                         <td><span class="badge"><?php echo e($corte->lamina); ?> </span></td>
+                                        <td><?php echo e($corte->material_color); ?></td>
                                         <td><?php echo e($corte->nombre); ?></td>
                                         
                                         <td><span class="label <?php if($corte->tipo_baja == 'Venta'): ?> label-success <?php elseif($corte->tipo_baja == 'Stock'): ?> label-info <?php elseif($corte->tipo_baja == 'Reposicion'): ?> label-danger <?php endif; ?>"><?php echo e($corte->tipo_baja); ?></span></td>
                                         <td><?php echo e($corte->tipo_corte); ?></td>                                       
                                         <td><?php echo e(number_format($corte->area_venta, 2, '.', ',')); ?>m<sup>2</sup></td>
                                         <td>$<?php echo e(number_format($corte->costo, 2, '.', ',')); ?></td>
-                                         <td><?php echo e($corte->fecha_captura); ?></td>                          
+                                         <td><?php echo e(date("d-m-Y", strtotime ($corte->fecha_captura))); ?></td>                          
                                     </tr>
                                     <?php endforeach; ?>
 
