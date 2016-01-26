@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('ExhumacionControlador@getIndex'); ?>">Exhumación</a></li>

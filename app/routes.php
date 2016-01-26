@@ -22,6 +22,7 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/recubrimiento', 'RecubrimientoControlador');
 	Route::controller('/material',  'MaterialControlador');
 	Route::controller('/mantenimiento',  'MantenimientoControlador');
+
 	Route::controller('/contratacion',  'ContratacionControlador');
 	Route::controller('/cesion-derecho',  'CesionDerechoControlador');
 	Route::controller('/titulo-propiedad',  'TituloPropiedadControlador');

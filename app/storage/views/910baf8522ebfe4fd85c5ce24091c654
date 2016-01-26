@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('CotizacionControlador@getIndex'); ?>"><i class="fa fa-truck"></i> Catálogo de proveedores</a></li>

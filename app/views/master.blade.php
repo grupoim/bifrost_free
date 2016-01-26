@@ -35,7 +35,12 @@
   <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">
   <!--*naza-->
   <link href="{{ URL::asset('css/prism.css') }}" rel="stylesheet">
-  <link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">   
+  <link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">
+
+  
+  
+ 
+  
   <!--*naza-->
   
   <script src="{{ URL::asset('js/respond.min.js') }}"></script>

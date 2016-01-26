@@ -6,11 +6,10 @@
       
 $(document).on('ready', function(){
 
-$(".productos").chosen({   
-    no_results_text: "No hay resultados para:",
-    disable_search_threshold:0,
-    width: "100%",
-    display_selected_options:true
+ $(".productos").chosen({   
+    no_results_text: "No hay resultados para:",    
+    'placeholder_text_multiple':'Da clic para escoger productos...',
+    width: "365px"
   });
 
 
@@ -104,7 +103,7 @@ checkBox.onchange();
 <ul id="myTab" class="nav nav-tabs">
                       <li class= @if($tab == 'tab1' or $tab == '') "active" @else "" @endif><a href="#terreno-nicho" data-toggle="tab"><h5><strong><i class="fa fa-map-marker fa-fw"></i> Terreno/Nicho</strong></h5></a></li>
                       <li class= @if($tab == 'tab2' or $registro=='edit_tab2') "active" @else "" @endif><a href="#mtto" data-toggle="tab"><h5><strong><i class="fa fa-leaf fa-fw"></i> Mantenimiento</strong></h5></a></li>
-                      <li class= @if($tab == 'tab3' or $registro=='edit_tab3') "active" @else "" @endif><a href="#paquete" data-toggle="tab"><h5><strong><i class="fa fa-cubes"></i> Paquetes</strong></h5></a></li>
+                      <li class= @if($tab == 'tab3' or $registro=='edit_tab3') "active" @else "" @endif><a href="#paquete" data-toggle="tab"><h5><strong><i class="fa fa-cubes"></i> Productos y paquetes</strong></h5></a></li>
                       <li class= @if($tab == 'tab4' or $registro=='edit_tab4') "active" @else "" @endif><a href="#servicio" data-toggle="tab"><h5><strong><i class="fa fa-hospital-o fa-fw"></i> Servicio Funeral</strong></h5></a></li>
                       <li class= @if($tab == 'tab5' or $registro=='edit_tab5') "active" @else "" @endif><a href="#tramite" data-toggle="tab"><h5><strong><i class="fa fa-briefcase fa-fw"></i> Trámite</strong></h5></a></li>
                       <li class= @if($tab == 'tab6' or $registro=='edit_tab6') "active" @else "" @endif><a href="#inhumacion" data-toggle="tab"><h5><strong><i class="fa fa-arrow-circle-down fa-fw"></i> Inhumación</strong></h5></a></li>

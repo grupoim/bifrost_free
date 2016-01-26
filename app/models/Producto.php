@@ -24,8 +24,8 @@ class Producto extends Eloquent {
 		return $this->hasMany('Precio');
 	}
 
-	public function paquete() { /* TENGO DUDAS EN LA APLICACION */
-		return $this->hasMany('Paquete', 'foreign_key', 'paquete_id');
+	public function paquete() { 
+		return $this->hasMany('Paquete');
 	}
 
 	public function recubrimiento() {
@@ -54,5 +54,9 @@ class Producto extends Eloquent {
 
 	public function ventaproducto() {
 		return $this->hasMany('VentaProducto');
+	}
+
+	public function productos() {
+		return $this->belongsToMany('Producto', 'paquete', 'paquete_id', 'producto_id');
 	}
 }
