@@ -306,7 +306,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                         <th>Tipo de corte</th>
                                         <th>Área</th>
                                         <th>Costo</th>
-                                        <th>Captura</th>
+                                        {{--<th>Captura</th>--}}
                                                                                                                                                                                                                                           
                                     </tr>
                                 </thead>
@@ -314,7 +314,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                     @foreach($cortes as $crt => $corte)                                   
                                                                        
                                         <td>{{ $crt+1 }} </td>
-                                        <td> {{{date("d-m-Y", strtotime($corte->fecha))}}} </td>
+                                        <td title="Captura {{{date("d-m-Y", strtotime ($corte->fecha_captura))}}}"> {{{date("d-m-Y", strtotime($corte->fecha))}}}  </td>
                                         <td><span class="badge">{{{$corte->lamina}}}</span> {{{$corte->material_color}}}</td>                                        
                                         <td>{{{$corte->nombre}}}</td>
                                         
@@ -322,7 +322,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                         <td>{{{$corte->tipo_corte}}}</td>                                       
                                         <td>{{{number_format($corte->area_venta, 2, '.', ',')}}}m<sup>2</sup></td>
                                         <td>${{{number_format($corte->costo, 2, '.', ',')}}}</td>
-                                         <td>{{{date("d-m-Y", strtotime ($corte->fecha_captura))}}}</td>                          
+                                        {{--<td>{{{date("d-m-Y", strtotime ($corte->fecha_captura))}}}</td>--}}
                                     </tr>
                                     @endforeach
 
