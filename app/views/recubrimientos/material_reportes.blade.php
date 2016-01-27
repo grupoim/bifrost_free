@@ -300,8 +300,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                     <tr>                                                                        
                                         {{--<th>#</th>--}}
                                         <th>Fecha Corte</th>
-                                        <th>Lámina</th>
-                                        <th>Material</th>
+                                        <th>Lámina</th>                                        
                                         <th>Pieza</th>
                                         <th>Motivo</th>
                                         <th>Tipo de corte</th>
@@ -316,8 +315,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                                                        
                                         {{--<td>{{ $crt+1 }} </td>--}}
                                         <td> {{{date("d-m-Y", strtotime($corte->fecha))}}} </td>
-                                        <td><span class="badge">{{{$corte->lamina}}} </span></td>
-                                        <td>{{{$corte->material_color}}}</td>
+                                        <td><span class="badge">{{{$corte->lamina}}}</span> {{{$corte->material_color}}}</td>                                        
                                         <td>{{{$corte->nombre}}}</td>
                                         
                                         <td><span class="label @if($corte->tipo_baja == 'Venta') label-success @elseif($corte->tipo_baja == 'Stock') label-info @elseif ($corte->tipo_baja == 'Reposicion') label-danger @endif">{{{$corte->tipo_baja}}}</span></td>

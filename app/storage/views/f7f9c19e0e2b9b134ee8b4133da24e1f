@@ -298,10 +298,9 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                             <table cellpadding="0" cellspacing="0" border="0" id="data-table2" width="100%">
                                 <thead>
                                     <tr>                                                                        
-                                        <th>#</th>
+                                        <?php /*<th>#</th>*/ ?>
                                         <th>Fecha Corte</th>
-                                        <th>Lámina</th>
-                                        <th>Material</th>
+                                        <th>Lámina</th>                                        
                                         <th>Pieza</th>
                                         <th>Motivo</th>
                                         <th>Tipo de corte</th>
@@ -314,10 +313,9 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                 <tbody>
                                     <?php foreach($cortes as $crt => $corte): ?>                                   
                                                                        
-                                        <td><?php echo $crt+1; ?> </td>
+                                        <?php /*<td><?php echo $crt+1; ?> </td>*/ ?>
                                         <td> <?php echo e(date("d-m-Y", strtotime($corte->fecha))); ?> </td>
-                                        <td><span class="badge"><?php echo e($corte->lamina); ?> </span></td>
-                                        <td><?php echo e($corte->material_color); ?></td>
+                                        <td><span class="badge"><?php echo e($corte->lamina); ?></span> <?php echo e($corte->material_color); ?></td>                                        
                                         <td><?php echo e($corte->nombre); ?></td>
                                         
                                         <td><span class="label <?php if($corte->tipo_baja == 'Venta'): ?> label-success <?php elseif($corte->tipo_baja == 'Stock'): ?> label-info <?php elseif($corte->tipo_baja == 'Reposicion'): ?> label-danger <?php endif; ?>"><?php echo e($corte->tipo_baja); ?></span></td>
