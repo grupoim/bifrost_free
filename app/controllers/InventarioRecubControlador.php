@@ -149,7 +149,7 @@ use Carbon\Carbon;
 		for ($i= 0; $i < Input::get('cantidad'); $i++) { 
 			$lamina = new LaminaAlta;
 
-			$area_total = round(Input::get('alto')*Input::get('largo'), 2) ;
+			$area_total = number_format(Input::get('largo') * Input::get('alto'), 2, '.', '');
 			$precio_total = Input::get('precio_total');
 			$lamina->folio_factura = Input::get('folio_factura');
 			$lamina->folio_lamina = 0000;
@@ -247,8 +247,8 @@ use Carbon\Carbon;
 								//obtiene el id del corte especial
 									$pieza_marmoleria = PiezaMarmoleria::where('nombre', '=', 'Corte especial')->firstorfail();
 								//saca el area de venta con la pieza añadida al folio
-
-								$area_venta = round(Input::get('largo') * Input::get('alto'),2);
+												
+								$area_venta = number_format(Input::get('largo') * Input::get('alto'), 2, '.', '');
 								//costo del material usado 
 								$inventario = VistaInventarioRecubrimiento::find(Input::get('material_disponible'));
 								$costo_material = ($inventario->precio_inicial * $area_venta)/ $inventario->area_total;

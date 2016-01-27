@@ -114,6 +114,7 @@
     <?php $__env->stopSection(); ?>
 <?php $__env->startSection('module'); ?>
 
+<?php /*
 <?php if(Auth::user()->departamento->id == 1): ?>
 <a class="btn btn-xs btn-default" href="<?php echo action('InventarioRecubControlador@getBoom'); ?>" name="folio" value=""  title="Borrar todos los registros del inventario"> <i class="fa fa-bomb"></i> Boom!!</a>
   <div class="row">
@@ -124,7 +125,7 @@
     </div>  
 
       <?php endif; ?>
-      <?php endif; ?>
+      <?php endif; ?> */ ?>
       
             <div class="col-md-4">
 				<?php if($factura_error=='error'): ?>
