@@ -298,7 +298,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                             <table cellpadding="0" cellspacing="0" border="0" id="data-table2" width="100%">
                                 <thead>
                                     <tr>                                                                        
-                                        {{--<th>#</th>--}}
+                                        <th>#</th>
                                         <th>Fecha Corte</th>
                                         <th>Lámina</th>                                        
                                         <th>Pieza</th>
@@ -313,7 +313,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                                 <tbody>
                                     @foreach($cortes as $crt => $corte)                                   
                                                                        
-                                        {{--<td>{{ $crt+1 }} </td>--}}
+                                        <td>{{ $crt+1 }} </td>
                                         <td> {{{date("d-m-Y", strtotime($corte->fecha))}}} </td>
                                         <td><span class="badge">{{{$corte->lamina}}}</span> {{{$corte->material_color}}}</td>                                        
                                         <td>{{{$corte->nombre}}}</td>
