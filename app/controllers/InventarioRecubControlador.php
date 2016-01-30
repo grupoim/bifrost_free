@@ -40,8 +40,8 @@ use Carbon\Carbon;
 		}
 		public function getReportes(){
 			$dataModule["status"] = Session::pull('status','nuevo');
-			$dataModule["inventarios"]= VistaInventarioRecubrimiento::where('activo',1)->get();			
-			$dataModule["costo_inventario"]= VistaInventarioRecubGeneral::sum('precio_stock');
+			$dataModule["inventarios"]= VistaInventarioRecubGeneral::orderBy('material_color', 'desc')->get();			
+			$dataModule["costo_inventario"]= VistaInventarioRecubrimiento::sum('precio_stock');
 			$dataModule["costo_reposicion"] = VistaInventarioRecubGeneral::sum('perdida_reposicion');
 			$dataModule["costo_produccion"] = VistaInventarioRecubGeneral::sum('costo_produccion');
 			$dataModule["costo_venta"] = VistaInventarioRecubGeneral::sum('ventas');
