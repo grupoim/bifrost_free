@@ -1287,7 +1287,8 @@ class Process
     {
         $that = $this;
         $out = self::OUT;
-        $callback = function ($type, $data) use ($that, $callback, $out) {
+        $err = self::ERR;
+        $callback = function ($type, $data) use ($that, $callback, $out, $err) {
             if ($out == $type) {
                 $that->addOutput($data);
             } else {

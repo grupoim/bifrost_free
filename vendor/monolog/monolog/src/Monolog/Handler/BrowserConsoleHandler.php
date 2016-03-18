@@ -26,7 +26,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritDoc}
      *
-     * Formatted output may contain some formatting markers to be transferred to `console.log` using the %c format.
+     * Formatted output may contain some formatting markers to be transfered to `console.log` using the %c format.
      *
      * Example of formatted string:
      *
@@ -55,19 +55,15 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     /**
      * Convert records to javascript console commands and send it to the browser.
-     * This method is automatically called on PHP shutdown if output is HTML or Javascript.
+     * This method is automatically called on PHP shutdown if output is HTML.
      */
     public static function send()
     {
-        $htmlTags = true;
         // Check content type
         foreach (headers_list() as $header) {
             if (stripos($header, 'content-type:') === 0) {
-                // This handler only works with HTML and javascript outputs
-                // text/javascript is obsolete in favour of application/javascript, but still used
-                if (stripos($header, 'application/javascript') !== false || stripos($header, 'text/javascript') !== false) {
-                    $htmlTags = false;
-                } elseif (stripos($header, 'text/html') === false) {
+                if (stripos($header, 'text/html') === false) {
+                    // This handler only works with HTML outputs
                     return;
                 }
                 break;
@@ -75,11 +71,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
         }
 
         if (count(self::$records)) {
-            if ($htmlTags) {
-                echo '<script>' , self::generateScript() , '</script>';
-            } else {
-                echo self::generateScript();
-            }
+            echo '<script>' . self::generateScript() . '</script>';
             self::reset();
         }
     }
@@ -174,7 +166,7 @@ class BrowserConsoleHandler extends AbstractProcessingHandler
 
     private static function quote($arg)
     {
-        return '"' . addcslashes($arg, "\"\n\\") . '"';
+        return '"' . addcslashes($arg, "\"\n") . '"';
     }
 
     private static function call()

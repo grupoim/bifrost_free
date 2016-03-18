@@ -143,7 +143,7 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 		}
 		else
 		{
-			$this->lastPage = max((int) ceil($this->total / $this->perPage), 1);
+			$this->lastPage = (int) ceil($this->total / $this->perPage);
 
 			$this->currentPage = $this->calculateCurrentPage($this->lastPage);
 		}

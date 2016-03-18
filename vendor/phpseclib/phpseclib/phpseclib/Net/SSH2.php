@@ -61,7 +61,7 @@
  * @category  Net
  * @package   Net_SSH2
  * @author    Jim Wigginton <terrafrost@php.net>
- * @copyright 2007 Jim Wigginton
+ * @copyright MMVII Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  * @link      http://phpseclib.sourceforge.net
  */
@@ -2261,7 +2261,7 @@ class Net_SSH2
     /**
      * Execute Command
      *
-     * If $callback is set to false then Net_SSH2::_get_channel_packet(NET_SSH2_CHANNEL_EXEC) will need to be called manually.
+     * If $block is set to false then Net_SSH2::_get_channel_packet(NET_SSH2_CHANNEL_EXEC) will need to be called manually.
      * In all likelihood, this is not a feature you want to be taking advantage of.
      *
      * @param String $command
@@ -3275,22 +3275,26 @@ class Net_SSH2
      */
     function _send_channel_packet($client_channel, $data)
     {
-        while (strlen($data)) {
+        /* The maximum amount of data allowed is determined by the maximum
+           packet size for the channel, and the current window size, whichever
+           is smaller.
+
+           -- http://tools.ietf.org/html/rfc4254#section-5.2 */
+        $max_size = min(
+            $this->packet_size_client_to_server[$client_channel],
+            $this->window_size_client_to_server[$client_channel]
+        );
+        while (strlen($data) > $max_size) {
             if (!$this->window_size_client_to_server[$client_channel]) {
                 $this->bitmap^= NET_SSH2_MASK_WINDOW_ADJUST;
                 // using an invalid channel will let the buffers be built up for the valid channels
-                $this->_get_channel_packet(-1);
+                $output = $this->_get_channel_packet(-1);
                 $this->bitmap^= NET_SSH2_MASK_WINDOW_ADJUST;
+                $max_size = min(
+                    $this->packet_size_client_to_server[$client_channel],
+                    $this->window_size_client_to_server[$client_channel]
+                );
             }
-
-            /* The maximum amount of data allowed is determined by the maximum
-               packet size for the channel, and the current window size, whichever
-               is smaller.
-                 -- http://tools.ietf.org/html/rfc4254#section-5.2 */
-            $max_size = min(
-                $this->packet_size_client_to_server[$client_channel],
-                $this->window_size_client_to_server[$client_channel]
-            );
 
             $temp = $this->_string_shift($data, $max_size);
             $packet = pack('CN2a*',
@@ -3299,13 +3303,27 @@ class Net_SSH2
                 strlen($temp),
                 $temp
             );
+
             $this->window_size_client_to_server[$client_channel]-= strlen($temp);
+
             if (!$this->_send_binary_packet($packet)) {
                 return false;
             }
         }
 
-        return true;
+        if (strlen($data) >= $this->window_size_client_to_server[$client_channel]) {
+            $this->bitmap^= NET_SSH2_MASK_WINDOW_ADJUST;
+            $this->_get_channel_packet(-1);
+            $this->bitmap^= NET_SSH2_MASK_WINDOW_ADJUST;
+        }
+
+        $this->window_size_client_to_server[$client_channel]-= strlen($data);
+
+        return $this->_send_binary_packet(pack('CN2a*',
+            NET_SSH2_MSG_CHANNEL_DATA,
+            $this->server_channels[$client_channel],
+            strlen($data),
+            $data));
     }
 
     /**
@@ -3354,7 +3372,7 @@ class Net_SSH2
      */
     function _disconnect($reason)
     {
-        if ($this->bitmap & NET_SSH2_MASK_CONNECTED) {
+        if ($this->bitmap) {
             $data = pack('CNNa*Na*', NET_SSH2_MSG_DISCONNECT, $reason, 0, '', 0, '');
             $this->_send_binary_packet($data);
             $this->bitmap = 0;

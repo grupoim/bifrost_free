@@ -204,9 +204,9 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     public function testCondition()
     {
         $route = new Route('/');
-        $this->assertSame('', $route->getCondition());
+        $this->assertEquals(null, $route->getCondition());
         $route->setCondition('context.getMethod() == "GET"');
-        $this->assertSame('context.getMethod() == "GET"', $route->getCondition());
+        $this->assertEquals('context.getMethod() == "GET"', $route->getCondition());
     }
 
     public function testCompile()

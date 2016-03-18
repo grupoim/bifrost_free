@@ -6,7 +6,7 @@ require_once("../dompdf_config.inc.php");
 $local = array("::1", "127.0.0.1");
 $is_local = in_array($_SERVER['REMOTE_ADDR'], $local);
 
-if ( auth_ok() && $is_local && isset( $_POST["html"] ) ) {
+if ( isset( $_POST["html"] ) && $is_local ) {
 
   if ( get_magic_quotes_gpc() )
     $_POST["html"] = stripslashes($_POST["html"]);
@@ -27,7 +27,7 @@ if ( auth_ok() && $is_local && isset( $_POST["html"] ) ) {
 <a name="demo"> </a>
 <h2>Demo</h2>
 
-<?php if (auth_ok() && $is_local) { ?>
+<?php if ($is_local) { ?>
 
 <p>Enter your html snippet in the text box below to see it rendered as a
 PDF: (Note by default, remote stylesheets, images &amp; inline PHP are disabled.)</p>
@@ -79,8 +79,6 @@ saving it to a file first.)</p>
     User input has been disabled for remote connections.
   </p>
   
-  <?php echo auth_get_link(); ?>
-
 <?php } ?>
 
 <?php include("foot.inc"); ?>

@@ -268,7 +268,7 @@ class Response
     {
         $headers = $this->headers;
 
-        if ($this->isInformational() || $this->isEmpty()) {
+        if ($this->isInformational() || in_array($this->statusCode, array(204, 304))) {
             $this->setContent(null);
             $headers->remove('Content-Type');
             $headers->remove('Content-Length');

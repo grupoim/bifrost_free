@@ -309,11 +309,9 @@ class Str {
 	 */
 	public static function snake($value, $delimiter = '_')
 	{
-		$key = $value.$delimiter;
-
-		if (isset(static::$snakeCache[$key]))
+		if (isset(static::$snakeCache[$value.$delimiter]))
 		{
-			return static::$snakeCache[$key];
+			return static::$snakeCache[$value.$delimiter];
 		}
 
 		if ( ! ctype_lower($value))
@@ -323,7 +321,7 @@ class Str {
 			$value = strtolower(preg_replace('/(.)([A-Z])/', $replace, $value));
 		}
 
-		return static::$snakeCache[$key] = $value;
+		return static::$snakeCache[$value.$delimiter] = $value;
 	}
 
 	/**
@@ -351,16 +349,14 @@ class Str {
 	 */
 	public static function studly($value)
 	{
-		$key = $value;
-
-		if (isset(static::$studlyCache[$key]))
+		if (isset(static::$studlyCache[$value]))
 		{
-			return static::$studlyCache[$key];
+			return static::$studlyCache[$value];
 		}
 
 		$value = ucwords(str_replace(array('-', '_'), ' ', $value));
 
-		return static::$studlyCache[$key] = str_replace(' ', '', $value);
+		return static::$studlyCache[$value] = str_replace(' ', '', $value);
 	}
 
 }

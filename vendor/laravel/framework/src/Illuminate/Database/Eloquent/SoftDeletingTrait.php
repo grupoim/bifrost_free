@@ -42,7 +42,7 @@ trait SoftDeletingTrait {
 	{
 		if ($this->forceDeleting)
 		{
-			return $this->withTrashed()->where($this->getKeyName(), $this->getKey())->forceDelete();
+			$this->withTrashed()->where($this->getKeyName(), $this->getKey())->forceDelete();
 		}
 
 		return $this->runSoftDelete();

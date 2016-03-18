@@ -97,7 +97,6 @@
 												
 													<?php endif; ?>
 										<td> <a  type="btn" href="<?php echo URL::to('personal-operativo/asistencia/'.$lista->id); ?>" class="btn btn-sm btn-default" id="btn_send" title="ver detalles"><i class="fa fa-search"></i></a> 
-											 <a  type="btn" href="<?php echo URL::to('personal-operativo/nomina/'.$lista->id); ?>" class="btn btn-sm btn-default" id="btn_send" title="Pagos de nomina"><i class="fa fa-usd"></i></a> 
 												<?php if($lista->activa == 1): ?> 
 
 										    	<?php if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )): ?>

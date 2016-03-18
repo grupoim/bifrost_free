@@ -1033,6 +1033,16 @@ class BelongsToMany extends Relation {
 	}
 
 	/**
+	 * Get the fully qualified parent key name.
+	 *
+	 * @return string
+	 */
+	protected function getQualifiedParentKeyName()
+	{
+		return $this->parent->getQualifiedKeyName();
+	}
+
+	/**
 	 * Get the intermediate table for the relationship.
 	 *
 	 * @return string

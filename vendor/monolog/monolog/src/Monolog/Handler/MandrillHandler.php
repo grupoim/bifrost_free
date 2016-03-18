@@ -20,8 +20,8 @@ use Monolog\Logger;
  */
 class MandrillHandler extends MailHandler
 {
+    protected $client;
     protected $message;
-    protected $apiKey;
 
     /**
      * @param string                  $apiKey  A valid Mandrill API key
@@ -63,6 +63,7 @@ class MandrillHandler extends MailHandler
             'async' => false,
         )));
 
-        Curl\Util::execute($ch);
+        curl_exec($ch);
+        curl_close($ch);
     }
 }

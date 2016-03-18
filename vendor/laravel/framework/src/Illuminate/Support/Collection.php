@@ -619,13 +619,8 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	 * @param  \Closure  $callback
 	 * @return mixed
 	 */
-	public function sum($callback = null)
+	public function sum($callback)
 	{
-		if (is_null($callback))
-		{
-			return array_sum($this->items);
-		}
-
 		if (is_string($callback))
 		{
 			$callback = $this->valueRetriever($callback);

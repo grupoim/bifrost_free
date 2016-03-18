@@ -42,14 +42,14 @@ class CommandTester
     /**
      * Executes the command.
      *
-     * Available execution options:
+     * Available options:
      *
      *  * interactive: Sets the input interactive flag
      *  * decorated:   Sets the output decorated flag
      *  * verbosity:   Sets the output verbosity flag
      *
-     * @param array $input   An array of command arguments and options
-     * @param array $options An array of execution options
+     * @param array $input   An array of arguments and options
+     * @param array $options An array of options
      *
      * @return int The command exit code
      */

@@ -56,7 +56,7 @@
  * @category  Crypt
  * @package   Crypt_AES
  * @author    Jim Wigginton <terrafrost@php.net>
- * @copyright 2008 Jim Wigginton
+ * @copyright MMVIII Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  * @link      http://phpseclib.sourceforge.net
  */

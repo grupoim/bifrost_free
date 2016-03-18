@@ -150,7 +150,7 @@ class ClosureParser
             // Combine the two arrays to create a canonical hash of variable names and values
             $this->usedVariables = array();
             foreach ($usedVarNames as $name) {
-                if (array_key_exists($name, $usedVarValues)) {
+                if (isset($usedVarValues[$name])) {
                     $this->usedVariables[$name] = $usedVarValues[$name];
                 }
             }
