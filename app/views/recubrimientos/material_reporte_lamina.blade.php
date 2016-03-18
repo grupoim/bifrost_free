@@ -233,7 +233,7 @@
                  <td>{{{date("d-m-Y", strtotime($reposicion->created_at))}}}</td>
                  <td> {{{$reposicion->pieza}}}</td>                 
                  <td>{{{$reposicion->motivos}}}</td>
-                 <td>{{{$reposicion->area_requerida}}} m<sup>2</sup></td>
+                 <td>{{{$reposicion->area_venta}}} m<sup>2</sup></td>
                  <td>${{{number_format($reposicion->costo_material_usado, 2, '.', ',')}}}</td>                 
                  <td>${{{number_format($reposicion->precio_reposicion, 2, '.', ',')}}}</td> 
                  
