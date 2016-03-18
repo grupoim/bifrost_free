@@ -98,7 +98,36 @@
          </select>                                    
          
       </div>
-    </div>                       
+    </div> 
+
+    <hr>
+    <div class="form-group">
+          <label class="col-lg-2 control-label">Salario diario</label>
+          <div class="col-lg-5">
+            <input type="number" class="form-control" placeholder="$0.00" id="apellido_materno" name="salario_diario" 
+           @if ($agregar == true) 
+            value= "{{Input::old('salario_diario')}}">
+           @else 
+            value = @if(count($empleado_r)> 0) "{{{$empleado_r->salario_diario}}}" @else " " @endif>
+           @endif
+          
+            @if($errors->has('apellido_materno'))<div align="center" class="alert alert-danger"> {{$errors->first('apellido_materno')}}</div> @endif
+          </div>
+        </div>  
+
+     <div class="form-group">
+          <label class="col-lg-2 control-label">Salario Semanal</label>
+          <div class="col-lg-5">
+            <input type="text" class="form-control" placeholder="$0.00" id="apellido_materno" name="salario_semanal" 
+           @if ($agregar == true) 
+            value= "{{Input::old('salario_semanal')}}">
+           @else 
+            value = @if(count($empleado_r->salario_semanal)> 0) "{{{$empleado_r->salario_semanal}}}" @else " " @endif>
+           @endif
+          
+            @if($errors->has('apellido_materno'))<div align="center" class="alert alert-danger"> {{$errors->first('apellido_materno')}}</div> @endif
+          </div>
+        </div>                     
                                                                
     <div class="col-lg-2 control-label"> 
 	    <button type="submit" class="btn btn-sm btn-primary">

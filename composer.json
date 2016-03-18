@@ -6,7 +6,10 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"navruzm/lmongo": "*@dev"
+		"navruzm/lmongo": "*@dev",
+		"thujohn/pdf": "dev-master",
+		"barryvdh/laravel-dompdf": "0.4.*",
+		"maatwebsite/excel": "~1.3"
 	},
 	"autoload": {
 		"classmap": [
