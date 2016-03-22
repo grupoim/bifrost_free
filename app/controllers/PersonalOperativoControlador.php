@@ -390,7 +390,7 @@ use Carbon\Carbon;
 			$persona->save();
 
 			$salario = Salario::where('empleado_id',$id)->where('activo',1)->firstOrfail();
-			if($salario){
+			if(isset($salario)){
 
 			if ($salario->salario_semanal <> Input::get('salario_semanal') and $salario->salario_diario <> Input::get('salario_diario'))
 			 {

@@ -1,3 +1,6 @@
 composer.lock
 vendor/
+vendor/composer/
 bootstrap/compiled.php
+vendor/*
+*.lock
