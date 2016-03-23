@@ -97,7 +97,7 @@
 												
 													@endif
 										<td> <a  type="btn" href="{{URL::to('personal-operativo/asistencia/'.$lista->id)}}" class="btn btn-sm btn-default" id="btn_send" title="ver detalles"><i class="fa fa-search"></i></a> 
-											 <a  type="btn" href="{{URL::to('personal-operativo/nomina/'.$lista->id)}}" class="btn btn-sm btn-default" id="btn_send" title="Pagos de nomina"><i class="fa fa-usd"></i></a> 
+											 <a  type="btn" href="{{URL::to('personal-operativo/nomina/'.$lista->id)}}" class="btn btn-sm btn-default" title="Pagos de nomina"><i class="fa fa-usd"></i></a> 
 												@if($lista->activa == 1) 
 
 										    	@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))

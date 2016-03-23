@@ -101,7 +101,7 @@
                       </div>
                      @endif
 
-                      @if($suma_bono_mtto)
+                      @if($suma_bono_mtto > 0)
                       <div class="col-md-2">
                         <div class="well">
                           <h4><strong>B.M.</strong> ${{{number_format($suma_bono_mtto, 2, '.', ',')}}}</h4>                                                  

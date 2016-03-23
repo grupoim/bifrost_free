@@ -77,7 +77,7 @@ use Carbon\Carbon;
 			$dataModule["suma_h_extra"]= VistaNomina::where('lista_id','=',$lista_id)->sum('h_extra');
 			$dataModule["suma_p_dominical"]= VistaNomina::where('lista_id','=',$lista_id)->sum('p_dominical');
 			$dataModule["suma_otras_percepciones"]= VistaNomina::where('lista_id','=',$lista_id)->sum('otras_percepciones');
-			$dataModule["suma_bono_mtto"]= VistaNomina::where('lista_id','=',$lista_id)->sum('p_dominical');
+			$dataModule["suma_bono_mtto"]= VistaNomina::where('lista_id','=',$lista_id)->sum('bono_mtto');
 			$dataModule["suma_infonavit"]= VistaNomina::where('lista_id','=',$lista_id)->sum('infonavit');
 			$dataModule["suma_abono_prestamo"]= VistaNomina::where('lista_id','=',$lista_id)->sum('abono_prestamo');
 			$dataModule["total"]= VistaNomina::where('lista_id','=',$lista_id)->sum('nomina');
