@@ -68,6 +68,8 @@ use Carbon\Carbon;
 		}
 
 		public function getNomina($lista_id){
+			if((Auth::user()->departamento->id == 6) or (Auth::user()->departamento->id == 1 )){
+
 			$dataModule["asistencias"] = VistaNomina::where('lista_id','=',$lista_id)->get();			
 			$dataModule["lista"] = Lista::find($lista_id);			
 			$dataModule["revisados_operaciones"] = VistaNomina::where('lista_id','=',$lista_id)->where('revisado',1)->count();
@@ -84,6 +86,8 @@ use Carbon\Carbon;
 
 
  			return View::make($this->department.".main", $this->data)->nest('child', 'operaciones.nomina', $dataModule);		
+ 		}else 
+ 		return Redirect::to('personal-operativo/lista');
 
 		}
 		public function postNomina(){
