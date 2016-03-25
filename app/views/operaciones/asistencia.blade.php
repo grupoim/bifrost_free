@@ -157,6 +157,7 @@
 										<td> @if(Str::title($empleado->departamento) == 'Mantenimiento')Mtto.
 											@elseif(Str::title($empleado->departamento) == 'Operaciones')Serv.
 											@elseif(Str::title($empleado->departamento) == 'Recubrimientos')Recub.
+											@elseif(Str::title($empleado->departamento) == 'Administracion')Adm.
 											@else {{{Str::title($empleado->departamento)}}}
 											@endif	
 											</td>
