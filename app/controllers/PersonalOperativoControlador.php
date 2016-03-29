@@ -547,7 +547,7 @@ use Carbon\Carbon;
 				//ESPACIO PARA ENCABEZADO
 				$sheet->mergeCells('A1:M1');
 								
-
+/*
  				//FORMATOS DE LAS COL
  				$sheet->setColumnFormat(array(
 										    'B' => '[$$-409]#,##0.00',
@@ -561,7 +561,7 @@ use Carbon\Carbon;
 										    'K' => '[$$-409]#,##0.00',
 										    'L' => '[$$-409]#,##0.00',
 
-										));
+										)); */
  				//formato de celdas TITULOS en negritas
  				$sheet->cells('A1:O1', function ($cells){
  				//primer renglon en negritas
