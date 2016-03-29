@@ -264,9 +264,9 @@ use Carbon\Carbon;
 			if ($sabado+$domingo+$lunes+$martes+$miercoles+$jueves+$viernes == 7 and Input::get('semana_completa')==1) {
 				$asistencia->semana_completa = 1;
 			}else{$asistencia->semana_completa = 0;}
-			if(Input::has('observaciones')){
+			
 				$asistencia->observaciones = Input::get('observaciones');
-			}
+			
 			
 			$asistencia->dias_pago = $dias_pago;
 
