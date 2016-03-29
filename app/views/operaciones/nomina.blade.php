@@ -184,20 +184,10 @@
             <div class="pull-left"> <strong>Lista de asistencia del {{{date("d/M/Y", strtotime($lista->fecha_inicio))}}} al {{{date("d/M/Y", strtotime($lista->fecha_fin))}}}</strong> </div>
 	<!-- Button Group -->
     	<div class="btn-group pull-right">
-    	@if($lista->activa == 1) 
-
     	@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
     	<a  type="btn" href="{{URL::to('personal-operativo/asistencia/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-check"></i> Ver incidencias</a>
 		@if($total_empleados == $revisados_contabilidad)
 		<a  type="btn" href="{{URL::to('personal-operativo/excel/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-file-excel-o"></i> Exportar a Excel</a>
-		@endif
-		@endif
-		@else
-		@if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 ))
-		<a  type="btn" href="{{URL::to('personal-operativo/abreperiodo/'.$lista->id)}}" class="btn btn-m btn-default" id="btn_send" title="Clic"><i class="fa fa-lock"></i> Abrir asistencia</a>
-		
-		@else
-		<a  type="btn" href="#" class="btn btn-m btn-danger" title="Esta lista se encuentra cerrada, ya fue revisada por Julio"><i class="fa fa-lock"></i> Lista Revisada</a>
 		@endif
 		@endif
     	</div>
