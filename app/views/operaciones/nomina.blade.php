@@ -259,7 +259,7 @@
 										</td>
 										
 										 <td>
-											   <button type="submit" class="btn btn-m btn-default activa" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 											  
+											   <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 											  
 											@if($empleado->revision_contabilidad == 1)
 											<span class="label label-info"><i class="fa fa-check"></i></span>
 											@else
