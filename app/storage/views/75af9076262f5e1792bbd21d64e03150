@@ -158,6 +158,7 @@
 										<td> <?php if(Str::title($empleado->departamento) == 'Mantenimiento'): ?>Mtto.
 											<?php elseif(Str::title($empleado->departamento) == 'Operaciones'): ?>Serv.
 											<?php elseif(Str::title($empleado->departamento) == 'Recubrimientos'): ?>Recub.
+											<?php elseif(Str::title($empleado->departamento) == 'Administracion'): ?>Adm.
 											<?php else: ?> <?php echo e(Str::title($empleado->departamento)); ?>
 
 											<?php endif; ?>	
