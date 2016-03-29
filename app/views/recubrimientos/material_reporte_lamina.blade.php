@@ -252,7 +252,7 @@
                               <td></td>
                               <td></td>
                               <td align="left"> <strong>Total</strong></td>
-                              <td>{{{$reposiciones->sum('area_requerida')}}} m<sup>2</sup></td>
+                              <td>{{{$reposiciones->sum('area_venta')}}} m<sup>2</sup></td>
                               <td><strong>${{{number_format($reposiciones->sum('costo_material_usado'),2, '.', ',')}}}</strong></td>
                               <td><strong>${{{number_format($reposiciones->sum('precio_reposicion'),2, '.', ',')}}}</strong></td>
                             </tr>
