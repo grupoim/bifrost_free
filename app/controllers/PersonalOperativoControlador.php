@@ -15,8 +15,10 @@ use Carbon\Carbon;
 		}
 
 		public function getLista(){
+			
+
 			$dataModule["empleados"] = VistaEmpleado::where('activo',1)->get();						
-			$dataModule["listas"] = Lista::all();
+			$dataModule["listas"] = Lista::all();			
 					 			
  			return View::make($this->department.".main", $this->data)->nest('child', 'operaciones.lista', $dataModule);		
 		}

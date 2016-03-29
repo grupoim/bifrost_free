@@ -233,7 +233,7 @@
                  <td><?php echo e(date("d-m-Y", strtotime($reposicion->created_at))); ?></td>
                  <td> <?php echo e($reposicion->pieza); ?></td>                 
                  <td><?php echo e($reposicion->motivos); ?></td>
-                 <td><?php echo e($reposicion->area_requerida); ?> m<sup>2</sup></td>
+                 <td><?php echo e($reposicion->area_venta); ?> m<sup>2</sup></td>
                  <td>$<?php echo e(number_format($reposicion->costo_material_usado, 2, '.', ',')); ?></td>                 
                  <td>$<?php echo e(number_format($reposicion->precio_reposicion, 2, '.', ',')); ?></td> 
                  
@@ -252,7 +252,7 @@
                               <td></td>
                               <td></td>
                               <td align="left"> <strong>Total</strong></td>
-                              <td><?php echo e($reposiciones->sum('area_requerida')); ?> m<sup>2</sup></td>
+                              <td><?php echo e($reposiciones->sum('area_venta')); ?> m<sup>2</sup></td>
                               <td><strong>$<?php echo e(number_format($reposiciones->sum('costo_material_usado'),2, '.', ',')); ?></strong></td>
                               <td><strong>$<?php echo e(number_format($reposiciones->sum('precio_reposicion'),2, '.', ',')); ?></strong></td>
                             </tr>

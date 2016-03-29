@@ -39,12 +39,21 @@ use Carbon\Carbon;
 
 		}
 		public function getReportes(){
+			
+			$primera = new Carbon('first day of this month');
+			$final = new Carbon('last day of this month');
+
+			$primera = $primera->format('Y-m-d');
+			$final = $final->format('Y-m-d');
+
 			$dataModule["status"] = Session::pull('status','nuevo');
 			$dataModule["inventarios"]= VistaInventarioRecubGeneral::orderBy('material_color', 'desc')->get();			
 			$dataModule["costo_inventario"]= VistaInventarioRecubrimiento::sum('precio_stock');
 			$dataModule["costo_reposicion"] = VistaInventarioRecubGeneral::sum('perdida_reposicion');
 			$dataModule["costo_produccion"] = VistaInventarioRecubGeneral::sum('costo_produccion');
-			$dataModule["costo_venta"] = VistaInventarioRecubGeneral::sum('ventas');
+			$dataModule["costo_venta"] =  MaterialBaja::leftjoin('venta_material_baja', 'material_baja.id', '=', 'venta_material_baja.material_baja_id' )
+											->whereRaw("material_baja.fecha between "."'".$primera."'"." and "."'".$final."'")
+											->sum('precio_pieza'); /*VistaInventarioRecubGeneral::sum('ventas');*/
 			$dataModule["costo_stock"] = VistaInventarioRecubGeneral::sum('stock');
 			$dataModule["piezas"]= PiezaMarmoleria::all();
 			$dataModule["ventas"]= VentaMaterial::all();

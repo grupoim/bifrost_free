@@ -52,7 +52,7 @@
 		</div>	
 
     	@endif
-
+			
 
             <div class="pull-left"> <strong>Listas de asistencia</strong> </div>
 			<div class="pull-right"><a  type="btn" href="{{{URL::to('personal-operativo/agregarperiodo')}}}" class="btn btn-m btn-default" id="btn_send" title="Agregar un nuevo periodo"><i class="fa fa-plus"></i> Agregar periodo</a> </div>

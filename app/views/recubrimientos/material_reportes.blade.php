@@ -161,7 +161,7 @@ window.myBar = new Chart(ctx3).Bar(barChartData, {
                       
                       <div class="col-md-3">
                         <div class="well">
-                          <h2> <i class="fa fa-money"></i>  Ventas: ${{{number_format($costo_venta, 2, '.', ',')}}} </h2>                                                  
+                          <h2> <i class="fa fa-money"></i>  Ventas (Mes): ${{{number_format($costo_venta, 2, '.', ',')}}} </h2>                                                  
                         </div>
                       </div>
 
