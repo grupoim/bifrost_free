@@ -499,7 +499,7 @@ use Carbon\Carbon;
 				{
 
 				$nomina = VistaNomina::select('empleado as Empleado','salario_diario as SD','salario_semanal as Sueldo','dias_pago as DT','nomina_ss as SS',
-					'hora_extra as H.E.', 'p_dominical as PD', 'otras_percepciones as OP', 'bono_mtto as BM', DB::raw('if(infonavit > 0, infonavit * -1, 0 ) as INF'), DB::raw('if(abono_prestamo > 0, abono_prestamo * -1, 0 ) as PRE'), 'nomina as Total', DB::raw('if(ss > 0, " ", 0 ) as firma') )->where('lista_id','=',$lista_id)->get();
+					'h_extra as H.E.', 'p_dominical as PD', 'otras_percepciones as OP', 'bono_mtto as BM', DB::raw('if(infonavit > 0, infonavit * -1, 0 ) as INF'), DB::raw('if(abono_prestamo > 0, abono_prestamo * -1, 0 ) as PRE'), 'nomina as Total', DB::raw('if(ss > 0, " ", 0 ) as firma') )->where('lista_id','=',$lista_id)->get();
 				
 				$lista = Lista::find($lista_id);
 				
