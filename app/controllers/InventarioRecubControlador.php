@@ -21,6 +21,87 @@ use Carbon\Carbon;
 
 
 		}
+
+		public function getColores(){
+			$dataModule["colores"] = VistaMaterialColor::leftjoin('material_color', 'vista_material_color.id', '=', 'material_color.id')->get();
+ 			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.colores', $dataModule);
+		}
+
+		public function getBajacolor($id){
+			$material_color = MaterialColor::find($id);
+			$material_color->activo = 0;
+			$material_color->save();
+			return Redirect::back();
+
+		}
+
+		public function postEditacolor($id){
+			
+
+			$material_color = MaterialColor::find($id);
+			
+			$color = Color::where('id',$material_color->color_id)->firstorfail();
+			$color->nombre = Input::get('nombre_color');
+			$color->save();
+
+			$material = MaterialColor::where('id',$material_color->id)->firstorfail();
+			$material_color->material_id = Input::get('material_id');
+			$material->save();
+			
+
+			return Redirect::action('InventarioRecubControlador@getColores');
+
+		}
+
+		public function getAltacolor($id){
+			$material_color = MaterialColor::find($id);
+			$material_color->activo = 1;
+			$material_color->save();
+			return Redirect::back();
+
+		}
+
+		public function getRecuperaColor($id){
+			$dataModule["material_color_r"] = MaterialColor::select('material.id as material_id',
+																	'material.nombre as material',
+																	'color.id as color_id',
+																 	'color.nombre as color',
+																 	'material_color.id as material_color_id',
+																 	'material_color.activo'
+																 	)
+															->leftjoin('color', 'material_color.color_id', '=', 'color.id')
+															->leftjoin('material', 'material_color.material_id', '=', 'material_id')															
+															->where('material_color.id', $id)->firstorfail();
+ 			$dataModule["colores"] = Color::all();
+ 			$dataModule["materiales"] = Material::all();
+
+ 			return  View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.color_edit', $dataModule);
+
+		}
+
+		public function getAgregarcolor(){
+ 			
+ 			$dataModule["materiales"] = Material::all();
+
+ 			return View::make($this->department.".main", $this->data)->nest('child', 'recubrimientos.color_new', $dataModule);
+
+		}
+
+		public function postAgregacolor(){
+
+			$color = new Color;
+			$color->nombre = Input::get('nombre_color');
+			$color->save();
+
+			$material_color = new MaterialColor;
+			$material_color->color_id =  $color->id;
+			$material_color->material_id = Input::get('material_id');
+			$material_color->save();
+			return Redirect::action('InventarioRecubControlador@getColores');
+			
+		}
+
+
 		public function getBaja(){
 			$dataModule["status"] = Session::pull('status','nuevo');
 			$dataModule["venta_error"] = Session::pull('venta_error');			

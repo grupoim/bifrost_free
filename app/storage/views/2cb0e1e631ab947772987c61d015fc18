@@ -1,1 +1,1 @@
-<li><a href="#"><i class="fa fa-book"></i> Catálogo de colores</a></li>
+<li><a href="<?php echo action('InventarioRecubControlador@getColores'); ?>"><i class="fa fa-book"></i> Catálogo de colores</a></li>
