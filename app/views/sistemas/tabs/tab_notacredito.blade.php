@@ -105,16 +105,14 @@
                 
                                   <label class="col-lg-3 control-label">Cliente</label>
                                   <div class="col-lg-9">
-                                    <input type="text"  Class="form-control" name="cliente" id="cliente" placeholder="Escriba nombre del cliente" autocomplete="off" value="{{Input::old('cliente')}}" required>
-                                    @if($errors->has('cliente')) <div align="center" class="alert alert-danger">{{$errors->first('cliente')}}</div> @endif
+                                    <input type="text"  Class="form-control" name="cliente" id="cliente" placeholder="Escriba nombre del cliente" autocomplete="off" value="{{Input::old('cliente')}}">
                                   </div>
                                 </div>
                 <div class="form-group">
                 
                                   <label class="col-lg-3 control-label">Descuento</label>
                                   <div class="col-lg-9">
-                                    <input type="text" class="form-control" placeholder="Descuento" id="descuento" name="descuento" value="{{Input::old('descuento')}}" required>
-                                  @if($errors->has('descuento')) <div align="center" class="alert alert-danger">{{$errors->first('descuento')}}</div> @endif
+                                    <input type="text" class="form-control" placeholder="Descuento" id="descuento" name="descuento" value="{{Input::old('descuento')}}">
                                   </div>
                                 </div>                
         
@@ -123,7 +121,6 @@
                                   <label class="col-lg-3 control-label">Descripcion</label>
                                   <div class="col-lg-9">
                                     <input type="text" class="form-control" placeholder="Descripcion de la nota de credito" id="descripcion" name="descripcion" value="{{Input::old('descripcion')}}" >
-                                  @if($errors->has('descripcion')) <div align="center" class="alert alert-danger">{{$errors->first('descripcion')}}</div> @endif
                                   </div>
                                 </div>
                                 
@@ -132,7 +129,6 @@
                                   <label class="col-lg-3 control-label">Porcentaje</label>
                                   <div class="col-lg-9">
                                     <input type="text" class="form-control" placeholder="Porcentaje de descuento" id="porcentaje" name="porcentaje" value="{{Input::old('porcentaje')}}">
-                                    @if($errors->has('porcentaje')) <div align="center" class="alert alert-danger">{{$errors->first('porcentaje')}}</div> @endif
                                   </div>
                                 </div> 
                       

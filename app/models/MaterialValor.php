@@ -8,7 +8,7 @@ class MaterialValor extends Eloquent {
 		return $this->belongsTo('Valor');
 	}
 
-	public function inventario() {
-		return $this->belongsTo('Inventario');
+	public function inventariorecub() {
+		return $this->belongsTo('InventarioRecub', 'material_valor_id');
 	}
 }

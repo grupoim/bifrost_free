@@ -1,0 +1,1 @@
+<li><a href="{{ action('PersonalOperativoControlador@getLista') }}">Lista de asistencia</a></li>

@@ -1,0 +1,74 @@
+ <div class="matter">
+        <div class="container">
+
+          <div class="row">
+
+        
+
+            <div class="col-md-9">
+
+              <!-- Widget -->
+              <div class="widget">
+                <!-- Widget title -->
+                <div class="widget-head">
+                  <div class="pull-left">Datos Generales</div>
+                  <div class="widget-icons pull-right">
+                   
+                  </div>  
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <!-- Widget content -->
+                  <div class="padd">
+                                               <!-- Contact box -->
+                             <div class="support-contact">
+                                <!-- Phone, email and address with font awesome icon -->
+                                <?php $__empty_1 = true; foreach($facturas as $factura): $__empty_1 = false; ?>
+                                <p><?php echo e($factura->entrada); ?> láminas de <strong><?php echo e($factura->material); ?> <?php echo e($factura->color); ?></strong> </p>
+                                <p>
+                                $<?php echo e(number_format($factura->total_factura, 2, '.', ',')); ?></p>
+                                
+                                <?php endforeach; if ($__empty_1): ?>
+                                <?php endif; ?>
+								<hr />
+                Total : <strong>$<?php echo e(number_format($suma, 2, '.', ',')); ?></strong>
+								
+															<?php /*
+                                <p><i class="fa fa-user"></i>&nbsp; Contratante actual:<strong> <?php echo e($mtto_r->cliente); ?></strong></p>
+                                <hr />
+                                <?php if($telefono_casa): ?><p><i class="fa fa-phone"></i>&nbsp; Casa<strong>:</strong> <?php echo e($telefono_casa->telefono); ?> </p> <?php endif; ?>
+                                <?php if($telefono_celular): ?><p><i class="fa fa-mobile"></i>&nbsp; Celular<strong>:</strong> <?php echo e($telefono_celular->telefono); ?> </p> <?php endif; ?>
+                                <?php if(count($telefono_casa)== 0 and count($telefono_celular) == 0): ?> 
+                                <div class="alert alert-warning">
+								   <i class="fa fa-warning"> </i> Favor de capturar almenos un numero telefónico
+								 </div>
+
+                                <?php endif; ?>
+                                <hr />
+                                <?php $__empty_1 = true; foreach($clientes as $cliente): $__empty_1 = false; ?>
+								<?php if($cliente->id == $mtto_r->cliente_id): ?>
+                                <p><i class="fa fa-home"></i>&nbsp; Domicilio<strong>:</strong> Calle <?php echo e($cliente->calle); ?> <?php if($cliente->numero_exterior <> ''): ?>No. <?php echo e($cliente->numero_exterior); ?> <?php endif; ?> <?php if($cliente->numero_interior <> ''): ?> Int. <?php echo e($cliente->numero_interior); ?> <?php endif; ?>
+									<?php echo e($cliente->referencias); ?> Colonia <?php echo e($cliente->colonia); ?> C.P. <?php echo e($cliente->codigo_postal); ?>, <?php echo e($cliente->municipio); ?>
+
+									<?php echo e($cliente->estado); ?>
+
+                                </p>
+								<hr />
+								<?php endif; ?>
+                                <?php endforeach; if ($__empty_1): ?>
+                                <?php endif; ?>
+                                
+                             */ ?>
+                               
+                             </div>
+                  </div>
+                </div>
+
+              </div> 
+
+            </div>
+
+          </div>         
+
+        </div>
+		  </div>

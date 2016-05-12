@@ -9,7 +9,6 @@
 			$this->data["icon"] = "home";
 			$this->department = Auth::user()->departamento->nombre;
 		}
-
 		public function index(){
 			$panel = PanelFactory::build($this->department);
 			$months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'];

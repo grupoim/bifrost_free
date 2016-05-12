@@ -1,9 +1,5 @@
 @extends('master')
 
-@section('progress')
-	@include('progress')
-@stop
-
 @section('nav')
 	@parent
 	<li class="has_sub">

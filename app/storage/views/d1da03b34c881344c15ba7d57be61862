@@ -1,0 +1,25 @@
+<?php $__env->startSection('nav'); ?>
+	@parent
+	<li class="has_sub">
+		<?php echo $__env->make('menu.ventas', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.cotizacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.administracion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.cobranza', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.queja', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.almacen', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>		
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.recubrimientos', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.recubrimiento', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

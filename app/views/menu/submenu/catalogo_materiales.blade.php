@@ -1,0 +1,1 @@
+<li><a href="{{action('InventarioRecubControlador@getColores')}}"><i class="fa fa-book"></i> Catálogo de colores</a></li>

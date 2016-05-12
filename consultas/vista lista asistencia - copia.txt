@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS `pfg_bifrost`.`asistencia` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `lu` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `ma` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `mi` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `ju` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `vi` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `sa` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `do` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `observaciones` LONGTEXT NULL COMMENT '',
+  `lista_id` INT NOT NULL COMMENT '',
+  `empleado_id` INT NOT NULL COMMENT '',
+  `revisado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_asistencia_lista1_idx` (`lista_id` ASC)  COMMENT '',
+  INDEX `fk_asistencia_empleado1_idx` (`empleado_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_asistencia_lista1`
+    FOREIGN KEY (`lista_id`)
+    REFERENCES `pfg_bifrost`.`lista` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_asistencia_empleado1`
+    FOREIGN KEY (`empleado_id`)
+    REFERENCES `pfg_bifrost`.`empleado` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+
+
+CREATE TABLE IF NOT EXISTS `pfg_bifrost`.`lista` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `fecha_inicio` DATE NOT NULL COMMENT '',
+  `fecha_fin` DATE NOT NULL COMMENT '',
+  `activa` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '')
+ENGINE = InnoDB
+
+
+CREATE TABLE IF NOT EXISTS `pfg_bifrost`.`lista` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `fecha_inicio` DATE NOT NULL COMMENT '',
+  `fecha_fin` DATE NOT NULL COMMENT '',
+  `activa` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '')
+ENGINE = InnoDB

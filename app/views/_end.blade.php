@@ -52,8 +52,10 @@
 						
 						if ($(data).filter('table.solsoRefresh').length == 1) {
 							$('#solsoCrudModal').modal('hide');
+
 							$('#ajaxTable').html(data);
 							$('#countClients').text( $('.solsoTable').attr('data-all') );
+
 							$.growl.notice({ title: solsoSelector.attr('data-message-title'), message: solsoSelector.attr('data-message-success') });
 						} else {
 							$('.solsoShowForm').html(data);

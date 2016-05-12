@@ -1,0 +1,11 @@
+CREATE VIEW `vista_lista_asistencia` AS select 
+concat(vista_empleado.nombres,' ',vista_empleado.apellido_paterno, ' ', vista_empleado.apellido_materno)as empleado,
+vista_empleado.departamento,
+asistencia.* ,
+(asistencia.sa + asistencia.do + asistencia.lu + asistencia.ma + asistencia.mi + asistencia.ju + asistencia.vi) as dias_asistidos,
+if((6 - (asistencia.sa + asistencia.do + asistencia.lu + asistencia.ma + asistencia.mi + asistencia.ju + asistencia.vi)) > 0 ,(6 - (asistencia.sa + asistencia.do + asistencia.lu + asistencia.ma + asistencia.mi + asistencia.ju + asistencia.vi)),0) as faltas,
+if((7 - (asistencia.sa + asistencia.do + asistencia.lu + asistencia.ma + asistencia.mi + asistencia.ju + asistencia.vi)) = 0,1,0) as prima
+from asistencia
+left join vista_empleado on asistencia.empleado_id = vista_empleado.id
+where vista_empleado.activo = 1
+order by vista_empleado.departamento

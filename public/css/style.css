@@ -114,7 +114,7 @@ button{
 	border-radius: 6px;
 	margin: 15px 0px !important;
 	line-height: 12px;
-   background:#eee;
+   background:#C7C7C7;
 }
 
 .progress-bar{
@@ -1897,6 +1897,30 @@ footer .copy{
 	}
 }
 
-.precio{
-	text-align: right;
+/* Added for BiFrost */
+ .btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+tr.disabled td{
+	background-color: #DDD !important;
+}
+tr.gravedad td{
+	background-color: #fcf8e3 !important;
 }

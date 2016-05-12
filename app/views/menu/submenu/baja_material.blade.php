@@ -1,0 +1,1 @@
+<li><a href="{{ action('InventarioRecubControlador@getBaja') }}"><i class="fa fa-minus-square"></i> Baja de material</a></li>

@@ -7,7 +7,9 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"navruzm/lmongo": "*@dev",
-		"google/apiclient": "1.0.*@beta"
+		"thujohn/pdf": "dev-master",
+		"barryvdh/laravel-dompdf": "0.4.*",
+		"maatwebsite/excel": "~1.3"
 	},
 	"autoload": {
 		"classmap": [

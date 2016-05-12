@@ -1,0 +1,17 @@
+To: Naza <elnazavalderrama@gmail.com>
+Subject: Hay una nueva queja!
+Message-ID: <ebe105bcbc0c22ce5fe9f01406f6295f@localhost>
+Date: Thu, 28 May 2015 16:54:54 -0500
+From: Bifrost PFG <bifrostpfg@parquefuneralguadalupe.com.mx>
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html lang=3D"es">
+   <head>
+      <meta charset=3D"utf-8">
+   </head>
+   <body>
+   </body>
+</html>
