@@ -4,3 +4,4 @@ vendor/composer/
 bootstrap/compiled.php
 vendor/*
 *.lock
+app/storage/*
