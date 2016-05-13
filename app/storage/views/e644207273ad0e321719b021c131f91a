@@ -32,16 +32,18 @@
   <!-- Main stylesheet -->
   <link href="<?php echo URL::asset('css/style.css'); ?>" rel="stylesheet">
   <!-- Widgets stylesheet -->
+
   <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">
   <!--*naza-->
   <link href="<?php echo URL::asset('css/prism.css'); ?>" rel="stylesheet">
-  <link href="<?php echo URL::asset('css/chosen.css'); ?>" rel="stylesheet">
-
-  
+  <link href="<?php echo URL::asset('css/chosen.css'); ?>" rel="stylesheet"> 
   
  
   
   <!--*naza-->
+
+  <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">   
+
   
   <script src="<?php echo URL::asset('js/respond.min.js'); ?>"></script>
   <!--[if lt IE 9]>
