@@ -85,6 +85,20 @@ class CotizacionControlador extends ModuloControlador{
 		return Redirect::action('CotizacionControlador@getCreate');
 	}
 
+public function postServicio(){
+		if(!Session::has('cotizacion.productos')){
+			Session::put('cotizacion.productos', array());
+		}
+		$servicio = VistaServicioFuneral::find(Input::get('producto_id'));
+		$producto["id"] = $servicio->id;
+		$producto["cantidad"] = 1;
+		$producto["descripcion"] = $servicio->nombre;
+		$producto["precio"] = $servicio->precio_servicio * 1.16;
+		$producto["porcentaje_comision"] = $servicio->porcentaje_comision;
+
+		Session::push('cotizacion.productos', $producto);
+		return Redirect::action('CotizacionControlador@getCreate');
+	}
 	public function getAutorizar($id){
 		$cotizacion = Venta::find($id);
 		$cotizacion->autorizado = 1;

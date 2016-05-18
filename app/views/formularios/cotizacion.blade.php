@@ -42,6 +42,21 @@
 			$('#loteBuscarLote').focus();
 		});
 
+		$('#agregarServicio').on('shown.bs.modal', function(){
+			$.ajax("{{ action('ServicioFuneralControlador@getAll') }}")
+			.success(function(data){
+				$('#servicioBuscarServicio').typeahead({
+					source: data,
+					display: 'nombre_display',
+					val: 'producto_id',
+					itemSelected: function(item){
+						$('#servicioProductoId').val(item);
+					}
+				});
+			});
+			$('#servicioBuscarServicio').focus();
+		});
+
 		$('#agregarMantenimiento').on('shown.bs.modal', function(){
 			$.ajax("{{ action('PersonaControlador@getTitulares') }}")
 			.success(function(data){
@@ -92,6 +107,12 @@
 			event.preventDefault();
 			$('.modalSubmit').click();
 		});
+
+		//Enviar el formulario de servicio
+		$('#agregarServicio').on('submit', function(event){
+			event.preventDefault();
+			$('.modalSubmit').click();
+		});
 	});
 
 
@@ -139,7 +160,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#agregarLote" data-toggle="modal" rel="#modal-form" ><i class="fa fa-map-marker fa-fw"></i> Lote Funerario</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-building-o fa-fw"></i> Construcción</a></li>
-							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-hospital-o fa-fw"></i> Servicio Funeral</a></li>
+							<li><a href="#agregarServicio" data-toggle="modal" rel="#modal-form"><i class="fa fa-hospital-o fa-fw"></i> Servicio Funeral</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-briefcase fa-fw"></i> Trámite</a></li>
 							<li><a href="#agregarMantenimiento" data-toggle="modal" rel="#modal-form"><i class="fa fa-leaf fa-fw"></i> Mantenimiento</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-arrow-circle-down fa-fw"></i> Inhumación</a></li>
@@ -239,6 +260,12 @@
 'modalTitle' => 'Agregar Lote Funerario',
 'modalOk' => 'Agregar',
 'modalIcon' => 'map-marker',
+'modalCancel' => 'Cancelar'))
+
+@include('formularios.servicio', array('modalId' => 'agregarServicio',
+'modalTitle' => 'Agregar Servicio Funerario',
+'modalOk' => 'Agregar',
+'modalIcon' => 'hospital-o',
 'modalCancel' => 'Cancelar'))
 
 @include('formularios.mantenimiento', array('modalId' => 'agregarMantenimiento',

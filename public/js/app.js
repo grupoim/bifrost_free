@@ -1,4 +1,4 @@
-var baseUrl = "http://192.168.10.249/";
+var baseUrl = "http://localhost:8000/";
 
 function Notification(settings){
 	this.settings = settings;
