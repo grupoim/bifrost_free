@@ -454,6 +454,10 @@ use Carbon\Carbon;
 					'observaciones as Observaciones'
 					 )->where('lista_id','=',$lista_id)->get();
 				
+				  ob_end_clean();
+
+				  ob_start(); //At the very top of your program (first line)
+
 				Excel::create($fecha, function($excel) use ($nomina,$incidencias,$empleados_no,$fecha) {
  
 			    // Set the title
@@ -595,7 +599,8 @@ use Carbon\Carbon;
     			$cells->setFontWeight('bold');
 						});
             	});
-        })->export('xls');
+        })->export('xlsx');
+		ob_flush();
 				
 				}
 				

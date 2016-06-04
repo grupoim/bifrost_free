@@ -10,6 +10,7 @@ class CotizacionControlador extends ModuloControlador{
 
 	public function getIndex(){
 		$dataModule["cotizaciones"] = Venta::with('cliente.persona')->where('cotizacion', 1)->get();
+
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.cotizacion', $dataModule);
 	}
 
@@ -27,10 +28,26 @@ class CotizacionControlador extends ModuloControlador{
 	}
 	
 	public function postStore(){
+		
+		if(Input::has('porcentaje_especial')){
+
+			$porcentaje_vendedor = Input::get('porcentaje_especial');
+		}else{
+			$porcentaje_comision = ComisionEsquemaVendedor::leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
+		->where('asesor_id', Input::get('asesor_id'))
+		->where('comision_esquema_vendedor.activo',1)->firstOrFail();
+
+		$porcentaje_vendedor = $porcentaje_comision->porcentaje;
+		}
+
+		
+
 		$venta = new Venta();
+		$venta->id = Input::get('venta_id');
 		$venta->cliente_id = Input::get('cliente_id');
-		$venta->folio_solicitud = Input::get('folio');
+		$venta->folio_solicitud = Input::get('folio_solicitud');
 		$venta->descuento = Input::get('descuento');
+		$venta->asesor_id = Input::get('asesor_id');
 		$venta->fecha = Carbon\Carbon::now();
 		$venta->comentarios = Input::get('comentarios');
 		
@@ -39,14 +56,25 @@ class CotizacionControlador extends ModuloControlador{
 		$total = 0;
 		$total_comision = 0;
 		foreach($cart as $item){
+
+			$servicio = VistaServicioFuneral::find($item['producto_id']);
+			if (count($servicio) > 0) {
+				$serv = VistaServicioFuneral::find($item['producto_id']);
+				$total_comision = ($serv->monto_comisionable - Input::get('descuento') )* ($porcentaje_vendedor / 100) ;
+			}
+			else
+			{
+				$total_comision += (((($item['precio'] * 1.16) - Input::get('descuento'))/1.16) * ($porcentaje_vendedor / 100));
+			}
 			$venta_producto = new VentaProducto();
+			$venta_producto->venta_id = Input::get('venta_id');
 			$venta_producto->producto_id = $item['producto_id'];
 			$venta_producto->cantidad = $item['cantidad'];
 			$venta_producto->precio_unitario = $item['precio'];
 			$venta_producto->iva = 16;
-			$venta_producto->total = ($item['precio'] * $item['cantidad']) * (100 + 16) / 100; 
+			$venta_producto->total = ($item['precio'] * $item['cantidad']) * 1.16; 
 			$total += $venta_producto->total;
-			$total_comision += ($item['precio'] * ($item['porcentaje_comision']) / 100);
+			
 			array_push($products, $venta_producto);
 		}
 
@@ -54,17 +82,22 @@ class CotizacionControlador extends ModuloControlador{
 
 		$plan_pago = PlanPago::find(Input::get('plan_pago'));
 		$plan_pago_venta = new PlanPagoVenta();
+		$plan_pago_venta->venta_id = Input::get('venta_id');
 		$plan_pago_venta->plan_pago_id = $plan_pago->id;
 		$plan_pago_venta->fecha_aplicado = Carbon\Carbon::now();
-		$plan_pago_venta->pago_regular = ($total - ($total * $plan_pago->porcentaje_anticipo / 100)) / $plan_pago->numero_pagos;
+		$plan_pago_venta->pago_regular = ($venta->total - ($venta->total * $plan_pago->porcentaje_anticipo / 100)) / $plan_pago->numero_pagos;
 
 		$venta->save();
 		$venta->ventaproducto()->saveMany($products);
 		$venta->planpagoventa()->save($plan_pago_venta);
 		if(!Input::has('directa')){
 			$comision = new Comision();
+			$comision->id = Input::get('venta_id');
 			$comision->asesor_id = Input::get('asesor_id');
 			$comision->total = $total_comision;
+			$comision->total_comisionable = $total_comision;
+			$comision->numero_pagos = $plan_pago->numero_comisiones;
+			$comision->porcentaje = $porcentaje_vendedor;
 			$venta->comision()->save($comision);
 		}
 		return Redirect::action('CotizacionControlador@getIndex');
@@ -89,7 +122,7 @@ public function postServicio(){
 		if(!Session::has('cotizacion.productos')){
 			Session::put('cotizacion.productos', array());
 		}
-		$servicio = VistaServicioFuneral::find(Input::get('producto_id'));
+		$servicio = VistaServicioFuneral::find(Input::get('producto_servicio_id'))->get;
 		$producto["id"] = $servicio->id;
 		$producto["cantidad"] = 1;
 		$producto["descripcion"] = $servicio->nombre;
@@ -128,6 +161,7 @@ public function postServicio(){
 
 	public function getCreate($id)
 	{
+		$data["productoz"] = Producto::select('producto.id as id', 'producto.nombre as name', 'precio.monto as cost')->leftJoin('precio', 'producto.id', '=', 'precio.producto_id')->where('precio.activo', 1)->get();
 		$data["plans"] = PlanPago::all();
 		$data["productos"] = Session::get('productos', array());
 		$total = 0;

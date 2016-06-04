@@ -23,26 +23,35 @@
 					<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 						<thead>
 							<tr>
-								<th>Cliente</th>
-								<th>Asesor</th>
-								<th>Total</th>
-								<th>Estado</th>
-								<th>Acciones</th>
+								<th class="text-center">PKC</th>
+								{{--<th>Producto</th>--}}
+								<th class="text-center">Folio</th>
+								<th class="text-center col-md-2">Cliente</th>
+								<th class="text-center col-md-2">Asesor</th>
+								<th class="text-center">Venta</th>
+								<th class="text-center">Comision</th>
+								<th class="text-center">Pagado</th>
+								<th class="text-center">Resto</th>
+								<th class="text-center">%</th>
+								<th class="text-center">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($comisiones as $comision)
+
 							<tr>
-								<td><input type="checkbox" name="marcar"> {{{ $comision->venta->cliente->persona->nombres }}} {{{ $comision->venta->cliente->persona->apellido_paterno }}} {{{ $comision->venta->cliente->persona->apellido_materno }}}
+								<td>{{{$comision->id}}}</td>
+								<td>{{{$comision->folio_solicitud}}}-{{{$comision->nombre_corto}}}</td>
+								{{--<td> {{{$comision->producto}}}</td>--}}
+								<td>{{{ $comision->cliente }}}
 								</td>
-								<td><strong>{{{ $comision->asesor->persona->nombres }}} {{{ $comision->asesor->persona->apellido_paterno }}} {{{ $comision->asesor->persona->apellido_materno }}}</strong></td>
-								<td class="text-right">$ {{{ $comision->total }}}</td>
-								<td class="text-center">@if($comision->venta->cotizacion == 1)
-									<span class="label label-warning">Cotización</span></td>
-									@else
-									<span class="label label-success">Venta</span></td>
-									@endif
-								</td>
+								<td><strong>{{{ $comision->vendedor }}}</strong></td>
+								<td class="text-right">$  {{{ number_format($comision->total, 0, ".", ",") }}}</td>
+								<td class="text-right">$ {{{ number_format($comision->total_comisionable, 0, ".", "," ) }}}</td>
+								<td class="text-right">$ {{{ number_format($comision->pagado, 0, ".", ",") }}}</td>
+								<td class="text-right">$ {{{ number_format($comision->total_comisionable - $comision->pagado, 0, ".", ",")  }}}</td>
+								<td class="text-right">{{{ $comision->porcentaje}}}%</td>
+								
 								<td class="text-right">
 									<a href="" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>
 								</td>

@@ -23,27 +23,36 @@
 					<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 						<thead>
 							<tr>
-								<th>Cliente</th>
-								<th>Asesor</th>
-								<th>Total</th>
-								<th>Estado</th>
-								<th>Acciones</th>
+								<th class="text-center">PKC</th>
+								<?php /*<th>Producto</th>*/ ?>
+								<th class="text-center">Folio</th>
+								<th class="text-center col-md-2">Cliente</th>
+								<th class="text-center col-md-2">Asesor</th>
+								<th class="text-center">Venta</th>
+								<th class="text-center">Comision</th>
+								<th class="text-center">Pagado</th>
+								<th class="text-center">Resto</th>
+								<th class="text-center">%</th>
+								<th class="text-center">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($comisiones as $comision): ?>
+
 							<tr>
-								<td><input type="checkbox" name="marcar"> <?php echo e($comision->venta->cliente->persona->nombres); ?> <?php echo e($comision->venta->cliente->persona->apellido_paterno); ?> <?php echo e($comision->venta->cliente->persona->apellido_materno); ?>
+								<td><?php echo e($comision->id); ?></td>
+								<td><?php echo e($comision->folio_solicitud); ?>-<?php echo e($comision->nombre_corto); ?></td>
+								<?php /*<td> <?php echo e($comision->producto); ?></td>*/ ?>
+								<td><?php echo e($comision->cliente); ?>
 
 								</td>
-								<td><strong><?php echo e($comision->asesor->persona->nombres); ?> <?php echo e($comision->asesor->persona->apellido_paterno); ?> <?php echo e($comision->asesor->persona->apellido_materno); ?></strong></td>
-								<td class="text-right">$ <?php echo e($comision->total); ?></td>
-								<td class="text-center"><?php if($comision->venta->cotizacion == 1): ?>
-									<span class="label label-warning">Cotización</span></td>
-									<?php else: ?>
-									<span class="label label-success">Venta</span></td>
-									<?php endif; ?>
-								</td>
+								<td><strong><?php echo e($comision->vendedor); ?></strong></td>
+								<td class="text-right">$  <?php echo e(number_format($comision->total, 0, ".", ",")); ?></td>
+								<td class="text-right">$ <?php echo e(number_format($comision->total_comisionable, 0, ".", "," )); ?></td>
+								<td class="text-right">$ <?php echo e(number_format($comision->pagado, 0, ".", ",")); ?></td>
+								<td class="text-right">$ <?php echo e(number_format($comision->total_comisionable - $comision->pagado, 0, ".", ",")); ?></td>
+								<td class="text-right"><?php echo e($comision->porcentaje); ?>%</td>
+								
 								<td class="text-right">
 									<a href="" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>
 								</td>
