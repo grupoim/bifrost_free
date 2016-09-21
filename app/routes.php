@@ -41,7 +41,9 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/venta', 'VentaControlador');
 	Route::controller('/colonia', 'ColoniaControlador');
 	Route::controller('/inventario-recub', 'InventarioRecubControlador');
+	Route::controller('/construccion', 'ConstruccionControlador');
 	Route::controller('/perfil-usuario', 'PerfilControlador');
+	Route::controller('/extra', 'ExtraControlador');
 });
 Route::controller('/login', 'LoginControlador');
 

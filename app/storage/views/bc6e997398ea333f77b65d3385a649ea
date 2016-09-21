@@ -1,1 +1,0 @@
-<li><a href="<?php echo action('CartaBeneficiarioControlador@getIndex'); ?>"><i class="fa fa-bar-chart"></i> Reportes</a></li>

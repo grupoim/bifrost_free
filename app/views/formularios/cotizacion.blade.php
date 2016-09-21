@@ -1,74 +1,48 @@
 @section('scripts')
-<!--/////////// -->
-<script>
+<script src="{{ URL::asset('js/chosen.jquery.js') }}"> </script>
+<link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">
+<script src="{{ URL::asset('js/jquery.growl.js') }}" ></script>
+<link rel="stylesheet" href="{{ URL::asset('css/jquery.growl.css') }}"> 
 
-	var agregarPrducto = function()
+ 
+
+<script>
+	$(document).on('ready', function(){
+
+		function send(form){
+			$.post(form.attr('action'),
+				form.serialize()
+				).done(function(data){
+					if(data.length > 0){
+						$('#cart').html('');
+						subtotal = 0;
+						$.each(data, function(index, object){
+							$('#cart').append('<tr>'
+								+ '<td class="text-right">' + object.cantidad + '</td>'
+								+ '<td >' + object.descripcion + '</td>'
+								+ '<td class="text-right">$ ' + (parseInt(object.precio*1.16)).formatMoney(2, '.', ',') + '</td>'
+								+ '<td class="text-right">$ ' + (object.subtotal*1.16).formatMoney(2, '.', ',') + '</td>'
+								+ '</tr><tr />');
+							subtotal += object.subtotal;
+						});
+						$('#total').html('$' + (subtotal *1.16).formatMoney(2, '.', ','));
+					}
+				});
+			}
+
+		var agregarPrducto = function()
 	{
 		var product_id = $(this).val();
 		var dataProduct = $(this).find("option:selected").attr("data-product");
 		var dataProduct = $.parseJSON(dataProduct);
 
-		if(product_id > 0)
-		{
-			var existe = $("#" + product_id).attr("id");
-
-			if(existe == undefined)
-			{
-				var row = $("<tr />",
-				{
-					"id": product_id,
-					"class": "products-list"
-				});
-
-				row.append(createCell({'id': 'number' + product_id, 'text': ($("#products-selected tr:last td:first").text() * 1) +1}));
-				row.append(createCell({'id': 'name' + product_id, 'text': dataProduct.name}));				
-				row.append(createCell({'id': 'cost' + product_id, 'text': dataProduct.cost}));
-				row.append(createCell({'id': 'quantity' + product_id, 'text': 1}));
-				row.append(createCell({'id': 'subtotal' + product_id}));
-			}
-			else
-			{
-				var quantity = $("#" + product_id + " td[id^='quantity']").text();
-				$("#" + product_id + " td[id^='quantity']").text((quantity*1) + 1);
-			}
-		}
+		
 
 		$("#products-selected").append(row);
 		$(this).find("option").attr("selected", false);
 		calculateTotal();
 	}
-
-	var createCell = function(params)
-	{
-		return $("<td />", params);
-	}
-
-	var calculateTotal = function()
-	{
-		var listaProductos = document.getElementsByClassName("products-list");
-		var total = 0.00;
-		var porductsIn = '';
-		for(var i = 0; i < listaProductos.length; i++)
-		{
-			var pid = $(listaProductos[i]).attr("id");
-			var quantity = $(listaProductos[i]).find("td[id^='quantity']").text();
-			var cost = $(listaProductos[i]).find("td[id^='cost']").text();
-			var subtotal = quantity * cost;
-			$(listaProductos[i]).find("td[id^='subtotal']").subtotal;
-
-			total += subtotal;
-			porductsIn += "|" + pid + "-" + quantity + "-" + subtotal;
-		}
-
-		$("#total").text("$ " + total);
-		$("#iptTotal").val(total);
-		$("#porductsIn").val(porductsIn);
-	}
-</script>
-<!--////////// -->
-
-<script>
-	$(document).on('ready', function(){
+	
 		$("#products_id").on('change', agregarPrducto);
 		// Function para activar/desactivar la venta directa.
 		$('#directa').on('click', function(){
@@ -126,6 +100,51 @@
 			$('#servicioBuscarServicio').focus();
 		});
 
+		$('#agregarConstruccion').on('shown.bs.modal', function(){
+			$.ajax("{{ action('ConstruccionControlador@getAll') }}")
+			.success(function(data){
+				$('#construccionBuscarConstruccion').typeahead({
+					source: data,
+					display: 'nombre_display',
+					val: 'id',
+					itemSelected: function(item){
+						$('#construccionProductoId').val(item);
+					}
+				});
+			});
+			$('#construccionBuscarConstruccion').focus();
+		});
+
+		$('#agregarRecubrimiento').on('shown.bs.modal', function(){
+			$.ajax("{{ action('RecubrimientoControlador@getAll') }}")
+			.success(function(data){
+				$('#recubrimientoBuscarRecubrimiento').typeahead({
+					source: data,
+					display: 'nombre_display',
+					val: 'id',
+					itemSelected: function(item){
+						$('#recubrimientoProductoId').val(item);
+					}
+				});
+			});
+			$('#recubrimientoBuscarRecubrimiento').focus();
+		});
+
+			$('#agregarExtra').on('shown.bs.modal', function(){
+			$.ajax("{{ action('ExtraControlador@getAll') }}")
+			.success(function(data){
+				$('#extraBuscarExtra').typeahead({
+					source: data,
+					display: 'nombre_display',
+					val: 'id',
+					itemSelected: function(item){
+						$('#extraProductoId').val(item);
+					}
+				});
+			});
+			$('#extraBuscarExtra').focus();
+		});
+
 		$('#agregarMantenimiento').on('shown.bs.modal', function(){
 			$.ajax("{{ action('PersonaControlador@getTitulares') }}")
 			.success(function(data){
@@ -139,29 +158,9 @@
 				});
 			});
 			$('#mantenimientoBuscarTitular').focus();
-		});
+		});		
 
-
-		function send(form){
-			$.post(form.attr('action'),
-				form.serialize()
-				).done(function(data){
-					if(data.length > 0){
-						$('#cart').html('');
-						subtotal = 0;
-						$.each(data, function(index, object){
-							$('#cart').append('<tr>'
-								+ '<td class="text-right">' + object.cantidad + '</td>'
-								+ '<td >' + object.descripcion + '</td>'
-								+ '<td class="text-right">$ ' + object.precio + '</td>'
-								+ '<td class="text-right">$ ' + object.subtotal + '</td>'
-								+ '</tr><tr />');
-							subtotal += object.subtotal;
-						});
-						$('#total').html('$' + (subtotal).formatMoney(2, '.', ','));
-					}
-				});
-			}
+		
 
 		// Enviar el formulario para los productos al hacer click
 		$('.modalSubmit').on("click", function(){
@@ -182,7 +181,27 @@
 			event.preventDefault();
 			$('.modalSubmit').click();
 		});
+
+		//Enviar el formulario de construccion
+		$('#agregarConstruccion').on('submit', function(event){
+			event.preventDefault();
+			$('.modalSubmit').click();
+		});
+
+		//Enviar el formulario de construccion
+		$('#agregarRecubrimiento').on('submit', function(event){
+			event.preventDefault();
+			$('.modalSubmit').click();
+		});
+
+
+		 $(".plan_pago").chosen({   
+		    no_results_text: "No hay resultados para:",        
+		    width: "100%"    
+		  });
 	});
+
+
 
 
 
@@ -226,6 +245,7 @@
 				</div>
 			</div>
 		</div>
+{{--
 <!--/////// -->
 <div class="form-group">
 		<label class="col-lg-2 control-label">Agregar producto</label>
@@ -277,23 +297,24 @@
                   </div>
                 </div>
             </div>
-<!--////// -->
+<!--////// --> --}}
 
 		<div class="widget">
 			<div class="widget-head">
-				<div class="pull-left">Productos </div>
+				<div class="pull-left">Productos (Precios IVA incluido) </div>
 				<div class="pull-right">
 					<div class="btn-group">
 						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Agregar un producto <span class="caret"></span></button>
 						<ul class="dropdown-menu">
 							<li><a href="#agregarLote" data-toggle="modal" rel="#modal-form" ><i class="fa fa-map-marker fa-fw"></i> Lote Funerario</a></li>
-							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-building-o fa-fw"></i> Construcción</a></li>
+							<li><a href="#agregarConstruccion" data-toggle="modal" rel="#modal-form"><i class="fa fa-building-o fa-fw"></i> Construcción</a></li>
 							<li><a href="#agregarServicio" data-toggle="modal" rel="#modal-form"><i class="fa fa-hospital-o fa-fw"></i> Servicio Funeral</a></li>
+							<li><a href="#agregarRecubrimiento" data-toggle="modal" rel="#modal-form"><i class="fa fa-hospital-o fa-fw"></i> Recubrimiento</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-briefcase fa-fw"></i> Trámite</a></li>
 							<li><a href="#agregarMantenimiento" data-toggle="modal" rel="#modal-form"><i class="fa fa-leaf fa-fw"></i> Mantenimiento</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-arrow-circle-down fa-fw"></i> Inhumación</a></li>
 							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-arrow-circle-up fa-fw"></i> Exhumación</a></li>
-							<li><a href="{{ action('CotizacionControlador@postLote', 'lote') }}" data-toggle="modal" rel="#modal-form"><i class="fa fa-cart-plus fa-fw"></i> Extra</a></li>
+							<li><a href="#agregarExtra" data-toggle="modal" rel="#modal-form"><i class="fa fa-cart-plus fa-fw"></i> Extra</a></li>
 						</ul>
 					</div>
 				</div>  
@@ -305,7 +326,7 @@
 						<tr>
 							<th>Cantidad</th>
 							<th>Producto</th>
-							<th width="200">Precio</th>
+							<th width="200">Precio unitario</th>
 							<th width="200">Subtotal</th>
 						</tr>	
 					</thead>
@@ -314,8 +335,8 @@
 						<tr>
 							<td class="text-right">{{{ $producto["cantidad"] }}}</td>
 							<td>{{{ $producto["descripcion"] or '' }}}</td>
-							<td class="text-right">$ {{{ number_format($producto["precio"], 2, '.', ',') }}}</td>
-							<td class="text-right">$ {{{ number_format($producto["subtotal"], 2, '.', ',') }}} </td>
+							<td class="text-right">$ {{{ number_format($producto["precio"]*1.16, 2, '.', ',') }}}</td>
+							<td class="text-right">$ {{{ number_format($producto["subtotal"]*1.16, 2, '.', ',') }}} </td>
 						</tr>
 						@empty
 						<tr>
@@ -331,7 +352,7 @@
 						<tr>
 							<td colspan="3" class="lead text-right"><strong>Total</strong></td>
 							<td class="alert-info">
-								<p class="lead precio" id="total">$ {{{ number_format($total, 2, '.', ',') }}}</p>
+								<p class="lead precio" id="total">$ {{{ number_format($total*1.16, 2, '.', ',') }}}</p>
 							</td>
 						</tr>
 					</tfoot>
@@ -343,7 +364,7 @@
 		<div class="form-group">
 			<label class="col-md-2 control-label">Plan de pago</label>
 			<div class="col-md-6">
-				<select name="plan_pago" class="form-control">
+				<select  name="plan_pago" class="form-control plan_pago chosen-select">
 					@forelse($plans as $plan)
 					<option value="{{{ $plan->id }}}">{{{ $plan->descripcion }}}</option>
 					@endforeach
@@ -407,5 +428,24 @@
 'modalTitle' => 'Agregar Mantenimiento',
 'modalOk' => 'Agregar',
 'modalIcon' => 'leaf',
+'modalCancel' => 'Cancelar'))
+
+
+@include('formularios.construccion', array('modalId' => 'agregarConstruccion',
+'modalTitle' => 'Agregar Construccion',
+'modalOk' => 'Agregar',
+'modalIcon' => 'leaf',
+'modalCancel' => 'Cancelar'))
+
+@include('formularios.recubrimiento', array('modalId' => 'agregarRecubrimiento',
+'modalTitle' => 'Agregar Recubrimiento',
+'modalOk' => 'Agregar',
+'modalIcon' => 'plus',
+'modalCancel' => 'Cancelar'))
+
+@include('formularios.extra', array('modalId' => 'agregarExtra',
+'modalTitle' => 'Agregar Extra',
+'modalOk' => 'Agregar',
+'modalIcon' => 'plus',
 'modalCancel' => 'Cancelar'))
 @stop

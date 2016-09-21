@@ -1,6 +1,6 @@
-@extends('modal')
-@section('modal-content')
-{{ Form::open(array('action' => 'CotizacionControlador@postAgregarProducto', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'producto')) }}
+<?php $__env->startSection('modal-content'); ?>
+<?php echo Form::open(array('action' => 'CotizacionControlador@postAgregarProducto', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'producto')); ?>
+
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Construccion </label>
 	<div class="col-md-9">
@@ -16,5 +16,7 @@
 		
 	</div>
 </div>
-{{ Form::close() }}
-@overwrite
+<?php echo Form::close(); ?>
+
+<?php $__env->stopSection(true); ?>
+<?php echo $__env->make('modal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

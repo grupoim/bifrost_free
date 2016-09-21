@@ -80,7 +80,7 @@
       <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha de nacimiento</label>
       <div class="col-md-4">
         <div id="datetimepicker1" class="input-append input-group dtpicker">
-          <input data-format="yyyy-MM-dd" value="{{{ $cliente->fecha_nacimiento or '' }}}" type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
+          <input data-format="yyyy-MM-dd" value="{{{ $cliente->fecha_nacimiento or '1989-03-31' }}}" type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
           <span class="input-group-addon add-on">
             <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
           </span>
@@ -90,7 +90,7 @@
     <div class="form-group">
       <label class="col-md-2 control-label">Email *</label>
       <div class="col-md-4">
-        <input type="email" value="{{{ $cliente->email or '' }}}" name="email" id="email" class="form-control" placeholder="ejemplo@dominio.com">
+        <input type="email" value="{{{ $cliente->email or 'demo@demo.com' }}}" name="email" id="email" class="form-control" placeholder="ejemplo@dominio.com">
       </div>
     </div>
     <div class="form-group">
@@ -98,7 +98,7 @@
       <div class="col-md-4">
         <div class="input-group">
           <span class="input-group-addon">Celular</span>
-          <input type="text" class="form-control" name="celular" id="celular" placeholder="Incluir lada" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" name="celular" id="celular" placeholder="Incluir lada" aria-describedby="basic-addon2" value="8112258265">
         </div>
       </div>
     </div>
@@ -114,7 +114,7 @@
     <div class="form-group">
       <label for="calle" class="col-md-2 control-label">Domicilio</label>
       <div class="col-md-6">
-        <input type="text" value="{{{ $cliente->calle or '' }}}" name="calle" id="calle" class="form-control" placeholder="Calle">
+        <input type="text" value="{{{ $cliente->calle or 'Aguanaval' }}}" name="calle" id="calle" class="form-control" placeholder="Calle">
       </div>
     </div>
     <div class="form-group">
@@ -125,13 +125,13 @@
         @else
           <input type="text" class="form-control" name="ubicacion" id="ubicacion" autocomplete="off" placeholder="Colonia ó Código postal" aria-describedby="basic-addon2">
         @endif
-        <input type="hidden" id="colonia_id" name="colonia_id" value="{{{ $cliente->colonia->id or '' }}}">
+        <input type="hidden" id="colonia_id" name="colonia_id" value="{{{ $cliente->colonia->id or '582' }}}">
       </div>
     </div>
     <div class="form-group">
       <label for="numero_exterior" class="col-md-2 control-label sr-only">Número exterior</label>
       <div class="col-md-2">
-        <input type="text" value="{{{ $cliente->numero_exterior or ''}}}" class="form-control" name="numero_exterior" id="numero_exterior" placeholder="Número exterior" aria-describedby="basic-addon2">
+        <input type="text" value="{{{ $cliente->numero_exterior or '660'}}}" class="form-control" name="numero_exterior" id="numero_exterior" placeholder="Número exterior" aria-describedby="basic-addon2">
       </div>
     </div>
     <div class="form-group">

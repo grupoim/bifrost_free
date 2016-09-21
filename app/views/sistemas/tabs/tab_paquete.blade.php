@@ -48,7 +48,8 @@
                        <!-- -->
                         @foreach($precio_paquete as $p)
                         @if($paquete->paquete_id == $p->id)
-                        ${{$p->monto}}
+                        ${{number_format($p->monto * 1.16, 2, '.', ',')}}
+                        
                         @endif
                         @endforeach
                         <!-- -->

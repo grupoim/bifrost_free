@@ -232,7 +232,7 @@ public function postTerreno(){
 		
 		$precio = new Precio;
 			$precio->producto_id = $producto->id;
-			$precio->monto = Input::get('monto');
+			$precio->monto = Input::get('monto') / 1.16;
 			$precio->save();
 		$lote = new Lote;
 			$lote->producto_id = $producto->id;
@@ -314,7 +314,7 @@ public function postNicho(){
 			$producto->save();
 		$precio = new Precio;
 			$precio->producto_id = $producto->id;
-			$precio->monto = Input::get('monto');
+			$precio->monto = Input::get('monto') / 1.16;
 			$precio->save();
 		$lote = new Lote;
 			$lote->producto_id = $producto->id;
@@ -361,9 +361,11 @@ public function postProductocombo(){
 	$producto_combo->porcentaje_minimo_comisionable = Input::get('porcentaje_minimo_comisionable_producto');
 	$producto_combo->combo = 1;
 	$producto_combo->save();
+	
 	$precio_producto = new Precio;
 	$precio_producto->producto_id = $producto_combo->id;
-	$precio_producto->monto = Input::get('monto_producto');
+	$precio_producto->monto = Input::get('monto_producto') / 1.16;
+	$precio_producto->save();
 return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
 }
 } // fin controlador----------------

@@ -41,7 +41,6 @@ class CotizacionControlador extends ModuloControlador{
 		}
 
 		
-
 		$venta = new Venta();
 		$venta->id = Input::get('venta_id');
 		$venta->cliente_id = Input::get('cliente_id');
@@ -60,11 +59,11 @@ class CotizacionControlador extends ModuloControlador{
 			$servicio = VistaServicioFuneral::find($item['producto_id']);
 			if (count($servicio) > 0) {
 				$serv = VistaServicioFuneral::find($item['producto_id']);
-				$total_comision = ($serv->monto_comisionable - Input::get('descuento') )* ($porcentaje_vendedor / 100) ;
+				$total_comision = ($serv->monto_comisionable )* ($porcentaje_vendedor / 100) ;
 			}
 			else
 			{
-				$total_comision += (((($item['precio'] * 1.16) - Input::get('descuento'))/1.16) * ($porcentaje_vendedor / 100));
+				$total_comision += (($item['precio'] * $item['cantidad'] ) - (Input::get('descuento')/1.16)) * ($porcentaje_vendedor / 100);
 			}
 			$venta_producto = new VentaProducto();
 			$venta_producto->venta_id = Input::get('venta_id');
@@ -90,7 +89,8 @@ class CotizacionControlador extends ModuloControlador{
 		$venta->save();
 		$venta->ventaproducto()->saveMany($products);
 		$venta->planpagoventa()->save($plan_pago_venta);
-		if(!Input::has('directa')){
+		
+		if(!Input::has('directa') && $total_comision > 0){
 			$comision = new Comision();
 			$comision->id = Input::get('venta_id');
 			$comision->asesor_id = Input::get('asesor_id');
@@ -125,6 +125,21 @@ public function postServicio(){
 		$servicio = VistaServicioFuneral::find(Input::get('producto_servicio_id'))->get;
 		$producto["id"] = $servicio->id;
 		$producto["cantidad"] = 1;
+		$producto["descripcion"] = $servicio->nombre;
+		$producto["precio"] = $servicio->precio_servicio * 1.16;
+		$producto["porcentaje_comision"] = $servicio->porcentaje_comision;
+
+		Session::push('cotizacion.productos', $producto);
+		return Redirect::action('CotizacionControlador@getCreate');
+	}
+
+	public function postConstruccion(){
+		if(!Session::has('cotizacion.productos')){
+			Session::put('cotizacion.productos', array());
+		}
+		$servicio = VistaServicioFuneral::find(Input::get('producto_servicio_id'))->get;
+		$producto["id"] = $servicio->id;
+		$producto["cantidad"] = Input::get('cantidad');
 		$producto["descripcion"] = $servicio->nombre;
 		$producto["precio"] = $servicio->precio_servicio * 1.16;
 		$producto["porcentaje_comision"] = $servicio->porcentaje_comision;
@@ -187,7 +202,7 @@ public function postServicio(){
 										'descripcion' =>$producto->nombre,
 										'cantidad' => $cantidad,
 										'porcentaje_comision' => $producto->porcentaje_comision));		
-				
+										
  
 
 				Session::put('productos',$productos);

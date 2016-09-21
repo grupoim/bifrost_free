@@ -1,1 +1,0 @@
-<li><a href="<?php echo action('CartaBeneficiarioControlador@getIndex'); ?>">Carta de Beneficiario</a></li>

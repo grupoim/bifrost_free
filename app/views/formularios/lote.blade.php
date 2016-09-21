@@ -7,6 +7,7 @@
 		<input type="text" id="loteBuscarLote" name="lote" placeholder="Buscar Sector, fila o lote" autocomplete="off" class="form-control">
 		<input type="hidden" id="loteProductoId" name="producto_id">
 		<input type="hidden" name="cantidad" value="1">
+		<input type="hidden" name="tipo_producto" value="lote">
 	</div>
 </div>
 {{ Form::close() }}

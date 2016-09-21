@@ -48,8 +48,9 @@
                        <!-- -->
                         <?php foreach($precio_paquete as $p): ?>
                         <?php if($paquete->paquete_id == $p->id): ?>
-                        $<?php echo $p->monto; ?>
+                        $<?php echo number_format($p->monto * 1.16, 2, '.', ','); ?>
 
+                        
                         <?php endif; ?>
                         <?php endforeach; ?>
                         <!-- -->
