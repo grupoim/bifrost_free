@@ -76,7 +76,7 @@
       
 		
 		@if($modalId == $abono->comision_id)
-        <td class="text-center">{{{$abono->folio}}}</td>
+        <td class="text-center" title="Ir al listado de pagos"><a href= "{{action('ComisionControlador@getAbonos', $abono->id)}}"> {{{$abono->folio}}} </a></td>
         <td class="text-center">$ {{{ number_format($abono->monto, 2, '.', ',') }}}</td>
         <td class="text-center">{{{date("d-m-Y", strtotime($abono->fecha_inicio))}}} al {{{date("d-m-Y", strtotime($abono->fecha_fin))}}}</td>
      @endif

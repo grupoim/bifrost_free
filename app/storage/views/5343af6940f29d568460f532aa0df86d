@@ -75,7 +75,7 @@
       
 		
 		<?php if($modalId == $abono->comision_id): ?>
-        <td class="text-center"><?php echo e($abono->folio); ?></td>
+        <td class="text-center" title="Ir al listado de pagos"><a href= "<?php echo action('ComisionControlador@getAbonos', $abono->id); ?>"> <?php echo e($abono->folio); ?> </a></td>
         <td class="text-center">$ <?php echo e(number_format($abono->monto, 2, '.', ',')); ?></td>
         <td class="text-center"><?php echo e(date("d-m-Y", strtotime($abono->fecha_inicio))); ?> al <?php echo e(date("d-m-Y", strtotime($abono->fecha_fin))); ?></td>
      <?php endif; ?>

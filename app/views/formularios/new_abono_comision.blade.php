@@ -4,7 +4,7 @@
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Venta </label>
 	<div class="col-md-9">
-			<select data-placeholder="Elije una Venta activa..." class="form-control" name="comision_id" id="ventas" class="form-control ventas chosen-select" required >                                
+			<select data-placeholder="Elije una Venta activa..." class="form-control" name="comision_id" id="ventas" class="form-control ventas chosen-select" required = "true" >                                
             		<option> </option>
              	@foreach($comisiones_activas as $comision)
 
@@ -45,7 +45,7 @@
 	<label for="sector" class="col-md-3 control-label">Monto </label>
 	<div class="col-md-9">
 	        
-      	<input type="number" step="any"class="form-control" placeholder="$0.0" name="monto">     
+      	<input type="number" step="any"class="form-control" placeholder="$0.0" name="monto" required>     
 		
 	</div>
 </div>

@@ -108,6 +108,24 @@ foreach ($abonos as $abono) {
 	
 	public function postAddabono(){
 
+     
+//validar formulario
+			$rules = array(
+					'monto' => 'required',
+					'asesor_id' => 'required',
+					'comision_id'=> 'required'				
+					
+				);
+				$messages = array(
+						'required'=>'Campo Obligatorio.'
+						
+					);
+			$validator = Validator::make(Input::all(), $rules, $messages);
+				if ($validator->fails())
+				 { 
+						
+						return Redirect::back()->withInput()->withErrors($validator);						
+				}
      $date = Carbon::now();
 
      $abono = new AbonoComision();
@@ -149,11 +167,25 @@ return Redirect::back();
 
 	public function getDeleteabono($id){
 
+		
+
 		$abono = AbonoComision::find($id);
+		$abono->delete();
 
-			$abono->delete();
 
-			return Redirect::back();
+		$comision = VistaComision::find($abono->comision_id);
+
+		if ($comision->por_pagar >= 12) {
+			$comision_actualiza = Comision::find($comision->id );
+			$comision_actualiza->pagada = 0;
+			$comision_actualiza->save();
+		}
+
+		
+
+		
+
+		return Redirect::back();
 		
 
 
