@@ -38,7 +38,7 @@ $('.send-provider').on('click', function(){
 });
 
 $(document).on('click','.open_modal',function(){
-        //funcion para formatear numeros
+        {{--funcion para formatear numeros --}}
         Number.prototype.formatMoney = function(c, d, t){
 			var n = this, 
 			    c = isNaN(c = Math.abs(c)) ? 2 : c, 
@@ -48,19 +48,19 @@ $(document).on('click','.open_modal',function(){
 			    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
 			    j = (j = i.length) > 3 ? j % 3 : 0;
 			   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-			 }; //fin function formatMoney
+			 }; {{--fin function formatMoney --}}
 
 
 
-		//llamada ajax para traer los valores en json desde el controlador
+		{{--llamada ajax para traer los valores en json desde el controlador --}}
 		var id = $(this).val();
 
         $.get('detalle/' + id, function (data) {
-            //success data
+            {{--success data --}}
             console.log(data);
             $('#id').val(data.id);
            
-            //accede a los abonos de cada comision y los manda en consola 
+            {{--accede a los abonos de cada comision y los manda en consola  --}}
            $.each(data.abonos, function(index, val) {
            	 console.log(val.periodo_comision_id);
            });
@@ -68,7 +68,7 @@ $(document).on('click','.open_modal',function(){
                   /* $('#span_pagos').text(data.producto);*/
    
 
-           //para determinar el tipo de producto que se vendió
+           {{--para determinar el tipo de producto que se vendió --}}
            if (data.nombre_corto == 'V') {
            	$("#tipo_venta").text("contrato");
            } else if(data.nombre_corto == 'O') {
@@ -78,21 +78,21 @@ $(document).on('click','.open_modal',function(){
            }
 
            
-           	 //si la comision no trae abonos, envía un ,mensaje en blanco en el div donde deberia de estar la tabla
+           	 {{--si la comision no trae abonos, envía un ,mensaje en blanco en el div donde deberia de estar la tabla --}}
            if (data.pagado == 0) {
            	$("#contenido").html("<h5><strong> <i class="+"fa fa-exclamation-triangle" +"aria-hidden="+"true"+"></i> No se han dado pagos de mensualidad a esta comisión <i class="+"fa fa-exclamation-triangle"+" aria-hidden="+"true"+"></i></strong></h5>"
                      );
-           //manda la tabla con los resultados
+           {{--manda la tabla con los resultados --}}
            }else {
 
            			 
 
-           			//crear una variable para darle salida a la tabla
+           			{{--crear una variable para darle salida a la tabla --}}
            			 var output =  " ";
            			 
             
             
-            //crear los encabezados de la tabla
+            {{--crear los encabezados de la tabla --}}
            output+=  "<table class="+"table table-condensed"+">"+
 						    "<thead>"+
 						      "<tr>"+
@@ -104,7 +104,7 @@ $(document).on('click','.open_modal',function(){
 						    "<tbody>" +						     
 								
 								"</tr> ";
-		  //recorre los abonos y crea un renglon para la tabla y los va añadiendo a la variable output
+		  {{--recorre los abonos y crea un renglon para la tabla y los va añadiendo a la variable output --}}
 		  $.each(data.abonos, function(userkey, uservalue) {
 
             	 output += '<tr>';
@@ -115,25 +115,25 @@ $(document).on('click','.open_modal',function(){
             	 
             	 
             });
-		  //al terminar el recorrido de los valores, pongo  el cierre del body de la tabla y el cierre de la tabla y lo agrego a la variabel output
+		  {{--al terminar el recorrido de los valores, pongo  el cierre del body de la tabla y el cierre de la tabla y lo agrego a la variabel output --}}
 		  output +=  "</tbody>"+ "</table> ";
        	
-       	//asigno el contenido de output al div donde mostraré la tabla si la comision trae abonos
+       	{{--asigno el contenido de output al div donde mostraré la tabla si la comision trae abonos--}}
        	$("#contenido").html(output);
 
 
-           }//termina la condicionante else para determinar si hay pagos en la comision
+           }{{--termina la condicionante else para determinar si hay pagos en la comision --}}
 
            
-           //si la comision viene con observaciones se lo asigno al elemento que contiene las observaciones
+           {{--si la comision viene con observaciones se lo asigno al elemento que contiene las observaciones --}}
            if (data.observaciones != null) {
            	$('#observaciones').text("*Nota: "+ data.observaciones);
-           }else{ // si está vacio el campo de observaciones mando una cadena vacía en el elemento
+           }else{ {{-- si está vacio el campo de observaciones mando una cadena vacía en el elemento --}}
            		$('#observaciones').text(" ");
            }
 
             
-               //asigno los valores de tipo texto a cada elemento segun su id en la ventana modal, 
+               {{--asigno los valores de tipo texto a cada elemento segun su id en la ventana modal, --}}
                $('#vendedor').text(data.vendedor);
                $('#cliente').text(data.cliente);
                $('#producto').text(data.producto);
@@ -267,9 +267,9 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 								<td class="text-right">{{{ $comision->porcentaje}}}%</td>
 								
 								<td class="text-left">
-									<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>
-									<button class="btn  btn-xs btn-warning btn-detail open_modal" value="{{$comision->id}}">VER</button>
-									<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>
+									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
+									<button class="btn btn-xs btn-default open_modal"  title="Ver detalles de pagos"value="{{$comision->id}}"><i class="fa fa-search"></i></button>
+									{{--<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>--}}
 									{{--<a href="{{action('ComisionControlador@getPago', $comision->id)}}" name="id" value="{{{$comision->comision_id}}}"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>--}}
 									@if($comision->pagada == 0)
 									<a href="{{action('ComisionControlador@getPagada', $comision->id)}}" name="id" value="{{{$comision->id}}}"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
@@ -353,61 +353,9 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 		</div>
 	</div>
   {{ Form::close() }}
+  
+</div>
 
-  <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-           <div class="modal-content">
-             <div class="modal-header">
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">Product</h4>
-            </div>
-            <div class="modal-body">
-            <form id="frmProducts" name="frmProducts" class="form-horizontal" novalidate="">
-                <div class="form-group error">
-                 <label for="inputName" class="col-sm-3 control-label">Name</label>
-                   <div class="col-sm-9">
-                    <input type="text" class="form-control has-error" id="name" name="name" placeholder="Product Name" value="">
-                   </div>
-                   </div>
-                   <span class = "span_pagos" id= "span_pagos" name ="span_pagos" value = "">aqui va el span</span>
-					<div id="myDiv"></div>
-                 <div class="form-group">
-                 <label for="inputDetail" class="col-sm-3 control-label">Details</label>
-                    <div class="col-sm-9">
-                    <input type="text" class="form-control" id="details" name="details" placeholder="details" value="">
-                    </div>
-                </div>
-            </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
-            <input type="hidden" id="id" name="id" value="0">
-            </div>
-        </div>
-      </div>
-  </div>
-</div>
-<div class="modal fade" id="send-provider">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">detalles de la comision</h4>
-			</div>
-			<div class="modal-body">
-				<form id="send-form" action="" method="post">
-					{{--<input type="hidden" value="{{ csrf_token() }}" name="_token">--}}
-					<p>escribe aqui</p>
-					<textarea rows="3" class="form-control f-s-14" name="recipients"></textarea>
-				</form>	
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">cerrar</button>
-				<button id="send-button" type="button" class="btn btn-primary">enviar</button>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!--/*////////////////////////////////--> 
 <div class="modal fade" id="abonos_window">
@@ -416,7 +364,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 			
 		<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">detalles de la comision</h4>
+				<h4 class="modal-title"><strong> Detalles de la comision </strong></h4>
 			</div>
 			<div class="modal-body">
               <!-- User widget -->
