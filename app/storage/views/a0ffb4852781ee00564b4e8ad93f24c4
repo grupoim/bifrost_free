@@ -5,7 +5,37 @@
 <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.growl.css'); ?>"> 
 
 <script type="text/javascript">
-$(document).on('ready', function(){
+$(document).on('ready', function(){	
+
+
+//console.log($.support);
+
+	
+
+$.ajax({
+	url: '/path/to/file',
+	type: 'default GET (Other values: POST)',
+	dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+	data: {param1: 'value1'},
+})
+.done(function() {
+	console.log("success");
+})
+.fail(function() {
+	console.log("error");
+})
+.always(function() {
+	console.log("complete");
+});
+
+
+
+
+
+
+
+
+
 $("#guardar").on("click", function() { /* Al boton guardar le asigno el evento onClick */
 				$("#addAbono").submit();
 			});
@@ -48,8 +78,8 @@ $("#ventas").chosen({
 		
 				<div class="pull-right">
 					<?php if($pendientes == 0): ?>
-						<a href="<?php echo action('ComisionControlador@getDownload', $periodo_comision->id); ?>" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
-					<?php endif; ?><a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
+						<a href="<?php echo action('ComisionControlador@getDownload', $periodo_comision->id); ?>" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
+					<?php endif; ?><a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
 			
 				</div> 
 		

@@ -5,7 +5,17 @@
 <link rel="stylesheet" href="{{ URL::asset('css/jquery.growl.css') }}"> 
 
 <script type="text/javascript">
-$(document).on('ready', function(){
+$(document).on('ready', function(){	
+
+
+//console.log($.support);
+
+
+
+
+
+
+
 $("#guardar").on("click", function() { /* Al boton guardar le asigno el evento onClick */
 				$("#addAbono").submit();
 			});
@@ -48,8 +58,8 @@ $("#ventas").chosen({
 		
 				<div class="pull-right">
 					@if($pendientes == 0)
-						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
-					@endif<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
+						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
+					@endif<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
 			
 				</div> 
 		

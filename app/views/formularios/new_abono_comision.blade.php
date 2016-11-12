@@ -1,5 +1,8 @@
 @extends('modal')
 @section('modal-content')
+<script type="text/javascript">
+
+</script>
 {{ Form::open(array('action' => 'ComisionControlador@postAddabono', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'addAbo')) }}
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Venta </label>
@@ -18,6 +21,7 @@
 		
 	</div>
 </div>
+bs3-m
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Vendedor </label>
 	<div class="col-md-9">
@@ -32,7 +36,7 @@
 
             	 @endforeach 
        
-         </select> <br>
+         </select> <br> 
      
 		
 		<input type="hidden" id="periodo_comision_id" name="periodo_comision_id" value="{{{$periodo_comision->id}}}">
@@ -49,5 +53,6 @@
 		
 	</div>
 </div>
+
 {{ Form::close() }}
 @overwrite

@@ -6,4 +6,7 @@ class AbonoComision extends Eloquent {
 	public function comision() {
 		return $this->belongsTo('Comision');
 	}
+	public function vistacomision() {
+		return $this->belongsTo('VistaComision');
+	}
 }

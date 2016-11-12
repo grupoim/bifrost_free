@@ -9,11 +9,37 @@ class ComisionControlador extends ModuloControlador{
 		$this->department = Auth::user()->departamento->nombre;
 	}
 
+	
+	public function detalle($id)
+	{
+		/*$comision = VistaComision::find($id);
+		$abonos = AbonoComision::where('comision_id', '=', $id)
+		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')->get();
+
+		return Response::json(array(
+
+			"comision" => $comision,
+			"abonos" => $abonos
+			));*/
+		return VistaComision::with('abonos')->find($id);
+
+		
+	}
+
 	public function getIndex(){
 		$total = VistaComision::where('cancelada', '0')->where('pagada',0)->sum('por_pagar');
-		$dataModule["comisiones"] = VistaComision::orderBy('id','desc')->get();
+		
+
+		$date = Carbon::now();
+		$endDate = $date->subYear();
+
+		$dataModule["comisiones"] = VistaComision::orderBy('vista_comision.id','desc')->get();
+
+
 
 		$dataModule["abonos"] = AbonoComision::leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')->get();
+		/*->where('periodo_comision.fecha_inicio', '>', $endDate)	*/
+		
 		/*$dataModule["comisiones"] = Comision::with('asesor.persona', 'venta.cliente.persona','venta.ventaproducto.producto')->where('cancelada', 0)->where('pagada', 0)->get();*/
 		$dataModule["total"] = number_format($total, 2, ".", ",");
 		
@@ -22,6 +48,7 @@ class ComisionControlador extends ModuloControlador{
 	}
 
 	public function getAbonos($id){
+		
 		$total = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->sum('monto');
 		
 		$periodo = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->first();
@@ -44,7 +71,8 @@ class ComisionControlador extends ModuloControlador{
 		->where('abono_comision.periodo_comision_id','=',$id)
 		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
 		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
-		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vendedor')
+		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_comision.id','asc')
+		
 		->get();
 		/*$dataModule["comisiones"] = Comision::with('asesor.persona', 'venta.cliente.persona','venta.ventaproducto.producto')->where('cancelada', 0)->where('pagada', 0)->get();*/
 		$dataModule["total"] = number_format($total, 2, ".", ",");
@@ -67,7 +95,7 @@ $abonos= AbonoComision::select('abono_comision.id as abono_comision_id','abono_c
 		->where('abono_comision.periodo_comision_id','=',$id)
 		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vendedor')
-		->orderBy('abono_comision.comision_id','asc')
+		->orderBy('abono_comision_id','asc')
 		->get();
 foreach ($abonos as $abono) {
 
@@ -314,9 +342,15 @@ return Redirect::back();
 					  			 	case $comision_semanal >=$resto_comision and $pago_semanal > $pago_regular :
 					  			 		$abono_comision = round($resto_comision, 2);
 					  			 		break;
-					  			 	case $pago_semanal <= $pago_regular and $diferencia_pagos <= 5 and $pagado == 0  and $pago_semanal >= $anticipo:
+					  			 	case $pago_semanal <= $pago_regular and $diferencia_pagos <= 5 and $pagado == 0  and $pago_semanal >= $anticipo and $resto_comision < $comision_mensual:
 					  			 		$abono_comision = round($resto_comision, 2);
-					  			 		break;					  			 	
+					  			 		break;	
+					  			 	case $comision_semanal >=$resto_comision and $pago_semanal >= $pago_regular and $pagado == 0 :
+					  			 		$abono_comision = round($resto_comision, 2);
+					  			 		break;
+					  			 	case $pago_semanal == $pago_regular and $pagado == 0:
+					  			 		$abono_comision = round($comision_semanal, 2);
+					  			 		break;				  			 	
 					  			 	
 					  			 	
 					  			 	default:
@@ -367,10 +401,10 @@ if($excel->pago->between($fecha_inicio, $fecha_fin) == 1){
 	}
 
 
-}/* ---------------FIN GUARDA REGISTROS------------*/
+}/*---------------FIN GUARDA REGISTROS------------*/
   				 
 
-  				 /*---------ECHO ---------
+  				 /*---------ECHO ---------*/
   				/*echo $excel->pago->between($fecha_inicio, $fecha_fin)','.$comision->asesor_id.','.$comision->porcentaje.','.$observaciones.'<br>';*/
   				/*echo $excel->pkc.'---'. $abono_comision.'<br>';/*.' pago regular '.$plan_pago->pago_regular.' recibo '.
   				$excel->importe.'pago mensual = '.$pago_mensual..' --- '.$observaciones.' ---% '.$comision->porcentaje.' -- '.$abono_comision/*' por pagar '.$comision->por_pagar.'<br>' */
@@ -393,7 +427,7 @@ if($excel->pago->between($fecha_inicio, $fecha_fin) == 1){
 	$ultimo_periodo_comision = PeriodoComision::orderBy('id', 'desc')->first();
 	return Redirect::action('ComisionControlador@getAbonos',$ultimo_periodo_comision->id);
 	
-	
+
 	}
 
 	public function getPago() {

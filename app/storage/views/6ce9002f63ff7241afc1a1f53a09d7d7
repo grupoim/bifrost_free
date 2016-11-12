@@ -1,0 +1,139 @@
+<?php $__env->startSection('module'); ?>
+<?php /* ocultar mensajes de alerta automaticamente =======*/ ?>
+    
+<script type="text/javascript">
+      window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 2000);
+    </script>
+    <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
+
+
+<!-- Matter -->
+	<div class="widget">
+    	<div class="widget-head">
+    	<!-- mensaje de exito al ingresar registro -->
+		
+		<?php $status=Session::pull('status'); ?>
+		<?php if($status=='ok_create'): ?>
+    	<div class="alert alert-success alert-dismissible" role="alert" align="center">
+		 
+		  <strong><h4> El registro se agregó con éxito</h4></strong> 
+		</div>	    	
+
+    	<?php endif; ?>
+
+    	<!-- mensaje de exito al cancelar registro -->
+		
+    	<?php if($status=='ok_cancel'): ?>
+    	<div class="alert alert-danger alert-dismissible" role="alert" align="center">
+		 
+		  <strong><h4> El registro se ha dado de baja</h4></strong>
+		  </div>		  	
+
+    	<?php endif; ?>
+    	<!-- mensaje de exito al Activar registro -->
+
+    	<?php if($status=='ok_activar'): ?>
+    	<div class="alert alert-success alert-dismissible" role="alert" align="center">
+		 
+		 <strong><h4> El registro se reactivado</h4></strong>
+		</div>    	
+
+    	<?php endif; ?>
+<!-- mensaje de exito al editar registro -->
+
+    		<?php if($status=='ok_update'): ?>
+    	<div class="alert alert-info alert-dismissible" role="alert" align="center">
+		 
+		 <strong><h4> Registro actualizado!!</h4></strong>
+		</div>	
+
+    	<?php endif; ?>
+			
+
+            <div class="pull-left"> <strong>Listas de asistencia</strong> </div>
+			<div class="pull-right"><a  type="btn" href="<?php echo e(URL::to('personal-operativo/agregarperiodo')); ?>" class="btn btn-m btn-default" id="btn_send" title="Agregar un nuevo periodo"><i class="fa fa-plus"></i> Agregar periodo</a> </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="widget-content">
+            <div class="padd">  
+            
+				<!-- Table Page -->
+				<div class="page-tables">
+					<!-- Table -->
+					<div class="table-responsive">
+						<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%" align="center" >
+							<thead>
+								<tr>
+									<th><strong>Id</strong></th>
+									<th><strong>Inicio</strong></th>
+									<th><strong>Fin</strong></th>
+									<th><strong>Estatus</strong></th>
+									<th>Acciones</th>
+																		
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach($listas as $lista): ?>
+									<tr>
+										<td> <?php echo e($lista->id); ?> </td>
+										
+										
+										<td> <?php echo e(date("d-m-Y", strtotime($lista->fecha_inicio))); ?> </td>
+										<td> <?php echo e(date("d-m-Y", strtotime($lista->fecha_fin))); ?> </td>
+										
+											<td>
+											 <?php if( $lista->activa == 1 ): ?>										
+
+													<span class="label label-success">Activa</span></td>												
+
+
+												<?php else: ?>												
+												<span class="label label-warning">Cerrada</span></td>
+												
+													<?php endif; ?>
+										<td> <a  type="btn" href="<?php echo URL::to('personal-operativo/asistencia/'.$lista->id); ?>" class="btn btn-sm btn-default" id="btn_send" title="ver detalles"><i class="fa fa-search"></i></a> 
+											 
+											<?php if((Auth::user()->departamento->id == 6) or (Auth::user()->departamento->id == 1 )): ?>												
+											 <a  type="btn" href="<?php echo URL::to('personal-operativo/nomina/'.$lista->id); ?>" class="btn btn-sm btn-default" title="Pagos de nomina"><i class="fa fa-usd"></i></a> 
+											 <?php endif; ?>
+												<?php if($lista->activa == 1): ?> 
+
+										    	<?php if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )): ?>
+										    	<a  type="btn" href="<?php echo URL::to('personal-operativo/cierraperiodo/'.$lista->id); ?>" class="btn btn-m btn-default" id="btn_send" title="Cierra periodo"><i class="fa fa-lock"></i> Cerrar</a>
+												<?php else: ?>
+												<span class="label label-info">Abierta</span></td>
+												<?php endif; ?>
+
+												<?php else: ?>
+												<?php if((Auth::user()->departamento->id == 4) or (Auth::user()->departamento->id == 1 )): ?>
+												<a  type="btn" href="<?php echo URL::to('personal-operativo/abreperiodo/'.$lista->id); ?>" class="btn btn-m btn-default" id="btn_send" title="Abre periodo"><i class="fa fa-unlock"></i> Abrir</a>
+												<?php else: ?>
+												<span class="label label-warning">Revisada</span></td>
+												<?php endif; ?>
+												<?php endif; ?>
+										</td>										
+										                   
+										
+							<?php endforeach; ?>								
+							</tbody>
+							<tfoot>
+							
+							</tfoot>
+						</table>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>				
+        </div>
+        <div class="widget-foot">
+            <!-- Footer goes here -->
+        </div>
+        
+    </div> 
+
+<?php $__env->stopSection(); ?>
