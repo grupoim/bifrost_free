@@ -52,8 +52,11 @@ $("#ventas").chosen({
 </div>
 <div class="widget">
 	<div class="widget-head">
-		<div class="pull-left">@if($pendientes > 0) {{{$pendientes}}} Abonos pendientes por revisar
+		<div class="pull-left">
+		
+		@if($pendientes > 0) {{{$pendientes}}} Abonos pendientes por revisar
 		@else Pagos del {{{date("d-M-Y", strtotime($periodo_comision->fecha_inicio))}}} al {{{date("d-M-Y", strtotime($periodo_comision->fecha_fin))}}} @endif Folio <strong>{{{$periodo_comision->folio}}}</strong></div>		
+		
 		<div class="clearfix">
 		
 				<div class="pull-right">
@@ -77,7 +80,7 @@ $("#ventas").chosen({
 						<thead>
 							<tr>
 								<th class="text-center">ID</th>							
-								<th class="text-center col-md-1">Periodo</th>
+								<th class="text-center col-md-1">Folio</th>
 								<th class="text-center col-md-3"> Cliente</th>
 								<th class="text-center col-md-3"> Vendedor</th>
 								<th class="text-center col-md-2">Monto</th>
@@ -89,14 +92,18 @@ $("#ventas").chosen({
 						</thead>
 						<tbody>
 							@foreach($abonos as $abono)
+							
+
+
 							{{ Form::open(array('action' => 'ComisionControlador@postAbono', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
 							<tr>
 								<td class="text-center">{{{$abono->id}}}</td>
-								<td><strong>{{{ $abono->periodo_comision_id }}}</strong></td>
+								<td><strong>{{{ $abono->folio }}}</strong></td>
 								<td> {{{$abono->cliente}}}</td><td>{{{$abono->abono_asesor}}} @if($abono->vendedor <> $abono->abono_asesor) <span class="label label-warning" ><i  class="fa fa-exclamation-triangle" aria-hidden="true"></i> No pertenece al vendedor</span> @endif </td>
 								<td class="text-right"><input type="number" step="any"class="form-control" placeholder="0" name="abono_comision" value="{{{$abono->monto_abono}}}"></td>								
-								<td><button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 									
-									 <a id="activa" class="btn btn-m btn-default activa" href="{{URL::to('comision/deleteabono/'.$abono->abono_comision_id)}}" title="Dar de Baja a"> <i class="fa fa-trash-o activa"></i></a>
+								<td><button type="submit" class="btn btn-m btn-default " id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 									
+									
+									 <a id="activa" class="btn btn-m  activa btn-default" href="{{URL::to('comision/deleteabono/'.$abono->abono_comision_id)}}" title="Dar de Baja a"> <i class="fa fa-trash-o activa"></i></a>
 								{{{round(($abono->pagado * $abono->numero_pagos)/$abono->total_comisionable)}}}	de {{{$abono->numero_pagos}}}
 								</td>
 								<td>@if($abono->abono_pagado == 0)
@@ -106,9 +113,13 @@ $("#ventas").chosen({
 												@else												
 												<span class="label label-success">Pagada</span>
 												
-													@endif
-
-												
+													@endif	
+										@foreach($advertencias as $advertencia)	
+									@if($advertencia->comision_id == $abono->id)
+									
+										<span class="label label-danger" title="{{{$advertencia->motivos}}}">Advertencia</span></td>
+									@endif
+									@endforeach									
 
 							</td>
 							</tr>	  		
@@ -118,6 +129,7 @@ $("#ventas").chosen({
 
 							{{form::close()}}
 							@endforeach
+								
 						</tbody>
 					</table>
 					<div class="clearfix"></div>

@@ -10,26 +10,6 @@ $(document).on('ready', function(){
 
 //console.log($.support);
 
-	
-
-$.ajax({
-	url: '/path/to/file',
-	type: 'default GET (Other values: POST)',
-	dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-	data: {param1: 'value1'},
-})
-.done(function() {
-	console.log("success");
-})
-.fail(function() {
-	console.log("error");
-})
-.always(function() {
-	console.log("complete");
-});
-
-
-
 
 
 
@@ -72,8 +52,11 @@ $("#ventas").chosen({
 </div>
 <div class="widget">
 	<div class="widget-head">
-		<div class="pull-left"><?php if($pendientes > 0): ?> <?php echo e($pendientes); ?> Abonos pendientes por revisar
+		<div class="pull-left">
+		
+		<?php if($pendientes > 0): ?> <?php echo e($pendientes); ?> Abonos pendientes por revisar
 		<?php else: ?> Pagos del <?php echo e(date("d-M-Y", strtotime($periodo_comision->fecha_inicio))); ?> al <?php echo e(date("d-M-Y", strtotime($periodo_comision->fecha_fin))); ?> <?php endif; ?> Folio <strong><?php echo e($periodo_comision->folio); ?></strong></div>		
+		
 		<div class="clearfix">
 		
 				<div class="pull-right">
@@ -97,7 +80,7 @@ $("#ventas").chosen({
 						<thead>
 							<tr>
 								<th class="text-center">ID</th>							
-								<th class="text-center col-md-1">Periodo</th>
+								<th class="text-center col-md-1">Folio</th>
 								<th class="text-center col-md-3"> Cliente</th>
 								<th class="text-center col-md-3"> Vendedor</th>
 								<th class="text-center col-md-2">Monto</th>
@@ -109,15 +92,19 @@ $("#ventas").chosen({
 						</thead>
 						<tbody>
 							<?php foreach($abonos as $abono): ?>
+							
+
+
 							<?php echo Form::open(array('action' => 'ComisionControlador@postAbono', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')); ?>
 
 							<tr>
 								<td class="text-center"><?php echo e($abono->id); ?></td>
-								<td><strong><?php echo e($abono->periodo_comision_id); ?></strong></td>
+								<td><strong><?php echo e($abono->folio); ?></strong></td>
 								<td> <?php echo e($abono->cliente); ?></td><td><?php echo e($abono->abono_asesor); ?> <?php if($abono->vendedor <> $abono->abono_asesor): ?> <span class="label label-warning" ><i  class="fa fa-exclamation-triangle" aria-hidden="true"></i> No pertenece al vendedor</span> <?php endif; ?> </td>
 								<td class="text-right"><input type="number" step="any"class="form-control" placeholder="0" name="abono_comision" value="<?php echo e($abono->monto_abono); ?>"></td>								
-								<td><button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 									
-									 <a id="activa" class="btn btn-m btn-default activa" href="<?php echo URL::to('comision/deleteabono/'.$abono->abono_comision_id); ?>" title="Dar de Baja a"> <i class="fa fa-trash-o activa"></i></a>
+								<td><button type="submit" class="btn btn-m btn-default " id="btn_send" ><i class="fa fa-floppy-o"></i> </button> 									
+									
+									 <a id="activa" class="btn btn-m  activa btn-default" href="<?php echo URL::to('comision/deleteabono/'.$abono->abono_comision_id); ?>" title="Dar de Baja a"> <i class="fa fa-trash-o activa"></i></a>
 								<?php echo e(round(($abono->pagado * $abono->numero_pagos)/$abono->total_comisionable)); ?>	de <?php echo e($abono->numero_pagos); ?>
 
 								</td>
@@ -128,9 +115,13 @@ $("#ventas").chosen({
 												<?php else: ?>												
 												<span class="label label-success">Pagada</span>
 												
-													<?php endif; ?>
-
-												
+													<?php endif; ?>	
+										<?php foreach($advertencias as $advertencia): ?>	
+									<?php if($advertencia->comision_id == $abono->id): ?>
+									
+										<span class="label label-danger" title="<?php echo e($advertencia->motivos); ?>">Advertencia</span></td>
+									<?php endif; ?>
+									<?php endforeach; ?>									
 
 							</td>
 							</tr>	  		
@@ -141,6 +132,7 @@ $("#ventas").chosen({
 							<?php echo form::close(); ?>
 
 							<?php endforeach; ?>
+								
 						</tbody>
 					</table>
 					<div class="clearfix"></div>

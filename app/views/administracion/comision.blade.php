@@ -1,44 +1,43 @@
 @section('scripts')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-
-
 <script type="text/javascript">
 $(document).on('ready', function(){ 
 
+	//funcion Para el datepicker
+      $(function() {
+   
+//Array para dar formato en español
+ $.datepicker.regional['es'] = 
+ {
+ closeText: 'Cerrar', 
+ prevText: 'Previo', 
+ nextText: 'Próximo',
+ 
+ monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+ 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+ 'Jul','Ago','Sep','Oct','Nov','Dic'],
+ monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+ dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+ dateFormat: 'yy-mm-dd', firstDay: 0, 
+ initStatus: 'Selecciona la fecha', isRTL: false};
+$.datepicker.setDefaults($.datepicker.regional['es']);
 
-{{--@foreach($comisiones as $comision)
-$('#{{{$comision->id}}}').on('shown.bs.modal')
-@endforeach--}}
+//miDate: fecha de comienzo D=días | M=mes | Y=año
+//maxDate: fecha tope D=días | M=mes | Y=año
+   $( "#datepicker" ).datepicker({ minDate: "-14D", maxDate: "+14D" });
 
-$('.send-provider').on('click', function(){
-		var $target = $(this);		
-		$.ajax({
-			url: '{{ action('ComisionControlador@detalle') }}/' + $target.data('quote'), 
-			type: 'GET'
-		})
-		.done(function(data) {
-			console.log(data);
-			$('textarea[name=recipients]').val(data.producto);			
-			/*$.each(data.abonos, function(abonos, abono) {
-            	console.log(abono.periodo_comision_id)
-            });*/
-			$('#send-form').attr('action', $target.data('post'));
-			$('#send-provider').modal();
-		});
-	});
+ });//fin fuincion datepicker
 
-	$('#send-button').on('click', function(){
-		$('#send-form').submit();
-	});
+     
+$("#guardar").on("click", function() { /* Al boton guardar le asigno el evento onClick */
+				$("#upload_file").submit();
+			});
 
-
-
-
-});
-
-$(document).on('click','.open_modal',function(){
-        {{--funcion para formatear numeros --}}
+{{--funcion para formatear numeros --}}
         Number.prototype.formatMoney = function(c, d, t){
 			var n = this, 
 			    c = isNaN(c = Math.abs(c)) ? 2 : c, 
@@ -49,19 +48,83 @@ $(document).on('click','.open_modal',function(){
 			    j = (j = i.length) > 3 ? j % 3 : 0;
 			   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 			 }; {{--fin function formatMoney --}}
+ 
+
+});
+//lanza modal para editar
+$(document).on('click','.open_modal_edit',function(){
+
+var id = $(this).val();
+
+$.get('{{ action('ComisionControlador@detalle') }}/'+ id, function (data) {
+	$('input[name=porcentaje]').val(data.porcentaje);
+	//$('input[name=total_comisionable]').val(data.total_comisionable);
+	$('input[name=venta_id]').val(data.venta_id);
+	$('input[name=producto_id]').val(data.producto_id);
+	$('textarea[name=observaciones_comision]').val(data.observaciones);
+
+console.log(data);
+            $('#id').val(data.id);
+});
+
+$('#edit_window').modal('show');
 
 
+$('#edit_button').on('click', function(){
+		$('#edit_form').submit();
+	});
 
+
+}); 
+//lanza modal para advertencia
+$(document).on('click','.open_modal_warning',function(){
+
+var id = $(this).val();
+
+$.get('{{ action('ComisionControlador@detalle') }}/'+ id, function (data) {
+	
+	$('input[name=venta_id]').val(data.venta_id);
+	
+if (data.advertencia_id) {
+	
+	$('input[name=estatus]').val("update");
+	$('input[name=advertencia_id]').val(data.advertencia_id);
+	$('textarea[name=motivos]').text(data.advertencia);
+
+}else{
+	$('input[name=estatus]').val("add");
+	$('input[name=advertencia_id]').val(0);
+	
+}
+
+
+console.log(data);
+            $('#id').val(data.id);
+});
+
+$('#warning_window').modal('show');
+
+
+$('#warning_button').on('click', function(){
+		$('#warning_form').submit();
+	});
+
+
+});
+//lanza modal de detalles
+$(document).on('click','.open_modal',function(){
+
+        
 		{{--llamada ajax para traer los valores en json desde el controlador --}}
 		var id = $(this).val();
 
-        $.get('detalle/' + id, function (data) {
+        $.get('{{ action('ComisionControlador@detalle') }}/' + id, function (data) {
             {{--success data --}}
             console.log(data);
             $('#id').val(data.id);
            
             {{--accede a los abonos de cada comision y los manda en consola  --}}
-           $.each(data.abonos, function(index, val) {
+           $.each(data.vistaabonocomisionperiodo, function(index, val) {
            	 console.log(val.periodo_comision_id);
            });
             
@@ -96,6 +159,7 @@ $(document).on('click','.open_modal',function(){
            output+=  "<table class="+"table table-condensed"+">"+
 						    "<thead>"+
 						      "<tr>"+
+						        "<th class="+"text-center"+">Id Comision</th>"+
 						        "<th class="+"text-center"+">Folio comisión</th>"+
 						        "<th class="+"text-center"+">Pago</th>"+
 						        "<th class="+"text-center"+">Fecha</th>"+
@@ -105,12 +169,15 @@ $(document).on('click','.open_modal',function(){
 								
 								"</tr> ";
 		  {{--recorre los abonos y crea un renglon para la tabla y los va añadiendo a la variable output --}}
-		  $.each(data.abonos, function(userkey, uservalue) {
+		  $.each(data.vistaabonocomisionperiodo, function(userkey, uservalue) {
+
+		  
 
             	 output += '<tr>';
-            	 output += '<td>' + uservalue.periodo_comision_id + '</td>';
+            	 output += '<td>' + '<a href='+ "/comision/abonos/"+ uservalue.periodo_comision_id +'>'+ uservalue.periodo_comision_id + ' </a> </td>';
+            	 output += '<td>' + uservalue.folio_comision + '</td>';
             	 output += '<td> $' + uservalue.monto.formatMoney(2, '.', ',') + '</td>';
-            	 output += '<td>' + uservalue.fecha + '</td>';
+            	 output += '<td>' + uservalue.fecha_inicio +' al '+ uservalue.fecha_fin + '</td>';
             	 output += '</tr>';
             	 
             	 
@@ -126,10 +193,10 @@ $(document).on('click','.open_modal',function(){
 
            
            {{--si la comision viene con observaciones se lo asigno al elemento que contiene las observaciones --}}
-           if (data.observaciones != null) {
-           	$('#observaciones').text("*Nota: "+ data.observaciones);
+           if (data.observaciones == null) {
+          		$('#observaciones').text(" ");
            }else{ {{-- si está vacio el campo de observaciones mando una cadena vacía en el elemento --}}
-           		$('#observaciones').text(" ");
+           			$('#observaciones').text("*Nota: "+ data.observaciones);
            }
 
             
@@ -152,57 +219,9 @@ $(document).on('click','.open_modal',function(){
                                 
         }) 
 
-        
+     
 
-    });
-
-
-
-
-	
-
-</script>
-
-
-<script>
-
-  $(function() {
-   
-//Array para dar formato en español
- $.datepicker.regional['es'] = 
- {
- closeText: 'Cerrar', 
- prevText: 'Previo', 
- nextText: 'Próximo',
- 
- monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
- 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
- monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
- 'Jul','Ago','Sep','Oct','Nov','Dic'],
- monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
- dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
- dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
- dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
- dateFormat: 'yy-mm-dd', firstDay: 0, 
- initStatus: 'Selecciona la fecha', isRTL: false};
-$.datepicker.setDefaults($.datepicker.regional['es']);
-
-//miDate: fecha de comienzo D=días | M=mes | Y=año
-//maxDate: fecha tope D=días | M=mes | Y=año
-   $( "#datepicker" ).datepicker({ minDate: "-14D", maxDate: "+14D" });
-
- });
-  </script>
-  <script>    
-      	$(document).on("ready",function() {  /* Cuando la pagina este totalmente cargada */
-			$("#guardar").on("click", function() { /* Al boton guardar le asigno el evento onClick */
-				$("#upload_file").submit();
-			});
-		});
-
-
- 
-
+    });	
 
 </script>
 @stop()
@@ -229,7 +248,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 	</div>
 	<div class="widget-content">
 		<div class="padd">
-			@if(count($comisiones) > 0)
+			{{--@if(count($comisiones) > 0) --}}
 			<!-- Table Page -->
 			<div class="page-tables">
 				<!-- Table -->
@@ -267,13 +286,22 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 								<td class="text-right">{{{ $comision->porcentaje}}}%</td>
 								
 								<td class="text-left">
-									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
-									<button class="btn btn-xs btn-default open_modal"  title="Ver detalles de pagos"value="{{$comision->id}}"><i class="fa fa-search"></i></button>
+									
+									<button class="btn btn-xs btn-default open_modal"  title="Ver detalles de pagos" value="{{$comision->id}}"><i class="fa fa-search"></i></button>
+									
 									{{--<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>--}}
 									{{--<a href="{{action('ComisionControlador@getPago', $comision->id)}}" name="id" value="{{{$comision->comision_id}}}"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>--}}
+									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
 									@if($comision->pagada == 0)
-									<a href="{{action('ComisionControlador@getPagada', $comision->id)}}" name="id" value="{{{$comision->id}}}"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
-								
+										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="{{$comision->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button>
+										
+									@if($comision->advertencia <> '0')
+										<button class="btn btn-xs btn-default open_modal_warning btn-danger"  title="Quitar advertencia {{{$comision->advertencia}}}" value="{{$comision->id}}"><i class="fa fa-reply" aria-hidden="true"></i></button>
+									@else
+										<button class="btn btn-xs btn-default open_modal_warning"  title="Agregar advertencia" value="{{$comision->id}}"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
+									@endif	
+
+										<a href="{{action('ComisionControlador@getPagada', $comision->id)}}" name="id" value="{{{$comision->id}}}"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
 									@endif
 									
 									@if($comision->pagada == 0)
@@ -283,9 +311,12 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 												@else												
 												<span class="label label-success">Pagada</span></td>
 												
-													@endif
+												@endif						
+									
+
+
 								</td>
-							</tr>	
+								
 
 
   				
@@ -296,9 +327,9 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			@else
+			{{--@else
 			<div class="text-center">No hay comisiones pendientes</div>
-			@endif
+			@endif --}}
 		</div>
 	</div>
 	<div class="widget-foot">
@@ -311,6 +342,8 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 		<div class="clearfix"></div>
 	</div>
 </div>
+
+
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -434,6 +467,96 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 		</div>
 	</div>
 </div>
+
+
+{{-- modal para editar comision --}}
+ <div class="modal fade" id="edit_window">
+ 	<div class="modal-dialog">
+ 		<div class="modal-content">
+ 			<div class="modal-header">
+ 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+ 				<h4 class="modal-title">Modificar porcentaje de comisión</h4>
+ 			</div>
+ 			<div class="modal-body"> 				
+{{ Form::open(array('action' => 'ComisionControlador@postEditcomision', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'edit_form')) }}
+<div class="form-group">
+	<label for="sector" class="col-md-3 control-label">Porcentaje </label>
+	<div class="col-md-9">
+			     
+		<input type="number" step="any"class="form-control" placeholder="12%" id="porcentaje"  name="porcentaje" required>
+	</div>
+</div>
+
+{{-- <div class="form-group">
+	<label for="sector" class="col-md-3 control-label">Comision </label>
+	<div class="col-md-9">
+	        
+      	<input type="number" step="any"class="form-control" placeholder="$0.0" name="total_comisionable" required>     
+		
+	</div>
+</div>  --}}
+
+<div class="form-group">
+	<label for="sector" class="col-md-3 control-label">Observaciones </label>
+	<div class="col-md-9">
+	        
+      	<textarea class="form-control" id = "observaciones_comision" name="observaciones_comision"></textarea>
+      	<input type="hidden" id="producto_id" name="producto_id" value="">
+      	<input type="hidden" id="venta_id" name="venta_id" value="">
+
+		
+	</div>
+</div>
+
+{{ Form::close() }}
+ 			</div>
+ 			<div class="modal-footer">
+ 				<button type="button" class="btn btn-default"  data-dismiss="modal">Cerrar</button>
+ 				<button type="sumbmit" class="btn btn-primary" id="edit_button"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
+
+
+<div class="modal fade" id="warning_window">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Añadir una advertencia a la comision</h4>
+			</div>
+			<div class="modal-body">
+				{{ Form::open(array('action' => 'ComisionControlador@postWarning', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'warning_form')) }}
+
+
+					<div class="alert alert-warning text-center" >
+                          <h5><strong> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong> Esta comision mostrará una advertencia en cada pago futuro </strong></h5>                                                  
+                        </div>
+
+<div class="form-group">
+	<label for="sector" class="col-md-3 control-label">Motivos </label>
+	<div class="col-md-9">
+	        
+      	<textarea class="form-control" id = "motivos" name="motivos" value = ""></textarea>      	
+      	<input type="hidden" id="venta_id" name="venta_id" value="">
+      	<input type="hidden" id="estatus" name="estatus" value="">
+      	<input type="hidden" id="advertencia_id" name="advertencia_id" value="">
+		
+	</div>
+</div>
+
+{{ Form::close() }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button"  id="warning_button" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{-- fin modal editar comision --}}
 	<!--/////////////////////////////-->
 	{{--@foreach($comisiones as $comision)
 	<!--Ventanas modales -->

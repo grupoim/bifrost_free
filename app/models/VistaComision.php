@@ -8,5 +8,9 @@ class VistaComision extends Eloquent {
 		return $this->hasMany('AbonoComision','comision_id');
 	}
 
+	public function vistaabonocomisionperiodo() {
+		return $this->hasMany('VistaAbonoComisionPeriodo','comision_id');
+	}
+
 
 }
