@@ -60,9 +60,12 @@ $("#ventas").chosen({
 		<div class="clearfix">
 		
 				<div class="pull-right">
+					<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
 					@if($pendientes == 0)
 						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
-					@endif<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
+						<a href="{{action('ComisionControlador@getPdftotales', $periodo_comision->id)}}"  title="Descarga los totales a recibir por vendedor en un archivo pdf"class="btn btn-default" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i></i> Reporte</a> 
+						
+					@endif
 			
 				</div> 
 		
@@ -142,6 +145,44 @@ $("#ventas").chosen({
 	</div>
 	<div class="widget-foot">		
 		<div class="clearfix"></div>
+
+		<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Asesor</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach($totales_vendedores as $vendedor)
+			<tr>
+				<td> {{{$vendedor->asesor}}}</td>
+				<td> {{{$vendedor->total}}}</td>
+			</tr>
+			@endforeach			
+		</tbody>
+	</table>
+	</div>
+
+	<div class="widget-foot">		
+		<div class="clearfix"></div>
+
+		<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Asesor</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach($promotorias as $promotor)
+			<tr>
+				<td> {{{$promotor->promotor}}}</td>
+				<td> {{{$promotor->total_promotoria}}}</td>
+			</tr>
+			@endforeach			
+		</tbody>
+	</table>
 	</div>
 </div>
 

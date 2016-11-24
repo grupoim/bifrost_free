@@ -243,6 +243,7 @@ $(document).on('click','.open_modal',function(){
 		<div class="pull-left">Comisiones pendientes</div>
 		<div class="pull-right">
 		<a href="#myModal" class="btn btn-primary" data-toggle="modal"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Sube Archivo </a>
+		<a href="{{action('ComisionControlador@getPeriodos')}}" class="btn btn-success" data-toggle="modal"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Periodos </a>
 		</div>  
 		<div class="clearfix"></div>
 	</div>
@@ -311,10 +312,7 @@ $(document).on('click','.open_modal',function(){
 												@else												
 												<span class="label label-success">Pagada</span></td>
 												
-												@endif						
-									
-
-
+												@endif															
 								</td>
 								
 
@@ -332,6 +330,8 @@ $(document).on('click','.open_modal',function(){
 			@endif --}}
 		</div>
 	</div>
+
+
 	<div class="widget-foot">
 		<div class="pull-right">
 			<div class="btn-group">

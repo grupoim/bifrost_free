@@ -84,6 +84,13 @@ class ComisionControlador extends ModuloControlador{
 		$comision_update->save();
 		return Redirect::back();
 	}
+	public function getPeriodos()
+
+	{
+		$dataModule['periodos']= PeriodoComision::all();
+		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.periodos_comision', $dataModule);
+	}
+
 
 	public function getIndex(){
 		$total = VistaComision::where('cancelada', '0')->where('pagada',0)->sum('por_pagar');
@@ -106,42 +113,56 @@ class ComisionControlador extends ModuloControlador{
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.comision' , $dataModule);
 	}
 
-	public function getPdf($id){
+	
+	public function getPdftotales($id){
 
-     $total = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->sum('monto');
+     	$total = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->sum('monto');
 
-
-		
 		$periodo = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->first();
-
-		$dataModule['comisiones_activas'] = VistaComision::where('cancelada',0)->where('pagada', 0)->get();
-
-		$dataModule['asesores'] = VistaAsesorPromotor::where('activo',1)->get();
-
 		
-
 
 		$periodo_comision = PeriodoComision::find($periodo->periodo_comision_id);
-		
-		$dataModule['pendientes'] = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->where('pagado',0)->count();				
 		
 		
 		$abonos = AbonoComision::select('abono_comision.id as abono_comision_id','vista_asesor_promotor.asesor as abono_asesor','abono_comision.periodo_comision_id',
 			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado',
-			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id',
-			'periodo_comision.*', 'vista_comision.*'  )
+			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id','vista_asesor_promotor.promotor',
+			'periodo_comision.*', 'vista_comision.*' , 'vista_comision.total as venta_total' )
 		->where('abono_comision.periodo_comision_id','=',$id)
 		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
 		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_asesor_promotor.asesor','asc')		
+		->get();	
+	
+		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor',
+			DB::raw('sum(abono_comision.monto) as total'), 'vista_asesor_promotor.promotor as promotor',
+			'abono_comision.asesor_id as abono_asesor_id'
+			)
+		->where('abono_comision.periodo_comision_id','=',$id)
+		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')		
+		->groupBy('vista_comision.asesor_id')
 		->get();
+
+		$promotorias = AbonoComision::select('vista_asesor_promotor.promotor as promotor',
+			DB::raw('sum(abono_comision.monto) as total_promotoria'))
+		->where('abono_comision.periodo_comision_id','=',$id)		
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')		
+		->groupBy('vista_asesor_promotor.promotor')
+		->get();
+
+		$data['total'] = $total;
+		$data['periodo'] = $periodo_comision;
+		$data['totales_vendedores'] = $total_vendedor;
+		$data['promotorias'] = $promotorias;
 		$data['abonos'] = $abonos;
 
-     $pdf = DOPDF::loadView('formularios.pagos_comisiones_pdf',$data)->setPaper('letter', 'landscape');
+     $pdf = DOPDF::loadView('formularios.totales_comisiones_pdf',$data)->setPaper('letter', 'landscape');
       	$dom_pdf = $pdf->getDomPDF();
 		$pdf->output();
 		$canvas = $dom_pdf ->get_canvas();
-		$canvas->page_text(72, 18, " {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+		$canvas->page_text(700, 600, " {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
       return $pdf->stream();
 
 
@@ -153,15 +174,12 @@ class ComisionControlador extends ModuloControlador{
 		
 		$total = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->sum('monto');
 
-
-		
+	
 		$periodo = AbonoComision::where('periodo_comision_id',$id)->where('cancelado', 0)->first();
 
 		$dataModule['comisiones_activas'] = VistaComision::where('cancelada',0)->where('pagada', 0)->get();
 
-		$dataModule['asesores'] = VistaAsesorPromotor::where('activo',1)->get();
-
-		
+		$dataModule['asesores'] = VistaAsesorPromotor::where('activo',1)->get();		
 
 
 		$periodo_comision = PeriodoComision::find($periodo->periodo_comision_id);
@@ -170,7 +188,7 @@ class ComisionControlador extends ModuloControlador{
 		
 		
 		$abonos = AbonoComision::select('abono_comision.id as abono_comision_id','vista_asesor_promotor.asesor as abono_asesor','abono_comision.periodo_comision_id',
-			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado',
+			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado','vista_asesor_promotor.promotor',
 			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id',
 			'periodo_comision.*', 'vista_comision.*'  )
 		->where('abono_comision.periodo_comision_id','=',$id)
@@ -179,10 +197,31 @@ class ComisionControlador extends ModuloControlador{
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_comision.id','asc')		
 		->get();
 
+		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor',
+			DB::raw('sum(abono_comision.monto) as total'),
+			'abono_comision.asesor_id as abono_asesor_id'
+			)
+		->where('abono_comision.periodo_comision_id','=',$id)
+		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')		
+		->groupBy('vista_comision.asesor_id')
+		->get();
+
+		
+		$promotorias = AbonoComision::select('vista_asesor_promotor.promotor as promotor',
+			DB::raw('sum(abono_comision.monto) as total_promotoria'))
+		->where('abono_comision.periodo_comision_id','=',$id)		
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')		
+		->groupBy('vista_asesor_promotor.promotor')
+		->get();
+
+		$dataModule['promotorias'] = $promotorias;
+
 		$dataModule['advertencias'] = ComisionAdvertencia::where('comision_advertencia.activo',1)
 		->get();
 
-
+		$dataModule["totales_vendedores"] = $total_vendedor;
 		$dataModule["abonos"] = $abonos;
 		/*$dataModule["comisiones"] = Comision::with('asesor.persona', 'venta.cliente.persona','venta.ventaproducto.producto')->where('cancelada', 0)->where('pagada', 0)->get();*/
 		$dataModule["total"] = number_format($total, 2, ".", ",");
