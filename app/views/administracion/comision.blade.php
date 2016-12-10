@@ -231,6 +231,7 @@ $(document).on('click','.open_modal',function(){
 	@foreach($promotorias as $promotoria)
 	<div class="col-md-4">
                         <div  class="alert alert-success  text-center">
+                          <h4><i class="fa fa-users"></i> {{{$promotoria->promotor}}} </h4>
 							<h3><strong>Porcentaje al {{{$fecha_fin}}} <input text-align="center" type="number" step="any"class="form-control" placeholder="$0.0" name="total_comisionable" required value="{{{$promotoria->porcentaje}}}"></strong> </h3>
                        <button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn btn-default" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar</button> 
                         </div>
