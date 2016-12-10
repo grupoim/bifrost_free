@@ -9,7 +9,7 @@
   padding: 0; 
 }
 body { 
-  font: 14px/1.4 Georgia, Serif; 
+  font: 13px/1.4 Georgia, Serif; 
   
   background-position: top, left;
   
@@ -80,6 +80,7 @@ span {
                 <div align="center">
                   <h2  class="box-title text-center">Totales por vendedor </h2><br>
                   <h3 class="text-center">Comisiones del {{{ date('d/m/Y', strtotime($periodo->fecha_inicio)) }}} al {{{ date('d/m/Y', strtotime($periodo->fecha_fin)) }}} <div align="right" class="total">Folio <u><strong>  {{{$periodo->folio}}}  </strong></h3></u></div>
+                  
                 </div><!-- /.box-header -->
                 
                   
@@ -174,7 +175,7 @@ span {
                 {{{round(($abono->pagado * $abono->numero_pagos)/$abono->total_comisionable)}}} de {{{$abono->numero_pagos}}}
                 @if ($abono->fecha_venta >= $periodo->fecha_inicio)
                   <strong>*</strong>
-                 @endif
+                 @endif                 
                  </td>              
               </tr>       
               @endif

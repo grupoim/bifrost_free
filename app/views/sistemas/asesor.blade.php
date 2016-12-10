@@ -226,6 +226,18 @@ jQuery(function($){
                                     @endif
                                   </div>
                                 </div>
+
+                                <div class="form-group">
+                
+                                  <label class="col-lg-4 control-label">Email</label>
+                                  <div class="col-lg-8">
+                                    @if($status == 'edit')
+                                    <input  value =  "{{{$asesor_r->email}}}"type="text" class="form-control" placeholder="demo@dominio.com" id="email" name="email"  >
+                                    @else
+                                    <input  value =  "{{{Input::old('email')}}}"type="text" class="form-control" placeholder="demo@dominio.com" id="email" name="email"  >
+                                    @endif
+                                  </div>
+                                </div>
                                 
                        <div class="form-group">
                                   <label class="col-md-4 control-label">Telefono *</label>

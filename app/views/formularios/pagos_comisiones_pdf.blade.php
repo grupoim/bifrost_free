@@ -9,7 +9,7 @@
   padding: 0; 
 }
 body { 
-  font: 14px/1.4 Georgia, Serif; 
+  font: 13px/1.4 Georgia, Serif; 
 }
 #page-wrap {
   margin: 50px;
@@ -59,6 +59,7 @@ p {
               
                 <div class="box-header with-border">
                   <h3 class="box-title">Detalles de comisiones </h3><br>
+                  <h4>Cuando el flujo de efectivo sea aprobado en Dirección General, se le notificará para que acuda a la oficina y le sea entregado su pago, gracias por su comprensión</h4>
                 </div><!-- /.box-header -->
                 
                   
@@ -95,6 +96,10 @@ p {
                 <td align="right">
                   
                 {{{round(($abono->pagado * $abono->numero_pagos)/$abono->total_comisionable)}}} de {{{$abono->numero_pagos}}}
+               @if ($abono->fecha_venta > $periodo->fecha_inicio)
+                  <strong>*</strong>
+                 @endif
+                 {{{$abono->fecha_venta}}}
                 </td>              
               </tr>       
               @endif

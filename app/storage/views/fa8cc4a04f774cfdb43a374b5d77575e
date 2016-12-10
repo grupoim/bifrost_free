@@ -9,7 +9,7 @@
   padding: 0; 
 }
 body { 
-  font: 14px/1.4 Georgia, Serif; 
+  font: 13px/1.4 Georgia, Serif; 
   
   background-position: top, left;
   
@@ -80,6 +80,7 @@ span {
                 <div align="center">
                   <h2  class="box-title text-center">Totales por vendedor </h2><br>
                   <h3 class="text-center">Comisiones del <?php echo e(date('d/m/Y', strtotime($periodo->fecha_inicio))); ?> al <?php echo e(date('d/m/Y', strtotime($periodo->fecha_fin))); ?> <div align="right" class="total">Folio <u><strong>  <?php echo e($periodo->folio); ?>  </strong></h3></u></div>
+                  <h4>Cuando el flujo de efectivo sea aprobado en Dirección General, se le notificará para que acuda a la oficina y le sea entregado su pago, gracias por su comprensión</h4>
                 </div><!-- /.box-header -->
                 
                   
@@ -175,7 +176,7 @@ span {
 
                 <?php if($abono->fecha_venta >= $periodo->fecha_inicio): ?>
                   <strong>*</strong>
-                 <?php endif; ?>
+                 <?php endif; ?>                 
                  </td>              
               </tr>       
               <?php endif; ?>

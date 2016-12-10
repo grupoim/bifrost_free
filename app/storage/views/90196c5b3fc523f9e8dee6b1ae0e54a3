@@ -228,6 +228,18 @@ jQuery(function($){
                                     <?php endif; ?>
                                   </div>
                                 </div>
+
+                                <div class="form-group">
+                
+                                  <label class="col-lg-4 control-label">Email</label>
+                                  <div class="col-lg-8">
+                                    <?php if($status == 'edit'): ?>
+                                    <input  value =  "<?php echo e($asesor_r->email); ?>"type="text" class="form-control" placeholder="demo@dominio.com" id="email" name="email"  >
+                                    <?php else: ?>
+                                    <input  value =  "<?php echo e(Input::old('email')); ?>"type="text" class="form-control" placeholder="demo@dominio.com" id="email" name="email"  >
+                                    <?php endif; ?>
+                                  </div>
+                                </div>
                                 
                        <div class="form-group">
                                   <label class="col-md-4 control-label">Telefono *</label>

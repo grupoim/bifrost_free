@@ -39,8 +39,12 @@
 					}
 				else
 				 		$ingreso = date("Y-m-d");
-			 
+			if (Input::has('email')) {
+				$email = Input::get('email');
 
+			}
+			 else
+			 	$email = " ";
 			$persona = new Persona;
 			$persona->nombres = $nombre;
 			$persona->apellido_paterno = $ap_pat;
@@ -50,6 +54,7 @@
 			$asesor = new Asesor;
 			$asesor->persona_id = $persona->id;
 			$asesor->fecha_ingreso = $ingreso;
+			$asesor->email = $email; 
 			$asesor->save();
 
 			if(Input::get('telefono')){
@@ -143,9 +148,16 @@
 					}
 				else
 				 		$ingreso = date("Y-m-d");
+			if (Input::has('email')) {
+				$email = Input::get('email');
+
+			}
+			 else
+			 	$email = " ";
 
 			$asesor = Asesor::find(Input::get('asesor_id'));
 			$asesor->fecha_ingreso = $ingreso;
+			$asesor->email = $email;
 			$asesor->save();
 			
 			$persona = Persona::find($asesor->persona_id);

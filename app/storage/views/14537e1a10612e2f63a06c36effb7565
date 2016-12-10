@@ -1,0 +1,71 @@
+<?php $__env->startSection('nav'); ?>
+	@parent
+	<li class="has_sub">
+		<?php echo $__env->make('menu.ventas', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.cotizacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.administracion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.cobranza', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.comision', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.queja', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.almacen', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>		
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.capilla', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.serviciofuneral', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.recubrimientos', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.recubrimiento', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.material', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.mantenimiento', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.mantenimiento', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.tramites', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.contratacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.cesionderecho', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.titulopropiedad', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.cartabeneficiario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.operaciones', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.listaasistencia', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.personaloperativo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.inhumacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.exhumacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.lotefunerario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			
+		</ul>
+	</li>
+	<li class="has_sub">
+		<?php echo $__env->make('menu.configuraciones', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		<ul>
+			<?php echo $__env->make('menu.submenu.configuracion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.producto', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.planpago', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.notacredito', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.asesor', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+			<?php echo $__env->make('menu.submenu.perfilusuario', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+			
+		</ul>
+	</li>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

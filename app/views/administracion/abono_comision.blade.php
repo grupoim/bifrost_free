@@ -40,6 +40,31 @@ $("#ventas").chosen({
 @stop()
 
 @section('module')
+ <div class="padd">
+
+                   @foreach($promotorias as $promotor)
+                   {{ Form::open(array('action' => 'ComisionControlador@postSend', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
+                   <div class="col-md-4">
+                        <div  class="alert alert-success  text-center">
+                          <h4><i class="fa fa-users"></i> {{{$promotor->promotor}}} <strong><span id = "total"></span></strong></h4>
+							<h3><strong>$ {{{number_format($promotor->total_promotoria, 2, ".", ",")}}} </strong> </h3>
+                       @if($promotor->promotor == "Independiente")
+                      <input type="hidden" value="1" name="independiente">
+                      @else
+                      <input type="hidden" value="0" name="independiente">
+                      @endif <button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn btn-default" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar</button> 
+                        </div>
+                      </div>
+                      <input type="hidden" value="{{{$promotor->promotor}}}" name="promotoria">
+                      <input type="hidden" value="{{{$periodo_comision->id}}}" name="periodo_comision_id">
+                     
+                      {{form::close()}}
+						@endforeach
+                    
+
+          <!-- tabla de inventario -->
+                    <div class="clearfix"></div>
+                  </div> <!-- end pad-->
 <div class="">
 	<div class="well">
 		<p class="lead text-right">
@@ -62,8 +87,8 @@ $("#ventas").chosen({
 				<div class="pull-right">
 					<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
 					@if($pendientes == 0)
-						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Alta en Sist. PFG</a> 
-						<a href="{{action('ComisionControlador@getPdftotales', $periodo_comision->id)}}"  title="Descarga los totales a recibir por vendedor en un archivo pdf"class="btn btn-default" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i></i> Reporte</a> 
+						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Sql PFG</a> 
+						<a href="{{action('ComisionControlador@getPdftotales', $periodo_comision->id)}}"  title="Descarga los totales a recibir por vendedor en un archivo pdf"class="btn btn-default" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Reporte</a> 
 						
 					@endif
 			
@@ -145,7 +170,7 @@ $("#ventas").chosen({
 	</div>
 	<div class="widget-foot">		
 		<div class="clearfix"></div>
-
+<H2><strong>Totales por vendedor</strong></H2>
 		<table class="table table-hover">
 		<thead>
 			<tr>
@@ -167,22 +192,6 @@ $("#ventas").chosen({
 	<div class="widget-foot">		
 		<div class="clearfix"></div>
 
-		<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Asesor</th>
-				<th>Total</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach($promotorias as $promotor)
-			<tr>
-				<td> {{{$promotor->promotor}}}</td>
-				<td> {{{$promotor->total_promotoria}}}</td>
-			</tr>
-			@endforeach			
-		</tbody>
-	</table>
 	</div>
 </div>
 

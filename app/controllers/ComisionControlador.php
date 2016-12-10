@@ -93,6 +93,25 @@ class ComisionControlador extends ModuloControlador{
 
 
 	public function getIndex(){
+
+		$start = new Carbon('first day of this month');
+		$finish = new Carbon('last day of this month');
+
+		$inicio =  $start->format('Y-m-d');
+		$fin = $finish->format('Y-m-d');
+
+
+		$fecha_fin = $finish->format('d-m-Y');
+		$dataModule['fecha_fin'] = $fecha_fin;
+
+
+		$dataModule['promotorias'] = VistaAsesorPromotor::leftJoin('comision_esquema_vendedor', 'vista_asesor_promotor.asesor_id', '=', 'comision_esquema_vendedor.asesor_id')
+										  ->leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
+										   ->where('comision_esquema_vendedor.fecha_inicio','>=', $inicio)
+										   ->where('comision_esquema_vendedor.fecha_fin', '<=', $fin)
+										  ->groupBy('vista_asesor_promotor.promotor')->get();
+
+
 		$total = VistaComision::where('cancelada', '0')->where('pagada',0)->sum('por_pagar');
 		
 
@@ -197,6 +216,7 @@ class ComisionControlador extends ModuloControlador{
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_comision.id','asc')		
 		->get();
 
+	
 		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor',
 			DB::raw('sum(abono_comision.monto) as total'),
 			'abono_comision.asesor_id as abono_asesor_id'
@@ -229,6 +249,125 @@ class ComisionControlador extends ModuloControlador{
 		
 
 		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.abono_comision', $dataModule);
+	}
+
+	public function postSend(){
+		
+		
+		$periodo_comision_id = Input::get('periodo_comision_id');
+		
+		$promotoria = Input::get('promotoria');
+
+		$independiente = Input::get('independiente');
+		
+		$periodo_comision = PeriodoComision::find($periodo_comision_id);
+
+		$vendedores = AbonoComision::where('periodo_comision_id','=',$periodo_comision_id)
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->groupBy('abono_comision.asesor_id')
+		->get();
+
+		//vendedores dentro de la promotoria
+		if ( $independiente == 0 ) {
+		
+
+		$abonos = AbonoComision::select('abono_comision.id as abono_comision_id','vista_asesor_promotor.asesor as abono_asesor','abono_comision.periodo_comision_id',
+			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado','vista_asesor_promotor.promotor',
+			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id',
+			'periodo_comision.*', 'vista_comision.*')
+		->where('abono_comision.periodo_comision_id','=',$periodo_comision_id)
+		->where('vista_asesor_promotor.promotor','=',$promotoria)
+		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_comision.id','asc')		
+		->get();
+
+	
+		$total = AbonoComision::
+		where('abono_comision.periodo_comision_id','=',$periodo_comision_id)
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->where('vista_asesor_promotor.promotor','=',$promotoria)->where('abono_comision.cancelado', 0)->sum('monto');
+		
+
+		//enviar mail de confirmacion
+					Mail::send('emails.mail_abonos_comision', array(
+											'abonos'=>$abonos,
+											 'periodo'=>$periodo_comision,
+											 'total' => $total,
+											 'promotor'=>Input::get('promotoria'),
+											 
+																					), function($message) {
+			   
+		$promotoria = Input::get('promotoria');
+
+		$count_promotor = VistaPromotores::where('Promotor','=',$promotoria)->count();
+
+		if ( $count_promotor == 1 ) {
+			$email_promotoria = VistaPromotores::where('Promotor','=',$promotoria)->firstorFail();
+		}
+			    $message->to($email_promotoria->email)->subject('Comisiones de la semana PFG');
+			  /* $message->to('notificaciones@parquefuneralguadalupe.com.mx')->subject('Nuevo seguimiento de queja');*/
+			});
+
+					//fin mail confirmación promotoria
+			
+		}
+//vendedores independientes
+		elseif($independiente == 1 and $promotoria == "Independiente"){
+
+			//vendedores dentro de una promotoria	
+
+			foreach ($vendedores as $vendedor) {
+				//si el vendedor tiene email se le envia correo de comisiones si no no
+				if ($vendedor->promotor == "Independiente" and $vendedor->email) {
+		
+
+		$abonos = AbonoComision::select('abono_comision.id as abono_comision_id','vista_asesor_promotor.asesor as abono_asesor','abono_comision.periodo_comision_id',
+			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado','vista_asesor_promotor.promotor',
+			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id',
+			'periodo_comision.*', 'vista_comision.*')
+		->where('abono_comision.periodo_comision_id','=',$periodo_comision_id)
+		->where('vista_asesor_promotor.asesor_id','=',$vendedor->asesor_id)		
+		->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_comision.id','asc')		
+		->get();
+
+		$total = AbonoComision::
+		where('abono_comision.periodo_comision_id','=',$periodo_comision_id)
+		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		->where('vista_asesor_promotor.asesor_id','=',$vendedor->asesor_id)
+		->where('cancelado', 0)->sum('monto');
+				
+		//enviar mail de confirmacion
+					Mail::send('emails.mail_abonos_comision', array(
+											'abonos'=>$abonos,
+											 'periodo'=>$periodo_comision,
+											 'total' => $total,
+											 'promotor'=>Input::get('promotoria'),
+											 
+																					), function($message) use ($vendedor) {
+			   
+			    	 
+			    	 $message->to($vendedor->email)->subject('Comisiones de la semana PFG');# code...
+			   
+			   
+			  /* $message->to('notificaciones@parquefuneralguadalupe.com.mx')->subject('Comisiones de la semana');*/
+			});
+
+
+		}
+
+			}
+
+
+
+		}// fin vendedores independientes
+		
+		
+	
+
+		return Redirect::back();
 	}
 
 	public function getDownload($id){
