@@ -242,6 +242,8 @@ $(document).on('click','.open_modal',function(){
 									<strong> {{{$porcentaje->porcentaje}}} %</strong> </h4>
 																
 								 @endif
+								
+								 @endforeach
 								 <select name="esquema_comision_id" id="inputPorcentaje" class="form-control" required="required">
 								 		<option value="">--Edita porcentaje de comision--</option>
 								 		@foreach($esquemas as $esquema)
@@ -249,14 +251,20 @@ $(document).on('click','.open_modal',function(){
 								 		@endforeach
 								 		
 								 </select>
+								 
 								 <input type="hidden" value="{{{$promotoria->promotor}}}" name="promotor">
                       			 <br>
 						
 						<button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn  btn-xs btn-default" ><i class="fa fa-retweet" aria-hidden="true"></i> cambiar</button> 
 						
+						
+                       
                        
                         </div>
                       </div>
+                
+      {{form::close()}}
+							
 	@endforeach
         <div class="clearfix"></div>
 	<div class="well">
