@@ -33,9 +33,17 @@ class CotizacionControlador extends ModuloControlador{
 
 			$porcentaje_vendedor = Input::get('porcentaje_especial');
 		}else{
+			
+			$start = new Carbon('first day of this month');
+		$finish = new Carbon('last day of this month');
+
+		$inicio =  $start->format('Y-m-d');
+		$fin = $finish->format('Y-m-d');
+
 			$porcentaje_comision = ComisionEsquemaVendedor::leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
 		->where('asesor_id', Input::get('asesor_id'))
-		->where('comision_esquema_vendedor.activo',1)->firstOrFail();
+		->where('comision_esquema_vendedor.fecha_inicio','>=', $inicio)
+		->where('comision_esquema_vendedor.fecha_fin', '<=', $fin)->firstOrFail();
 
 		$porcentaje_vendedor = $porcentaje_comision->porcentaje;
 		}

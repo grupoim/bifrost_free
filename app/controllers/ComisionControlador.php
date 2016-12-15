@@ -96,20 +96,29 @@ class ComisionControlador extends ModuloControlador{
 
 		$start = new Carbon('first day of this month');
 		$finish = new Carbon('last day of this month');
+		$year = new Carbon();
 
 		$inicio =  $start->format('Y-m-d');
 		$fin = $finish->format('Y-m-d');
+		$dataModule['year'] = $year->format('Y');
+		
+		setlocale(LC_TIME, 'spanish');
 
+		$dataModule['mes']= Str::title(strftime("%B",mktime(0, 0, 0, date('m'), 1, 2000)));
 
-		$fecha_fin = $finish->format('d-m-Y');
+		
+		$fecha_fin = $finish->format('d-M-Y');
 		$dataModule['fecha_fin'] = $fecha_fin;
 
+		$dataModule['esquemas'] = EsquemaComision::where('activo',1)->get();
 
-		$dataModule['promotorias'] = VistaAsesorPromotor::leftJoin('comision_esquema_vendedor', 'vista_asesor_promotor.asesor_id', '=', 'comision_esquema_vendedor.asesor_id')
-										  ->leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
-										   ->where('comision_esquema_vendedor.fecha_inicio','>=', $inicio)
-										   ->where('comision_esquema_vendedor.fecha_fin', '<=', $fin)
-										  ->groupBy('vista_asesor_promotor.promotor')->get();
+		$dataModule['promotorias'] = VistaAsesorPromotor::groupBy('vista_asesor_promotor.promotor')->get();
+
+		$dataModule['porcentajes_comision'] = VistaAsesorPromotor::leftJoin('comision_esquema_vendedor', 'vista_asesor_promotor.asesor_id', '=', 'comision_esquema_vendedor.asesor_id')
+										  	->leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
+										   	->where('comision_esquema_vendedor.fecha_inicio','>=', $inicio)
+										   	->where('comision_esquema_vendedor.fecha_fin', '<=', $fin)
+										  	->groupBy('vista_asesor_promotor.promotor')->get();
 
 
 		$total = VistaComision::where('cancelada', '0')->where('pagada',0)->sum('por_pagar');
@@ -368,6 +377,32 @@ class ComisionControlador extends ModuloControlador{
 	
 
 		return Redirect::back();
+	}
+
+
+	public function postPorcentaje(){
+
+		$promotor = Input::get('promotor');
+		$esquema_comision_id = Input::get('esquema_comision_id');
+		$vendedores = VistaAsesorPromotor::where('promotor',$promotor)->get();
+
+		$start = new Carbon('first day of this month');
+		$finish = new Carbon('last day of this month');
+		$inicio =  $start->format('Y-m-d');
+		$fin = $finish->format('Y-m-d');
+		
+		foreach ($vendedores as $vendedor) {
+
+			$porcentaje_comision = new ComisionEsquemaVendedor();
+
+			$porcentaje_comision->esquema_comision_id = $esquema_comision_id;
+			$porcentaje_comision->asesor_id = $vendedor->asesor_id;
+			$porcentaje_comision->fecha_inicio = $inicio;
+			$porcentaje_comision->fecha_fin = $fin;
+			$porcentaje_comision->save();
+		}
+		return Redirect::back();
+
 	}
 
 	public function getDownload($id){

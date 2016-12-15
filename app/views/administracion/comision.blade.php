@@ -228,12 +228,33 @@ $(document).on('click','.open_modal',function(){
 
 @section('module')
 <div class=""><div class="clearfix"></div>
+	
 	@foreach($promotorias as $promotoria)
+	{{ Form::open(array('action' => 'ComisionControlador@postPorcentaje', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
 	<div class="col-md-4">
                         <div  class="alert alert-success  text-center">
                           <h4><i class="fa fa-users"></i> {{{$promotoria->promotor}}} </h4>
-							<h3><strong>Porcentaje al {{{$fecha_fin}}} <input text-align="center" type="number" step="any"class="form-control" placeholder="$0.0" name="total_comisionable" required value="{{{$promotoria->porcentaje}}}"></strong> </h3>
-                       <button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn btn-default" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar</button> 
+							<h4><strong>{{{$mes}}} {{{$year}}},</strong> 
+							
+								@foreach($porcentajes_comision as $porcentaje)
+								@if($promotoria->promotor == $porcentaje->promotor)
+								
+									<strong> {{{$porcentaje->porcentaje}}} %</strong> </h4>
+																
+								 @endif
+								 <select name="esquema_comision_id" id="inputPorcentaje" class="form-control" required="required">
+								 		<option value="">--Edita porcentaje de comision--</option>
+								 		@foreach($esquemas as $esquema)
+											<option value="{{{$esquema->id}}}">{{{$esquema->porcentaje}}}</option>
+								 		@endforeach
+								 		
+								 </select>
+								 <input type="hidden" value="{{{$promotoria->promotor}}}" name="promotor">
+                      			 <br>
+						
+						<button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn  btn-xs btn-default" ><i class="fa fa-retweet" aria-hidden="true"></i> cambiar</button> 
+						
+                       
                         </div>
                       </div>
 	@endforeach

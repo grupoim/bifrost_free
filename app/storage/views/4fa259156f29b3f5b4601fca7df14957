@@ -228,14 +228,45 @@ $(document).on('click','.open_modal',function(){
 
 <?php $__env->startSection('module'); ?>
 <div class=""><div class="clearfix"></div>
+	
 	<?php foreach($promotorias as $promotoria): ?>
+	<?php echo Form::open(array('action' => 'ComisionControlador@postPorcentaje', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')); ?>
+
 	<div class="col-md-4">
                         <div  class="alert alert-success  text-center">
                           <h4><i class="fa fa-users"></i> <?php echo e($promotoria->promotor); ?> </h4>
-							<h3><strong>Porcentaje al <?php echo e($fecha_fin); ?> <input text-align="center" type="number" step="any"class="form-control" placeholder="$0.0" name="total_comisionable" required value="<?php echo e($promotoria->porcentaje); ?>"></strong> </h3>
-                       <button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn btn-default" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar</button> 
+							<h4><strong><?php echo e($mes); ?> <?php echo e($year); ?>,</strong> 
+							
+								<?php foreach($porcentajes_comision as $porcentaje): ?>
+								<?php if($promotoria->promotor == $porcentaje->promotor): ?>
+								
+									<strong> <?php echo e($porcentaje->porcentaje); ?> %</strong> </h4>
+																
+								 <?php endif; ?>
+								
+								 <?php endforeach; ?>
+								 <select name="esquema_comision_id" id="inputPorcentaje" class="form-control" required="required">
+								 		<option value="">--Edita porcentaje de comision--</option>
+								 		<?php foreach($esquemas as $esquema): ?>
+											<option value="<?php echo e($esquema->id); ?>"><?php echo e($esquema->porcentaje); ?></option>
+								 		<?php endforeach; ?>
+								 		
+								 </select>
+								 
+								 <input type="hidden" value="<?php echo e($promotoria->promotor); ?>" name="promotor">
+                      			 <br>
+						
+						<button type="submit"  title="Envía el reporte a cada promotor/Asesor"class="btn  btn-xs btn-default" ><i class="fa fa-retweet" aria-hidden="true"></i> cambiar</button> 
+						
+						
+                       
+                       
                         </div>
                       </div>
+                
+      <?php echo form::close(); ?>
+
+							
 	<?php endforeach; ?>
         <div class="clearfix"></div>
 	<div class="well">
