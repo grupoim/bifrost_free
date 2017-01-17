@@ -51,6 +51,34 @@ $("#guardar").on("click", function() { /* Al boton guardar le asigno el evento o
  
 
 });
+//lanza modal para añadir anticipo
+$(document).on('click','.open_modal_anticipo',function(){
+
+var id = $(this).val();
+
+$.get('{{ action('ComisionControlador@detalle') }}/'+ id, function (data) {
+	$('input[name=anticipo_monto]').val(data.por_pagar);
+	$('#anticipo_asesor').text(data.vendedor);
+	//$('input[name=total_comisionable]').val(data.total_comisionable);
+	$('input[name=venta_id]').val(data.venta_id);
+	$('input[name=producto_id]').val(data.producto_id);
+	$('textarea[name=observaciones_comision]').val(data.observaciones);
+
+console.log(data);
+            $('#id').val(data.id);
+});
+
+$('#anticipo_window').modal('show');
+
+
+$('#anticipo_button').on('click', function(){
+		$('#anticipo_form').submit();
+	});
+
+
+});
+
+
 //lanza modal para editar
 $(document).on('click','.open_modal_edit',function(){
 
@@ -334,11 +362,13 @@ $(document).on('click','.open_modal',function(){
 									{{--<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>--}}
 									{{--<a href="{{action('ComisionControlador@getPago', $comision->id)}}" name="id" value="{{{$comision->comision_id}}}"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>--}}
 									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
-									@if($comision->pagada == 0)
+									@if($comision->pagada == 0)										
+										<button class="btn btn-xs btn-default open_modal_anticipo "  title="Adelanto de comisión {{{$comision->id}}}" value="{{$comision->id}}"><i class="fa fa-money" aria-hidden="true"></i></button>
 										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="{{$comision->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button>
 										
 									@if($comision->advertencia <> '0')
 										<button class="btn btn-xs btn-default open_modal_warning btn-danger"  title="Quitar advertencia {{{$comision->advertencia}}}" value="{{$comision->id}}"><i class="fa fa-reply" aria-hidden="true"></i></button>
+
 									@else
 										<button class="btn btn-xs btn-default open_modal_warning"  title="Agregar advertencia" value="{{$comision->id}}"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
 									@endif	
@@ -397,16 +427,7 @@ $(document).on('click','.open_modal',function(){
 {{ Form::open(array('action' => 'ComisionControlador@postArchivo', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'upload_file','files' => true )) }}
 					
 				
- <div class="form-group">
-                                  <label class="col-lg-3 control-label">Fecha Inicio</label>
-                                  <div class="col-lg-6">
-                                   @if($errors->has('fecha')) 
-
-
-                                   <div align="center" class="alert alert-danger alerta">{{$errors->first('fecha')}}</div> @endif
-                                     <p> <input type="text" id="datepicker" name="fecha_inicio"></p>   
-                                  </div>
-                      </div>      
+      
 	         	 <div class="form-group">
 	            <label class="col-lg-3 control-label">Archivo</label>
 	            <div class="col-lg-6"> 
@@ -575,6 +596,8 @@ $(document).on('click','.open_modal',function(){
                           <h5><strong> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong> Esta comision mostrará una advertencia en cada pago futuro </strong></h5>                                                  
                         </div>
 
+
+
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Motivos </label>
 	<div class="col-md-9">
@@ -592,6 +615,76 @@ $(document).on('click','.open_modal',function(){
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button"  id="warning_button" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{{-- --}}
+<div class="modal fade" id="anticipo_window">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Agregar anticipo</h4>
+			</div>
+			<div class="modal-body">
+				
+
+
+					<div class="alert alert-success text-center" >
+                          <h5> Agregar adelanto de comision para <strong> <span id = "anticipo_asesor"></span></strong></h5>                                                  
+                        
+                        </div>
+                       
+					 
+				{{ Form::open(array('action' => 'ComisionControlador@postAnticipo', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'anticipo_form')) }}
+				
+				
+				<div class="form-group">
+                                  <label class="col-lg-3 control-label">Asigna folio</label>
+                                  <div class="col-lg-5">
+                                  <select name="anticipo_folio" class="form-control" required="required">
+                                    	<option value="{{{$ultimo_periodo_comision->folio}}}">Folio {{{$ultimo_periodo_comision->folio}}} --Perido actual--</option>
+                                    	<option value="{{{$ultimo_periodo_comision->folio + 1}}}"> {{{$ultimo_periodo_comision->folio + 1}}} --Prox. Periodo--</option>
+                                    </select>  
+                                  </div>
+                      </div> 
+				<div class="form-group">
+                                  <label class="col-lg-3 control-label">Fecha venta</label>
+                                  <div class="col-lg-6">
+                                  
+                                   
+                                     <p> <input type="text" id="datepicker" name="anticipo_fecha"></p>   
+                                  </div>
+                      </div> 
+				<div class="form-group">
+					<label for="sector" class="col-md-3 control-label">Monto anticipo </label>
+					<div class="col-md-9">
+					        
+				      	<input type="text" name="anticipo_monto" id="anticipo_monto" class="form-control" value="" required="required" pattern="" title="">				      	
+						
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label for="sector" class="col-md-3 control-label">Motivos </label>
+					<div class="col-md-9">
+					        
+				      	
+				      	<textarea class="form-control" id = "anticipo_motivos" name="anticipo_motivos" value = ""></textarea>      	
+				      	<input type="hidden" id="venta_id" name="venta_id" value="">		      	
+						
+					</div>
+				</div>
+
+{{ Form::close() }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button"  id="anticipo_button" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
 			</div>
 		</div>
 	</div>

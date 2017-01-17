@@ -45,6 +45,36 @@ class ComisionControlador extends ModuloControlador{
 
 	}
 
+	public function postAnticipo()
+	{
+		
+		if(Input::get('anticipo_motivos'))
+		{
+			$motivos = Input::get('anticipo_motivos');	
+		}	else{
+			$motivos = "Pago en efectivo";
+		}
+
+		$comision = VistaComision::find(Input::get('venta_id'));
+		
+
+		
+
+			$new_anticipo = new AnticipoComision;
+			
+			$new_anticipo->motivos = $motivos;
+			$new_anticipo->comision_id = $comision->id;
+			$new_anticipo->monto = input::get('anticipo_monto');
+			$new_anticipo->fecha = Input::get('anticipo_fecha');
+			$new_anticipo->folio = input::get('anticipo_folio');
+			$new_anticipo->save();
+
+
+		
+		return Redirect::action('ComisionControlador@getPdfanticipo',$new_anticipo->id);
+
+	}
+
 
 	public function postEditcomision()
 		{
@@ -87,7 +117,12 @@ class ComisionControlador extends ModuloControlador{
 	public function getPeriodos()
 
 	{
-		$dataModule['periodos']= PeriodoComision::all();
+		$dataModule['periodos'] = PeriodoComision::select('periodo_comision.id','periodo_comision.folio','periodo_comision.fecha_inicio', 'periodo_comision.fecha_fin',
+		DB::raw('sum(abono_comision.monto)as total') )
+		->leftJoin('abono_comision', 'periodo_comision.id','=', 'abono_comision.periodo_comision_id')
+		->groupBy('abono_comision.periodo_comision_id')
+		->orderBy('folio')->get();
+
 		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.periodos_comision', $dataModule);
 	}
 
@@ -129,6 +164,8 @@ class ComisionControlador extends ModuloControlador{
 
 		$dataModule["comisiones"] = VistaComision::/*orderBy('vista_comision.id','desc')->*/get();
 
+		$dataModule['ultimo_periodo_comision']= PeriodoComision::orderBy('id', 'desc')->first();
+
 
 
 		/*$dataModule["abonos"] = AbonoComision::leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')->get();*/
@@ -152,6 +189,20 @@ class ComisionControlador extends ModuloControlador{
 		$periodo_comision = PeriodoComision::find($periodo->periodo_comision_id);
 		
 		
+		$anticipos_vendedor = AnticipoComision::select('anticipo_comision.*', 'vista_comision.*','vista_asesor_promotor.*',
+											DB::raw('sum(anticipo_comision.monto) as total_anticipo'))	
+											->where('anticipo_comision.folio',$periodo_comision->folio)
+    										->leftJoin('vista_comision', 'anticipo_comision.comision_id', '=', 'vista_comision.id')
+    										->leftJoin('vista_asesor_promotor', 'vista_comision.asesor_id','=', 'vista_asesor_promotor.asesor_id')
+    										->groupBy('vista_comision.asesor_id')
+    										->get(); 
+    	
+
+    	$total_anticipo = AnticipoComision::where('anticipo_comision.folio',$periodo_comision->folio)->sum('monto');
+		
+		$total_pagar = $total - $total_anticipo;
+
+
 		$abonos = AbonoComision::select('abono_comision.id as abono_comision_id','vista_asesor_promotor.asesor as abono_asesor','abono_comision.periodo_comision_id',
 			'abono_comision.monto as monto_abono', 'abono_comision.pagado as abono_pagado',
 			'abono_comision.asesor_id as abono_asesor_id', 'abono_comision.periodo_comision_id as perdiodo_id','vista_asesor_promotor.promotor',
@@ -162,7 +213,7 @@ class ComisionControlador extends ModuloControlador{
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')->orderBy('vista_asesor_promotor.asesor','asc')		
 		->get();	
 	
-		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor',
+		/*$total_vendedorrr = AbonoComision::select('vista_asesor_promotor.asesor as asesor',
 			DB::raw('sum(abono_comision.monto) as total'), 'vista_asesor_promotor.promotor as promotor',
 			'abono_comision.asesor_id as abono_asesor_id'
 			)
@@ -171,19 +222,81 @@ class ComisionControlador extends ModuloControlador{
 		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
 		->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')		
 		->groupBy('vista_comision.asesor_id')
-		->get();
+		->get();*/
 
-		$promotorias = AbonoComision::select('vista_asesor_promotor.promotor as promotor',
+		$promotoria_total = AbonoComision::select('vista_asesor_promotor.promotor as promotor',
 			DB::raw('sum(abono_comision.monto) as total_promotoria'))
 		->where('abono_comision.periodo_comision_id','=',$id)		
 		->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')		
 		->groupBy('vista_asesor_promotor.promotor')
 		->get();
 
+
+		$promotoria = AbonoComision::select('vista_asesor_promotor.promotor as promotor',		  
+		  DB::raw('sum(abono_comision.monto) as subtotal'),
+		  DB::raw('ifnull(total_anticipo,0) as total_anticipo'),
+		  DB::raw('(sum(abono_comision.monto) - (ifnull(total_anticipo,0))) as total'))
+		  ->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		  ->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		  
+		  ->leftJoin(DB::raw('(select vista_comision.venta_id, anticipo_comision.folio, vista_asesor_promotor.*, sum(anticipo_comision.monto) as total_anticipo
+				    from anticipo_comision
+				    left join vista_comision on anticipo_comision.comision_id = vista_comision.id
+				    left join vista_asesor_promotor on vista_comision.asesor_id =  vista_asesor_promotor.asesor_id     
+				     where anticipo_comision.folio =' .$periodo_comision->folio.
+				     ' group By vista_asesor_promotor.promotor) as  anticipo ' ),'vista_asesor_promotor.promotor', '=','anticipo.promotor')
+
+		  ->where('abono_comision.periodo_comision_id','=', $periodo_comision->id)
+		  ->groupBy('vista_asesor_promotor.promotor')->get();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor', 'vista_asesor_promotor.promotor as promotor',
+		 'abono_comision.asesor_id as abono_asesor_id', 
+		  DB::raw('sum(abono_comision.monto) as subtotal'),
+		  DB::raw('ifnull(total_anticipo,0) as total_anticipo'),
+		  DB::raw('(sum(abono_comision.monto) - (ifnull(total_anticipo,0))) as total'))
+		  ->leftJoin('periodo_comision', 'abono_comision.periodo_comision_id', '=', 'periodo_comision.id')
+		  ->leftJoin('vista_asesor_promotor', 'abono_comision.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+		  ->leftJoin('vista_comision', 'abono_comision.comision_id', '=', 'vista_comision.id')
+		  ->leftJoin(DB::raw('(select vista_comision.venta_id, anticipo_comision.folio, vista_asesor_promotor.*, sum(anticipo_comision.monto) as total_anticipo
+				    from anticipo_comision
+				    left join vista_comision on anticipo_comision.comision_id = vista_comision.id
+				    left join vista_asesor_promotor on vista_comision.asesor_id =  vista_asesor_promotor.asesor_id     
+				     where anticipo_comision.folio =' .$periodo_comision->folio.
+				     ' group By vista_comision.asesor_id) as  anticipo ' ),'vista_asesor_promotor.asesor_id', '=','anticipo.asesor_id')
+
+		  ->where('abono_comision.periodo_comision_id','=', $periodo_comision->id)
+		  ->groupBy('vista_comision.asesor_id')->get();
+
+		 
+		
+		
+		$data['anticipos_vendedor'] = $anticipos_vendedor;
+		$data['promotoria_total'] = $promotoria_total;
 		$data['total'] = $total;
+		$data['total_s_anticipos'] = $total_pagar;
 		$data['periodo'] = $periodo_comision;
 		$data['totales_vendedores'] = $total_vendedor;
-		$data['promotorias'] = $promotorias;
+		$data['promotorias'] = $promotoria;
 		$data['abonos'] = $abonos;
 
      $pdf = DOPDF::loadView('formularios.totales_comisiones_pdf',$data)->setPaper('letter', 'landscape');
@@ -194,6 +307,28 @@ class ComisionControlador extends ModuloControlador{
       return $pdf->stream();
 
 
+
+
+    }
+
+    public function getPdfanticipo($id){
+
+     	
+    	$detalle_anticipo = AnticipoComision::where('anticipo_comision.id',$id)
+    										->leftJoin('vista_comision', 'anticipo_comision.comision_id', '=', 'vista_comision.id')
+    										->leftJoin('vista_asesor_promotor', 'vista_comision.asesor_id','=', 'vista_asesor_promotor.asesor_id')
+    										->firstorFail();
+    
+
+    	$data['detalle_anticipo'] = $detalle_anticipo;
+				
+
+    	$pdf = DOPDF::loadView('formularios.anticipo_comision_pdf',$data)->setPaper('letter');
+      	$dom_pdf = $pdf->getDomPDF();
+		$pdf->output();
+		$canvas = $dom_pdf ->get_canvas();
+		$canvas->page_text(700, 600, " {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+      return $pdf->stream();
 
 
     }

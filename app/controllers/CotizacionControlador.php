@@ -1,4 +1,5 @@
 <?php 
+use Carbon\Carbon;
 class CotizacionControlador extends ModuloControlador{
 	
 	function __construct(){
@@ -55,7 +56,7 @@ class CotizacionControlador extends ModuloControlador{
 		$venta->folio_solicitud = Input::get('folio_solicitud');
 		$venta->descuento = Input::get('descuento');
 		$venta->asesor_id = Input::get('asesor_id');
-		$venta->fecha = Carbon\Carbon::now();
+		$venta->fecha = Carbon::now();
 		$venta->comentarios = Input::get('comentarios');
 		
 		$cart = Session::pull('productos', array());
@@ -91,8 +92,8 @@ class CotizacionControlador extends ModuloControlador{
 		$plan_pago_venta = new PlanPagoVenta();
 		$plan_pago_venta->venta_id = Input::get('venta_id');
 		$plan_pago_venta->plan_pago_id = $plan_pago->id;
-		$plan_pago_venta->fecha_aplicado = Carbon\Carbon::now();
-		$plan_pago_venta->pago_regular = ($venta->total - ($venta->total * $plan_pago->porcentaje_anticipo / 100)) / $plan_pago->numero_pagos;
+		$plan_pago_venta->fecha_aplicado = Carbon::now();
+		$plan_pago_venta->pago_regular = round(($venta->total - ($venta->total * $plan_pago->porcentaje_anticipo / 100)) / $plan_pago->numero_pagos,3);
 
 		$venta->save();
 		$venta->ventaproducto()->saveMany($products);
@@ -102,8 +103,8 @@ class CotizacionControlador extends ModuloControlador{
 			$comision = new Comision();
 			$comision->id = Input::get('venta_id');
 			$comision->asesor_id = Input::get('asesor_id');
-			$comision->total = $total_comision;
-			$comision->total_comisionable = $total_comision;
+			$comision->total = round($total_comision,2);
+			$comision->total_comisionable = round($total_comision,2);
 			$comision->numero_pagos = $plan_pago->numero_comisiones;
 			$comision->porcentaje = $porcentaje_vendedor;
 			$venta->comision()->save($comision);

@@ -86,12 +86,15 @@ span {
                   
 
           @foreach($promotorias as $promotor)
+          
           <div><h3>Promoria {{{$promotor->promotor}}} </h3></div>          
           <table >
             <thead>
               <tr>
                             
-                <th class="text-center col-md-3"> Asesor</th>
+                <th> Asesor</th>
+                <th align="left">Subtotal</th>
+                <th align="left">Anticipos</th>
                 <th align="left">Total</th>
                 <th>Firma</th>                              
 
@@ -99,27 +102,56 @@ span {
             </thead>
             <tbody HEIGHT ="500">
               @foreach($totales_vendedores as $abono)
+              
               @if($abono->promotor == $promotor->promotor)
-              <tr>
-                <td width=100 height="20" > {{{$abono->asesor}}}</td>              
+              <tr> 
+                <td width=200 height="20" > {{{$abono->asesor}}}</td>              
                
-                <td width=100  height="20" align="rigth" >$ {{{number_format($abono->total, 2, ".", ",")}}}</td>
+                <td width=100  height="20" align="left" >$ {{{number_format($abono->subtotal, 2, ".", ",")}}} </td>
                
-                <td width=100 height="20" ><hr></td>               
+             <td width=100  height="20" align="left" class="total"> 
+
+             @forelse($anticipos_vendedor as $anticipo)
+              @if($anticipo->asesor_id == $abono->abono_asesor_id)
+              
+                -$ {{{number_format($anticipo->total_anticipo, 2, ".", ",")}}}
+                
+              @else
+              
+               @endif
+               @empty
+              
+               @endforelse
+              </td>
+
+              <td width=100  height="20" align="left">
+              
+              <strong>$ {{{number_format($abono->total, 2, ".", ",")}}}</strong>
+                
+             
+              </td>
+            
+                <td width=200 height="20" ><hr></td>               
               </tr>      
               @endif
+              
               @endforeach
                 
             </tbody>
           </table> 
         
 
-          <div class="promotoria"><h3>Promotoria <strong  class= "total">$ {{{number_format($promotor->total_promotoria, 2, ".", ",")}}}</strong></h3></div>
+          <div class="promotoria"><h3>Promotoria <strong  class= "total">
+          
+        {{{$promotor->total}}}
+         
+         </strong></h3></div>
           <hr>
+          
           
           @endforeach
 
-<h2 align="right" >Total por pagar: <strong class="total">$ {{{number_format($total, 2, ".", ",")}}}</strong></h2>
+<h2 align="right" >Total por pagar: <strong class="total">$ {{{number_format($total_s_anticipos, 2, ".", ",")}}}</strong></h2>
               
                 <div class="box-footer clearfix">
                   
@@ -139,7 +171,7 @@ span {
                 
                   
 
-          @foreach($promotorias as $promotor)
+          @foreach($promotoria_total as $promotor)
           <div><h3>Promoria {{{$promotor->promotor}}} </h3></div>         
           <table class="tabla-11">
             <thead>
@@ -189,7 +221,7 @@ span {
           <hr>
           <br>
           @endforeach
-           <h2 align="right" >Total por pagar: <strong class="total">$ {{{number_format($total, 2, ".", ",")}}}</strong></h2>
+           <h2 align="right" >Total: <strong class="total">$ {{{number_format($total, 2, ".", ",")}}}</strong></h2>
 
               
                 <div class="box-footer clearfix">

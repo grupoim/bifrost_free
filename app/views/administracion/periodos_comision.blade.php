@@ -27,6 +27,7 @@
 								<th class="text-center">ID</th>
 								
 								<th class="text-center">Folio</th>
+								<th class="text-center"> Total</th>
 								<th class="text-center col-md-2">Fecha inicio</th>
 								<th class="text-center col-md-2">Fecha fin</th>
 								<th class="text-center"> Opciones</th>
@@ -39,6 +40,7 @@
 							<tr>
 								<td class="text-center"><a href="{{action('ComisionControlador@getAbonos', $periodo->id)}}"> {{{$periodo->id}}} </a></td>
 								<td class="text-center">{{{$periodo->folio}}}</td>
+								<td class="text-center">$  {{{ number_format($periodo->total, 2, ".", ",") }}}</td>
 								<td class="text-center col-md-2"><strong>{{{ date('d/m/y', strtotime($periodo->fecha_inicio)) }}}</strong></td>
 								<td class = "text-center">{{{ date('d/m/Y', strtotime($periodo->fecha_fin)) }}}</td>
 								<td class="text-center col-md-2">
