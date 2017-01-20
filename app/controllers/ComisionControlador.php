@@ -250,25 +250,6 @@ class ComisionControlador extends ModuloControlador{
 		  ->groupBy('vista_asesor_promotor.promotor')->get();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		$total_vendedor = AbonoComision::select('vista_asesor_promotor.asesor as asesor', 'vista_asesor_promotor.promotor as promotor',
 		 'abono_comision.asesor_id as abono_asesor_id', 
 		  DB::raw('sum(abono_comision.monto) as subtotal'),

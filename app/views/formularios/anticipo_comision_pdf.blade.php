@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>Pagos de comisiones</title>
+	<title>Anticipo Comision</title>
 <style>
 * { 
   margin: 0; 
@@ -125,6 +125,7 @@ span {
         <br><br><br><br>
         <hr  align="center" width="40%">
         <strong> Conformidad Asesor/Promotor</strong>
+
   </div>
         </div>
  

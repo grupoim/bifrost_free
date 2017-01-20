@@ -339,7 +339,7 @@
     <div class="row">
       <div class="col-md-12">
         <!-- Copyright info -->
-        <p class="copy">Copyright &copy; 2015 | BifrostPFG <a href="#">www.grupoim.mx</a> </p>
+        <p class="copy">Copyright &copy; 2017 | BifrostPFG <a href="#">www.grupoim.mx</a> </p>
       </div>
     </div>
   </div>
