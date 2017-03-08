@@ -394,7 +394,7 @@
 <script src="{{ URL::asset('js/bootstrap-typeahead.js') }}"></script>  <!-- Typahead plugin-->
 <script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
 <script src="{{ URL::asset('js/app.js') }}"></script>
-{{--
+
 <script > 
   Highcharts.chart('container', {
     
@@ -473,7 +473,7 @@
    
     ]
 });
-</script> --}}
+</script> 
 @yield('scripts', '')
 </body>
 </html>
