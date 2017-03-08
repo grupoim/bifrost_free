@@ -315,6 +315,7 @@ $(document).on('click','.open_modal',function(){
 		</div>  
 		<div class="clearfix"></div>
 	</div>
+	
 	<div class="widget-content">
 		<div class="padd">
 		
@@ -337,6 +338,7 @@ $(document).on('click','.open_modal',function(){
 								<th class="text-center">Resto</th>
 								<th class="text-center">%</th>
 								<th class="text-center">Acciones</th>
+								{{--<th>Estatus</th>--}}
 							</tr>
 						</thead>
 						<tbody>
@@ -346,51 +348,64 @@ $(document).on('click','.open_modal',function(){
 								<td class="text-center">{{{$comision->id}}}</td>
 								{{--<td class="text-center">{{{$comision->folio_solicitud}}}-{{{$comision->nombre_corto}}}</td>--}}
 								{{--<td> {{{$comision->producto}}}</td>--}}
-								<td title="{{{$comision->id}}}">{{{ $comision->cliente }}}
+								<td class="text-left"  title="{{{$comision->id}}}">{{{ $comision->cliente }}}
 								</td>
-								<td><strong>{{{ $comision->vendedor }}}</strong></td>
+								<td class="text-left" >{{{ $comision->vendedor }}}</td>
 								<td class="text-right">$  {{{ number_format($comision->total, 0, ".", ",") }}}</td>
 								<td class="text-right">$ {{{ number_format($comision->total_comisionable, 0, ".", "," ) }}}</td>
 								<td class="text-right">$ {{{ number_format($comision->pagado, 0, ".", ",") }}}</td>
 								<td class="text-right">$ {{{ number_format($comision->total_comisionable - $comision->pagado, 0, ".", ",")  }}}</td>
 								<td class="text-right">{{{ $comision->porcentaje}}}%</td>
 								
-								<td class="text-left">
-									
-									<button class="btn btn-xs btn-default open_modal"  title="Ver detalles de pagos" value="{{$comision->id}}"><i class="fa fa-search"></i></button>
-									
-									{{--<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>--}}
-									{{--<a href="{{action('ComisionControlador@getPago', $comision->id)}}" name="id" value="{{{$comision->comision_id}}}"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>--}}
-									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
-									@if($comision->pagada == 0)										
-										<button class="btn btn-xs btn-default open_modal_anticipo "  title="Adelanto de comisión {{{$comision->id}}}" value="{{$comision->id}}"><i class="fa fa-money" aria-hidden="true"></i></button>
-										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="{{$comision->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button>
+								<td class="text-right">
+									           
+            
+            
+            <!-- Dropdown menu -->
+            
+              
+              @if($comision->pagada == 0)									
+										<button align= "center" class="btn btn-xs btn-danger open_modal"  title="Ver detalles de pagos" value="{{$comision->id}}"><i class="fa fa-search"></i> </button>
+										<button class="btn btn-xs btn-default open_modal_anticipo "  title="Adelanto de comisión {{{$comision->id}}}" value="{{$comision->id}}"><i class="fa fa-money" aria-hidden="true"></i></button> 
+										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="{{$comision->id}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button> 
 										
 									@if($comision->advertencia <> '0')
 										<button class="btn btn-xs btn-default open_modal_warning btn-danger"  title="Quitar advertencia {{{$comision->advertencia}}}" value="{{$comision->id}}"><i class="fa fa-reply" aria-hidden="true"></i></button>
 
 									@else
 										<button class="btn btn-xs btn-default open_modal_warning"  title="Agregar advertencia" value="{{$comision->id}}"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-									@endif	
-
-										<a href="{{action('ComisionControlador@getPagada', $comision->id)}}" name="id" value="{{{$comision->id}}}"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
-									@endif
 									
+									@endif
+									<a href="{{action('ComisionControlador@getPagada', $comision->id)}}" name="id" value="{{{$comision->id}}}"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
+
+										@elseif($comision->pagada == 1)
+										<button align= "center" class="btn btn-xs btn-success open_modal"  title="Ver detalles de pagos" value="{{$comision->id}}"><i class="fa fa-search"></i> Pagada</button>	
+										
+									@endif           
+									
+									
+									{{--<button data-quote="{{ $comision->id }}"  data-post="{{ action('ComisionControlador@detalle', [$comision->id]) }}" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>--}}
+									{{--<a href="{{action('ComisionControlador@getPago', $comision->id)}}" name="id" value="{{{$comision->comision_id}}}"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>--}}
+									{{--<a href="#{{{$comision->id}}}" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>--}}
+																		
+								</td>
+								{{--<td>
 									@if($comision->pagada == 0)
-									<span class="label label-warning">Activa</span></td>												
+									<span class="label label-warning">Activa</span>												
 
 
 												@else												
-												<span class="label label-success">Pagada</span></td>
+												<span class="label label-success">Pagada</span>
 												
-												@endif															
-								</td>
+												@endif
+								</td>--}}
 								
 
 
   				
 
 							@endforeach
+							</tr>
 						</tbody>
 					</table>
 					<div class="clearfix"></div>

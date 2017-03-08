@@ -68,7 +68,7 @@ class CotizacionControlador extends ModuloControlador{
 			$servicio = VistaServicioFuneral::find($item['producto_id']);
 			if (count($servicio) > 0) {
 				$serv = VistaServicioFuneral::find($item['producto_id']);
-				$total_comision = ($serv->monto_comisionable )* ($porcentaje_vendedor / 100) ;
+				$total_comision = ($serv->monto_comisionable * $item['cantidad'] )* ($porcentaje_vendedor / 100) ;
 			}
 			else
 			{

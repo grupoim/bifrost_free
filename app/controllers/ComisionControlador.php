@@ -90,8 +90,8 @@ class ComisionControlador extends ModuloControlador{
 		$servicio = VistaServicioFuneral::find($comision->producto_id);
 			if (count($servicio) > 0) {
 				
-				$serv = VistaServicioFuneral::find($ervicio->producto_id);
-				$total_comision = ($serv->monto_comisionable )* (Input::get('porcentaje') / 100) ;
+				$serv = VistaServicioFuneral::where($servicio->producto_id);
+				$total_comision = ($serv->monto_comisionable ) * (Input::get('porcentaje') / 100) ;
 			}
 			else
 			{
@@ -149,6 +149,8 @@ class ComisionControlador extends ModuloControlador{
 
 		$dataModule['promotorias'] = VistaAsesorPromotor::groupBy('vista_asesor_promotor.promotor')->get();
 
+		
+
 		$dataModule['porcentajes_comision'] = VistaAsesorPromotor::leftJoin('comision_esquema_vendedor', 'vista_asesor_promotor.asesor_id', '=', 'comision_esquema_vendedor.asesor_id')
 										  	->leftJoin('esquema_comision', 'comision_esquema_vendedor.esquema_comision_id', '=', 'esquema_comision.id')
 										   	->where('comision_esquema_vendedor.fecha_inicio','>=', $inicio)
@@ -162,7 +164,7 @@ class ComisionControlador extends ModuloControlador{
 		$date = Carbon::now();
 		$endDate = $date->subYear();
 
-		$dataModule["comisiones"] = VistaComision::/*orderBy('vista_comision.id','desc')->*/get();
+		$dataModule["comisiones"] = VistaComision::where('cancelada', '0')->/*orderBy('vista_comision.id','desc')->*/get();
 
 		$dataModule['ultimo_periodo_comision']= PeriodoComision::orderBy('id', 'desc')->first();
 
@@ -624,6 +626,11 @@ foreach ($abonos as $abono) {
 	if($actualiza_comision->por_pagar <= 3){
 		$comision = Comision::find($abono_comision_id);
 					$comision->pagada = 1;
+					$comision->save();
+
+	}else{
+		$comision = Comision::find($abono_comision_id);
+					$comision->pagada = 0;
 					$comision->save();
 
 	}

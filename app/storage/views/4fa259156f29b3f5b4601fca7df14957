@@ -317,6 +317,7 @@ $(document).on('click','.open_modal',function(){
 		</div>  
 		<div class="clearfix"></div>
 	</div>
+	
 	<div class="widget-content">
 		<div class="padd">
 		
@@ -339,6 +340,7 @@ $(document).on('click','.open_modal',function(){
 								<th class="text-center">Resto</th>
 								<th class="text-center">%</th>
 								<th class="text-center">Acciones</th>
+								<?php /*<th>Estatus</th>*/ ?>
 							</tr>
 						</thead>
 						<tbody>
@@ -348,52 +350,65 @@ $(document).on('click','.open_modal',function(){
 								<td class="text-center"><?php echo e($comision->id); ?></td>
 								<?php /*<td class="text-center"><?php echo e($comision->folio_solicitud); ?>-<?php echo e($comision->nombre_corto); ?></td>*/ ?>
 								<?php /*<td> <?php echo e($comision->producto); ?></td>*/ ?>
-								<td title="<?php echo e($comision->id); ?>"><?php echo e($comision->cliente); ?>
+								<td class="text-left"  title="<?php echo e($comision->id); ?>"><?php echo e($comision->cliente); ?>
 
 								</td>
-								<td><strong><?php echo e($comision->vendedor); ?></strong></td>
+								<td class="text-left" ><?php echo e($comision->vendedor); ?></td>
 								<td class="text-right">$  <?php echo e(number_format($comision->total, 0, ".", ",")); ?></td>
 								<td class="text-right">$ <?php echo e(number_format($comision->total_comisionable, 0, ".", "," )); ?></td>
 								<td class="text-right">$ <?php echo e(number_format($comision->pagado, 0, ".", ",")); ?></td>
 								<td class="text-right">$ <?php echo e(number_format($comision->total_comisionable - $comision->pagado, 0, ".", ",")); ?></td>
 								<td class="text-right"><?php echo e($comision->porcentaje); ?>%</td>
 								
-								<td class="text-left">
-									
-									<button class="btn btn-xs btn-default open_modal"  title="Ver detalles de pagos" value="<?php echo $comision->id; ?>"><i class="fa fa-search"></i></button>
-									
-									<?php /*<button data-quote="<?php echo $comision->id; ?>"  data-post="<?php echo action('ComisionControlador@detalle', [$comision->id]); ?>" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>*/ ?>
-									<?php /*<a href="<?php echo action('ComisionControlador@getPago', $comision->id); ?>" name="id" value="<?php echo e($comision->comision_id); ?>"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>*/ ?>
-									<?php /*<a href="#<?php echo e($comision->id); ?>" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>*/ ?>
-									<?php if($comision->pagada == 0): ?>										
-										<button class="btn btn-xs btn-default open_modal_anticipo "  title="Adelanto de comisión <?php echo e($comision->id); ?>" value="<?php echo $comision->id; ?>"><i class="fa fa-money" aria-hidden="true"></i></button>
-										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="<?php echo $comision->id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button>
+								<td class="text-right">
+									           
+            
+            
+            <!-- Dropdown menu -->
+            
+              
+              <?php if($comision->pagada == 0): ?>									
+										<button align= "center" class="btn btn-xs btn-danger open_modal"  title="Ver detalles de pagos" value="<?php echo $comision->id; ?>"><i class="fa fa-search"></i> </button>
+										<button class="btn btn-xs btn-default open_modal_anticipo "  title="Adelanto de comisión <?php echo e($comision->id); ?>" value="<?php echo $comision->id; ?>"><i class="fa fa-money" aria-hidden="true"></i></button> 
+										<button class="btn btn-xs btn-default open_modal_edit"  title="Modificar porcentaje de comision" value="<?php echo $comision->id; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></i></button> 
 										
 									<?php if($comision->advertencia <> '0'): ?>
 										<button class="btn btn-xs btn-default open_modal_warning btn-danger"  title="Quitar advertencia <?php echo e($comision->advertencia); ?>" value="<?php echo $comision->id; ?>"><i class="fa fa-reply" aria-hidden="true"></i></button>
 
 									<?php else: ?>
 										<button class="btn btn-xs btn-default open_modal_warning"  title="Agregar advertencia" value="<?php echo $comision->id; ?>"><i class="fa fa-clock-o" aria-hidden="true"></i></button>
-									<?php endif; ?>	
-
-										<a href="<?php echo action('ComisionControlador@getPagada', $comision->id); ?>" name="id" value="<?php echo e($comision->id); ?>"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
-									<?php endif; ?>
 									
+									<?php endif; ?>
+									<a href="<?php echo action('ComisionControlador@getPagada', $comision->id); ?>" name="id" value="<?php echo e($comision->id); ?>"  title="pagar" class="btn btn-xs btn-default"><i class="fa fa-shopping-cart"></i></a>
+
+										<?php elseif($comision->pagada == 1): ?>
+										<button align= "center" class="btn btn-xs btn-success open_modal"  title="Ver detalles de pagos" value="<?php echo $comision->id; ?>"><i class="fa fa-search"></i> Pagada</button>	
+										
+									<?php endif; ?>           
+									
+									
+									<?php /*<button data-quote="<?php echo $comision->id; ?>"  data-post="<?php echo action('ComisionControlador@detalle', [$comision->id]); ?>" class="btn btn-success btn-xs send-provider"><i class="fa fa-send"></i></button>*/ ?>
+									<?php /*<a href="<?php echo action('ComisionControlador@getPago', $comision->id); ?>" name="id" value="<?php echo e($comision->comision_id); ?>"  title="Ver detalles de pagos" class="btn btn-xs btn-default"><i class="fa fa-search"></i></a>*/ ?>
+									<?php /*<a href="#<?php echo e($comision->id); ?>" data-toggle="modal"  class="btn btn-xs btn-default" rel="#modal-form" ><i class="fa fa-search"></i></a>*/ ?>
+																		
+								</td>
+								<?php /*<td>
 									<?php if($comision->pagada == 0): ?>
-									<span class="label label-warning">Activa</span></td>												
+									<span class="label label-warning">Activa</span>												
 
 
 												<?php else: ?>												
-												<span class="label label-success">Pagada</span></td>
+												<span class="label label-success">Pagada</span>
 												
-												<?php endif; ?>															
-								</td>
+												<?php endif; ?>
+								</td>*/ ?>
 								
 
 
   				
 
 							<?php endforeach; ?>
+							</tr>
 						</tbody>
 					</table>
 					<div class="clearfix"></div>

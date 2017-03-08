@@ -143,8 +143,7 @@ span {
 
           <div class="promotoria"><h3>Promotoria <strong  class= "total">
           
-        {{{$promotor->total}}}
-         
+        $ {{{number_format($promotor->total, 2, ".", ",")}}}         
          </strong></h3></div>
           <hr>
           

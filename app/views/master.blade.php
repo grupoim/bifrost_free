@@ -15,6 +15,9 @@
   <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Font awesome icon -->
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
   <!-- Calendar -->
   <link rel="stylesheet" href="{{ URL::asset('css/fullcalendar.css') }}">
   <!-- prettyPhoto -->
@@ -55,6 +58,7 @@
 </head>
 
 <body>
+
 
   <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
 
@@ -310,7 +314,12 @@
               </div>
               <div class="widget-content">
                 <div class="padd">
-                  <!-- Content goes here -->
+                 
+                 <!-- Content goes here -->
+                
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                 <!-- Content goes here -->
                 </div>
                 <div class="widget-foot">
                   <!-- Footer goes here -->
@@ -358,7 +367,8 @@
 <script src="{{ URL::asset('js/jquery.rateit.min.js') }}"></script> <!-- RateIt - Star rating -->
 <script src="{{ URL::asset('js/jquery.prettyPhoto.js') }}"></script> <!-- prettyPhoto -->
 <script src="{{ URL::asset('js/jquery.slimscroll.min.js') }}"></script> <!-- jQuery Slim Scroll -->
-<script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script> <!-- Data tables -->
+<!--<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>-->
+<script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script> 
 
 <!-- jQuery Flot -->
 <script src="{{ URL::asset('js/excanvas.min.js') }}"></script>
@@ -384,6 +394,85 @@
 <script src="{{ URL::asset('js/bootstrap-typeahead.js') }}"></script>  <!-- Typahead plugin-->
 <script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
 <script src="{{ URL::asset('js/app.js') }}"></script>
+<script >
+  Highcharts.chart('container', {
+    
+     
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Ventas comparativas'
+    },
+    subtitle: {
+        text: '{{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
+    },
+    xAxis: {
+        categories: [
+            @foreach($categories as $cat)
+            '{{{$cat->nombre}}}',
+            @endforeach
+            
+            
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Rainfall (mm)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+   series: [    
+   
+
+   {
+        name: '{{{$serie3['name']}}}',
+        data: [@foreach($serie3['data'] as $d) {{{$d->monto}}}, @endforeach]
+        
+
+    },
+
+   {
+        name: '{{{$serie2['name']}}}',
+        data: [@foreach($serie2['data'] as $d) {{{$d->monto}}}, @endforeach]
+        
+
+    },
+
+    {
+        name: '{{{$serie1['name']}}}',
+        data: [@foreach($serie1['data'] as $d) {{{$d->monto}}}, @endforeach]
+        
+
+    },
+
+     
+
+    {
+        name: '{{{$serie['name']}}}',
+        data: [@foreach($serie['data'] as $d) {{{$d->monto}}}, @endforeach]
+        
+
+    },
+   
+    ]
+});
+</script> 
 @yield('scripts', '')
 </body>
 </html>

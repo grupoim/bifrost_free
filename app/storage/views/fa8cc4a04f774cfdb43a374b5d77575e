@@ -144,9 +144,7 @@ span {
 
           <div class="promotoria"><h3>Promotoria <strong  class= "total">
           
-        <?php echo e($promotor->total); ?>
-
-         
+        $ <?php echo e(number_format($promotor->total, 2, ".", ",")); ?>         
          </strong></h3></div>
           <hr>
           

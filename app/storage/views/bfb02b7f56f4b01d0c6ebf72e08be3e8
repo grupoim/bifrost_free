@@ -8,7 +8,16 @@
 		<input type="hidden" id="servicioProductoId" name="producto_id">
 		<input type="hidden" name="cantidad" value="1">
 	</div>
+	</div>
+
+	<div class="form-group">
+	<label for="sector" class="col-md-3 control-label">Cantidad </label>
+	<div class="col-md-9">
+		<input type="number" id="cantidad" name="cantidad" class="form-control">
+		
+	</div>
 </div>
+
 <?php echo Form::close(); ?>
 
 <?php $__env->stopSection(true); ?>
