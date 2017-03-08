@@ -15,7 +15,7 @@ use Carbon\Carbon;
 			
 
 
-
+/*
 
 $month = Carbon::now();
 $month = $month->subMonths(1);
@@ -115,12 +115,12 @@ $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 
 
 
-			$panel = PanelFactory::build($this->department);			
+			*/ $panel = PanelFactory::build($this->department);			
 			$months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
 			$this->data["products"] = $this->products;
 			$this->data["currentMonth"] = $months[date('n') - 1];
 			$this->data["graphs"] = $panel->get();						
-			$this->data["year"] = $year;
+			/*$this->data["year"] = $year;
 			$this->data["mes"] = $mes_string;
 			$this->data["serie"] = $serie;
 			$this->data["serie1"] = $serie1;
@@ -129,7 +129,7 @@ $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 			$this->data["categories"] = $categories;
 			
 
-
+*/
 
 			return View::make($this->department.".main", $this->data);
 		}
