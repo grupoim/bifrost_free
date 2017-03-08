@@ -394,6 +394,7 @@
 <script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
 <script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
 <script src="<?php echo URL::asset('js/app.js'); ?>"></script>
+<?php /*
 <script >
   Highcharts.chart('container', {
     
@@ -472,7 +473,7 @@
    
     ]
 });
-</script> 
+</script> */ ?>
 <?php echo $__env->yieldContent('scripts', ''); ?>
 </body>
 </html>
