@@ -12,9 +12,6 @@ use Carbon\Carbon;
 		}
 		public function index(){
 			
-			
-
-
 
 
 $month = Carbon::now();
@@ -67,8 +64,10 @@ switch ($month) {
 }
 
 
+
 $year = Carbon::now();
 $year = $year->format('Y');
+
 
 $year1 = Carbon::now();
 $year1 = $year1->subYears(1);
@@ -82,6 +81,7 @@ $year3 = Carbon::now();
 $year3 = $year3->subYears(3);
 $year3 = $year3->format('Y');
 
+//graficas comparativas por producto
 $categories = ProductoGrafica::where('activo',1)->get();
 
 
@@ -93,7 +93,16 @@ $datos_s2 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 
 $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year3)->get();			
 
-									
+$acumulado = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as total'), 'venta_producto_grafica.month')->where('year',$year)->groupby('month')->get();
+$acumulado1 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as total'), 'venta_producto_grafica.month')->where('year',$year1)->groupby('month')->get();
+$acumulado2 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as total'), 'venta_producto_grafica.month')->where('year',$year2)->groupby('month')->get();
+$acumulado3 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as total'), 'venta_producto_grafica.month')->where('year',$year3)->groupby('month')->get();
+
+
+							
+
+
+
 							$serie = array(
 								"name"=>  $year,
 								"data" =>  $datos,
@@ -112,6 +121,33 @@ $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 								"name"=>  $year3,
 								"data" =>  $datos_s3,
 								);
+//fin graficas comparativas por producto
+
+
+//ventas acumuladas	
+							
+				$serie_acumulado = array(
+								"name"=>  $year,
+								"data" =>  $acumulado,
+								);
+
+				$serie_acumulado1 = array(
+								"name"=>  $year1,
+								"data" =>  $acumulado1,
+								);
+				$serie_acumulado2 = array(
+								"name"=>  $year2,
+								"data" =>  $acumulado2,
+								);
+
+				$serie_acumulado3 = array(
+								"name"=>  $year3,
+								"data" =>  $acumulado3,
+								);
+
+//fin ventas acumuladas
+
+
 
 
 
@@ -121,11 +157,16 @@ $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 			$this->data["currentMonth"] = $months[date('n') - 1];
 			$this->data["graphs"] = $panel->get();						
 			$this->data["year"] = $year;
-			$this->data["mes"] = $mes_string;
+			$this->data["mes"] = $mes_string;			
 			$this->data["serie"] = $serie;
 			$this->data["serie1"] = $serie1;
 			$this->data["serie2"] = $serie2;
 			$this->data["serie3"] = $serie3;
+			$this->data["serie_acumulado"] = $serie_acumulado;
+			$this->data["serie_acumulado1"] = $serie_acumulado1;
+			$this->data["serie_acumulado2"] = $serie_acumulado2;
+			$this->data["serie_acumulado3"] = $serie_acumulado3;
+			$this->data["acumulado"] = $acumulado;						
 			$this->data["categories"] = $categories;
 			
 

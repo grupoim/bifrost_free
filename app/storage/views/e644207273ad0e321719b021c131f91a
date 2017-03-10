@@ -329,6 +329,64 @@
 
           </div>
         </div> 
+         <div class="row">
+          <div class="col-md-12">
+
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Title</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+                 
+<div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-md-12">
+
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Title</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+             
+             
+                
+
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+
+          </div>
+        </div>
         <?php echo $__env->yieldSection(); ?>
       </div>
     </div>
@@ -394,10 +452,15 @@
 <script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
 <script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
 <script src="<?php echo URL::asset('js/app.js'); ?>"></script>
-<script >
+
+<script > 
+
+
+ 
+    
   Highcharts.chart('container', {
     
-     
+       
     chart: {
         type: 'column'
     },
@@ -420,16 +483,17 @@
     yAxis: {
         min: 0,
         title: {
-            text: 'Rainfall (mm)'
+            text: 'Ventas'
         }
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
+        
     },
     plotOptions: {
         column: {
@@ -442,21 +506,21 @@
 
    {
         name: '<?php echo e($serie3['name']); ?>',
-        data: [<?php foreach($serie3['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
+        data: [<?php foreach($serie3['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
 
    {
         name: '<?php echo e($serie2['name']); ?>',
-        data: [<?php foreach($serie2['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
+        data: [<?php foreach($serie2['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
 
     {
         name: '<?php echo e($serie1['name']); ?>',
-        data: [<?php foreach($serie1['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
+        data: [<?php foreach($serie1['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
@@ -465,13 +529,81 @@
 
     {
         name: '<?php echo e($serie['name']); ?>',
-        data: [<?php foreach($serie['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
+        data: [<?php foreach($serie['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
    
     ]
 });
+
+//grafica de acumulados
+Highcharts.chart('acumulados', {
+   
+    title: {
+        text: 'Monthly Average Temperature'
+    },
+    subtitle: {
+        text: 'Source: WorldClimate.com'
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        title: {
+            text: 'Temperature (°C)'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: false
+            },
+            enableMouseTracking: true
+        }
+    },
+       tooltip: {
+        formatter: function () {
+            var s = '<b>' + this.x + '</b>';
+
+            $.each(this.points, function () {
+                s += '<br/>' + this.series.name + ': ' +
+                    '$'+ this.y;
+            });
+
+            return s;
+        },
+        shared: true
+    },
+    series: [{
+        name:'<?php echo e($serie_acumulado3['name']); ?>', <?php $sum3 = 0;?>
+        data:[<?php foreach($serie_acumulado3['data'] as $ac): ?> <?php $sum3 = $ac->total + $sum3; ?> <?php echo e(round($sum3,0)); ?>,<?php endforeach; ?>]
+       },
+       {
+        name:'<?php echo e($serie_acumulado2['name']); ?>', <?php $sum2 = 0; ?> 
+        data:[<?php foreach($serie_acumulado2['data'] as $ac): ?> <?php $sum2 = $ac->total + $sum2; ?> <?php echo e(round($sum2,0)); ?>,<?php endforeach; ?>]
+       },
+       {
+        name:'<?php echo e($serie_acumulado1['name']); ?>', <?php $sum1 = 0; ?> 
+        data:[<?php foreach($serie_acumulado1['data'] as $ac): ?> <?php $sum1 = $ac->total + $sum1; ?> <?php echo e(round($sum1,0)); ?>,<?php endforeach; ?>]
+       },
+      {
+        name:'<?php echo e($serie_acumulado['name']); ?>', <?php $sumx = 0; ?>
+        data: [<?php foreach($serie_acumulado['data'] as $ac): ?> <?php $sumx = $ac->total + $sumx; ?> <?php echo e(round($sumx,0)); ?>,<?php endforeach; ?> ]
+      }
+
+     ]
+});
+
+//fin grafica acumulados
+
+
+
 </script> 
 <?php echo $__env->yieldContent('scripts', ''); ?>
 </body>
