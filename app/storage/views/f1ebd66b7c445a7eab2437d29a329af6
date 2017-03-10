@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <!-- Title and other stuffs -->
-  <title>{{{ $module }}} - BifrostPFG</title>
+  <title><?php echo e($module); ?> - BifrostPFG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -12,49 +12,49 @@
 
 
   <!-- Stylesheets -->
-  <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/bootstrap.min.css'); ?>" rel="stylesheet">
   <!-- Font awesome icon -->
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <!-- Calendar -->
-  <link rel="stylesheet" href="{{ URL::asset('css/fullcalendar.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/fullcalendar.css'); ?>">
   <!-- prettyPhoto -->
-  <link rel="stylesheet" href="{{ URL::asset('css/prettyPhoto.css') }}">  
+  <link rel="stylesheet" href="<?php echo URL::asset('css/prettyPhoto.css'); ?>">  
   <!-- Star rating -->
-  <link rel="stylesheet" href="{{ URL::asset('css/rateit.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/rateit.css'); ?>">
   <!-- Date picker --> 
-  <link rel="stylesheet" href="{{ URL::asset('css/bootstrap-datetimepicker.min.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/bootstrap-datetimepicker.min.css'); ?>">
   <!-- CLEditor -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.cleditor.css') }}">  
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.cleditor.css'); ?>">  
   <!-- Data tables -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.dataTables.css') }}"> 
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.dataTables.css'); ?>"> 
   <!-- Bootstrap toggle -->
-  <link rel="stylesheet" href="{{ URL::asset('css/jquery.onoff.css') }}">
+  <link rel="stylesheet" href="<?php echo URL::asset('css/jquery.onoff.css'); ?>">
   <!-- Main stylesheet -->
-  <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/style.css'); ?>" rel="stylesheet">
   <!-- Widgets stylesheet -->
 
-  <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">
   <!--*naza-->
-  <link href="{{ URL::asset('css/prism.css') }}" rel="stylesheet">
-  <link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet"> 
+  <link href="<?php echo URL::asset('css/prism.css'); ?>" rel="stylesheet">
+  <link href="<?php echo URL::asset('css/chosen.css'); ?>" rel="stylesheet"> 
   
  
   
   <!--*naza-->
 
-  <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">   
+  <link href="<?php echo URL::asset('css/widgets.css'); ?>" rel="stylesheet">   
 
   
-  <script src="{{ URL::asset('js/respond.min.js') }}"></script>
+  <script src="<?php echo URL::asset('js/respond.min.js'); ?>"></script>
   <!--[if lt IE 9]>
   <script src="js/html5shiv.js"></script>
   <![endif]-->
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="{{ URL::asset('img/favicon/favicon.png') }}">
+  <link rel="shortcut icon" href="<?php echo URL::asset('img/favicon/favicon.png'); ?>">
 </head>
 
 <body>
@@ -104,7 +104,7 @@
               </li>
               <li>
                 <div class="drop-foot">
-                  <a href="{{ action('CobranzaControlador@getIndex') }}">Ver detalle de cobranza</a>
+                  <a href="<?php echo action('CobranzaControlador@getIndex'); ?>">Ver detalle de cobranza</a>
                 </div>
               </li>
             </ul>
@@ -121,14 +121,14 @@
         <ul class="nav navbar-nav pull-right">
           <li class="dropdown pull-right">            
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-              <i class="fa fa-user"></i> {{ Auth::user()->persona->nombres }} <b class="caret"></b>              
+              <i class="fa fa-user"></i> <?php echo Auth::user()->persona->nombres; ?> <b class="caret"></b>              
             </a>
             
             <!-- Dropdown menu -->
             <ul class="dropdown-menu">
               <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
               <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
-              <li><a href="{{ action('LoginControlador@getSalir') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+              <li><a href="<?php echo action('LoginControlador@getSalir'); ?>"><i class="fa fa-sign-out"></i> Logout</a></li>
             </ul>
           </li>
           
@@ -170,7 +170,7 @@
                 </li>
                 <li>
                   <div class="drop-foot">
-                    <a href="{{ action('CotizacionControlador@getIndex') }}">Ver todas</a>
+                    <a href="<?php echo action('CotizacionControlador@getIndex'); ?>">Ver todas</a>
                   </div>
                 </li>                                    
               </ul>
@@ -192,7 +192,7 @@
                 </li>
                 <li>
                   <div class="drop-foot">
-                    <a href="{{ action('QuejaControlador@getIndex') }}">Ver todas</a>
+                    <a href="<?php echo action('QuejaControlador@getIndex'); ?>">Ver todas</a>
                   </div>
                 </li>
               </ul>
@@ -265,11 +265,11 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav">
       <!-- Main menu with font awesome icon -->
-      @section('nav')
+      <?php $__env->startSection('nav'); ?>
       <li>
         <a href="/"><i class="fa fa-home"></i> Panel de Control</a>
       </li>
-      @show
+      <?php echo $__env->yieldSection(); ?>
     </ul>
   </div>
 
@@ -280,14 +280,14 @@
 
     <!-- Page heading -->
     <div class="page-head">
-      <h2 class="pull-left"><i class="fa fa-{{{ $icon or 'home'}}}"></i> {{{ $module }}}</h2>
+      <h2 class="pull-left"><i class="fa fa-<?php echo e(isset($icon) ? $icon : 'home'); ?>"></i> <?php echo e($module); ?></h2>
 
       <!-- Breadcrumb -->
       <div class="bread-crumb pull-right">
         <a href="#"><i class="fa fa-home"></i> Inicio</a> 
         <!-- Divider -->
         <span class="divider">/</span> 
-        <a href="#" class="bread-current">{{{ $module }}}</a>
+        <a href="#" class="bread-current"><?php echo e($module); ?></a>
       </div>
 
       <div class="clearfix"></div>
@@ -299,7 +299,7 @@
     <!-- Matter -->
     <div class="matter">
       <div class="container">
-        @section('module')
+        <?php $__env->startSection('module'); ?>
         <div class="row">
           <div class="col-md-12">
 
@@ -426,7 +426,7 @@
           </div>
         </div> 
         <!-- termina grafica ventas totales columnas 2017-->
-        @show
+        <?php echo $__env->yieldSection(); ?>
       </div>
     </div>
 
@@ -457,40 +457,40 @@
 <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
 
 <!-- JS -->
-<script src="{{ URL::asset('js/jquery.js') }}"></script> <!-- jQuery -->
-<script src="{{ URL::asset('js/bootstrap.min.js') }}"></script> <!-- Bootstrap -->
-<script src="{{ URL::asset('js/jquery-ui.min.js') }}"></script> <!-- jQuery UI -->
-<script src="{{ URL::asset('js/fullcalendar.min.js') }}"></script> <!-- Full Google Calendar - Calendar -->
-<script src="{{ URL::asset('js/jquery.rateit.min.js') }}"></script> <!-- RateIt - Star rating -->
-<script src="{{ URL::asset('js/jquery.prettyPhoto.js') }}"></script> <!-- prettyPhoto -->
-<script src="{{ URL::asset('js/jquery.slimscroll.min.js') }}"></script> <!-- jQuery Slim Scroll -->
+<script src="<?php echo URL::asset('js/jquery.js'); ?>"></script> <!-- jQuery -->
+<script src="<?php echo URL::asset('js/bootstrap.min.js'); ?>"></script> <!-- Bootstrap -->
+<script src="<?php echo URL::asset('js/jquery-ui.min.js'); ?>"></script> <!-- jQuery UI -->
+<script src="<?php echo URL::asset('js/fullcalendar.min.js'); ?>"></script> <!-- Full Google Calendar - Calendar -->
+<script src="<?php echo URL::asset('js/jquery.rateit.min.js'); ?>"></script> <!-- RateIt - Star rating -->
+<script src="<?php echo URL::asset('js/jquery.prettyPhoto.js'); ?>"></script> <!-- prettyPhoto -->
+<script src="<?php echo URL::asset('js/jquery.slimscroll.min.js'); ?>"></script> <!-- jQuery Slim Scroll -->
 <!--<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>-->
-<script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script> 
+<script src="<?php echo URL::asset('js/jquery.dataTables.min.js'); ?>"></script> 
 
 <!-- jQuery Flot -->
-<script src="{{ URL::asset('js/excanvas.min.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.resize.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.pie.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.flot.stack.js') }}"></script>
+<script src="<?php echo URL::asset('js/excanvas.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.resize.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.pie.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.flot.stack.js'); ?>"></script>
 
 <!-- jQuery Notification - Noty -->
-<script src="{{ URL::asset('js/jquery.noty.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/themes/default.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/bottom.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/topRight.js') }}"></script> <!-- jQuery Notify -->
-<script src="{{ URL::asset('js/layouts/top.js') }}"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/jquery.noty.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/themes/default.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/bottom.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/topRight.js'); ?>"></script> <!-- jQuery Notify -->
+<script src="<?php echo URL::asset('js/layouts/top.js'); ?>"></script> <!-- jQuery Notify -->
 <!-- jQuery Notification ends -->
 
-<script src="{{ URL::asset('js/sparklines.js') }}"></script> <!-- Sparklines -->
-<script src="{{ URL::asset('js/jquery.cleditor.min.js') }}"></script> <!-- CLEditor -->
-<script src="{{ URL::asset('js/bootstrap-datetimepicker.min.js') }}"></script> <!-- Date picker -->
-<script src="{{ URL::asset('js/jquery.onoff.min.js') }}"></script> <!-- Bootstrap Toggle -->
-<script src="{{ URL::asset('js/filter.js') }}"></script> <!-- Filter for support page -->
-<script src="{{ URL::asset('js/custom.js') }}"></script> <!-- Custom codes -->
-<script src="{{ URL::asset('js/bootstrap-typeahead.js') }}"></script>  <!-- Typahead plugin-->
-<script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
-<script src="{{ URL::asset('js/app.js') }}"></script>
+<script src="<?php echo URL::asset('js/sparklines.js'); ?>"></script> <!-- Sparklines -->
+<script src="<?php echo URL::asset('js/jquery.cleditor.min.js'); ?>"></script> <!-- CLEditor -->
+<script src="<?php echo URL::asset('js/bootstrap-datetimepicker.min.js'); ?>"></script> <!-- Date picker -->
+<script src="<?php echo URL::asset('js/jquery.onoff.min.js'); ?>"></script> <!-- Bootstrap Toggle -->
+<script src="<?php echo URL::asset('js/filter.js'); ?>"></script> <!-- Filter for support page -->
+<script src="<?php echo URL::asset('js/custom.js'); ?>"></script> <!-- Custom codes -->
+<script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
+<script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
+<script src="<?php echo URL::asset('js/app.js'); ?>"></script>
 
 <script > 
   Highcharts.chart('container', {
@@ -503,13 +503,13 @@
         text: 'Ventas comparativas'
     },
     subtitle: {
-        text: '{{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
+        text: '<?php echo e($mes); ?> <?php echo e($serie3['name']); ?>, <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?>'
     },
     xAxis: {
         categories: [
-            @foreach($categories as $cat)
-            '{{{$cat->nombre}}}',
-            @endforeach
+            <?php foreach($categories as $cat): ?>
+            '<?php echo e($cat->nombre); ?>',
+            <?php endforeach; ?>
             
             
         ],
@@ -539,22 +539,22 @@
    
 
    {
-        name: '{{{$serie3['name']}}}',
-        data: [@foreach($serie3['data'] as $d) {{{$d->monto}}}, @endforeach]
+        name: '<?php echo e($serie3['name']); ?>',
+        data: [<?php foreach($serie3['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
         
 
     },
 
    {
-        name: '{{{$serie2['name']}}}',
-        data: [@foreach($serie2['data'] as $d) {{{$d->monto}}}, @endforeach]
+        name: '<?php echo e($serie2['name']); ?>',
+        data: [<?php foreach($serie2['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
         
 
     },
 
     {
-        name: '{{{$serie1['name']}}}',
-        data: [@foreach($serie1['data'] as $d) {{{$d->monto}}}, @endforeach]
+        name: '<?php echo e($serie1['name']); ?>',
+        data: [<?php foreach($serie1['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
         
 
     },
@@ -562,8 +562,8 @@
      
 
     {
-        name: '{{{$serie['name']}}}',
-        data: [@foreach($serie['data'] as $d) {{{$d->monto}}}, @endforeach]
+        name: '<?php echo e($serie['name']); ?>',
+        data: [<?php foreach($serie['data'] as $d): ?> <?php echo e($d->monto); ?>, <?php endforeach; ?>]
         
 
     },
@@ -580,7 +580,7 @@
     },
 
     subtitle: {
-        text: '{{{$mes}}}  {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
+        text: '<?php echo e($mes); ?>  <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?>'
     },
    xAxis: {
         categories: ['', '', ''],
@@ -602,16 +602,17 @@
 
     plotOptions: {
         series: {
-            pointStart: {{{$year2}}}
+            pointStart: <?php echo e($year2); ?>
+
             
         }
     },
 
     series: [{
-        name: 'Ventas {{{$mes}}}' ,
-        data: [@foreach($serie2['ventatotalmes2'] as $d ) {{{round($d->monto,0)}}} @endforeach
-        @foreach($serie1['ventatotalmes1'] as $d) , {{{round($d->monto,0)}}} @endforeach
-        @foreach($serie['ventatotalmes'] as $d) , {{{round($d->monto,0)}}} @endforeach],
+        name: 'Ventas <?php echo e($mes); ?>' ,
+        data: [<?php foreach($serie2['ventatotalmes2'] as $d ): ?> <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>
+        <?php foreach($serie1['ventatotalmes1'] as $d): ?> , <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>
+        <?php foreach($serie['ventatotalmes'] as $d): ?> , <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>],
 
 
     }]
@@ -627,7 +628,7 @@
         text: 'Ventas totales'
     },
     subtitle: {
-        text: 'Años {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
+        text: 'Años <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?>'
     },
     xAxis: {
         categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
@@ -653,24 +654,24 @@
         }
     },
     series: [{
-        name: '{{{$serie2['name']}}}',
+        name: '<?php echo e($serie2['name']); ?>',
         marker: {
             symbol: 'square'
         },
-       data: [ @foreach($serie2['ventastotales2'] as $d ) {{{round($d->monto,0)}}}, @endforeach ]
+       data: [ <?php foreach($serie2['ventastotales2'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?> ]
 
     }, {
-        name: '{{{$serie1['name']}}}',
+        name: '<?php echo e($serie1['name']); ?>',
         marker: {
             symbol: 'circle'
         },
-        data: [@foreach($serie1['ventastotales1'] as $d ) {{{round($d->monto,0)}}}, @endforeach ]
+        data: [<?php foreach($serie1['ventastotales1'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?> ]
     },{
-        name: '{{{$serie['name']}}}',
+        name: '<?php echo e($serie['name']); ?>',
         marker: {
             symbol: 'diamond'
         },
-        data: [@foreach($serie['ventastotales'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['ventastotales'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
           
     }]
 });
@@ -682,7 +683,7 @@
         type: 'column'
     },
     title: {
-        text: 'Ventas totales {{{$mes}}} {{{$serie['name']}}} '
+        text: 'Ventas totales <?php echo e($mes); ?> <?php echo e($serie['name']); ?> '
     },
     xAxis: {
           categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
@@ -717,46 +718,46 @@
     },                                                                                                     
     series: [{
         name: 'Servicios a previsión',
-        data: [@foreach($serie['serviciosApre'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['serviciosApre'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
          
     }, {
         name: 'Recubrimiento',
-        data: [@foreach($serie['recubrimiento'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['recubrimiento'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },{
         name: 'Mantenimiento',
-        data: [@foreach($serie['mantenimiento'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['mantenimiento'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Gavetas',
-        data: [@foreach($serie['gaveta'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['gaveta'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     }, {
         name: 'Terrenos',
-        data: [@foreach($serie['terreno'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['terreno'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Nichos',
-        data: [@foreach($serie['nicho'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['nicho'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Extras',
-        data: [@foreach($serie['extra'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['extra'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Exhumación',
-        data: [@foreach($serie['exhumacion'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['exhumacion'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Inhumación',
-        data: [@foreach($serie['inhumacion'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['inhumacion'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     },
     {
         name: 'Cesión de derecho',
-        data: [@foreach($serie['cesionD'] as $d ) {{{round($d->monto,0)}}}, @endforeach]
+        data: [<?php foreach($serie['cesionD'] as $d ): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
     }
 
     ]
 });
 </script>
-@yield('scripts', '')
+<?php echo $__env->yieldContent('scripts', ''); ?>
 </body>
 </html>

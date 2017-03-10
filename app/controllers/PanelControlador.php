@@ -22,8 +22,6 @@ $month = $month->subMonths(1);
 $month = $month->format('m');
 
 
-
-
 switch ($month) {
 	case 01:
 		$mes_string = 'Enero';# code...
@@ -86,26 +84,62 @@ $categories = ProductoGrafica::where('activo',1)->get();
 
 
 $datos = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year)->get();
-
 $datos_s1 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year1)->get();
-
 $datos_s2 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year2)->get();
+$datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year3)->get();
 
-$datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('month', $month)->where('year',$year3)->get();			
+	
+		//consultas mes de febrero - para grafrica ventas mes de febrero	
+$ventatotalmes = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('month', $month)->where('year',$year)->get();
+$ventatotalmes1 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('month', $month)->where('year',$year1)->get();
+$ventatotalmes2 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('month', $month)->where('year',$year2)->get();
+         //terminan consultas mes de febrero
 
+			//consultas para grafrica ventas totales 
+ $ventastotales2 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('year',$year2)->groupBy('month')->get(); 
+ $ventastotales1 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('year',$year1)->groupBy('month')->get();
+ $ventastotales = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.monto) as monto'))->where('year',$year)->groupBy('month')->get();
+    		 //terminan consultas ventas totales
+ 			//consultas ventas totales 2017 articulos
+ $serviciosApre = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',10)->groupBy('month')->get();
+ $recubrimiento = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',9)->groupBy('month')->get();
+ $mantenimiento = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',8)->groupBy('month')->get();
+ $gaveta = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',7)->groupBy('month')->get();
+ $terreno = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',6)->groupBy('month')->get();
+ $nicho = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',5)->groupBy('month')->get();
+ $extra = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',4)->groupBy('month')->get();
+ $exhumacion = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',3)->groupBy('month')->get();
+ $inhumacion = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',2)->groupBy('month')->get();
+ $cesionD = VentaProductoGrafica::select('venta_producto_grafica.monto')->where('year',$year)->where('producto_grafica_id',1)->groupBy('month')->get();
 									
 							$serie = array(
 								"name"=>  $year,
 								"data" =>  $datos,
+								"ventatotalmes" =>  $ventatotalmes,
+								"ventastotales" =>  $ventastotales,
+								"serviciosApre" =>  $serviciosApre,
+								"recubrimiento" =>  $recubrimiento,
+								"mantenimiento" =>  $mantenimiento,
+								"gaveta" =>  $gaveta,
+								"terreno" =>  $terreno,
+								"nicho" =>  $nicho,
+								"extra" =>  $extra,
+								"exhumacion" =>  $exhumacion,
+								"inhumacion" =>  $inhumacion,
+								"cesionD" =>  $cesionD,
 								);
 
 							$serie1 = array(
 								"name"=>  $year1,
 								"data" =>  $datos_s1,
+								"ventatotalmes1" =>  $ventatotalmes1,
+								"ventastotales1" =>  $ventastotales1,
 								);
 							$serie2 = array(
 								"name"=>  $year2,
 								"data" =>  $datos_s2,
+								"ventatotalmes2" =>  $ventatotalmes2,
+								"ventastotales2" =>  $ventastotales2,
 								);
 
 							$serie3 = array(
@@ -127,10 +161,9 @@ $datos_s3 = VentaProductoGrafica::select('venta_producto_grafica.monto')->where(
 			$this->data["serie2"] = $serie2;
 			$this->data["serie3"] = $serie3;
 			$this->data["categories"] = $categories;
-			
 
 
-
-			return View::make($this->department.".main", $this->data);
+																//envio la resta de 2 años al año actual 	
+			return View::make($this->department.".main", $this->data)->with('year2',$year2);
 		}
 	}
