@@ -599,11 +599,22 @@
         align: 'right',
         verticalAlign: 'middle'
     },
+        tooltip: {
+          
+        pointFormat: '{series.name}: ${point.y}<br/>'
+ 
+    },
 
     plotOptions: {
         series: {
             pointStart: {{{$year2}}}
             
+        },
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
         }
     },
 
@@ -611,7 +622,7 @@
         name: 'Ventas {{{$mes}}}' ,
         data: [@foreach($serie2['ventatotalmes2'] as $d ) {{{round($d->monto,0)}}} @endforeach
         @foreach($serie1['ventatotalmes1'] as $d) , {{{round($d->monto,0)}}} @endforeach
-        @foreach($serie['ventatotalmes'] as $d) , {{{round($d->monto,0)}}} @endforeach],
+        @foreach($serie['ventatotalmes'] as $d) , {{{round($d->monto,0)}}} @endforeach]
 
 
     }]
@@ -640,10 +651,16 @@
     },
     tooltip: {
         crosshairs: true,
-        shared: true
+        shared: true,
+           
+        pointFormat: '{series.name}: ${point.y}<br/>{point.stackTotal}'
+
+
+ 
     },
 
     plotOptions: {
+ 
         spline: {
             marker: {
                 radius: 3,
@@ -691,10 +708,10 @@
     yAxis: {
         min: 0,
         title: {
-            text: 'Total fruit consumption'
+            text: 'Pesos'
         },
         stackLabels: {
-            enabled: true,
+            enabled: true ,
             style: {
                 fontWeight: 'bold',
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
@@ -704,7 +721,7 @@
 
     tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
-        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        pointFormat: '{series.name}: ${point.y}<br/>Total: ${point.stackTotal}'
     },
     plotOptions: {
         column: {

@@ -599,12 +599,23 @@
         align: 'right',
         verticalAlign: 'middle'
     },
+        tooltip: {
+          
+        pointFormat: '{series.name}: ${point.y}<br/>'
+ 
+    },
 
     plotOptions: {
         series: {
             pointStart: <?php echo e($year2); ?>
 
             
+        },
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
         }
     },
 
@@ -612,7 +623,7 @@
         name: 'Ventas <?php echo e($mes); ?>' ,
         data: [<?php foreach($serie2['ventatotalmes2'] as $d ): ?> <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>
         <?php foreach($serie1['ventatotalmes1'] as $d): ?> , <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>
-        <?php foreach($serie['ventatotalmes'] as $d): ?> , <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>],
+        <?php foreach($serie['ventatotalmes'] as $d): ?> , <?php echo e(round($d->monto,0)); ?> <?php endforeach; ?>]
 
 
     }]
@@ -641,10 +652,16 @@
     },
     tooltip: {
         crosshairs: true,
-        shared: true
+        shared: true,
+           
+        pointFormat: '{series.name}: ${point.y}<br/>{point.stackTotal}'
+
+
+ 
     },
 
     plotOptions: {
+ 
         spline: {
             marker: {
                 radius: 3,
@@ -692,10 +709,10 @@
     yAxis: {
         min: 0,
         title: {
-            text: 'Total fruit consumption'
+            text: 'Pesos'
         },
         stackLabels: {
-            enabled: true,
+            enabled: true ,
             style: {
                 fontWeight: 'bold',
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
@@ -705,7 +722,7 @@
 
     tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
-        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        pointFormat: '{series.name}: ${point.y}<br/>Total: ${point.stackTotal}'
     },
     plotOptions: {
         column: {
