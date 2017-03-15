@@ -16,9 +16,7 @@
   <!-- Font awesome icon -->
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <!-- Calendar -->
+
   <link rel="stylesheet" href="{{ URL::asset('css/fullcalendar.css') }}">
   <!-- prettyPhoto -->
   <link rel="stylesheet" href="{{ URL::asset('css/prettyPhoto.css') }}">  
@@ -47,7 +45,7 @@
 
   <link href="{{ URL::asset('css/widgets.css') }}" rel="stylesheet">   
 
-  
+ 
   <script src="{{ URL::asset('js/respond.min.js') }}"></script>
   <!--[if lt IE 9]>
   <script src="js/html5shiv.js"></script>
@@ -318,7 +316,6 @@
                  <!-- Content goes here -->
                 
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                  <!-- Content goes here -->
                 </div>
                 <div class="widget-foot">
@@ -344,8 +341,7 @@
               <div class="widget-content">
                 <div class="padd">
                  
-                 
-<div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 
                  <!-- Content goes here -->
                 </div>
@@ -373,11 +369,6 @@
                 <div class="padd">
                  
              
-             
-                
-
-<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                 <!-- Content goes here -->
                 </div>
                 <div class="widget-foot">
                   <!-- Footer goes here -->
@@ -453,158 +444,6 @@
 <script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
 <script src="{{ URL::asset('js/app.js') }}"></script>
 
-<script > 
-
-
- 
-    
-  Highcharts.chart('container', {
-    
-       
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Ventas comparativas'
-    },
-    subtitle: {
-        text: '{{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
-    },
-    xAxis: {
-        categories: [
-            @foreach($categories as $cat)
-            '{{{$cat->nombre}}}',
-            @endforeach
-            
-            
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Ventas'
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-        
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0
-        }
-    },
-   series: [    
-   
-
-   {
-        name: '{{{$serie3['name']}}}',
-        data: [@foreach($serie3['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
-        
-
-    },
-
-   {
-        name: '{{{$serie2['name']}}}',
-        data: [@foreach($serie2['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
-        
-
-    },
-
-    {
-        name: '{{{$serie1['name']}}}',
-        data: [@foreach($serie1['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
-        
-
-    },
-
-     
-
-    {
-        name: '{{{$serie['name']}}}',
-        data: [@foreach($serie['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
-        
-
-    },
-   
-    ]
-});
-
-//grafica de acumulados
-Highcharts.chart('acumulados', {
-   
-    title: {
-        text: 'Monthly Average Temperature'
-    },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
-    },
-    xAxis: {
-        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-    },
-    yAxis: {
-        title: {
-            text: 'Temperature (°C)'
-        }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-    plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: false
-            },
-            enableMouseTracking: true
-        }
-    },
-       tooltip: {
-        formatter: function () {
-            var s = '<b>' + this.x + '</b>';
-
-            $.each(this.points, function () {
-                s += '<br/>' + this.series.name + ': ' +
-                    '$'+ this.y;
-            });
-
-            return s;
-        },
-        shared: true
-    },
-    series: [{
-        name:'{{{$serie_acumulado3['name']}}}', <?php $sum3 = 0;?>
-        data:[@foreach($serie_acumulado3['data'] as $ac) <?php $sum3 = $ac->total + $sum3; ?> {{{ round($sum3,0)}}},@endforeach]
-       },
-       {
-        name:'{{{$serie_acumulado2['name']}}}', <?php $sum2 = 0; ?> 
-        data:[@foreach($serie_acumulado2['data'] as $ac) <?php $sum2 = $ac->total + $sum2; ?> {{{round($sum2,0)}}},@endforeach]
-       },
-       {
-        name:'{{{$serie_acumulado1['name']}}}', <?php $sum1 = 0; ?> 
-        data:[@foreach($serie_acumulado1['data'] as $ac) <?php $sum1 = $ac->total + $sum1; ?> {{{round($sum1,0)}}},@endforeach]
-       },
-      {
-        name:'{{{$serie_acumulado['name']}}}', <?php $sumx = 0; ?>
-        data: [@foreach($serie_acumulado['data'] as $ac) <?php $sumx = $ac->total + $sumx; ?> {{{round($sumx,0)}}},@endforeach ]
-      }
-
-     ]
-});
-
-//fin grafica acumulados
-
-
-
-</script> 
 @yield('scripts', '')
 </body>
 </html>

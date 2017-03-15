@@ -12,7 +12,7 @@ use Carbon\Carbon;
 		}
 		public function index(){
 			
-
+/*
 
 $month = Carbon::now();
 $month = $month->subMonths(1);
@@ -147,7 +147,7 @@ $acumulado3 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.m
 
 //fin ventas acumuladas
 
-
+*/
 
 
 
@@ -156,7 +156,7 @@ $acumulado3 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.m
 			$this->data["products"] = $this->products;
 			$this->data["currentMonth"] = $months[date('n') - 1];
 			$this->data["graphs"] = $panel->get();						
-			$this->data["year"] = $year;
+			/*$this->data["year"] = $year;
 			$this->data["mes"] = $mes_string;			
 			$this->data["serie"] = $serie;
 			$this->data["serie1"] = $serie1;
@@ -170,7 +170,7 @@ $acumulado3 = VentaProductoGrafica::select(DB::raw('sum(venta_producto_grafica.m
 			$this->data["categories"] = $categories;
 			
 
-
+*/
 
 			return View::make($this->department.".main", $this->data);
 		}

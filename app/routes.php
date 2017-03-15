@@ -17,14 +17,14 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/cobranza', 'CobranzaControlador');
 	
 	Route::get('comision/detalle/{id?}', 'ComisionControlador@detalle');	
-	Route::controller('/comision', 'ComisionControlador');	
+	Route::controller('/comision', 'ComisionControlador');
+	Route::controller('/reporte-mensual', 'ReporteMensualControlador');	
 	Route::controller('/queja', 'QuejaControlador');
 	Route::controller('/almacen', 'AlmacenControlador');
 	Route::controller('/servicio-funeral', 'ServicioFuneralControlador');
 	Route::controller('/recubrimiento', 'RecubrimientoControlador');
 	Route::controller('/material',  'MaterialControlador');
 	Route::controller('/mantenimiento',  'MantenimientoControlador');
-
 	Route::controller('/contratacion',  'ContratacionControlador');
 	Route::controller('/cesion-derecho',  'CesionDerechoControlador');
 	Route::controller('/titulo-propiedad',  'TituloPropiedadControlador');
