@@ -183,8 +183,8 @@ switch ($month) {
 			$dataModule["serie1"] = $serie1;
 			$dataModule["serie2"] = $serie2;
 			$dataModule["serie3"] = $serie3;
-			$dataModule["serie_acumulado"] = $serie_acumulado;
 			$dataModule["acumulado_apilada"] = $acumulado_apilada;
+			$dataModule["serie_acumulado"] = $serie_acumulado;
 			$dataModule["serie_acumulado1"] = $serie_acumulado1;
 			$dataModule["serie_acumulado2"] = $serie_acumulado2;
 			$dataModule["serie_acumulado3"] = $serie_acumulado3;

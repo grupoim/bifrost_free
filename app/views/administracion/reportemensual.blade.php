@@ -477,6 +477,68 @@ Highcharts.chart('apiladas', {
 });
 //fin ventas totales apiladas
 
+//grafica totales por mes
+Highcharts.chart('totales_mes', {
+   
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        title: {
+            text: '',
+            
+        }
+    },
+    legend: {
+       
+        align: 'center',
+        verticalAlign: 'top'
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: false
+            },
+            enableMouseTracking: true
+        }
+    },
+       tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      
+    },
+    series: [{
+        name:'{{{$serie_acumulado3['name']}}}',
+        data:[@foreach($serie_acumulado3['data'] as $ac) {{{ round($ac->total,0)}}},@endforeach]
+       },
+       {
+        name:'{{{$serie_acumulado2['name']}}}',  
+        data:[@foreach($serie_acumulado2['data'] as $ac)  {{{round($ac->total,0)}}},@endforeach]
+       },
+       {
+        name:'{{{$serie_acumulado1['name']}}}', 
+        data:[@foreach($serie_acumulado1['data'] as $ac) {{{round($ac->total,0)}}},@endforeach]
+       },
+      {
+        name:'{{{$serie_acumulado['name']}}}', 
+        data: [@foreach($serie_acumulado['data'] as $ac) {{{round($ac->total,0)}}},@endforeach ]
+      }
+
+     ]
+});
+
+//fin grafica totales por mes
+
 </script> 
 @stop()
 
@@ -583,7 +645,7 @@ Highcharts.chart('apiladas', {
 
         <div id="container" style="min-width: 320px; height: 500px; margin: 0 auto"></div> 
             
-<div class="col-md-6">
+<div >
             <table class="table table-condensed">
     <thead>
         <tr> 
@@ -672,17 +734,17 @@ Highcharts.chart('apiladas', {
 
 
 @foreach($categories as $cat)
-        <tr>
+         <tr>
             
-            <th class="text-right" class="col-md-3">{{{$cat->nombre}}}</th>
+            <th class="text-left col-md-3">{{{$cat->nombre}}}</th>
            @foreach($acumulado_apilada as $ac) 
                  
                 
-                @if($ac->id == $cat->id)<td class="text-left">${{{number_format($ac->total, 0, '.', ',')}}} </td>@endif 
+                @if($ac->id == $cat->id)<td class="text-left col-md-5">${{{number_format($ac->total, 0, '.', ',')}}} </td>@endif 
             @endforeach
 
         </tr>@endforeach
-       
+      
         
        
     </tbody>
@@ -701,5 +763,89 @@ Highcharts.chart('apiladas', {
         <div class="clearfix"></div>
     </div>
 </div> 
+
+<div class="widget">
+    <div class="widget-head">
+        <div class="pull-left">Totales por mes</div>
+        <div class="pull-right">
+        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>         
+        </div>  
+        <div class="clearfix"></div>
+    </div>
+    
+    <div class="widget-content">
+        <div class="padd">
+        <div id="totales_mes" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    
+<table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>{{{$serie_acumulado3['name']}}}</th>
+            
+            @foreach($serie_acumulado3['data'] as $d) 
+                
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado2['name']}}}</th>
+             
+            @foreach($serie_acumulado2['data'] as $d) 
+                
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado1['name']}}}</th>
+           
+            @foreach($serie_acumulado1['data'] as $d) 
+               
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado['name']}}}</th>
+           
+            @foreach($serie_acumulado['data'] as $d) 
+                
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+        
+        </div>
+    </div>
+
+
+    <div class="widget-foot">
+        <div class="pull-right">
+            <div class="btn-group">
+                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
 
 @stop
