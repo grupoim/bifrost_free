@@ -19,49 +19,6 @@ $month = $month->format('m');
 
 
 
-switch ($month) {
-	case 01:
-		$mes_string = 'Enero';# code...
-		break;
-	case 02:
-		$mes_string = 'Febrero';# code...
-		break;
-		case 03:
-		$mes_string = 'Marzo';# code...
-		break;
-		case 04:
-		$mes_string = 'Abril';# code...
-		break;
-		case 05:
-		$mes_string = 'Mayo';# code...
-		break;
-		case 06:
-		$mes_string = 'Junio';# code...
-		break;
-		case 07:
-		$mes_string = 'Julio';# code...
-		break;
-		case 08:
-		$mes_string = 'Agosto';# code...
-		break;
-		case 09:
-		$mes_string = 'Septiembre';# code...
-		break;
-		case 10:
-		$mes_string = 'Octubre';# code...
-		break;
-		case 11:
-		$mes_string = 'Noviembre';# code...
-		break;
-		case 12:
-		$mes_string = 'Diciembre';# code...
-		break;
-	default:
-		# code...
-		break;
-}
-
-
 
 $year = Carbon::now();
 $year = $year->format('Y');
@@ -107,11 +64,17 @@ $datos_s3 = GraficaVentaProducto::select('totales_grafica.monto')->where('month'
 								->get();			
 
 
-$acumulado = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month')->where('year',$year)->groupby('month')
+$acumulado = GraficaVentaProducto::select('producto_grafica.nombre', DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month', 'totales_grafica.year')->groupby('month')->where('year',$year)
 								->where('categoria',1)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 								->get();
+$acumulado_apilada = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto as total', 'totales_grafica.month', 'totales_grafica.year')->where('year',$year)
+								->where('categoria',1)
+								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+								->get();
+
 $acumulado1 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month')->where('year',$year1)->groupby('month')->where('categoria',1)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
@@ -124,6 +87,49 @@ $acumulado3 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 								->get();
+
+
+switch ($month) {
+	case 01:
+		$mes_string = 'Enero';# code...
+		break;
+	case 02:
+		$mes_string = 'Febrero';# code...
+		break;
+		case 03:
+		$mes_string = 'Marzo';# code...
+		break;
+		case 04:
+		$mes_string = 'Abril';# code...
+		break;
+		case 05:
+		$mes_string = 'Mayo';# code...
+		break;
+		case 06:
+		$mes_string = 'Junio';# code...
+		break;
+		case 07:
+		$mes_string = 'Julio';# code...
+		break;
+		case 08:
+		$mes_string = 'Agosto';# code...
+		break;
+		case 09:
+		$mes_string = 'Septiembre';# code...
+		break;
+		case 10:
+		$mes_string = 'Octubre';# code...
+		break;
+		case 11:
+		$mes_string = 'Noviembre';# code...
+		break;
+		case 12:
+		$mes_string = 'Diciembre';# code...
+		break;
+	default:
+		# code...
+		break;
+}
 
 
 							$serie = array(
@@ -178,6 +184,7 @@ $acumulado3 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 			$dataModule["serie2"] = $serie2;
 			$dataModule["serie3"] = $serie3;
 			$dataModule["serie_acumulado"] = $serie_acumulado;
+			$dataModule["acumulado_apilada"] = $acumulado_apilada;
 			$dataModule["serie_acumulado1"] = $serie_acumulado1;
 			$dataModule["serie_acumulado2"] = $serie_acumulado2;
 			$dataModule["serie_acumulado3"] = $serie_acumulado3;

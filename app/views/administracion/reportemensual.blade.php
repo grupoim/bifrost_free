@@ -5,22 +5,28 @@
 <script type="text/javascript">
 
 
-
- Highcharts.theme = {
-    colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', 
-             '#FF9655', '#FFF263', '#6AF9C4'],
+//comienza tema
+Highcharts.theme = {
+    colors: [ '#55BF3B', '#DF5353', '#7798BF','#DDDF0D', '#aaeeee', '#ff0066', '#eeaaee',
+        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
     chart: {
         backgroundColor: {
-            linearGradient: [0, 0, 500, 500],
+            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
             stops: [
-                [0, 'rgb(255, 255, 255)'],
-                [1, 'rgb(240, 240, 255)']
+                [0, 'rgb(48, 48, 96)'],
+                [1, 'rgb(0, 0, 0)']
             ]
         },
+        borderColor: '#000000',
+        borderWidth: 2,
+        className: 'dark-container',
+        plotBackgroundColor: 'rgba(255, 255, 255, .1)',
+        plotBorderColor: '#CCCCCC',
+        plotBorderWidth: 1
     },
     title: {
         style: {
-            color: '#000',
+            color: '#C0C0C0',
             font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
         }
     },
@@ -30,27 +36,230 @@
             font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
         }
     },
+    xAxis: {
+        gridLineColor: '#333333',
+        gridLineWidth: 1,
+        labels: {
+            style: {
+                color: '#A0A0A0'
+            }
+        },
+        lineColor: '#A0A0A0',
+        tickColor: '#A0A0A0',
+        title: {
+            style: {
+                color: '#CCC',
+                fontWeight: 'bold',
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS, Verdana, sans-serif'
 
+            }
+        }
+    },
+    yAxis: {
+        gridLineColor: '#333333',
+        labels: {
+            style: {
+                color: '#A0A0A0'
+            }
+        },
+        lineColor: '#A0A0A0',
+        minorTickInterval: null,
+        tickColor: '#A0A0A0',
+        tickWidth: 1,
+        title: {
+            style: {
+                color: '#CCC',
+                fontWeight: 'bold',
+                fontSize: '12px',
+                fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+            }
+        }
+    },
+    tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        style: {
+            color: '#F0F0F0'
+        }
+    },
+    toolbar: {
+        itemStyle: {
+            color: 'silver'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                color: '#CCC'
+            },
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        spline: {
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        scatter: {
+            marker: {
+                lineColor: '#333'
+            }
+        },
+        candlestick: {
+            lineColor: 'white'
+        }
+    },
     legend: {
         itemStyle: {
             font: '9pt Trebuchet MS, Verdana, sans-serif',
-            color: 'black'
+            color: '#A0A0A0'
         },
-        itemHoverStyle:{
-            color: 'gray'
-        }   
-    }
+        itemHoverStyle: {
+            color: '#FFF'
+        },
+        itemHiddenStyle: {
+            color: '#444'
+        }
+    },
+    credits: {
+        style: {
+            color: '#666'
+        }
+    },
+    labels: {
+        style: {
+            color: '#CCC'
+        }
+    },
+
+    navigation: {
+        buttonOptions: {
+            symbolStroke: '#DDDDDD',
+            hoverSymbolStroke: '#FFFFFF',
+            theme: {
+                fill: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0.4, '#606060'],
+                        [0.6, '#333333']
+                    ]
+                },
+                stroke: '#000000'
+            }
+        }
+    },
+
+    // scroll charts
+    rangeSelector: {
+        buttonTheme: {
+            fill: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0.4, '#888'],
+                    [0.6, '#555']
+                ]
+            },
+            stroke: '#000000',
+            style: {
+                color: '#CCC',
+                fontWeight: 'bold'
+            },
+            states: {
+                hover: {
+                    fill: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0.4, '#BBB'],
+                            [0.6, '#888']
+                        ]
+                    },
+                    stroke: '#000000',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                select: {
+                    fill: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0.1, '#000'],
+                            [0.3, '#333']
+                        ]
+                    },
+                    stroke: '#000000',
+                    style: {
+                        color: 'yellow'
+                    }
+                }
+            }
+        },
+        inputStyle: {
+            backgroundColor: '#333',
+            color: 'silver'
+        },
+        labelStyle: {
+            color: 'silver'
+        }
+    },
+
+    navigator: {
+        handles: {
+            backgroundColor: '#666',
+            borderColor: '#AAA'
+        },
+        outlineColor: '#CCC',
+        maskFill: 'rgba(16, 16, 16, 0.5)',
+        series: {
+            color: '#7798BF',
+            lineColor: '#A6C7ED'
+        }
+    },
+
+    scrollbar: {
+        barBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                    [0.4, '#888'],
+                    [0.6, '#555']
+            ]
+        },
+        barBorderColor: '#CCC',
+        buttonArrowColor: '#CCC',
+        buttonBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                    [0.4, '#888'],
+                    [0.6, '#555']
+            ]
+        },
+        buttonBorderColor: '#CCC',
+        rifleColor: '#FFF',
+        trackBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, '#000'],
+                [1, '#333']
+            ]
+        },
+        trackBorderColor: '#666'
+    },
+
+    // special colors for some of the
+    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+    background2: 'rgb(35, 35, 70)',
+    dataLabelsColor: '#444',
+    textColor: '#C0C0C0',
+    maskColor: 'rgba(255,255,255,0.3)'
 };
 
 // Apply the theme
 Highcharts.setOptions(Highcharts.theme);
+//termina tema
 
 Highcharts.chart('container', {
-    
-   data: {
-    table: document.getElementById('datatable'),
-    startRow: 1
-},
+   
+   
     chart: {
         type: 'column',
          
@@ -58,10 +267,10 @@ Highcharts.chart('container', {
 
 
     title: {
-        text: 'Ventas comparativas'
+        text: ''
     },
     subtitle: {
-        text: '{{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}'
+        text: ''
     },
     xAxis: {
         categories: [
@@ -73,10 +282,16 @@ Highcharts.chart('container', {
         ],
         crosshair: true
     },
+     legend: {
+       
+        align: 'center',
+        verticalAlign: 'top'
+    },
     yAxis: {
-        min: 1000,
+      
         title: {
-            text: 'Ventas'
+            text: '',
+
         }
     },
     tooltip: {
@@ -134,23 +349,24 @@ Highcharts.chart('container', {
 Highcharts.chart('acumulados', {
    
     title: {
-        text: 'Monthly Average Temperature'
+        text: ''
     },
     subtitle: {
-        text: 'Source: WorldClimate.com'
+        text: ''
     },
     xAxis: {
         categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     },
     yAxis: {
         title: {
-            text: 'Temperature (°C)'
+            text: '',
+            
         }
     },
     legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
+       
+        align: 'center',
+        verticalAlign: 'top'
     },
     plotOptions: {
         line: {
@@ -161,17 +377,13 @@ Highcharts.chart('acumulados', {
         }
     },
        tooltip: {
-        formatter: function () {
-            var s = '<b>' + this.x + '</b>';
-
-            $.each(this.points, function () {
-                s += '<br/>' + this.series.name + ': ' +
-                    '$'+ this.y;
-            });
-
-            return s;
-        },
-        shared: true
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      
     },
     series: [{
         name:'{{{$serie_acumulado3['name']}}}', <?php $sum3 = 0;?>
@@ -195,6 +407,76 @@ Highcharts.chart('acumulados', {
 
 //fin grafica acumulados
 
+//ventas totales apiladas
+Highcharts.chart('apiladas', {
+    chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: -3,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    
+
+    series: [
+            @foreach($categories as $cat)
+            {name:'{{{$cat->nombre}}}', 
+            data:[@foreach($acumulado_apilada as $ac) @if($ac->id == $cat->id){{{$ac->total}}},@endif
+                 @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+
+});
+//fin ventas totales apiladas
+
 </script> 
 @stop()
 
@@ -203,7 +485,7 @@ Highcharts.chart('acumulados', {
 
 <div class="widget">
 	<div class="widget-head">
-		<div class="pull-left">Comparativas por producto</div>
+		<div class="pull-left">Acumulados anual (Escala M = Millón)</div>
 		<div class="pull-right">
 		<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>         
         </div>  
@@ -212,8 +494,64 @@ Highcharts.chart('acumulados', {
 	
 	<div class="widget-content">
 		<div class="padd">
-		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    {{{$datos}}}
+		<div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    
+<table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>{{{$serie_acumulado3['name']}}}</th>
+            <?php $sum3 = 0;?> 
+            @foreach($serie_acumulado3['data'] as $d) 
+                <?php $sum3 = $d->total + $sum3; ?>
+                <td>${{{number_format($sum3, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado2['name']}}}</th>
+             <?php $sum2 = 0;?> 
+            @foreach($serie_acumulado2['data'] as $d) 
+                <?php $sum2 = $d->total + $sum2; ?>
+                <td>${{{number_format($sum2, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado1['name']}}}</th>
+            <?php $sum1 = 0;?> 
+            @foreach($serie_acumulado1['data'] as $d) 
+                <?php $sum1 = $d->total + $sum1; ?>
+                <td>${{{number_format($sum1, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado['name']}}}</th>
+            <?php $sumx = 0;?> 
+            @foreach($serie_acumulado['data'] as $d) 
+                <?php $sumx = $d->total + $sumx; ?>
+                <td>${{{number_format($sumx, 0, '.', ',')}}}</td> 
+            @endforeach
+        </tr>
+       
+    </tbody>
+    <tfoot>
+         
+</table>
 		
 		</div>
 	</div>
@@ -232,7 +570,7 @@ Highcharts.chart('acumulados', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Acumulados anual</div>
+        <div class="pull-left">Comparativas por producto {{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}</div>
         <div class="pull-right">
         <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
         </div>  
@@ -243,8 +581,55 @@ Highcharts.chart('acumulados', {
         <div class="padd">
         
 
-        <div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
-
+        <div id="container" style="min-width: 320px; height: 500px; margin: 0 auto"></div> 
+            
+<div class="col-md-6">
+            <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+           
+                       
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            
+       
+            <th>{{{$serie_acumulado3['name']}}}</th>
+            
+           @foreach($serie3['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado2['name']}}}</th>
+             <?php $sum2 = 0;?> 
+            @foreach($serie2['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado1['name']}}}</th>
+             @foreach($serie1['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+        </tr>
+        <tr>
+            <th>{{{$serie_acumulado['name']}}}</th>
+             @foreach($serie['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+        </tr>
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+</div>
+        
        
         </div>
     </div>
@@ -260,14 +645,13 @@ Highcharts.chart('acumulados', {
     </div>
 </div>
 
-{{--
+
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Comisiones pendientes</div>
+        <div class="pull-left">Ventas totales {{{$mes}}} de {{{$year}}}</div>
         <div class="pull-right">
-        <a href="#myModal" class="btn btn-primary" data-toggle="modal"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Sube Archivo </a>
-        <a href="{{action('ComisionControlador@getPeriodos')}}" class="btn btn-success" data-toggle="modal"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Periodos </a>
-        </div>  
+       <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
+       </div>  
         <div class="clearfix"></div>
     </div>
     
@@ -275,20 +659,47 @@ Highcharts.chart('acumulados', {
         <div class="padd">
       
 
-        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div id="apiladas" style="min-width: 310px; height: 480px; margin: 0 auto"></div>
+
+<table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+
+@foreach($categories as $cat)
+        <tr>
+            
+            <th class="text-right" class="col-md-3">{{{$cat->nombre}}}</th>
+           @foreach($acumulado_apilada as $ac) 
+                 
+                
+                @if($ac->id == $cat->id)<td class="text-left">${{{number_format($ac->total, 0, '.', ',')}}} </td>@endif 
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
         </div>
     </div>
 
 
     <div class="widget-foot">
         <div class="pull-right">
-            <div class="btn-group">
-                <button class="btn btn-danger">Cancelar</button>
-                <button class="btn btn-primary">Pagar</button>
+            <div class="btn-group">                
             </div>
         </div>
         <div class="clearfix"></div>
     </div>
-</div> --}}
+</div> 
 
 @stop

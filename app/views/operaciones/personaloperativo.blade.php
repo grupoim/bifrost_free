@@ -141,9 +141,7 @@
 										
 							@endforeach								
 							</tbody>
-							<tfoot>
 							
-							</tfoot>
 						</table>
 						<div class="clearfix"></div>
 					</div>
