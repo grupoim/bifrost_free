@@ -1,4 +1,4 @@
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -274,9 +274,9 @@ Highcharts.chart('container', {
     },
     xAxis: {
         categories: [
-            @foreach($categories as $cat)
-            '{{{$cat->nombre}}}',
-            @endforeach
+            <?php foreach($categories as $cat): ?>
+            '<?php echo e($cat->nombre); ?>',
+            <?php endforeach; ?>
             
             
         ],
@@ -313,22 +313,22 @@ Highcharts.chart('container', {
    
 
    {
-        name: '{{{$serie3['name']}}}',
-        data: [@foreach($serie3['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
+        name: '<?php echo e($serie3['name']); ?>',
+        data: [<?php foreach($serie3['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
 
    {
-        name: '{{{$serie2['name']}}}',
-        data: [@foreach($serie2['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
+        name: '<?php echo e($serie2['name']); ?>',
+        data: [<?php foreach($serie2['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
 
     {
-        name: '{{{$serie1['name']}}}',
-        data: [@foreach($serie1['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
+        name: '<?php echo e($serie1['name']); ?>',
+        data: [<?php foreach($serie1['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
@@ -336,8 +336,8 @@ Highcharts.chart('container', {
      
 
     {
-        name: '{{{$serie['name']}}}',
-        data: [@foreach($serie['data'] as $d) {{{round($d->monto,0)}}}, @endforeach]
+        name: '<?php echo e($serie['name']); ?>',
+        data: [<?php foreach($serie['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
         
 
     },
@@ -386,20 +386,20 @@ Highcharts.chart('acumulados', {
       
     },
     series: [{
-        name:'{{{$serie_acumulado3['name']}}}', <?php $sum3 = 0;?>
-        data:[@foreach($serie_acumulado3['data'] as $ac) <?php $sum3 = $ac->total + $sum3; ?> {{{ round($sum3,0)}}},@endforeach]
+        name:'<?php echo e($serie_acumulado3['name']); ?>', <?php $sum3 = 0;?>
+        data:[<?php foreach($serie_acumulado3['data'] as $ac): ?> <?php $sum3 = $ac->total + $sum3; ?> <?php echo e(round($sum3,0)); ?>,<?php endforeach; ?>]
        },
        {
-        name:'{{{$serie_acumulado2['name']}}}', <?php $sum2 = 0; ?> 
-        data:[@foreach($serie_acumulado2['data'] as $ac) <?php $sum2 = $ac->total + $sum2; ?> {{{round($sum2,0)}}},@endforeach]
+        name:'<?php echo e($serie_acumulado2['name']); ?>', <?php $sum2 = 0; ?> 
+        data:[<?php foreach($serie_acumulado2['data'] as $ac): ?> <?php $sum2 = $ac->total + $sum2; ?> <?php echo e(round($sum2,0)); ?>,<?php endforeach; ?>]
        },
        {
-        name:'{{{$serie_acumulado1['name']}}}', <?php $sum1 = 0; ?> 
-        data:[@foreach($serie_acumulado1['data'] as $ac) <?php $sum1 = $ac->total + $sum1; ?> {{{round($sum1,0)}}},@endforeach]
+        name:'<?php echo e($serie_acumulado1['name']); ?>', <?php $sum1 = 0; ?> 
+        data:[<?php foreach($serie_acumulado1['data'] as $ac): ?> <?php $sum1 = $ac->total + $sum1; ?> <?php echo e(round($sum1,0)); ?>,<?php endforeach; ?>]
        },
       {
-        name:'{{{$serie_acumulado['name']}}}', <?php $sumx = 0; ?>
-        data: [@foreach($serie_acumulado['data'] as $ac) <?php $sumx = $ac->total + $sumx; ?> {{{round($sumx,0)}}},@endforeach ]
+        name:'<?php echo e($serie_acumulado['name']); ?>', <?php $sumx = 0; ?>
+        data: [<?php foreach($serie_acumulado['data'] as $ac): ?> <?php $sumx = $ac->total + $sumx; ?> <?php echo e(round($sumx,0)); ?>,<?php endforeach; ?> ]
       }
 
      ]
@@ -464,13 +464,13 @@ Highcharts.chart('apiladas', {
     
 
     series: [
-            @foreach($categories as $cat)
-            {name:'{{{$cat->nombre}}}', 
-            data:[@foreach($acumulado_apilada as $ac) @if($ac->id == $cat->id){{{$ac->total}}},@endif
-                 @endforeach 
+            <?php foreach($categories as $cat): ?>
+            {name:'<?php echo e($cat->nombre); ?>', 
+            data:[<?php foreach($acumulado_apilada as $ac): ?> <?php if($ac->id == $cat->id): ?><?php echo e($ac->total); ?>,<?php endif; ?>
+                 <?php endforeach; ?> 
                  ]
             },
-            @endforeach
+            <?php endforeach; ?>
             ]
 
 
@@ -490,7 +490,7 @@ Highcharts.chart('VentasTotal', {
         text: ''
     },
    xAxis: {
-        categories: ['{{{$serie3['name']}}}','{{{$serie2['name']}}}','{{{$serie1['name']}}}','{{{$serie['name']}}}']
+        categories: ['<?php echo e($serie3['name']); ?>','<?php echo e($serie2['name']); ?>','<?php echo e($serie1['name']); ?>','<?php echo e($serie['name']); ?>']
     },
     yAxis: {
         title: {
@@ -513,16 +513,16 @@ Highcharts.chart('VentasTotal', {
     },
 
     series: [{
-        name: '{{{$mes}}}',
-        data: [@foreach($serie_total['data'] as $d) {{{round($d->total,0)}}}, @endforeach]
+        name: '<?php echo e($mes); ?>',
+        data: [<?php foreach($serie_total['data'] as $d): ?> <?php echo e(round($d->total,0)); ?>, <?php endforeach; ?>]
     }]
 
 });
 </script>
 
-@stop()
+<?php $__env->stopSection(); ?>
 
-@section('module')
+<?php $__env->startSection('module'); ?>
 
 
 <div class="widget">
@@ -558,36 +558,36 @@ Highcharts.chart('VentasTotal', {
     </thead>
     <tbody>
         <tr>
-            <th>{{{$serie_acumulado3['name']}}}</th>
+            <th><?php echo e($serie_acumulado3['name']); ?></th>
             <?php $sum3 = 0;?> 
-            @foreach($serie_acumulado3['data'] as $d) 
+            <?php foreach($serie_acumulado3['data'] as $d): ?> 
                 <?php $sum3 = $d->total + $sum3; ?>
-                <td>${{{number_format($sum3, 0, '.', ',')}}}</td> 
-            @endforeach
+                <td>$<?php echo e(number_format($sum3, 0, '.', ',')); ?></td> 
+            <?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado2['name']}}}</th>
+            <th><?php echo e($serie_acumulado2['name']); ?></th>
              <?php $sum2 = 0;?> 
-            @foreach($serie_acumulado2['data'] as $d) 
+            <?php foreach($serie_acumulado2['data'] as $d): ?> 
                 <?php $sum2 = $d->total + $sum2; ?>
-                <td>${{{number_format($sum2, 0, '.', ',')}}}</td> 
-            @endforeach
+                <td>$<?php echo e(number_format($sum2, 0, '.', ',')); ?></td> 
+            <?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado1['name']}}}</th>
+            <th><?php echo e($serie_acumulado1['name']); ?></th>
             <?php $sum1 = 0;?> 
-            @foreach($serie_acumulado1['data'] as $d) 
+            <?php foreach($serie_acumulado1['data'] as $d): ?> 
                 <?php $sum1 = $d->total + $sum1; ?>
-                <td>${{{number_format($sum1, 0, '.', ',')}}}</td> 
-            @endforeach
+                <td>$<?php echo e(number_format($sum1, 0, '.', ',')); ?></td> 
+            <?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado['name']}}}</th>
+            <th><?php echo e($serie_acumulado['name']); ?></th>
             <?php $sumx = 0;?> 
-            @foreach($serie_acumulado['data'] as $d) 
+            <?php foreach($serie_acumulado['data'] as $d): ?> 
                 <?php $sumx = $d->total + $sumx; ?>
-                <td>${{{number_format($sumx, 0, '.', ',')}}}</td> 
-            @endforeach
+                <td>$<?php echo e(number_format($sumx, 0, '.', ',')); ?></td> 
+            <?php endforeach; ?>
         </tr>
        
     </tbody>
@@ -612,7 +612,7 @@ Highcharts.chart('VentasTotal', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Comparativas por producto {{{$mes}}} {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}</div>
+        <div class="pull-left">Comparativas por producto <?php echo e($mes); ?> <?php echo e($serie3['name']); ?>, <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?></div>
         <div class="pull-right">
         <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
         </div>  
@@ -648,22 +648,22 @@ Highcharts.chart('VentasTotal', {
         <tr>
             
        
-            <th>{{{$serie_acumulado3['name']}}}</th>
+            <th><?php echo e($serie_acumulado3['name']); ?></th>
             
-           @foreach($serie3['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+           <?php foreach($serie3['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado2['name']}}}</th>
+            <th><?php echo e($serie_acumulado2['name']); ?></th>
              <?php $sum2 = 0;?> 
-            @foreach($serie2['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+            <?php foreach($serie2['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado1['name']}}}</th>
-             @foreach($serie1['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+            <th><?php echo e($serie_acumulado1['name']); ?></th>
+             <?php foreach($serie1['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
         </tr>
         <tr>
-            <th>{{{$serie_acumulado['name']}}}</th>
-             @foreach($serie['data'] as $d)<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td>@endforeach
+            <th><?php echo e($serie_acumulado['name']); ?></th>
+             <?php foreach($serie['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
         </tr>
        
     </tbody>
@@ -689,7 +689,7 @@ Highcharts.chart('VentasTotal', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Ventas totales {{{$mes}}} de {{{$year}}}</div>
+        <div class="pull-left">Ventas totales <?php echo e($mes); ?> de <?php echo e($year); ?></div>
         <div class="pull-right">
        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
        </div>  
@@ -712,17 +712,17 @@ Highcharts.chart('VentasTotal', {
     <tbody>
 
 
-@foreach($categories as $cat)
+<?php foreach($categories as $cat): ?>
         <tr>
             
-            <th class="text-right" class="col-md-3">{{{$cat->nombre}}}</th>
-           @foreach($acumulado_apilada as $ac) 
+            <th class="text-right" class="col-md-3"><?php echo e($cat->nombre); ?></th>
+           <?php foreach($acumulado_apilada as $ac): ?> 
                  
                 
-                @if($ac->id == $cat->id)<td class="text-left">${{{number_format($ac->total, 0, '.', ',')}}} </td>@endif 
-            @endforeach
+                <?php if($ac->id == $cat->id): ?><td class="text-left">$<?php echo e(number_format($ac->total, 0, '.', ',')); ?> </td><?php endif; ?> 
+            <?php endforeach; ?>
 
-        </tr>@endforeach
+        </tr><?php endforeach; ?>
        
         
        
@@ -744,7 +744,7 @@ Highcharts.chart('VentasTotal', {
 </div> 
             <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Venta total {{{$mes}}} de {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}</div>
+                <div class="pull-left">Venta total <?php echo e($mes); ?> de <?php echo e($serie3['name']); ?>, <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -765,4 +765,4 @@ Highcharts.chart('VentasTotal', {
               </div>
             </div>  
 
-@stop
+<?php $__env->stopSection(); ?>

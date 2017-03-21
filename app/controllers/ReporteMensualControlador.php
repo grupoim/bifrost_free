@@ -88,6 +88,10 @@ $acumulado3 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 								->get();
 
+$totalmes = TotalesGrafica::select(DB::raw('sum(totales_grafica.monto) as total'))->where('month',$month)->groupBy('year')->get();
+
+
+								
 
 switch ($month) {
 	case 01:
@@ -176,6 +180,14 @@ switch ($month) {
 
 //fin ventas acumuladas
 
+//ventas total mes febrero
+
+				$serie_total = array(
+								"data" =>  $totalmes,
+								);
+
+// fin ventas total mes febrero
+
 
 			$dataModule["year"] = $year;
 			$dataModule["mes"] = $mes_string;			
@@ -188,9 +200,11 @@ switch ($month) {
 			$dataModule["serie_acumulado1"] = $serie_acumulado1;
 			$dataModule["serie_acumulado2"] = $serie_acumulado2;
 			$dataModule["serie_acumulado3"] = $serie_acumulado3;
+			$dataModule["serie_total"] = $serie_total;
 			$dataModule["acumulado"] = $acumulado;						
 			$dataModule["categories"] = $categories;
 			$dataModule["datos"] = $datos;
+
 
 
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.reportemensual' , $dataModule);

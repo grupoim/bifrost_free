@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('ServicioFuneralControlador@getIndex'); ?>">Servicio Funeral</a></li>
