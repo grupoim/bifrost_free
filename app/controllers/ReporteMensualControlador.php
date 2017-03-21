@@ -88,7 +88,7 @@ $acumulado3 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 								->get();
 
-$totalmes = TotalesGrafica::select(DB::raw('sum(totales_grafica.monto) as total'))->where('month',$month)->groupBy('year')->get();
+$totalmes = TotalesGrafica::select(DB::raw('sum(totales_grafica.monto) as total'))->where('month',$month)->where('year','>=',$year3)->groupBy('year')->get();
 
 
 								
