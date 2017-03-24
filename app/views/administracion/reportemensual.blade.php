@@ -476,10 +476,9 @@ Highcharts.chart('apiladas', {
 
 });
 //fin ventas totales apiladas
+
 // ventas totales febrero 
 
-</script>
-<script>
 Highcharts.chart('VentasTotal', {
 
     title: {
@@ -502,6 +501,9 @@ Highcharts.chart('VentasTotal', {
         align: 'right',
         verticalAlign: 'middle'
     },
+   tooltip: {
+       pointFormat: '<b>${point.y:,.2f}</b> USD'
+    },
 
   plotOptions: {
         line: {
@@ -518,6 +520,127 @@ Highcharts.chart('VentasTotal', {
     }]
 
 });
+//fin ventas totales  febrero
+
+//grafica vendedores mes, 2017
+Highcharts.chart('vendedores', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+          xAxis: {
+        categories: [
+            @foreach($vendedores as $ven)
+            '{{{$ven->asesor}}}',
+            @endforeach
+        ],
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: false
+    },
+
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray'
+            }
+        }
+    },
+
+    series: [{
+       
+        data: [@foreach($serie_vendedores['data'] as $d) {{{round($d->monto,0)}}}, @endforeach ],
+  
+    }]
+});
+//fin de grafica de vendedores 
+
+// grafica de promotorias
+
+Highcharts.chart('promotorias', {
+    chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: -3,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    
+
+    series: [
+            @foreach($promotor as $pro)
+            {name:'{{{$pro->promotor}}}', 
+            data:[@foreach($serie_promotoria as $sep) @if($sep->promotor == $pro->promotor){{{$sep->total}}},@endif
+                 @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+
+});
+// fin  de graficas promotorias
 </script>
 
 @stop()
@@ -742,6 +865,7 @@ Highcharts.chart('VentasTotal', {
         <div class="clearfix"></div>
     </div>
 </div> 
+  <!-- Empieza ventas totales mes febrero  -->
             <div class="widget">
               <div class="widget-head">
                 <div class="pull-left">Venta total {{{$mes}}} de {{{$serie3['name']}}}, {{{$serie2['name']}}}, {{{$serie1['name']}}} y {{{$serie['name']}}}</div>
@@ -764,5 +888,89 @@ Highcharts.chart('VentasTotal', {
                 </div>
               </div>
             </div>  
+              <!-- Empieza Vendedores  -->
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Vendedores {{{$mes}}} {{{$year}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                
+            <div id="vendedores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+              <!-- Empieza Promotorias  -->
+                     <div class="widget">
+    <div class="widget-head">
+        <div class="pull-left">Promotorias {{{$year}}}</div>
+        <div class="pull-right">
+       <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
+       </div>  
+        <div class="clearfix"></div>
+    </div>
+    
+    <div class="widget-content">
+        <div class="padd">
+      
+
+        <div id="promotorias" style="min-width: 310px; height: 480px; margin: 0 auto"></div>
+
+  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+
+@foreach($promotor as $pro)
+        <tr>
+            
+            <th class="text-right" class="col-md-3">{{{$pro->promotor}}}</th>
+           @foreach($serie_promotoria as $sep) 
+                 
+                
+                @if($sep->promotor == $pro->promotor)<td class="text-left">${{{number_format($sep->total, 0, '.', ',')}}} </td>@endif 
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+        </div>
+    </div>
+  
+
+
+    <div class="widget-foot">
+        <div class="pull-right">
+            <div class="btn-group">                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div> 
+
+
+
 
 @stop
