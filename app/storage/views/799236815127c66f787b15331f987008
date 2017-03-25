@@ -611,6 +611,133 @@ Highcharts.chart('apiladas_mtto', {
 });
 //fin ventas totales mantenimiento apiladas
 
+// ventas totales febrero 
+
+</script>
+<script>
+
+//fin ventas totales  febrero
+
+
+//grafica vendedores mes, 2017
+Highcharts.chart('vendedores', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+          xAxis: {
+        categories: [
+            <?php foreach($vendedores as $ven): ?>
+            '<?php echo e($ven->asesor); ?>',
+            <?php endforeach; ?>
+        ],
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: false
+    },
+
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray'
+            }
+        }
+    },
+
+    series: [{
+       
+        data: [<?php foreach($serie_vendedores['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?> ],
+  
+    }]
+});
+//fin de grafica de vendedores 
+
+// grafica de promotorias
+
+Highcharts.chart('promotorias', {
+    chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: -3,
+        floating: true,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    
+
+    series: [
+            <?php foreach($promotor as $pro): ?>
+            {name:'<?php echo e($pro->promotor); ?>', 
+            data:[<?php foreach($serie_promotoria as $sep): ?> <?php if($sep->promotor == $pro->promotor): ?><?php echo e($sep->total); ?>,<?php endif; ?>
+                 <?php endforeach; ?> 
+                 ]
+            },
+            <?php endforeach; ?>
+            ]
+
+
+});
+// fin  de graficas promotorias
 
 </script> 
 <?php $__env->stopSection(); ?>
@@ -1007,4 +1134,94 @@ Highcharts.chart('apiladas_mtto', {
     </div>
 </div> 
 
+
+<!-- Empieza ventas totales mes febrero  -->
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Venta total </div>
+
+                </div>
+              </div>
+            </div>  
+              <!-- Empieza Vendedores  -->
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Vendedores <?php echo e($mes); ?> <?php echo e($year); ?></div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                
+            <div id="vendedores" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+              <!-- Empieza Promotorias  -->
+                     <div class="widget">
+    <div class="widget-head">
+        <div class="pull-left">Promotorias <?php echo e($year); ?></div>
+        <div class="pull-right">
+       <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
+       </div>  
+        <div class="clearfix"></div>
+    </div>
+    
+    <div class="widget-content">
+        <div class="padd">
+      
+
+        <div id="promotorias" style="min-width: 310px; height: 480px; margin: 0 auto"></div>
+
+  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+
+<?php foreach($promotor as $pro): ?>
+        <tr>
+            
+            <th class="text-right" class="col-md-3"><?php echo e($pro->promotor); ?></th>
+           <?php foreach($serie_promotoria as $sep): ?> 
+                 
+                
+                <?php if($sep->promotor == $pro->promotor): ?><td class="text-left">$<?php echo e(number_format($sep->total, 0, '.', ',')); ?> </td><?php endif; ?> 
+            <?php endforeach; ?>
+
+        </tr><?php endforeach; ?>
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+        </div>
+    </div>
+  
+
+
+    <div class="widget-foot">
+        <div class="pull-right">
+            <div class="btn-group">                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div> 
 <?php $__env->stopSection(); ?>

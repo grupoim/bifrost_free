@@ -66,6 +66,39 @@ $mtto = TipoPropiedadPeriodoMantenimiento::select(DB::raw('sum(totales_grafica.m
 								->leftJoin('periodo_mantenimiento', 'tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id', '=', 'periodo_mantenimiento.id')
 								->leftJoin('producto_grafica', 'tipo_propiedad_periodo_mantenimiento.producto_grafica_id', '=', 'producto_grafica.id')
 								->leftJoin('totales_grafica', 'tipo_propiedad_periodo_mantenimiento.totales_grafica_id', '=', 'totales_grafica.id')->groupby('month')->where('year',$year)->get();
+
+//venta total mes ? 2017
+$totalmes = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'))->where('month',$month)->where('year','>=',$year3)->groupBy('year')
+								->where('categoria',1)
+								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+								->get();
+//consulta venta vendedores
+$vendedores = GraficaVendedores::select('totales_grafica.monto','vista_asesor_promotor.asesor')->where('month',$month)->where('year',$year)
+								->where('totales',1)
+								->leftJoin('totales_grafica', 'grafica_vendedores.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('vista_asesor_promotor', 'grafica_vendedores.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+								->get();
+//consulta de promotoria
+$promotoria = GraficaVendedores::select(DB::raw('sum(totales_grafica.monto) as total'),'vista_asesor_promotor.promotor')->where('year',$year)
+							  	->where('totales',1)
+								->leftJoin('totales_grafica', 'grafica_vendedores.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('vista_asesor_promotor','grafica_vendedores.asesor_id','=','vista_asesor_promotor.asesor_id')
+								->groupby('month')->groupby('promotor')
+								->get();		
+//consulta sacar promotores
+$promotor = VistaAsesorPromotor::where('activo',1)->where('totales',1)->groupby('promotor')
+								->leftJoin('grafica_vendedores','vista_asesor_promotor.asesor_id','=','grafica_vendedores.asesor_id')->get();
+
+//grafica vendedores
+			$serie_vendedores = array(
+								"data" =>$vendedores, 
+							
+								);
+//fin grafica vendedores
+
+
+
 switch ($month) {
 	case 01:
 		$mes_string = 'Enero';# code...
@@ -136,6 +169,10 @@ switch ($month) {
 			$dataModule["categories_mtto"] = $categories_mtto;
 			$dataModule["periodo_mtto"] = $periodo_mtto;
 			$dataModule["mtto"] = $mtto;
+			$dataModule["serie_vendedores"] = $serie_vendedores;
+			$dataModule["serie_promotoria"] = $promotoria;
+			$dataModule["vendedores"] = $vendedores;
+			$dataModule["promotor"] = $promotor;
 			
 
 
