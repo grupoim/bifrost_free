@@ -153,6 +153,10 @@ switch ($month) {
 								'mes' => $mes_string,
 								 );
 
+	$serie_total = array(
+								"data" =>  $totalmes,
+								);							
+
 							
 							
 //fin graficas comparativas por producto
@@ -172,6 +176,7 @@ switch ($month) {
 			$dataModule["serie_vendedores"] = $serie_vendedores;
 			$dataModule["serie_promotoria"] = $promotoria;
 			$dataModule["vendedores"] = $vendedores;
+			$dataModule["serie_total"] = $serie_total;
 			$dataModule["promotor"] = $promotor;
 			
 
