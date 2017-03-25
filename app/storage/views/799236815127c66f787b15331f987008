@@ -613,8 +613,6 @@ Highcharts.chart('apiladas_mtto', {
 
 // ventas totales febrero 
 
-</script>
-<script>
 
 //fin ventas totales  febrero
 
@@ -738,6 +736,50 @@ Highcharts.chart('promotorias', {
 
 });
 // fin  de graficas promotorias
+// ventas totales febrero 
+
+Highcharts.chart('VentasTotal', {
+
+    title: {
+        text: ''
+    },
+
+    subtitle: {
+        text: ''
+    },
+   xAxis: {
+        categories: ['<?php echo e($fechas['year3']); ?>','<?php echo e($fechas['year2']); ?>','<?php echo e($fechas['year1']); ?>','<?php echo e($fechas['year']); ?>']
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+   tooltip: {
+       pointFormat: '<b>${point.y:,.2f}</b> USD'
+    },
+
+  plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+
+    series: [{
+        name: '<?php echo e($mes); ?>',
+        data: [<?php foreach($serie_total['data'] as $d): ?> <?php echo e(round($d->total,0)); ?>, <?php endforeach; ?>]
+    }]
+
+});
+//fin ventas totales  febrero
 
 </script> 
 <?php $__env->stopSection(); ?>
