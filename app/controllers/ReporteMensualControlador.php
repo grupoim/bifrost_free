@@ -37,58 +37,35 @@ $year3 = $year3->subYears(3);
 $year3 = $year3->format('Y');
 
 //graficas comparativas por producto
-$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->get();
+$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->orderBy('id', 'desc')->get();
+
+$periodo_mtto = PeriodoMantenimiento::where('activo',1)->get();
+$categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','=',1 )->get();
 
 
-$datos = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year)->where('categoria',1)
+
+$serie = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)->where('year','>=', $year3)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')	
-								->get();
+								->orderBy('producto_grafica.nombre','desc')->get();
 
-$datos_s1 = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year1)
+
+$acumulado = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month', 'totales_grafica.year')->groupby('year','month')
 								->where('categoria',1)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 								->get();
 
-$datos_s2 = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year2)
-								->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
 
-$datos_s3 = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year3)
-								->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();			
+$mtto_totales = TipoPropiedadPeriodoMantenimiento::select('producto_grafica.id','producto_grafica.nombre as producto', 'periodo_mantenimiento.nombre as periodo','periodo_mantenimiento.id as periodo_id', 'totales_grafica.month','totales_grafica.year', 'totales_grafica.monto' )
+								->leftJoin('periodo_mantenimiento', 'tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id', '=', 'periodo_mantenimiento.id')
+								->leftJoin('producto_grafica', 'tipo_propiedad_periodo_mantenimiento.producto_grafica_id', '=', 'producto_grafica.id')
+								->leftJoin('totales_grafica', 'tipo_propiedad_periodo_mantenimiento.totales_grafica_id', '=', 'totales_grafica.id')->get();
 
-
-$acumulado = GraficaVentaProducto::select('producto_grafica.nombre', DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month', 'totales_grafica.year')->groupby('month')->where('year',$year)
-								->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
-$acumulado_apilada = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto as total', 'totales_grafica.month', 'totales_grafica.year')->where('year',$year)
-								->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
-
-$acumulado1 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month')->where('year',$year1)->groupby('month')->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
-$acumulado2 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month')->where('year',$year2)->groupby('month')->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
-$acumulado3 = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month')->where('year',$year3)->groupby('month')->where('categoria',1)
-								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-								->get();
-
-
+$mtto = TipoPropiedadPeriodoMantenimiento::select(DB::raw('sum(totales_grafica.monto) as total','totales_grafica.month' ))
+								->leftJoin('periodo_mantenimiento', 'tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id', '=', 'periodo_mantenimiento.id')
+								->leftJoin('producto_grafica', 'tipo_propiedad_periodo_mantenimiento.producto_grafica_id', '=', 'producto_grafica.id')
+								->leftJoin('totales_grafica', 'tipo_propiedad_periodo_mantenimiento.totales_grafica_id', '=', 'totales_grafica.id')->groupby('month')->where('year',$year)->get();
 switch ($month) {
 	case 01:
 		$mes_string = 'Enero';# code...
@@ -132,65 +109,34 @@ switch ($month) {
 }
 
 
-							$serie = array(
-								"name"=>  $year,
-								"data" =>  $datos,
-								);
 
-							$serie1 = array(
-								"name"=>  $year1,
-								"data" =>  $datos_s1,
-								);
-							$serie2 = array(
-								"name"=>  $year2,
-								"data" =>  $datos_s2,
-								);
+							
+							$fechas = array(
+								'year' => $year,
+								'year1' => $year1,
+								'year2' => $year2,
+								'year3' => $year3,
+								'month' => $month,
+								'mes' => $mes_string,
+								 );
 
-							$serie3 = array(
-								"name"=>  $year3,
-								"data" =>  $datos_s3,
-								);
+							
+							
 //fin graficas comparativas por producto
 
 
-//ventas acumuladas	
-							
-				$serie_acumulado = array(
-								"name"=>  $year,
-								"data" =>  $acumulado,
-								);
-
-				$serie_acumulado1 = array(
-								"name"=>  $year1,
-								"data" =>  $acumulado1,
-								);
-				$serie_acumulado2 = array(
-								"name"=>  $year2,
-								"data" =>  $acumulado2,
-								);
-
-				$serie_acumulado3 = array(
-								"name"=>  $year3,
-								"data" =>  $acumulado3,
-								);
-
-//fin ventas acumuladas
-
-
 			$dataModule["year"] = $year;
+			$dataModule["month"] = $month;
+			$dataModule["fechas"] = $fechas;
 			$dataModule["mes"] = $mes_string;			
-			$dataModule["serie"] = $serie;
-			$dataModule["serie1"] = $serie1;
-			$dataModule["serie2"] = $serie2;
-			$dataModule["serie3"] = $serie3;
-			$dataModule["acumulado_apilada"] = $acumulado_apilada;
-			$dataModule["serie_acumulado"] = $serie_acumulado;
-			$dataModule["serie_acumulado1"] = $serie_acumulado1;
-			$dataModule["serie_acumulado2"] = $serie_acumulado2;
-			$dataModule["serie_acumulado3"] = $serie_acumulado3;
-			$dataModule["acumulado"] = $acumulado;						
+			$dataModule["serie"] = $serie;			
+			$dataModule["acumulado"] = $acumulado;														
 			$dataModule["categories"] = $categories;
-			$dataModule["datos"] = $datos;
+			$dataModule["mtto_totales"] = $mtto_totales;
+			$dataModule["categories_mtto"] = $categories_mtto;
+			$dataModule["periodo_mtto"] = $periodo_mtto;
+			$dataModule["mtto"] = $mtto;
+			
 
 
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.reportemensual' , $dataModule);

@@ -6,88 +6,108 @@
 
 
 //comienza tema
+
 Highcharts.theme = {
-    colors: [ '#55BF3B', '#DF5353', '#7798BF','#DDDF0D', '#aaeeee', '#ff0066', '#eeaaee',
+    colors: [ '#7798BF', '#55BF3B', '#DF5353','#DDDF0D', '#aaeeee', '#ff0066', '#eeaaee',
         '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
     chart: {
         backgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                [0, 'rgb(48, 48, 96)'],
-                [1, 'rgb(0, 0, 0)']
+                [0, 'rgb(96, 96, 96)'],
+                [1, 'rgb(16, 16, 16)']
             ]
         },
-        borderColor: '#000000',
-        borderWidth: 2,
-        className: 'dark-container',
-        plotBackgroundColor: 'rgba(255, 255, 255, .1)',
-        plotBorderColor: '#CCCCCC',
-        plotBorderWidth: 1
+        borderWidth: 0,
+        borderRadius: 0,
+        plotBackgroundColor: null,
+        plotShadow: false,
+        plotBorderWidth: 0
     },
     title: {
         style: {
-            color: '#C0C0C0',
-            font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
+            color: '#FFF',
+            font: '16px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
         }
     },
     subtitle: {
         style: {
-            color: '#666666',
-            font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
+            color: '#DDD',
+            font: '12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
         }
     },
     xAxis: {
-        gridLineColor: '#333333',
-        gridLineWidth: 1,
+        gridLineWidth: 0,
+        lineColor: '#999',
+        tickColor: '#999',
         labels: {
             style: {
-                color: '#A0A0A0'
+                color: '#999',
+                fontWeight: 'bold'
             }
         },
-        lineColor: '#A0A0A0',
-        tickColor: '#A0A0A0',
         title: {
             style: {
-                color: '#CCC',
-                fontWeight: 'bold',
-                fontSize: '12px',
-                fontFamily: 'Trebuchet MS, Verdana, sans-serif'
-
+                color: '#AAA',
+                font: 'bold 12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
             }
         }
     },
     yAxis: {
-        gridLineColor: '#333333',
+        alternateGridColor: null,
+        minorTickInterval: null,
+        gridLineColor: 'rgba(255, 255, 255, .1)',
+        minorGridLineColor: 'rgba(255,255,255,0.07)',
+        lineWidth: 0,
+        tickWidth: 0,
         labels: {
             style: {
-                color: '#A0A0A0'
+                color: '#999',
+                fontWeight: 'bold'
             }
         },
-        lineColor: '#A0A0A0',
-        minorTickInterval: null,
-        tickColor: '#A0A0A0',
-        tickWidth: 1,
         title: {
             style: {
-                color: '#CCC',
-                fontWeight: 'bold',
-                fontSize: '12px',
-                fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+                color: '#AAA',
+                font: 'bold 12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
             }
+        }
+    },
+    legend: {
+        itemStyle: {
+            color: '#CCC'
+        },
+        itemHoverStyle: {
+            color: '#FFF'
+        },
+        itemHiddenStyle: {
+            color: '#333'
+        }
+    },
+    labels: {
+        style: {
+            color: '#CCC'
         }
     },
     tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, 'rgba(96, 96, 96, .8)'],
+                [1, 'rgba(16, 16, 16, .8)']
+            ]
+        },
+        borderWidth: 0,
         style: {
-            color: '#F0F0F0'
+            color: '#FFF'
         }
     },
-    toolbar: {
-        itemStyle: {
-            color: 'silver'
-        }
-    },
+
+
     plotOptions: {
+        series: {
+            nullColor: '#444444'
+        },
         line: {
             dataLabels: {
                 color: '#CCC'
@@ -110,25 +130,9 @@ Highcharts.theme = {
             lineColor: 'white'
         }
     },
-    legend: {
+
+    toolbar: {
         itemStyle: {
-            font: '9pt Trebuchet MS, Verdana, sans-serif',
-            color: '#A0A0A0'
-        },
-        itemHoverStyle: {
-            color: '#FFF'
-        },
-        itemHiddenStyle: {
-            color: '#444'
-        }
-    },
-    credits: {
-        style: {
-            color: '#666'
-        }
-    },
-    labels: {
-        style: {
             color: '#CCC'
         }
     },
@@ -220,8 +224,8 @@ Highcharts.theme = {
         barBackgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                    [0.4, '#888'],
-                    [0.6, '#555']
+                [0.4, '#888'],
+                [0.6, '#555']
             ]
         },
         barBorderColor: '#CCC',
@@ -229,8 +233,8 @@ Highcharts.theme = {
         buttonBackgroundColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-                    [0.4, '#888'],
-                    [0.6, '#555']
+                [0.4, '#888'],
+                [0.6, '#555']
             ]
         },
         buttonBorderColor: '#CCC',
@@ -245,11 +249,11 @@ Highcharts.theme = {
         trackBorderColor: '#666'
     },
 
-    // special colors for some of the
-    legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
-    background2: 'rgb(35, 35, 70)',
+    // special colors for some of the demo examples
+    legendBackgroundColor: 'rgba(48, 48, 48, 0.8)',
+    background2: 'rgb(70, 70, 70)',
     dataLabelsColor: '#444',
-    textColor: '#C0C0C0',
+    textColor: '#E0E0E0',
     maskColor: 'rgba(255,255,255,0.3)'
 };
 
@@ -257,6 +261,70 @@ Highcharts.theme = {
 Highcharts.setOptions(Highcharts.theme);
 //termina tema
 
+
+//grafica de acumulados
+Highcharts.chart('acumulados', {
+   
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        title: {
+            text: '',
+            
+        }
+    },
+    legend: {
+       
+        align: 'center',
+        verticalAlign: 'top'
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: false
+            },
+            enableMouseTracking: true
+        }
+    },
+       tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      
+    },
+    series: [{
+        name:'<?php echo e($fechas['year3']); ?>', <?php $sum3 = 0; ?> 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year3']): ?> <?php $sum3 = $ac->total + $sum3; ?>   <?php echo e(round($sum3,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+       },
+       {
+        name:'<?php echo e($fechas['year2']); ?>', <?php $sum2 = 0; ?> 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year2']): ?> <?php $sum2 = $ac->total + $sum2; ?>   <?php echo e(round($sum2,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+       },
+       {
+        name:'<?php echo e($fechas['year1']); ?>', <?php $sum1 = 0; ?> 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year1']): ?> <?php $sum1 = $ac->total + $sum1; ?>   <?php echo e(round($sum1,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+       },
+      {
+        name:'<?php echo e($fechas['year']); ?>', <?php $sumx = 0; ?> 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year']): ?> <?php $sumx = $ac->total + $sumx; ?>   <?php echo e(round($sumx,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+      }
+
+     ]
+});
+
+//fin grafica acumulados
+
+//grafica por productos
 Highcharts.chart('container', {
    
    
@@ -313,22 +381,22 @@ Highcharts.chart('container', {
    
 
    {
-        name: '<?php echo e($serie3['name']); ?>',
-        data: [<?php foreach($serie3['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
+        name: '<?php echo e($fechas['year3']); ?>',
+        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year3']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
         
 
     },
 
    {
-        name: '<?php echo e($serie2['name']); ?>',
-        data: [<?php foreach($serie2['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
+        name: '<?php echo e($fechas['year2']); ?>',
+        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year2']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
         
 
     },
 
     {
-        name: '<?php echo e($serie1['name']); ?>',
-        data: [<?php foreach($serie1['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
+        name: '<?php echo e($fechas['year1']); ?>',
+        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year1']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
         
 
     },
@@ -336,8 +404,8 @@ Highcharts.chart('container', {
      
 
     {
-        name: '<?php echo e($serie['name']); ?>',
-        data: [<?php foreach($serie['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?>]
+        name: '<?php echo e($fechas['year']); ?>',
+        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
         
 
     },
@@ -345,67 +413,7 @@ Highcharts.chart('container', {
     ]
 });
 
-//grafica de acumulados
-Highcharts.chart('acumulados', {
-   
-    title: {
-        text: ''
-    },
-    subtitle: {
-        text: ''
-    },
-    xAxis: {
-        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-    },
-    yAxis: {
-        title: {
-            text: '',
-            
-        }
-    },
-    legend: {
-       
-        align: 'center',
-        verticalAlign: 'top'
-    },
-    plotOptions: {
-        line: {
-            dataLabels: {
-                enabled: false
-            },
-            enableMouseTracking: true
-        }
-    },
-       tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-      
-    },
-    series: [{
-        name:'<?php echo e($serie_acumulado3['name']); ?>', <?php $sum3 = 0;?>
-        data:[<?php foreach($serie_acumulado3['data'] as $ac): ?> <?php $sum3 = $ac->total + $sum3; ?> <?php echo e(round($sum3,0)); ?>,<?php endforeach; ?>]
-       },
-       {
-        name:'<?php echo e($serie_acumulado2['name']); ?>', <?php $sum2 = 0; ?> 
-        data:[<?php foreach($serie_acumulado2['data'] as $ac): ?> <?php $sum2 = $ac->total + $sum2; ?> <?php echo e(round($sum2,0)); ?>,<?php endforeach; ?>]
-       },
-       {
-        name:'<?php echo e($serie_acumulado1['name']); ?>', <?php $sum1 = 0; ?> 
-        data:[<?php foreach($serie_acumulado1['data'] as $ac): ?> <?php $sum1 = $ac->total + $sum1; ?> <?php echo e(round($sum1,0)); ?>,<?php endforeach; ?>]
-       },
-      {
-        name:'<?php echo e($serie_acumulado['name']); ?>', <?php $sumx = 0; ?>
-        data: [<?php foreach($serie_acumulado['data'] as $ac): ?> <?php $sumx = $ac->total + $sumx; ?> <?php echo e(round($sumx,0)); ?>,<?php endforeach; ?> ]
-      }
 
-     ]
-});
-
-//fin grafica acumulados
 
 //ventas totales apiladas
 Highcharts.chart('apiladas', {
@@ -437,7 +445,7 @@ Highcharts.chart('apiladas', {
         }
     },
     legend: {
-        itemDistance: 2,
+        itemDistance: -1,
         align: 'right',
         x: -30,
         verticalAlign: 'top',
@@ -466,7 +474,7 @@ Highcharts.chart('apiladas', {
     series: [
             <?php foreach($categories as $cat): ?>
             {name:'<?php echo e($cat->nombre); ?>', 
-            data:[<?php foreach($acumulado_apilada as $ac): ?> <?php if($ac->id == $cat->id): ?><?php echo e($ac->total); ?>,<?php endif; ?>
+            data:[<?php foreach($serie as $ac): ?> <?php if($ac->id == $cat->id  and $ac->year == $fechas['year'] ): ?><?php echo e($ac->monto); ?>,<?php endif; ?>
                  <?php endforeach; ?> 
                  ]
             },
@@ -518,26 +526,91 @@ Highcharts.chart('totales_mes', {
       
     },
     series: [{
-        name:'<?php echo e($serie_acumulado3['name']); ?>',
-        data:[<?php foreach($serie_acumulado3['data'] as $ac): ?> <?php echo e(round($ac->total,0)); ?>,<?php endforeach; ?>]
+        name:'<?php echo e($fechas['year3']); ?>', 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year3']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
        },
        {
-        name:'<?php echo e($serie_acumulado2['name']); ?>',  
-        data:[<?php foreach($serie_acumulado2['data'] as $ac): ?>  <?php echo e(round($ac->total,0)); ?>,<?php endforeach; ?>]
+        name:'<?php echo e($fechas['year2']); ?>', 
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year2']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
        },
        {
-        name:'<?php echo e($serie_acumulado1['name']); ?>', 
-        data:[<?php foreach($serie_acumulado1['data'] as $ac): ?> <?php echo e(round($ac->total,0)); ?>,<?php endforeach; ?>]
+        name:'<?php echo e($fechas['year1']); ?>',
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year1']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
        },
       {
-        name:'<?php echo e($serie_acumulado['name']); ?>', 
-        data: [<?php foreach($serie_acumulado['data'] as $ac): ?> <?php echo e(round($ac->total,0)); ?>,<?php endforeach; ?> ]
+        name:'<?php echo e($fechas['year']); ?>',  
+        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
       }
 
      ]
 });
 
 //fin grafica totales por mes
+
+//ventas totales mantenimiento apiladas
+Highcharts.chart('apiladas_mtto', {
+    chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: [<?php foreach($categories_mtto as $cat): ?>'<?php echo $cat->nombre; ?>', <?php endforeach; ?>]
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total:'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'center',
+        x: -30,
+        verticalAlign: 'top',
+      
+        y: 3,
+        floating: true, //dentro de la grafica
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: true
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y:,.0f}<br/>Total: {point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    
+
+    series: [<?php foreach($periodo_mtto as $cat): ?>{name:'<?php echo e($cat->nombre); ?>',data:[<?php foreach($mtto_totales as $ac): ?> <?php if($ac->periodo_id == $cat->id and ($ac->year == $year and $ac->month == $month)): ?><?php echo e($ac->monto); ?>,<?php endif; ?> <?php endforeach; ?>]},<?php endforeach; ?>
+            ]
+
+
+});
+//fin ventas totales mantenimiento apiladas
+
 
 </script> 
 <?php $__env->stopSection(); ?>
@@ -577,37 +650,48 @@ Highcharts.chart('totales_mes', {
         </tr>
     </thead>
     <tbody>
+           
         <tr>
-            <th><?php echo e($serie_acumulado3['name']); ?></th>
+            <th><?php echo e($fechas['year3']); ?></th>
             <?php $sum3 = 0;?> 
-            <?php foreach($serie_acumulado3['data'] as $d): ?> 
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year3']): ?>
                 <?php $sum3 = $d->total + $sum3; ?>
                 <td>$<?php echo e(number_format($sum3, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
         </tr>
-        <tr>
-            <th><?php echo e($serie_acumulado2['name']); ?></th>
-             <?php $sum2 = 0;?> 
-            <?php foreach($serie_acumulado2['data'] as $d): ?> 
+       <tr>
+            <th><?php echo e($fechas['year2']); ?></th>
+            <?php $sum2 = 0;?> 
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year2']): ?>
                 <?php $sum2 = $d->total + $sum2; ?>
                 <td>$<?php echo e(number_format($sum2, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado1['name']); ?></th>
+            <th><?php echo e($fechas['year1']); ?></th>
             <?php $sum1 = 0;?> 
-            <?php foreach($serie_acumulado1['data'] as $d): ?> 
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year1'] and $ac->month == $month): ?>
                 <?php $sum1 = $d->total + $sum1; ?>
                 <td>$<?php echo e(number_format($sum1, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado['name']); ?></th>
+            <th><?php echo e($fechas['year']); ?></th>
             <?php $sumx = 0;?> 
-            <?php foreach($serie_acumulado['data'] as $d): ?> 
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year']): ?>
                 <?php $sumx = $d->total + $sumx; ?>
                 <td>$<?php echo e(number_format($sumx, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
+
+
         </tr>
        
     </tbody>
@@ -632,7 +716,7 @@ Highcharts.chart('totales_mes', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Comparativas por producto <?php echo e($mes); ?> <?php echo e($serie3['name']); ?>, <?php echo e($serie2['name']); ?>, <?php echo e($serie1['name']); ?> y <?php echo e($serie['name']); ?></div>
+        <div class="pull-left">Comparativas por producto <?php echo e($fechas['mes']); ?>  <?php echo e($fechas['year3']); ?>, <?php echo e($fechas['year2']); ?>, <?php echo e($fechas['year1']); ?> y <?php echo e($fechas['year']); ?></div>
         <div class="pull-right">
         <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
         </div>  
@@ -667,24 +751,24 @@ Highcharts.chart('totales_mes', {
     <tbody>
         <tr>
             
-       
-            <th><?php echo e($serie_acumulado3['name']); ?></th>
+        
+            <th><?php echo e($fechas['year3']); ?></th>
             
-           <?php foreach($serie3['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
+           <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year3']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado2['name']); ?></th>
-             <?php $sum2 = 0;?> 
-            <?php foreach($serie2['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
+            <th><?php echo e($fechas['year2']); ?></th>
+             
+           <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year2']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado1['name']); ?></th>
-             <?php foreach($serie1['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
+            <th><?php echo e($fechas['year1']); ?></th>
+             <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year1']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado['name']); ?></th>
-             <?php foreach($serie['data'] as $d): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td><?php endforeach; ?>
-        </tr>
+            <th><?php echo e($fechas['year']); ?></th>
+             <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
+        </tr> 
        
     </tbody>
     <tfoot>
@@ -737,11 +821,12 @@ Highcharts.chart('totales_mes', {
          <tr>
             
             <th class="text-left col-md-3"><?php echo e($cat->nombre); ?></th>
-           <?php foreach($acumulado_apilada as $ac): ?> 
+          <?php foreach($serie as $ac): ?> <?php if($ac->id == $cat->id  and $ac->year == $fechas['year'] ): ?>
                  
                 
-                <?php if($ac->id == $cat->id): ?><td class="text-left col-md-5">$<?php echo e(number_format($ac->total, 0, '.', ',')); ?> </td><?php endif; ?> 
+                <td class="text-left col-md-5">$<?php echo e(number_format($ac->monto, 0, '.', ',')); ?> </td><?php endif; ?> 
             <?php endforeach; ?>
+
 
         </tr><?php endforeach; ?>
       
@@ -796,37 +881,54 @@ Highcharts.chart('totales_mes', {
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th><?php echo e($serie_acumulado3['name']); ?></th>
-            
-            <?php foreach($serie_acumulado3['data'] as $d): ?> 
-                
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-            <?php endforeach; ?>
-        </tr>
-        <tr>
-            <th><?php echo e($serie_acumulado2['name']); ?></th>
+           
+         <tr>
+            <th><?php echo e($fechas['year3']); ?></th>
              
-            <?php foreach($serie_acumulado2['data'] as $d): ?> 
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year3']): ?>
                 
                 <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
+
+
         </tr>
         <tr>
-            <th><?php echo e($serie_acumulado1['name']); ?></th>
-           
-            <?php foreach($serie_acumulado1['data'] as $d): ?> 
-               
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-            <?php endforeach; ?>
-        </tr>
-        <tr>
-            <th><?php echo e($serie_acumulado['name']); ?></th>
-           
-            <?php foreach($serie_acumulado['data'] as $d): ?> 
+            <th><?php echo e($fechas['year2']); ?></th>
+             
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year2']): ?>
                 
                 <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
             <?php endforeach; ?>
+
+
+        </tr>
+         <tr>
+            <th><?php echo e($fechas['year1']); ?></th>
+             
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year1']): ?>
+                
+                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+
+        </tr>
+        <tr>
+            <th><?php echo e($fechas['year']); ?></th>
+             
+            <?php foreach($acumulado as $d): ?> 
+                <?php if($d->year == $fechas['year']): ?>
+                
+                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+
         </tr>
        
     </tbody>
@@ -847,5 +949,62 @@ Highcharts.chart('totales_mes', {
         <div class="clearfix"></div>
     </div>
 </div>
+
+<div class="widget">
+    <div class="widget-head"><?php echo e($mtto); ?>
+
+        <div class="pull-left"> <strong><?php echo e($mtto_totales->sum('monto')); ?> </strong>Propiedades con mantenimientos activos (unidades) <?php echo e($mes); ?> de <?php echo e($year); ?></div>
+        <div class="pull-right">
+       <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
+       </div>  
+        <div class="clearfix"></div>
+    </div>
+    
+    <div class="widget-content">
+        <div class="padd">
+      
+
+        <div id="apiladas_mtto" style="min-width: 310px; height: 480px; margin: 0 auto"></div>
+
+<table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           <?php foreach($categories_mtto as $cat): ?><th> <?php echo e($cat->nombre); ?> </th><?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+
+
+<?php foreach($periodo_mtto as $cat): ?>
+         <tr>
+            
+            <th class="text-left col-md-1"><?php echo e($cat->nombre); ?></th>
+           <?php foreach($mtto_totales as $ac): ?> 
+                 
+                
+                <?php if($ac->periodo_id == $cat->id  and ($ac->year == $year and $ac->month == $month)): ?><td class="text-center col-md-1"><?php echo e(number_format($ac->monto, 0, '.', ',')); ?> </td><?php endif; ?> 
+            <?php endforeach; ?>
+
+        </tr><?php endforeach; ?>
+      
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+        </div>
+    </div>
+
+
+    <div class="widget-foot">
+        <div class="pull-right">
+            <div class="btn-group">                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div> 
 
 <?php $__env->stopSection(); ?>
