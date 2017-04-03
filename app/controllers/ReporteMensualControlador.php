@@ -239,6 +239,48 @@ switch ($month) {
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.reportemensual' , $dataModule);
 	}
 
-	
+	public function getRegistro(){
+	$dataModule["status"] = Session::pull('status');
+	$dataModule["vendedores"] = VistaAsesorPromotor::all();	
+	$dataModule["productos"] = ProductoGrafica::all();	
+	return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.registroReportemensual', $dataModule);
+ 		
 
+		}
+	public function getVendedores() {			 
+	
+	$vendedores = VistaAsesorPromotor::all();
+	return Response::Json($vendedores);
+		}
+
+	public function postVendedores() {		
+ 		
+        $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('monto');
+        $totales_grafica->save();
+
+       	$grafica_vendedores = new GraficaVendedores;
+		$grafica_vendedores->asesor_id = Input::get('vendedor_id');
+		$grafica_vendedores->totales_grafica_id = $totales_grafica->id;
+		$grafica_vendedores->save();
+		return Redirect::back()->with('status','created');
+}
+
+public function postProductos() {		
+ 		
+        $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('monto');
+        $totales_grafica->save();
+     
+		return Redirect::back()->with('status','created');
+}
+public function getProductos() {			 
+	
+	$productos = ProductoGrafica::all();
+	return Response::Json($productos);
+		}
 }

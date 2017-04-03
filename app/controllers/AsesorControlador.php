@@ -13,7 +13,6 @@
 			$dataModule["status"] = Session::pull('status');
 			$dataModule["edit"] = false;
 			$dataModule["vendedores"] = VistaAsesorPromotor::all();
-
 			$dataModule["promotores"] = VistaPromotores::all();			
 							
  			return View::make($this->department.".main", $this->data)->nest('child', 'sistemas.asesor', $dataModule);
