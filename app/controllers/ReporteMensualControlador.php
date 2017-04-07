@@ -266,6 +266,11 @@ switch ($month) {
 	$productos = ProductoGrafica::where('categoria',1)->where('activo',1)->get();
 	return Response::Json($productos);
 		}
+	public function getExtras() {			 
+	
+	$extras = ProductoGrafica::where('extra',1)->where('activo',1)->get();
+	return Response::Json($extras);
+		}
 
 public function postInsercion() {	
 	switch (Input::get('detalles')) {

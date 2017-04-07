@@ -8,6 +8,18 @@
 
 <script>
 	 $(document).on('ready', function(){
+// Cargar  la lista extras
+    		$.ajax("<?php echo action('ReporteMensualControlador@getExtras'); ?>")
+		.success(function(data){
+			$('#extra').typeahead({
+				source: data,
+				display: 'nombre',
+				val: 'id',
+				itemSelected: function(item){
+					$('.extra').val(item);
+				}
+			});
+		});
 
       window.setTimeout(function() {
   $("#alerta").fadeTo(500, 0).slideUp(500, function(){
@@ -72,7 +84,7 @@
         }
       });
     });
-
+       
 
 function valida(e){
     tecla = (document.all) ? e.keyCode : e.which;
@@ -213,7 +225,7 @@ $("#div_carteras").hide();
                               <div class="form-group">
                                   <label class="col-lg-4 control-label">Año</label> 
                                    <div class="input-group">
-                                    <input type="text" class="form-control"  required placeholder="example 2017" maxlength="4"   onkeypress="return valida(event)"  name="years">
+                                    <input type="number" class="form-control"  required placeholder="example 2017" min="2014"    name="years">
                                     <span class="input-group-addon" ><i class="fa fa-calendar" aria-hidden="true"></i></span> 
    								</div>
                                 </div>
@@ -361,7 +373,7 @@ $("#div_carteras").hide();
                                  <div class="col-lg-6">
                                   <div class="input-group">
                                   <span class="input-group-addon" ><i class="fa fa-pencil" aria-hidden="true"></i></span>     
-                                    <input type="text" class="form-control" required placeholder="Descripción"  name="extra"> 
+                                    <input type="text" id="extra" class="form-control" required placeholder="Descripción"  name="extra"> 
 
                         
                 				</div>
