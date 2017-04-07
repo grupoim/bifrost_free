@@ -2,10 +2,24 @@
 <script src="{{ URL::asset('js/chosen.jquery.js') }}"> </script>
 <script src="{{ URL::asset('js/prism.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.maskedinput.min.js') }}"></script>
+<link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">
+
 
 
 <script>
 	 $(document).on('ready', function(){
+// Cargar  la lista extras
+    		$.ajax("{{ action('ReporteMensualControlador@getExtras') }}")
+		.success(function(data){
+			$('#extra').typeahead({
+				source: data,
+				display: 'nombre',
+				val: 'id',
+				itemSelected: function(item){
+					$('.extra').val(item);
+				}
+			});
+		});
 
       window.setTimeout(function() {
   $("#alerta").fadeTo(500, 0).slideUp(500, function(){
@@ -32,8 +46,27 @@
       });
     });
   });
-	 //chosen producto grafica
-	     $(".productos").chosen({   
+	 //chosen cartera cliente
+	     $(".carteras").chosen({   
+    no_results_text: "No hay resultados para:",    
+    
+    width: "100%"    
+  });
+
+    // Cargar  la lista 
+    $.ajax("{{ action('ReporteMensualControlador@getCarteras') }}")
+    .success(function(data){
+      $('#cartera').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'id',
+        itemSelected: function(item){
+          $('#id').val(item);
+        }
+      });
+    });
+     //chosen producto grafica
+    	     $(".categorias").chosen({   
     no_results_text: "No hay resultados para:",    
     
     width: "100%"    
@@ -51,6 +84,7 @@
         }
       });
     });
+       
 
 function valida(e){
     tecla = (document.all) ? e.keyCode : e.which;
@@ -66,6 +100,83 @@ function valida(e){
     return patron.test(tecla_final);
 }
 
+
+$("#div_vendedores").hide();
+$("#div_mantenimiento").hide();
+$("#div_periodo").hide();
+$("#div_categorias").hide();
+$("#div_productosmttp").hide();
+$("#div_extra").hide();
+$("#div_carteras").hide();
+
+//registro vendedores - promotorias
+    $("#r1").click(function () {
+        $("#div_vendedores").show();
+        $("#div_categorias").hide();
+        $("#div_mantenimiento").hide();
+        $("#div_periodo").hide();
+        $("#div_productosmttp").hide();
+        $("#div_extra").hide();
+        $("#div_carteras").hide();
+
+    });
+
+//registro distribucion captura mtto
+    $("#r2").click(function () {
+        $("#div_mantenimiento").show();
+        $("#div_vendedores").show();
+       	$("#div_categorias").hide();
+        $("#div_periodo").hide();
+        $("#div_productosmttp").hide();
+        $("#div_extra").hide();
+        $("#div_carteras").hide();
+
+    });
+     
+//registro periodo mtto
+     $("#r3").click(function () {
+       $("#div_periodo").show();
+       $("#div_productosmttp").show();
+       $("#div_mantenimiento").hide();
+       $("#div_vendedores").hide();
+       $("#div_extra").hide();
+       $("#div_carteras").hide();
+       $("#div_categorias").hide();
+
+    });
+//registro ventas producto
+       $("#r2corte").click(function () {
+       $("#div_categorias").show();
+       $("#div_vendedores").hide();
+ 	   $("#div_mantenimiento").hide();
+       $("#div_periodo").hide();
+       $("#div_productosmttp").hide();
+       $("#div_extra").hide();
+       $("#div_carteras").hide();
+
+    });
+//categorias extras
+     $("#r4").click(function () {
+       $("#div_extra").show();
+       $("#div_productosmttp").hide();
+       $("#div_mantenimiento").hide();
+       $("#div_vendedores").hide();
+       $("#div_carteras").hide();
+       $("#div_periodo").hide();
+       $("#div_categorias").hide();
+
+    });
+        $("#r5").click(function () {
+       $("#div_extra").hide();
+       $("#div_productosmttp").hide();
+       $("#div_mantenimiento").hide();
+       $("#div_vendedores").hide();
+       $("#div_carteras").show();
+        $("#div_categorias").hide();
+         $("#div_periodo").hide();
+
+    });
+
 </script>
 @stop
 
@@ -73,45 +184,57 @@ function valida(e){
 
 
 <div class="row">  
+     	
+                 @if($status=='created')
+                  <div class="alert alert-info alert-dismissible" role="alert" align="center" id="alerta">
+                 <strong><h4> Registro exitoso</h4></strong>
+                </div> 
+                @endif 
+ 				@if($status=='validar')
+                  <div class="alert alert-info alert-danger" role="alert" align="center" id="alerta">
+                 <strong><h4> Este registro ya ha sido añadido</h4></strong>
+                </div> 
+                @endif
+                @if($status=='extra')
+                  <div class="alert alert-info alert-dismissible" role="alert" align="center" id="alerta">
+                 <strong><h4> Este extra ya fue registrado, se añadira automaticamente. Registro exitoso</h4></strong>
+                </div> 
+                @endif
 
 
-   <div class="col-md-6">  
+     <div class="col-md-12">  
     <div class="widget">
                 <!-- Widget title -->
                 <div class="widget-head">                
-               <div align="center"> Registro grafica vendedores - promotorias</div>                  
+               <div align="rigth"> Registro reporte mensual</div>                  
                     
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
-               	@if($status=='created')
-                  <div class="alert alert-info alert-dismissible" role="alert" align="center" id="alerta">
-                 <strong><h4> Nuevo vendedor agregado</h4></strong>
-                </div> 
-                @endif 
+          
                 
                 <div class="padd">
-    {{ Form::open(array('action' => 'ReporteMensualControlador@postVendedores', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'empresa','files' => true)) }}  
-                    <div class="form-group">
-                                  <label class="col-lg-4 control-label">Monto</label>
-                                  <div class="col-lg-8">    
-                                    <input type="text" class="form-control" placeholder="Monto" required name="monto" onkeypress="return valida(event)"> 
-                                </div>
-               
-                  	</div>
+      			
+                     {{ Form::open(array('action' => 'ReporteMensualControlador@postInsercion','class' => 'form-horizontal', 'role' => 'form', 'id'=>'empresa','files' => true)) }} 
+   
+                    
+
+
+
+                  	<div class="col-md-4">
                               <div class="form-group">
-                                  <label class="col-lg-4 control-label">Año</label>
-                                  <div class="col-lg-6">   
+                                  <label class="col-lg-4 control-label">Año</label> 
                                    <div class="input-group">
-                                    <input type="text" class="form-control" required placeholder="example 2017" maxlength="4"   onkeypress="return valida(event)"  name="years">
+                                    <input type="number" class="form-control"  required placeholder="example 2017" min="2014"    name="years">
                                     <span class="input-group-addon" ><i class="fa fa-calendar" aria-hidden="true"></i></span> 
    								</div>
                                 </div>
                
                   	</div>
-                                      <div class="form-group">
+                  	<div class="col-md-4">
+                                     <div class="form-group">
                                    <label class="col-lg-4 control-label">Mes</label>
-                                    <div class="col-lg-8"> 
+                                    <div class="col-lg-8	"> 
                                      <select class="form-control"  name="month" >
                                              <option >Seleccione</option>
                                               <option value="1">Enero</option>
@@ -130,10 +253,83 @@ function valida(e){
 									</div>
                            
                                 </div>
+                                </div>
+                     <div class="col-md-4">
+                              <div class="form-group">
+                                  <label class="col-lg-4 control-label">Monto</label> 
+                                   <div class="input-group">
+                                       <span class="input-group-addon" >$</span> 
+                                    <input type="text" class="form-control" required onkeypress="return valida(event)"  name="Monto">
+                                
+   								</div>
+                                </div>
+               
+                  	</div>
 
-                  		 <div class="form-group" id="div_vendedores">
+                          <div class="form-group">
+                            <div class="col-lg-12">
+                          		<hr>
+                           </div>
+                        <label class="col-lg-7 control-label">Elije los detalles del registro de la grafica</label>
+                       
+                        <div class="col-lg-10" align="right">
+                          	<label class="radio-inline"><input type="radio" name="detalles" value="1" id="r1" >Vendedores</label>
+        					<label class="radio-inline"><input type="radio" name="detalles" value="2" id="r2corte">Ventas categorias</label>
+        					<label class="radio-inline"><input type="radio" name="detalles" value="3" id="r2" >Distribución captura de mantenimiento</label>
+        					<label class="radio-inline"><input type="radio" name="detalles" value="4" id="r3">Periodo mantenimiento</label>
+        					<label class="radio-inline"><input type="radio" name="detalles" value="5" id="r5">Cartera cliente</label>
+        					<label class="radio-inline"><input type="radio" name="detalles" value="6" id="r4">Extras</label>
+        		
+        									
+                                            
+                        </div>
+                      </div>
+                       <div class="col-lg-12">
+                          		<hr>
+                       </div>
+                                 
+                             <div class="form-group" id="div_productosmttp">
+                                  <label class="col-lg-4 control-label">Producto</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="producto" disabled>
+                                     <option value="ind">Mantenimiento</option>
+                                      @foreach($productos as $producto)
+                                      <option value="{{{$producto->id}}}" >{{{$producto->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div> 
+                       	 <div class="form-group" id="div_periodo">
+                                  <label class="col-lg-4 control-label">Periodo mantenimiento</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="periodo_id">
+                                      <option value="ind">Seleccione</option>
+                                      @foreach($periodos as $periodo)
+                                      <option value="{{{$periodo->id}}}" >{{{$periodo->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div> 
+                                
+              		
+								
+                       <div class="form-group" id="div_mantenimiento">
+                                  <label class="col-lg-4 control-label">Tipo de mantenimiento</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="mantenimiento_id">
+                                      <option value="ind">Seleccione</option>
+                                      @foreach($mantenimientos as $mantenimiento)
+                                      <option value="{{{$mantenimiento->id}}}" >{{{$mantenimiento->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div> 
+                     		<div class="form-group" id="div_vendedores">
                                   <label class="col-lg-4 control-label">Vendedores</label>
-                                  <div class="col-lg-8">
+                                  <div class="col-lg-4">
                                     <select class="form-control vendedores chosen-select" name="vendedor_id">
                                       <option value="ind">Seleccione</option>
                                       @foreach($vendedores as $vendedor)
@@ -143,89 +339,48 @@ function valida(e){
                                     
                                   </div>
                                 </div> 
-                                
-
-
-                           
-              <div class="clearfix"></div>             
-                
-   
-      </div>
-      </div>
-
-      <div class="widget-foot">
-      <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> Guardar</button>
-      </div>
-     {{form::close()}}
-      </div>   
-    </div>
-
-       <div class="col-md-6">  
-    <div class="widget">
-                <!-- Widget title -->
-                <div class="widget-head">                
-               <div align="center"> Registro grafica ventas productos </div>                  
-                    
-                  <div class="clearfix"></div>
-                </div>
-                <div class="widget-content">
-               
-                <div class="padd">
-                  {{ Form::open(array('action' => 'ReporteMensualControlador@postProductos', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'empresa','files' => true)) }}  
-                      <div class="form-group">
-                                  <label class="col-lg-4 control-label">Monto</label>
-                                  <div class="col-lg-8">    
-                                    <input type="text" class="form-control" placeholder="Monto" required name="monto" onkeypress="return valida(event)"> 
-                                </div>
-               
-                  	</div>
-
-                          <div class="form-group">
-                                  <label class="col-lg-4 control-label">Año</label>
-                                  <div class="col-lg-6">   
-                                   <div class="input-group">
-                                    <input type="text" class="form-control" required placeholder="example 2017" maxlength="4"   onkeypress="return valida(event)"  name="years">
-                                    <span class="input-group-addon" ><i class="fa fa-calendar" aria-hidden="true"></i></span> 
-   								</div>
-                                </div>
-               
-                  			</div>
-							<div class="form-group">
-                                   <label class="col-lg-4 control-label">Mes</label>
-                                    <div class="col-lg-8"> 
-                                     <select class="form-control"  name="month" >
-                                             <option >Seleccione</option>
-                                              <option value="1">Enero</option>
-                                              <option value="2">Febrero</option>
-                                              <option value="3">Marzo</option>
-                                              <option value="4">Abril</option>
-                                              <option value="5">Mayo</option>
-                                              <option value="6">Junio</option>
-                                              <option value="7">Julio</option>
-                                              <option value="8">Agosto</option>
-                                              <option value="9">Septiembre</option>
-                                              <option value="10">Octubre</option>
-                                              <option value="11">Noviembre</option>
-                                              <option value="12">Diciembre</option>
-                                            </select>
-									</div>
-                           
-                                </div>
-
-                   <div class="form-group" id="div_productos">
-                                  <label class="col-lg-4 control-label">Productos</label>
-                                  <div class="col-lg-8">
-                                    <select class="form-control productos chosen-select" name="productos_id">
+						<div class="form-group" id="div_categorias">
+                                <label class="col-lg-4 control-label">Categorias</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control categorias chosen-select" name="categoria">
                                       <option value="ind">Seleccione</option>
                                       @foreach($productos as $producto)
                                       <option value="{{{$producto->id}}}" >{{{$producto->nombre}}}</option>
                                       @endforeach
                                     </select>
                                     
-                                  </div>
-                                </div> 
-                                
+                                 </div>
+                           </div>
+                    
+            
+    					<div class="form-group" id="div_carteras">
+                                  <label class="col-lg-4 control-label">Periodo de cartera</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control carteras chosen-select" name="cartera_id">
+                                      <option value="ind">Seleccione</option>
+                                      @foreach($carteras as $cartera)
+                                      <option value="{{{$cartera->id}}}" >{{{$cartera->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                 </div>
+                           </div>
+                           	
 
+                        			 <div class="col-md-9">
+                         <div class="form-group" id="div_extra">
+                                  <label class="col-lg-5 control-label">Nombre del extra</label>
+                                 <div class="col-lg-6">
+                                  <div class="input-group">
+                                  <span class="input-group-addon" ><i class="fa fa-pencil" aria-hidden="true"></i></span>     
+                                    <input type="text" id="extra" class="form-control" required placeholder="Descripción"  name="extra"> 
+
+                        
+                				</div>
+                  				</div>
+                  				</div> 
+                  				</div>
+              
 
                            
               <div class="clearfix"></div>             
@@ -233,11 +388,12 @@ function valida(e){
    
       </div>
       </div>
+
       <div class="widget-foot">
       <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> Guardar</button>
       </div>
-      {{form::close()}}
-   
+      <input type="hidden" name="tab" id="tab" value="2">
+   {{form::close()}}
       </div>   
     </div>
 
