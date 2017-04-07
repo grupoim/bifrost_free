@@ -242,7 +242,11 @@ switch ($month) {
 	public function getRegistro(){
 	$dataModule["status"] = Session::pull('status');
 	$dataModule["vendedores"] = VistaAsesorPromotor::all();	
-	$dataModule["productos"] = ProductoGrafica::all();	
+	$dataModule["productos"] = ProductoGrafica::where('categoria',1)->where('activo',1)->get();
+	$dataModule["carteras"] = ProductoGrafica::where('cartera',1)->where('activo',1)->get();
+	$dataModule["extras"] = ProductoGrafica::where('extra',1)->where('activo',1)->get();
+	$dataModule["mantenimientos"] = TipoMantenimientoCaptura::all();
+	$dataModule["periodos"] = PeriodoMantenimiento::all();
 	return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.registroReportemensual', $dataModule);
  		
 
@@ -252,35 +256,224 @@ switch ($month) {
 	$vendedores = VistaAsesorPromotor::all();
 	return Response::Json($vendedores);
 		}
+	public function getCarteras() {			 
+	
+	$carteras = ProductoGrafica::where('cartera',1)->where('activo',1)->get();
+	return Response::Json($carteras);
+		}
+	public function getProductos() {			 
+	
+	$productos = ProductoGrafica::where('categoria',1)->where('activo',1)->get();
+	return Response::Json($productos);
+		}
 
-	public function postVendedores() {		
- 		
-        $totales_grafica = new TotalesGrafica;
+public function postInsercion() {	
+	switch (Input::get('detalles')) {
+		// insercion para vendedores-promotorias
+	case 1:
+	if (DB::table('grafica_vendedores')->select('grafica_vendedores.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
+			->where('grafica_vendedores.asesor_id','=',Input::get('vendedor_id'))
+			->where('year','=',Input::get('years'))
+			->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'grafica_vendedores.totales_grafica_id', '=', 'totales_grafica.id')->get())
+				 { 
+		return Redirect::back()->with('status','validar');;
+										
+				}else{
+				
+		 $totales_grafica = new TotalesGrafica;
         $totales_grafica->year =  Input::get('years');
         $totales_grafica->month = Input::get('month');
-        $totales_grafica->monto = Input::get('monto');
+        $totales_grafica->monto = Input::get('Monto');
         $totales_grafica->save();
 
        	$grafica_vendedores = new GraficaVendedores;
 		$grafica_vendedores->asesor_id = Input::get('vendedor_id');
 		$grafica_vendedores->totales_grafica_id = $totales_grafica->id;
 		$grafica_vendedores->save();
-		return Redirect::back()->with('status','created');
-}
+		 
+		 return Redirect::back()->with('status','created');
 
-public function postProductos() {		
+				}
+		break;
+		
+	case 2:	
+	//insercion para categorias
+		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
+			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('categoria'))
+			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')->get())
+				 { 
+		return Redirect::back()->with('status','validar');;
+										
+				}else{		
  		
         $totales_grafica = new TotalesGrafica;
         $totales_grafica->year =  Input::get('years');
         $totales_grafica->month = Input::get('month');
-        $totales_grafica->monto = Input::get('monto');
+        $totales_grafica->monto = Input::get('Monto');
         $totales_grafica->save();
-     
+
+       	$grafica_venta_producto = new GraficaVentaProducto;
+       	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
+		$grafica_venta_producto->producto_grafica_id = Input::get('categoria');
+		$grafica_venta_producto->save();
+		return Redirect::back()->with('status','created');  
+	}
+
+		break;
+		//insercion grafica captura vendedor mantenimiento
+		case 3:
+		if (DB::table('grafica_captura_vendedor')->select('grafica_captura_vendedor.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','grafica_captura_vendedor.tipo_mantenimiento_captura_id')
+			->where('grafica_captura_vendedor.asesor_id','=',Input::get('vendedor_id'))
+			->where('grafica_captura_vendedor.tipo_mantenimiento_captura_id','=',Input::get('mantenimiento_id'))
+			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'grafica_captura_vendedor.totales_grafica_id', '=', 'totales_grafica.id')->get())
+				 { 
+		return Redirect::back()->with('status','validar');;
+										
+				}else{
+
+       $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('Monto');
+        $totales_grafica->save();	
+ 		
+        $grafica_captura_vendedor = new GraficaCapturaVendedor;
+        $grafica_captura_vendedor->tipo_mantenimiento_captura_id = Input::get('mantenimiento_id');
+        $grafica_captura_vendedor->totales_grafica_id = $totales_grafica->id;
+        $grafica_captura_vendedor->asesor_id = Input::get('vendedor_id');
+        $grafica_captura_vendedor->save();
 		return Redirect::back()->with('status','created');
-}
-public function getProductos() {			 
-	
-	$productos = ProductoGrafica::all();
-	return Response::Json($productos);
+	}
+		break;
+		//insercion periodos mantenimiento
+		case 4:
+		if (DB::table('tipo_propiedad_periodo_mantenimiento')->select('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id')
+			->where('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','=',8)
+			->where('tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id','=',Input::get('periodo_id'))
+			->where('year','=',Input::get('years'))
+			->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'tipo_propiedad_periodo_mantenimiento.totales_grafica_id', '=', 'totales_grafica.id')->get())
+						 { 
+		return Redirect::back()->with('status','validar');;
+										
+				}else{
+
+       $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('Monto');
+        $totales_grafica->save();	
+ 		
+        $tipo_propiedad_periodo_mantenimiento = new TipoPropiedadPeriodoMantenimiento;
+        $tipo_propiedad_periodo_mantenimiento->periodo_mantenimiento_id = Input::get('periodo_id');
+        $tipo_propiedad_periodo_mantenimiento->producto_grafica_id = 8;
+        $tipo_propiedad_periodo_mantenimiento->totales_grafica_id = $totales_grafica->id;
+        $tipo_propiedad_periodo_mantenimiento->save();
+		return Redirect::back()->with('status','created');  
+		} 
+		break;
+		//insercion cartera clientes
+		case 5:
+
+		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
+			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('cartera_id'))
+			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')->get())
+				 { 
+		return Redirect::back()->with('status','validar');;
+										
+				}else{		
+ 		
+        $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('Monto');
+        $totales_grafica->save();
+
+       	$grafica_venta_producto = new GraficaVentaProducto;
+       	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
+		$grafica_venta_producto->producto_grafica_id = Input::get('cartera_id');
+		$grafica_venta_producto->save();
+		return Redirect::back()->with('status','created');  
+	}
+
+		break;
+		case 6:
+
+	//@foreach($extras as $extra) {{{$extra->extra_id}}} @endforeach
+		//insercion para extras
+	if ( Input::get('detalles') == 6) {
+
+
+		if (DB::table('producto_grafica')->select('nombre')->where('nombre','=',Input::get('extra'))->get()) {
+				$extras= ProductoGrafica::where('nombre','=',Input::get('extra'))->firstOrFail();
+
+			if (DB::table('grafica_venta_producto')->select('producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
+			->where('producto_grafica_id',$extras->id)
+			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
+			->where('monto','=',Input::get('Monto'))
+			->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')->get())
+				 { 
+					return Redirect::back()->with('status','validar');
+										
+				}else{		
+ 	//insercion para ventas producto		
+        $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('Monto');
+        $totales_grafica->save();
+
+       	$grafica_venta_producto = new GraficaVentaProducto;
+       	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
+		$grafica_venta_producto->producto_grafica_id = $extras->id;
+		$grafica_venta_producto->save();
 		}
+		return Redirect::back()->with('status','extra');
+
+		}else{
+	
+ 	//insercion para ventas producto		
+        $totales_grafica = new TotalesGrafica;
+        $totales_grafica->year =  Input::get('years');
+        $totales_grafica->month = Input::get('month');
+        $totales_grafica->monto = Input::get('Monto');
+        $totales_grafica->save();
+
+		$producto_grafica = new ProductoGrafica;
+		$producto_grafica->nombre = Input::get('extra');
+		$producto_grafica->activo = 1;
+		$producto_grafica->departamento_id = 7;
+		$producto_grafica->extra = 1;
+		$producto_grafica->cartera = 0;
+		$producto_grafica->mantenimiento = 0;
+		$producto_grafica->categoria = 0;
+		$producto_grafica->save();
+
+       	$grafica_venta_producto = new GraficaVentaProducto;
+       	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
+		$grafica_venta_producto->producto_grafica_id = $producto_grafica->id;
+		$grafica_venta_producto->save();
+
+
+		}
+		return Redirect::back()->with('status','created');
+
+		}
+
+		break;
+	default:
+		# code...
+		break;
 }
+}
+}
+
