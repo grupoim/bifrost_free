@@ -240,6 +240,7 @@ switch ($month) {
 	}
 
 	public function getRegistro(){
+
 	$dataModule["status"] = Session::pull('status');
 	$dataModule["vendedores"] = VistaAsesorPromotor::all();	
 	$dataModule["productos"] = ProductoGrafica::where('categoria',1)->where('activo',1)->get();
@@ -273,10 +274,12 @@ switch ($month) {
 		}
 
 public function postInsercion() {	
-	switch (Input::get('detalles')) {
-		// insercion para vendedores-promotorias
-	case 1:
-	if (DB::table('grafica_vendedores')->select('grafica_vendedores.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
+
+	switch (Input::get('seccion')) {
+	
+	case 01:
+
+		if (DB::table('grafica_vendedores')->select('grafica_vendedores.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_vendedores.asesor_id','=',Input::get('vendedor_id'))
 			->where('year','=',Input::get('years'))
 			->where('month','=',Input::get('month'))
@@ -298,13 +301,15 @@ public function postInsercion() {
 		$grafica_vendedores->totales_grafica_id = $totales_grafica->id;
 		$grafica_vendedores->save();
 		 
-		 return Redirect::back()->with('status','created');
+		 
 
 				}
+		return Redirect::back()->with('status','created');
+
 		break;
 		
-	case 2:	
-	//insercion para categorias
+	case 02:	
+	
 		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('categoria'))
 			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
@@ -325,12 +330,15 @@ public function postInsercion() {
        	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
 		$grafica_venta_producto->producto_grafica_id = Input::get('categoria');
 		$grafica_venta_producto->save();
-		return Redirect::back()->with('status','created');  
+		 
 	}
+		return Redirect::back()->with('status','created'); 
 
 		break;
-		//insercion grafica captura vendedor mantenimiento
-		case 3:
+
+
+	case 03:
+
 		if (DB::table('grafica_captura_vendedor')->select('grafica_captura_vendedor.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','grafica_captura_vendedor.tipo_mantenimiento_captura_id')
 			->where('grafica_captura_vendedor.asesor_id','=',Input::get('vendedor_id'))
 			->where('grafica_captura_vendedor.tipo_mantenimiento_captura_id','=',Input::get('mantenimiento_id'))
@@ -353,11 +361,16 @@ public function postInsercion() {
         $grafica_captura_vendedor->totales_grafica_id = $totales_grafica->id;
         $grafica_captura_vendedor->asesor_id = Input::get('vendedor_id');
         $grafica_captura_vendedor->save();
-		return Redirect::back()->with('status','created');
+		
 	}
+	return Redirect::back()->with('status','created');
+
 		break;
-		//insercion periodos mantenimiento
-		case 4:
+	
+
+	case 04:
+
+		
 		if (DB::table('tipo_propiedad_periodo_mantenimiento')->select('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id')
 			->where('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','=',8)
 			->where('tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id','=',Input::get('periodo_id'))
@@ -381,11 +394,14 @@ public function postInsercion() {
         $tipo_propiedad_periodo_mantenimiento->producto_grafica_id = 8;
         $tipo_propiedad_periodo_mantenimiento->totales_grafica_id = $totales_grafica->id;
         $tipo_propiedad_periodo_mantenimiento->save();
-		return Redirect::back()->with('status','created');  
+		 
 		} 
+		return Redirect::back()->with('status','created'); 
+
 		break;
-		//insercion cartera clientes
-		case 5:
+	
+
+	case 05:
 
 		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('cartera_id'))
@@ -407,16 +423,12 @@ public function postInsercion() {
        	$grafica_venta_producto->totales_grafica_id = $totales_grafica->id;
 		$grafica_venta_producto->producto_grafica_id = Input::get('cartera_id');
 		$grafica_venta_producto->save();
-		return Redirect::back()->with('status','created');  
+	 
 	}
+	return Redirect::back()->with('status','created'); 
 
 		break;
-		case 6:
-
-	//@foreach($extras as $extra) {{{$extra->extra_id}}} @endforeach
-		//insercion para extras
-	if ( Input::get('detalles') == 6) {
-
+	case 06:
 
 		if (DB::table('producto_grafica')->select('nombre')->where('nombre','=',Input::get('extra'))->get()) {
 				$extras= ProductoGrafica::where('nombre','=',Input::get('extra'))->firstOrFail();
@@ -471,10 +483,8 @@ public function postInsercion() {
 
 		}
 		return Redirect::back()->with('status','created');
-
-		}
-
 		break;
+
 	default:
 		# code...
 		break;

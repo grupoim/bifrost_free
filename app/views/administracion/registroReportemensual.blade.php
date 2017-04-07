@@ -1,31 +1,28 @@
 @section('scripts')
 <script src="{{ URL::asset('js/chosen.jquery.js') }}"> </script>
-<script src="{{ URL::asset('js/prism.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.maskedinput.min.js') }}"></script>
-<link href="{{ URL::asset('css/chosen.css') }}" rel="stylesheet">
 
 
 
 <script>
 	 $(document).on('ready', function(){
-// Cargar  la lista extras
-    		$.ajax("{{ action('ReporteMensualControlador@getExtras') }}")
-		.success(function(data){
-			$('#extra').typeahead({
-				source: data,
-				display: 'nombre',
-				val: 'id',
-				itemSelected: function(item){
-					$('.extra').val(item);
-				}
-			});
-		});
-
       window.setTimeout(function() {
   $("#alerta").fadeTo(500, 0).slideUp(500, function(){
       $(this).remove();
   });
 }, 4000);
+      // Cargar  la lista extras
+    	  });
+	$.ajax("{{ action('ReporteMensualControlador@getExtras') }}")
+		.success(function(data){
+			$('#extras').typeahead({
+				source: data,
+				display: 'nombre',
+				val: 'id',
+				itemSelected: function(item){
+					$('.id').val(item);
+				}
+			});
+		});
 //chosen grafica vendedor
     $(".vendedores").chosen({   
     no_results_text: "No hay resultados para:",    
@@ -45,7 +42,6 @@
         }
       });
     });
-  });
 	 //chosen cartera cliente
 	     $(".carteras").chosen({   
     no_results_text: "No hay resultados para:",    
@@ -88,12 +84,10 @@
 
 function valida(e){
     tecla = (document.all) ? e.keyCode : e.which;
-
     //Tecla de retroceso para borrar, siempre la permite
     if (tecla==8){
         return true;
-    }
-        
+    }   
     // Patron de entrada, en este caso solo acepta numeros
     patron =/[0-9]/;
     tecla_final = String.fromCharCode(tecla);
@@ -101,7 +95,7 @@ function valida(e){
 }
 
 
-$("#div_vendedores").hide();
+$("#div_vendedores").show();
 $("#div_mantenimiento").hide();
 $("#div_periodo").hide();
 $("#div_categorias").hide();
@@ -216,16 +210,12 @@ $("#div_carteras").hide();
                 <div class="padd">
       			
                      {{ Form::open(array('action' => 'ReporteMensualControlador@postInsercion','class' => 'form-horizontal', 'role' => 'form', 'id'=>'empresa','files' => true)) }} 
-   
-                    
-
-
-
+  
                   	<div class="col-md-4">
                               <div class="form-group">
                                   <label class="col-lg-4 control-label">Año</label> 
                                    <div class="input-group">
-                                    <input type="number" class="form-control"  required placeholder="example 2017" min="2014"    name="years">
+                                    <input type="number" class="form-control"  required placeholder="example 2017" min="2014" name="years">
                                     <span class="input-group-addon" ><i class="fa fa-calendar" aria-hidden="true"></i></span> 
    								</div>
                                 </div>
@@ -273,61 +263,18 @@ $("#div_carteras").hide();
                         <label class="col-lg-7 control-label">Elije los detalles del registro de la grafica</label>
                        
                         <div class="col-lg-10" align="right">
-                          	<label class="radio-inline"><input type="radio" name="detalles" value="1" id="r1" >Vendedores</label>
-        					<label class="radio-inline"><input type="radio" name="detalles" value="2" id="r2corte">Ventas categorias</label>
-        					<label class="radio-inline"><input type="radio" name="detalles" value="3" id="r2" >Distribución captura de mantenimiento</label>
-        					<label class="radio-inline"><input type="radio" name="detalles" value="4" id="r3">Periodo mantenimiento</label>
-        					<label class="radio-inline"><input type="radio" name="detalles" value="5" id="r5">Cartera cliente</label>
-        					<label class="radio-inline"><input type="radio" name="detalles" value="6" id="r4">Extras</label>
+                          	<label class="radio-inline"><input type="radio" name="seccion" value="01" id="r1" checked="true" >Vendedores</label>
+        					<label class="radio-inline"><input type="radio" name="seccion" value="02" id="r2corte">Ventas categorias</label>
+        					<label class="radio-inline"><input type="radio" name="seccion" value="03" id="r2" >Distribución captura de mantenimiento</label>
+        					<label class="radio-inline"><input type="radio" name="seccion" value="04" id="r3">Periodo mantenimiento</label>
+        					<label class="radio-inline"><input type="radio" name="seccion" value="05" id="r5">Cartera cliente</label>
+        					<label class="radio-inline"><input type="radio" name="seccion" value="06" id="r4">Extras</label>
         		
         									
                                             
                         </div>
                       </div>
-                       <div class="col-lg-12">
-                          		<hr>
-                       </div>
-                                 
-                             <div class="form-group" id="div_productosmttp">
-                                  <label class="col-lg-4 control-label">Producto</label>
-                                  <div class="col-lg-4">
-                                    <select class="form-control " name="producto" disabled>
-                                     <option value="ind">Mantenimiento</option>
-                                      @foreach($productos as $producto)
-                                      <option value="{{{$producto->id}}}" >{{{$producto->nombre}}}</option>
-                                      @endforeach
-                                    </select>
-                                    
-                                  </div>
-                                </div> 
-                       	 <div class="form-group" id="div_periodo">
-                                  <label class="col-lg-4 control-label">Periodo mantenimiento</label>
-                                  <div class="col-lg-4">
-                                    <select class="form-control " name="periodo_id">
-                                      <option value="ind">Seleccione</option>
-                                      @foreach($periodos as $periodo)
-                                      <option value="{{{$periodo->id}}}" >{{{$periodo->nombre}}}</option>
-                                      @endforeach
-                                    </select>
-                                    
-                                  </div>
-                                </div> 
-                                
-              		
-								
-                       <div class="form-group" id="div_mantenimiento">
-                                  <label class="col-lg-4 control-label">Tipo de mantenimiento</label>
-                                  <div class="col-lg-4">
-                                    <select class="form-control " name="mantenimiento_id">
-                                      <option value="ind">Seleccione</option>
-                                      @foreach($mantenimientos as $mantenimiento)
-                                      <option value="{{{$mantenimiento->id}}}" >{{{$mantenimiento->nombre}}}</option>
-                                      @endforeach
-                                    </select>
-                                    
-                                  </div>
-                                </div> 
-                     		<div class="form-group" id="div_vendedores">
+                               <div class="form-group" id="div_vendedores">
                                   <label class="col-lg-4 control-label">Vendedores</label>
                                   <div class="col-lg-4">
                                     <select class="form-control vendedores chosen-select" name="vendedor_id">
@@ -339,7 +286,7 @@ $("#div_carteras").hide();
                                     
                                   </div>
                                 </div> 
-						<div class="form-group" id="div_categorias">
+                                <div class="form-group" id="div_categorias">
                                 <label class="col-lg-4 control-label">Categorias</label>
                                   <div class="col-lg-4">
                                     <select class="form-control categorias chosen-select" name="categoria">
@@ -351,8 +298,43 @@ $("#div_carteras").hide();
                                     
                                  </div>
                            </div>
-                    
-            
+                              <div class="form-group" id="div_mantenimiento">
+                                  <label class="col-lg-4 control-label">Tipo de mantenimiento</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="mantenimiento_id">
+                                      <option value="ind">Seleccione</option>
+                                      @foreach($mantenimientos as $mantenimiento)
+                                      <option value="{{{$mantenimiento->id}}}" >{{{$mantenimiento->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div> 
+                               <div class="form-group" id="div_productosmttp">
+                                  <label class="col-lg-4 control-label">Producto</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="producto" disabled>
+                                     <option value="ind">Mantenimiento</option>
+                                      @foreach($productos as $producto)
+                                      <option value="{{{$producto->id}}}" >{{{$producto->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div>
+                                     	 <div class="form-group" id="div_periodo">
+                                  <label class="col-lg-4 control-label">Periodo mantenimiento</label>
+                                  <div class="col-lg-4">
+                                    <select class="form-control " name="periodo_id">
+                                      <option value="ind">Seleccione</option>
+                                      @foreach($periodos as $periodo)
+                                      <option value="{{{$periodo->id}}}" >{{{$periodo->nombre}}}</option>
+                                      @endforeach
+                                    </select>
+                                    
+                                  </div>
+                                </div>
+
     					<div class="form-group" id="div_carteras">
                                   <label class="col-lg-4 control-label">Periodo de cartera</label>
                                   <div class="col-lg-4">
@@ -365,15 +347,13 @@ $("#div_carteras").hide();
                                     
                                  </div>
                            </div>
-                           	
-
-                        			 <div class="col-md-9">
+                           <div class="col-md-9">
                          <div class="form-group" id="div_extra">
                                   <label class="col-lg-5 control-label">Nombre del extra</label>
                                  <div class="col-lg-6">
                                   <div class="input-group">
                                   <span class="input-group-addon" ><i class="fa fa-pencil" aria-hidden="true"></i></span>     
-                                    <input type="text" id="extra" class="form-control" required placeholder="Descripción"  name="extra"> 
+                                    <input type="text" id="extras" class="form-control"  placeholder="Descripción"  name="extra"> 
 
                         
                 				</div>
@@ -385,15 +365,13 @@ $("#div_carteras").hide();
                            
               <div class="clearfix"></div>             
                 
-   
+</div>
       </div>
-      </div>
-
       <div class="widget-foot">
       <button type="submit" class="btn btn-m btn-default" id="btn_send" ><i class="fa fa-floppy-o"></i> Guardar</button>
       </div>
-      <input type="hidden" name="tab" id="tab" value="2">
-   {{form::close()}}
+      {{form::close()}}
+   
       </div>   
     </div>
 
