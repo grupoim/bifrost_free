@@ -194,6 +194,11 @@ $("#div_carteras").hide();
                  <strong><h4> Este extra ya fue registrado, se añadira automaticamente. Registro exitoso</h4></strong>
                 </div> 
                 @endif
+                @if($status=='vacio')
+                  <div class="alert alert-info alert-warning" role="alert" align="center" id="alerta">
+                 <strong><h4> Es necesario ingresar un extra</h4></strong>
+                </div> 
+                @endif
 
 
      <div class="col-md-12">  

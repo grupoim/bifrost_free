@@ -429,9 +429,12 @@ public function postInsercion() {
 
 		break;
 	case 06:
+if (Input::get('extra') == false) {
+	return Redirect::back()->with('status','vacio');
+}else{
 
-		if (DB::table('producto_grafica')->select('nombre')->where('nombre','=',Input::get('extra'))->get()) {
-				$extras= ProductoGrafica::where('nombre','=',Input::get('extra'))->firstOrFail();
+		if (DB::table('producto_grafica')->select('nombre')->where('nombre','=',Input::get('extra'))->where('extra',1)->where('activo',1)->get()) {
+			$extras= ProductoGrafica::where('nombre','=',Input::get('extra'))->where('extra',1)->where('activo',1)->firstOrFail();
 
 			if (DB::table('grafica_venta_producto')->select('producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('producto_grafica_id',$extras->id)
@@ -483,6 +486,7 @@ public function postInsercion() {
 
 		}
 		return Redirect::back()->with('status','created');
+		}
 		break;
 
 	default:
