@@ -276,9 +276,11 @@ switch ($month) {
 public function postInsercion() {	
 
 	switch (Input::get('seccion')) {
-	
+	//insercion ventas vendedor
 	case 01:
-
+if (Input::get('month') == 0 || Input::get('vendedor_id') == 0) {
+	return Redirect::back()->with('status','vacio');
+}else{
 		if (DB::table('grafica_vendedores')->select('grafica_vendedores.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_vendedores.asesor_id','=',Input::get('vendedor_id'))
 			->where('year','=',Input::get('years'))
@@ -305,11 +307,13 @@ public function postInsercion() {
 
 				}
 		return Redirect::back()->with('status','created');
-
+}
 		break;
-		
+		//insercion a captura producto
 	case 02:	
-	
+if (Input::get('month') == 0 || Input::get('categoria') == 0) {
+	return Redirect::back()->with('status','vacio');
+}else{
 		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('categoria'))
 			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
@@ -333,12 +337,14 @@ public function postInsercion() {
 		 
 	}
 		return Redirect::back()->with('status','created'); 
-
+}
 		break;
-
+//insercion a captura mantenimiento vendedor
 
 	case 03:
-
+if (Input::get('month') == 0 || Input::get('vendedor_id') == 0 || Input::get('mantenimiento_id') == 0) {
+	return Redirect::back()->with('status','vacio');
+}else{
 		if (DB::table('grafica_captura_vendedor')->select('grafica_captura_vendedor.asesor_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','grafica_captura_vendedor.tipo_mantenimiento_captura_id')
 			->where('grafica_captura_vendedor.asesor_id','=',Input::get('vendedor_id'))
 			->where('grafica_captura_vendedor.tipo_mantenimiento_captura_id','=',Input::get('mantenimiento_id'))
@@ -364,12 +370,14 @@ public function postInsercion() {
 		
 	}
 	return Redirect::back()->with('status','created');
-
+}
 		break;
-	
+	//insercion a periodo mantenimiento
 
 	case 04:
-
+if (Input::get('month') == 0 || Input::get('periodo_id') == 0 ) {
+	return Redirect::back()->with('status','vacio');
+}else{
 		
 		if (DB::table('tipo_propiedad_periodo_mantenimiento')->select('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto','tipo_propiedad_periodo_mantenimiento.periodo_mantenimiento_id')
 			->where('tipo_propiedad_periodo_mantenimiento.producto_grafica_id','=',8)
@@ -397,12 +405,15 @@ public function postInsercion() {
 		 
 		} 
 		return Redirect::back()->with('status','created'); 
-
+}
 		break;
 	
-
+//insercion a cartera clientes
 	case 05:
-
+if (Input::get('month') == 0 || Input::get('cartera_id') == 0 ) {
+	return Redirect::back()->with('status','vacio');
+}else{
+		
 		if (DB::table('grafica_venta_producto')->select('grafica_venta_producto.producto_grafica_id','totales_grafica.year','totales_grafica.month','totales_grafica.monto')
 			->where('grafica_venta_producto.producto_grafica_id','=',Input::get('cartera_id'))
 			->where('year','=',Input::get('years'))->where('month','=',Input::get('month'))
@@ -426,10 +437,12 @@ public function postInsercion() {
 	 
 	}
 	return Redirect::back()->with('status','created'); 
-
+}
 		break;
+	// insercion a anexos
 	case 06:
-if (Input::get('extra') == false) {
+
+if (Input::get('month') == 0 || Input::get('extra') == false) {
 	return Redirect::back()->with('status','vacio');
 }else{
 

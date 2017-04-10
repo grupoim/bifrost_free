@@ -196,7 +196,7 @@ $("#div_carteras").hide();
                 @endif
                 @if($status=='vacio')
                   <div class="alert alert-info alert-warning" role="alert" align="center" id="alerta">
-                 <strong><h4> Es necesario ingresar un extra</h4></strong>
+                 <strong><h4> Favor de no dejar campos vacios</h4></strong>
                 </div> 
                 @endif
 
@@ -230,8 +230,8 @@ $("#div_carteras").hide();
                                      <div class="form-group">
                                    <label class="col-lg-4 control-label">Mes</label>
                                     <div class="col-lg-8	"> 
-                                     <select class="form-control"  name="month" >
-                                             <option >Seleccione</option>
+                                     <select  class="form-control"  name="month">
+                                             <option value="0">Seleccione</option>
                                               <option value="1">Enero</option>
                                               <option value="2">Febrero</option>
                                               <option value="3">Marzo</option>
@@ -283,7 +283,7 @@ $("#div_carteras").hide();
                                   <label class="col-lg-4 control-label">Vendedores</label>
                                   <div class="col-lg-4">
                                     <select class="form-control vendedores chosen-select" name="vendedor_id">
-                                      <option value="ind">Seleccione</option>
+                                      <option value="0">Seleccione</option>
                                       @foreach($vendedores as $vendedor)
                                       <option value="{{{$vendedor->asesor_id}}}" >{{{$vendedor->asesor}}}</option>
                                       @endforeach
@@ -295,7 +295,7 @@ $("#div_carteras").hide();
                                 <label class="col-lg-4 control-label">Categorias</label>
                                   <div class="col-lg-4">
                                     <select class="form-control categorias chosen-select" name="categoria">
-                                      <option value="ind">Seleccione</option>
+                                      <option value="0">Seleccione</option>
                                       @foreach($productos as $producto)
                                       <option value="{{{$producto->id}}}" >{{{$producto->nombre}}}</option>
                                       @endforeach
@@ -307,7 +307,7 @@ $("#div_carteras").hide();
                                   <label class="col-lg-4 control-label">Tipo de mantenimiento</label>
                                   <div class="col-lg-4">
                                     <select class="form-control " name="mantenimiento_id">
-                                      <option value="ind">Seleccione</option>
+                                      <option value="0">Seleccione</option>
                                       @foreach($mantenimientos as $mantenimiento)
                                       <option value="{{{$mantenimiento->id}}}" >{{{$mantenimiento->nombre}}}</option>
                                       @endforeach
@@ -331,7 +331,7 @@ $("#div_carteras").hide();
                                   <label class="col-lg-4 control-label">Periodo mantenimiento</label>
                                   <div class="col-lg-4">
                                     <select class="form-control " name="periodo_id">
-                                      <option value="ind">Seleccione</option>
+                                      <option value="0">Seleccione</option>
                                       @foreach($periodos as $periodo)
                                       <option value="{{{$periodo->id}}}" >{{{$periodo->nombre}}}</option>
                                       @endforeach
@@ -344,7 +344,7 @@ $("#div_carteras").hide();
                                   <label class="col-lg-4 control-label">Periodo de cartera</label>
                                   <div class="col-lg-4">
                                     <select class="form-control carteras chosen-select" name="cartera_id">
-                                      <option value="ind">Seleccione</option>
+                                      <option value="0">Seleccione</option>
                                       @foreach($carteras as $cartera)
                                       <option value="{{{$cartera->id}}}" >{{{$cartera->nombre}}}</option>
                                       @endforeach
