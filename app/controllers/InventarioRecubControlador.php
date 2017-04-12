@@ -10,7 +10,6 @@ use Carbon\Carbon;
 		}
 
 		public function getIndex(){
-			
 			$dataModule["status"] = Session::pull('status','nuevo');
 			$dataModule["boom"] = Session::pull('boom');
 			$dataModule["factura_error"] = Session::pull('factura_error');			

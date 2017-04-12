@@ -19,7 +19,6 @@ Route::group(array('before' => 'auth'), function(){
 	Route::get('comision/detalle/{id?}', 'ComisionControlador@detalle');	
 	Route::controller('/comision', 'ComisionControlador');
 	Route::controller('/reporte-mensual', 'ReporteMensualControlador');	
-	Route::controller('/archivo-control', 'ArchivoDocumentosControlador');	
 	Route::controller('/queja', 'QuejaControlador');
 	Route::controller('/almacen', 'AlmacenControlador');
 	Route::controller('/servicio-funeral', 'ServicioFuneralControlador');

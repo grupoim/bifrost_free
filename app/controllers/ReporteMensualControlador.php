@@ -288,7 +288,7 @@ if (Input::get('month') == 0 || Input::get('vendedor_id') == 0) {
 			->where('monto','=',Input::get('Monto'))
 			->leftJoin('totales_grafica', 'grafica_vendedores.totales_grafica_id', '=', 'totales_grafica.id')->get())
 				 { 
-		return Redirect::back()->with('status','validar');
+		return Redirect::back()->with('status','validar');;
 										
 				}else{
 				
