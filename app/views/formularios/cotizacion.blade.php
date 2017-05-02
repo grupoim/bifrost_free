@@ -14,12 +14,13 @@
 				form.serialize()
 				).done(function(data){
 					if(data.length > 0){
-						$('#cart').html('');
+						$('#cart').html('');					
 						subtotal = 0;
-						$.each(data, function(index, object){
+						$.each(data, function(index, object){  
 							$('#cart').append('<tr>'
-								+ '<td class="text-right">' + object.cantidad + '</td>'
-								+ '<td >' + object.descripcion + '</td>'
+								+ '<td class="text-right">' + object.cantidad + '<a href=' +"/cotizacion/vaciaitem/"+index+' class="btn btn-warning btn-xs"'+'>'+'<i class="fa fa-trash" aria-hidden="true"></i>'+" "+' </a>' + '</td>'
+								/*+ '<td >'+ '<a href='  +'"{{ action('CotizacionControlador@getVaciaitem',' index  ')}}"'+' class="btn btn-danger btn-xs"'+'>'+'<i class="fa fa-trash" aria-hidden="true"></i></a>' + object.descripcion + '</td>'*/
+								+ '<td >'+  object.descripcion + '</td>'
 								+ '<td class="text-right">$ ' + (parseInt(object.precio*1.16)).formatMoney(2, '.', ',') + '</td>'
 								+ '<td class="text-right">$ ' + (object.subtotal*1.16).formatMoney(2, '.', ',') + '</td>'
 								+ '</tr><tr />');
@@ -214,7 +215,7 @@
 		{{ Form::open(array('action' => 'CotizacionControlador@postStore', 'class' => 'form-horizontal', 'role' => 'form', 'id' => 'capture')) }}
 		<div class="col-md-8 col-md-offset-2">
 			<input type="hidden" name="cliente_id" value="{{{ $persona->cliente->id }}}">
-			<h3>{{{ $persona->nombres }}} {{{ $persona->apellido_paterno }}} {{{ $persona->apellido_materno }}} <a href="{{ action('ClienteControlador@getEdit', [$persona->id]) }}" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a> </h3>
+			<h3>{{{ $persona->nombres }}} {{{ $persona->apellido_paterno }}} {{{ $persona->apellido_materno }}} {{{$persona->cliente->id}}} <a href="{{ action('ClienteControlador@getEdit', [$persona->id]) }}" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a> </h3>
 			<p><strong>Email: </strong>{{{ $persona->cliente->email }}}</p>
 			<p>{{{ $persona->cliente->calle }}} {{{ $persona->cliente->numero_exterior }}},  {{{ $persona->cliente->colonia->nombre }}} C.P. {{{ $persona->cliente->colonia->codigo_postal }}}, {{{ $persona->cliente->colonia->municipio->nombre }}}</p>
 			
@@ -301,9 +302,10 @@
 
 		<div class="widget">
 			<div class="widget-head">
-				<div class="pull-left">Productos (Precios IVA incluido) </div>
+				<div class="pull-left"> @if($db->base_datos_produccion == 0)<h2><span class="label label-danger">  Advertencia, estas en la base de datos de pruebas  </span> </h2> @endif Productos (Precios IVA incluido) </div>
 				<div class="pull-right">
 					<div class="btn-group">
+						<a href="{{ action('CotizacionControlador@getVaciacart') }}" class="btn btn-danger">vaciar</a>
 						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Agregar un producto <span class="caret"></span></button>
 						<ul class="dropdown-menu">
 							<li><a href="#agregarLote" data-toggle="modal" rel="#modal-form" ><i class="fa fa-map-marker fa-fw"></i> Lote Funerario</a></li>
@@ -331,10 +333,11 @@
 						</tr>	
 					</thead>
 					<tbody id="cart">
-						@forelse($productos as $producto)
+						@forelse($productos as $key => $producto)
 						<tr>
-							<td class="text-right">{{{ $producto["cantidad"] }}}</td>
-							<td>{{{ $producto["descripcion"] or '' }}}</td>
+							
+							<td class="text-right"> {{{ $producto["cantidad" ] }}} <a href="{{ action('CotizacionControlador@getVaciaitem', $key) }}" class="btn btn-warning btn-xs"><i class="fa fa-trash" aria-hidden="true"></i> </a></td>
+							<td>{{{ $producto["descripcion"] or '' }}} </td>
 							<td class="text-right">$ {{{ number_format($producto["precio"]*1.16, 2, '.', ',') }}}</td>
 							<td class="text-right">$ {{{ number_format($producto["subtotal"]*1.16, 2, '.', ',') }}} </td>
 						</tr>
@@ -378,7 +381,7 @@
 			<div class="col-md-6">
 				<ul class="list-group">
 					@foreach($coupons as $coupon)
-					<li class="list-group-item"><input type="checkbox" value="{{{ $coupon->id }}}" name="cupon{{{ $coupon->id }}}"> {{{ number_format($coupon->descuento, 0, ".", ",") }}} · {{{ $coupon->descripcion }}}</li>
+					<li class="list-group-item"><input type="checkbox" value="{{{ $coupon->id }}}" name="cupon{{{ $coupon->id }}}"> ${{{ number_format($coupon->descuento, 0, ".", ",") }}} · {{{ $coupon->descripcion }}}</li>
 					@endforeach
 				</ul>
 			</div>

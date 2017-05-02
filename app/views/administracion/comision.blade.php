@@ -139,7 +139,7 @@ $('#warning_button').on('click', function(){
 
 
 });
-//lanza modal de detalles
+//lanza modal de anticipos
 $(document).on('click','.open_modal',function(){
 
         
@@ -246,8 +246,7 @@ $(document).on('click','.open_modal',function(){
 	           $('#abonos_window').modal('show');  
                                 
         }) 
-
-     
+    
 
     });	
 
@@ -260,7 +259,13 @@ $(document).on('click','.open_modal',function(){
 	@foreach($promotorias as $promotoria)
 	{{ Form::open(array('action' => 'ComisionControlador@postPorcentaje', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
 	<div class="col-md-4">
+                        @if($db->base_datos_produccion == 0)
+                        <div  class="alert alert-danger  text-center">
+                        @else
                         <div  class="alert alert-success  text-center">
+                        @endif
+                        
+                        
                           <h4><i class="fa fa-users"></i> {{{$promotoria->promotor}}} </h4>
 							<h4><strong>{{{$mes}}} {{{$year}}},</strong> 
 							
@@ -308,9 +313,10 @@ $(document).on('click','.open_modal',function(){
 
 <div class="widget">
 	<div class="widget-head">
-		<div class="pull-left">Comisiones pendientes</div>
+		<div class="pull-left"> @if($db->base_datos_produccion == 0)<h2><span class="label label-danger">  Advertencia, estas en la base de datos de pruebas  </span> </h2> @endif Comisiones pendientes</div>
 		<div class="pull-right">
 		<a href="#myModal" class="btn btn-primary" data-toggle="modal"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Sube Archivo </a>
+		<a href="{{action('ComisionControlador@getAnticipos')}}" class="btn btn-default" data-toggle="modal"><i class="fa fa-print" aria-hidden="true"></i> Anticipos </a>
 		<a href="{{action('ComisionControlador@getPeriodos')}}" class="btn btn-success" data-toggle="modal"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Periodos </a>
 		</div>  
 		<div class="clearfix"></div>

@@ -1,5 +1,22 @@
 @section('scripts')
 <script>
+
+
+
+
+// Cargar  la lista de clientes
+    $.ajax("{{ action('ClienteControlador@getAll') }}")
+    .success(function(data){
+      $('#nombres').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'persona_id',
+        itemSelected: function(item){
+          window.location.replace(baseUrl  + "cliente/edit/" + item);          
+        }
+      });
+    });
+
   $.ajax("http://localhost:8000/colonia/all")
   .success(function(data){
     $('#ubicacion').typeahead({
@@ -21,14 +38,14 @@
       <div class="col-md-6">
         @if($edit)
         <div class="input-group">
-          <input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off">
+          <input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off" autofocus>
           <input type="hidden" value="{{{ $persona->id }}}" name="persona_id">
           <span class="input-group-btn">
             <a class="btn btn-primary" href="{{ action('ClienteControlador@getCreate') }}"><i class="fa fa-user-plus"></i></a>
           </span>
         </div>
         @else
-          <input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control buscapersonas" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off">
+          <input type="text" value="{{{ $persona->nombres or '' }}}" class="form-control buscaclientes" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off" autofocus>
         @endif
       </div>
     </div>

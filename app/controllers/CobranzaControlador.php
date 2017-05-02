@@ -12,7 +12,7 @@ class CobranzaControlador extends ModuloControlador{
 		$recibo = Recibo::find($id);
 		$evento = new Evento();
 
-		$client_id = '830870432482-po6o126nspi5d3iukgkn7ni6m0qpg5mq.apps.googleusercontent.com';
+		$client_id = '339966467390-ca5fjvlc7lj7dm7tfbulfrg4o0bt0l8q.apps.googleusercontent.com';
 		$email_address = '830870432482-po6o126nspi5d3iukgkn7ni6m0qpg5mq@developer.gserviceaccount.com';
 		$key_file_location = app_path('key/Bifrost-7c8d70841343.p12');
 

@@ -1,7 +1,3 @@
-@section('scripts')
-
-
-@stop()
 @section('module')
 <div class="widget">
 	<div class="widget-head">
@@ -12,7 +8,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="widget-content">
-		<div class="padd">
+		<div class="padd">		
 			@if(count($cotizaciones) > 0)
 			<!-- Table Page -->
 			<div class="page-tables">
@@ -25,17 +21,21 @@
 								<th>Fecha</th>
 								<th>Cliente</th>
 								<th>Total</th>
+								<th>Mensualidad</th>
+								<th>meses</th>
 								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($cotizaciones as $cotizacion)
+							@foreach($cotizaciones as $planpagoventa=>$cotizacion)
 							<tr>
 								<td>{{{ $cotizacion->folio_solicitud }}}</td>
 								<td>{{{ $cotizacion->fecha }}}</td>
 								<td><strong>{{{ $cotizacion->cliente->persona->nombres }}} {{{ $cotizacion->cliente->persona->apellido_paterno }}} {{{ $cotizacion->cliente->persona->apellido_materno }}}</strong></td>
 								<td class="text-right">$ {{{ number_format($cotizacion->total, 2, '.', ',') }}}</td>
+								<td class="text-right">$ {{{ number_format($cotizacion->pago_regular, 2, '.', ',') }}}</td>
+								<td class="text-right">{{{$cotizacion->descripcion}}}</td>
 								@if($cotizacion->autorizado == 1)
 								<td><span class="label label-success">Autorizado</span></td>
 								@else

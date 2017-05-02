@@ -13,7 +13,7 @@
 <div class="form-group">
 	<label for="sector" class="col-md-3 control-label">Cantidad </label>
 	<div class="col-md-9">
-		<input type="number" id="cantidad" name="cantidad" class="form-control">
+		<input type="number" id="cantidad"  value="1" name="cantidad" class="form-control">
 		
 	</div>
 </div>

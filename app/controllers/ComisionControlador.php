@@ -126,6 +126,19 @@ class ComisionControlador extends ModuloControlador{
 		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.periodos_comision', $dataModule);
 	}
 
+	public function getAnticipos()
+
+	{
+		$dataModule['anticipos'] = AnticipoComision::select('vista_comision.id', 'folio_solicitud',
+			'producto', 'cliente', 'vista_comision.vendedor','vista_comision.total', 'anticipo_comision.monto as anticipo', 
+			'anticipo_comision.created_at', 'anticipo_comision.fecha as fecha_venta', 'motivos', 
+			'anticipo_comision.folio as folio_comision','anticipo_comision.id as anticipo_id')
+		->leftJoin('vista_comision', 'anticipo_comision.comision_id', '=', 'vista_comision.id')		
+		->get();
+
+		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.anticipos_comision', $dataModule);
+	}
+
 
 	public function getIndex(){
 
@@ -140,7 +153,7 @@ class ComisionControlador extends ModuloControlador{
 		setlocale(LC_TIME, 'spanish');
 
 		$dataModule['mes']= Str::title(strftime("%B",mktime(0, 0, 0, date('m'), 1, 2000)));
-
+		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();
 		
 		$fecha_fin = $finish->format('d-M-Y');
 		$dataModule['fecha_fin'] = $fecha_fin;

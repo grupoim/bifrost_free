@@ -1,0 +1,1 @@
+<li><a href="<?php echo action('VentaControlador@getIndex'); ?>">Ventas activas</a></li>

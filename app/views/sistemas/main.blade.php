@@ -7,7 +7,10 @@
 		<ul>
 			@include('menu.submenu.cotizacion')
 		</ul>
-	</li>
+		<ul>
+			@include('menu.submenu.ventas')
+		</ul>
+	</li>	
 	<li class="has_sub">
 		@include('menu.administracion')
 		<ul>

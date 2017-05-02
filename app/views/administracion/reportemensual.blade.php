@@ -75,7 +75,8 @@ Highcharts.theme = {
     },
     legend: {
         itemStyle: {
-            color: '#CCC'
+            color: '#CCC',
+            fontSize: '10.5px'
         },
         itemHoverStyle: {
             color: '#FFF'
@@ -440,26 +441,29 @@ Highcharts.chart('apiladas', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return '$'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
     legend: {
-        itemDistance: -1,
-        align: 'right',
+        itemDistance: -2,
+        align: 'center',
         x: -30,
         verticalAlign: 'top',
         y: -3,
-        floating: true,
+        floating: false,
         backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
         borderColor: '#CCC',
         borderWidth: 1,
-        shadow: false
+        shadow: false,
+        
     },
+
     tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
         pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
     },
+
     plotOptions: {
         column: {
             stacking: 'normal',
@@ -611,10 +615,6 @@ Highcharts.chart('apiladas_mtto', {
 });
 //fin ventas totales mantenimiento apiladas
 
-// ventas totales febrero 
-
-
-//fin ventas totales  febrero
 
 
 //grafica vendedores mes, 2017
@@ -625,6 +625,7 @@ Highcharts.chart('vendedores', {
     title: {
         text: ''
     },
+     
     subtitle: {
         text: ''
     },
@@ -634,6 +635,9 @@ Highcharts.chart('vendedores', {
             '{{{$ven->asesor}}}',
             @endforeach
         ],
+         labels: {
+            staggerLines: 1
+        }
     },
     yAxis: {
         min: 0,
@@ -645,7 +649,7 @@ Highcharts.chart('vendedores', {
         enabled: false
     },
     tooltip: {
-        pointFormat: false
+        pointFormat: true
     },
 
     plotOptions: {
@@ -653,7 +657,7 @@ Highcharts.chart('vendedores', {
             stacking: 'normal',
             dataLabels: {
                 enabled: true,
-                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray'
+                color: 'white'
             }
         }
     },
@@ -662,7 +666,8 @@ Highcharts.chart('vendedores', {
        
         data: [@foreach($serie_vendedores['data'] as $d) {{{round($d->monto,0)}}}, @endforeach ],
   
-    }]
+    }],
+    
 });
 //fin de grafica de vendedores 
 
@@ -731,7 +736,8 @@ Highcharts.chart('promotorias', {
                  ]
             },
             @endforeach
-            ]
+            ],
+           
 
 
 });
@@ -748,7 +754,7 @@ Highcharts.chart('VentasTotal', {
         text: ''
     },
    xAxis: {
-        categories: ['{{{$fechas['year3']}}}','{{{$fechas['year2']}}}','{{{$fechas['year1']}}}','{{{$fechas['year']}}}']
+        categories: [@foreach($totalmes as $t) '{{{$t->year}}}', @endforeach]
     },
     yAxis: {
         title: {
@@ -774,12 +780,88 @@ Highcharts.chart('VentasTotal', {
     },
 
     series: [{
-        name: '{{{$mes}}}',
-        data: [@foreach($serie_total['data'] as $d) {{{round($d->total,0)}}}, @endforeach]
+        name: '{{{$fechas['mes']}}}',
+        data: [@foreach($totalmes as $d) {{{round($d->total,0)}}}, @endforeach]
     }]
 
 });
 //fin ventas totales  febrero
+
+//grafica por meses mantenimiento
+Highcharts.chart('totales_mtto', {
+   
+   
+    chart: {
+        type: 'column',
+         
+    },
+
+
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: [
+           
+            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic',
+               
+        ],
+        crosshair: true
+    },
+     legend: {
+       
+        align: 'center',
+        verticalAlign: 'top'
+    },
+    yAxis: {
+      
+        title: {
+            text: '',
+
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:,.0f} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+        
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                color: 'white'
+            },
+        }
+    },
+   series: [ 
+
+    {
+        name: '{{{$fechas['year1']}}}',
+        data: [@foreach($mtto as $d) @if($d->year == $fechas['year1'] and $d->month <= $month) {{{round($d->total,0)}}}, @endif @endforeach]
+        
+
+    },
+
+     
+
+    {
+        name: '{{{$fechas['year']}}}',
+        data: [@foreach($mtto as $d) @if($d->year == $fechas['year'] and  $d->month <= $month) {{{round($d->total,0)}}}, @endif @endforeach]
+        
+
+    },
+   
+    ]
+});
 
 </script> 
 @stop()
@@ -844,7 +926,7 @@ Highcharts.chart('VentasTotal', {
             <th>{{{$fechas['year1']}}}</th>
             <?php $sum1 = 0;?> 
             @foreach($acumulado as $d) 
-                @if($d->year == $fechas['year1'] and $ac->month == $month)
+                @if($d->year == $fechas['year1'])
                 <?php $sum1 = $d->total + $sum1; ?>
                 <td>${{{number_format($sum1, 0, '.', ',')}}}</td> 
                 @endif
@@ -989,11 +1071,11 @@ Highcharts.chart('VentasTotal', {
 @foreach($categories as $cat)
          <tr>
             
-            <th class="text-left col-md-3">{{{$cat->nombre}}}</th>
+            <th class="text-left col-md-1">{{{$cat->nombre}}}</th>
           @foreach($serie as $ac) @if($ac->id == $cat->id  and $ac->year == $fechas['year'] )
                  
                 
-                <td class="text-left col-md-5">${{{number_format($ac->monto, 0, '.', ',')}}} </td>@endif 
+                <td class="text-center">${{{number_format($ac->monto, 0, '.', ',')}}} </td>@endif 
             @endforeach
 
 
@@ -1120,8 +1202,14 @@ Highcharts.chart('VentasTotal', {
 </div>
 
 <div class="widget">
-    <div class="widget-head">{{{$mtto}}}
-        <div class="pull-left"> <strong>{{{$mtto_totales->sum('monto')}}} </strong>Propiedades con mantenimientos activos (unidades) {{{$mes}}} de {{{$year}}}</div>
+    <div class="widget-head">
+        <div class="pull-left"> <strong> 
+        @foreach($mtto as $m)
+           
+            @if($m->month == $month and $m->year == $year)
+            {{{$m->total}}}            
+            @endif
+            @endforeach </strong>Propiedades con mantenimientos activos (unidades) {{{$mes}}} de {{{$year}}} </div>
         <div class="pull-right">
        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
        </div>  
@@ -1166,6 +1254,8 @@ Highcharts.chart('VentasTotal', {
     </div>
 
 
+    <!-- Empieza ventas totales mes febrero  -->
+    
     <div class="widget-foot">
         <div class="pull-right">
             <div class="btn-group">                
@@ -1174,16 +1264,37 @@ Highcharts.chart('VentasTotal', {
         <div class="clearfix"></div>
     </div>
 </div> 
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">@foreach($mtto as $m)
+           
+            @if($m->month == $month and $m->year == $year)
+            {{{$m->total}}}            
+            @endif
+            @endforeach  Mantenimientos activos {{{$mes}}} de {{{$year}}} </div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="totales_mtto"></div>
+
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
 
 
 <!-- Empieza ventas totales mes febrero  -->
-            <div class="widget">
-              <div class="widget-head">
-                <div class="pull-left">Venta total </div>
-
-                </div>
-              </div>
-            </div>  
+            
               <!-- Empieza Vendedores  -->
             <div class="widget">
               <div class="widget-head">
@@ -1289,4 +1400,6 @@ Highcharts.chart('VentasTotal', {
                 </div>
               </div>
             </div> 
+          {{{$mtto}}} 
+
 @stop

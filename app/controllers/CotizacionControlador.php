@@ -11,8 +11,14 @@ class CotizacionControlador extends ModuloControlador{
 
 	public function getIndex(){
 		$dataModule["cotizaciones"] = Venta::with('cliente.persona')->where('cotizacion', 1)->get();
-
+		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.cotizacion', $dataModule);
+	}
+
+	public function getAllcotizacion(){
+		$cotizaciones = Venta::with('cliente.persona')->where('cotizacion', 1)->get();
+		
+		return  $cotizaciones;
 	}
 
 	public function getTotal(){
@@ -171,30 +177,76 @@ public function postServicio(){
 	}
 
 	public function getContratar($id){
-		$cotizacion = Venta::with('planpagoventa')->find($id);
+		$cotizacion = Venta::with('planpagoventa')->find($id); 
 
-		$recibo = new Recibo();
-		$recibo->fecha_limite = Carbon\Carbon::now();
+		$ultimo_recibo_venta = Recibo::select(DB::raw( 'IFNULL(MAX(recibo.consecutivo),0) AS last_consecutive'))->where('venta_id', $cotizacion->id)->get();
+
+		/*$recibo = new Recibo();
+		$recibo->fecha_limite = Carbon::now();
+		$recibo->consecutivo = $ultimo_recibo_venta + 1;
+		
 		$plan_pago = PlanPago::find($cotizacion->planpagoventa[0]->plan_pago_id);
+		
+		if ($plan_pago->porcentaje_anticipo == 0) {
+		$recibo->monto = $cotizacion->planpagoventa[0]->pago_regular;	# code...
+		}else{
+
 		$recibo->monto = ($cotizacion->total * $plan_pago->porcentaje_anticipo) / 100;
+		}
 		$cotizacion->cotizacion = 0;
+		
 		$cotizacion->recibo()->save($recibo);
-		$cotizacion->save();
-		return Redirect::action('CotizacionControlador@getIndex');
+		
+		$cotizacion->save();*/
+		//echo DNS1D::getBarcodeHTML("4445645656", "EAN13");
+		echo $ultimo_recibo_venta;
+		/*return Redirect::action('CotizacionControlador@getIndex');*/
 	}
+
+	public function getVaciacart(){
+
+
+		Session::forget('cotizacion.productos');
+		return Redirect::back();
+	}
+	
+
+	 public function getVaciaitem($key){
+	 	//$data = Session::get('productos'); 	
+
+	 	Session::forget('productos.'.$key);
+
+	 	return Redirect::back();
+
+	 	
+
+	 }
+
+	  public function getItem(){
+	 	//$data = Session::get('productos'); 	
+
+	 	$data = Session::get('productos');
+
+	 	return $data;
+
+	 	
+
+	 }
 
 	public function getCreate($id)
 	{
 		$data["productoz"] = Producto::select('producto.id as id', 'producto.nombre as name', 'precio.monto as cost')->leftJoin('precio', 'producto.id', '=', 'precio.producto_id')->where('precio.activo', 1)->get();
 		$data["plans"] = PlanPago::all();
 		$data["productos"] = Session::get('productos', array());
+		$data['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();
 		$total = 0;
-		foreach($data["productos"] as $producto){
-			$total += $producto["subtotal"];
+		foreach($data["productos"] as $key => $producto){
+			$total += $producto["subtotal"];			
 		}
 		$data["total"] = $total;
 		$data["persona"]  = Persona::with('cliente', 'cliente.colonia', 'cliente.colonia.municipio')->find($id);
-		$data["coupons"] = Cupon::where('cliente_id', $id)->get();
+		//$persona = Persona::with('cliente', 'cliente.colonia', 'cliente.colonia.municipio')->find($id);
+		$data["coupons"] = Cupon::where('cliente_id', $data["persona"]->cliente->id)->get();
 		return View::make($this->department.".main", $this->data)->nest('child', 'formularios.cotizacion', $data);
 	}
 
@@ -210,8 +262,7 @@ public function postServicio(){
 										'subtotal'=> $cantidad * $precio->monto, 
 										'descripcion' =>$producto->nombre,
 										'cantidad' => $cantidad,
-										'porcentaje_comision' => $producto->porcentaje_comision));		
-										
+										'porcentaje_comision' => $producto->porcentaje_comision));
  
 
 				Session::put('productos',$productos);

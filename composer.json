@@ -9,7 +9,8 @@
 		"navruzm/lmongo": "*@dev",
 		"maatwebsite/excel": "~2.1.0",
 		"thujohn/pdf": "dev-master",
-		"barryvdh/laravel-dompdf": "0.4.*"
+		"barryvdh/laravel-dompdf": "0.4.*",
+		
 		
 	},
 	"autoload": {

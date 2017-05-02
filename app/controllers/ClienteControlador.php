@@ -60,6 +60,27 @@ class ClienteControlador extends \ModuloControlador {
 		$cliente->referencias = Input::get('referencias');
 		$persona->cliente()->save($cliente);
 
+
+		//celular
+		if(Input::has('celular')){
+		$celular_cliente = new Telefono();
+		$celular_cliente->cliente_id = $cliente->id;
+		$celular_cliente->tipo_telefono_id = 1;
+		$celular_cliente->telefono = Input::get('celular');
+		$celular_cliente->codigo_pais = 52;
+		$celular_cliente->save();
+	}
+		//casa
+		if(Input::has('telefono_casa')){
+		$telefono_casa = new Telefono();
+		$telefono_casa->cliente_id = $cliente->id;
+		$telefono_casa->tipo_telefono_id = 2;
+		$telefono_casa->telefono = Input::get('celular');
+		$telefono_casa->codigo_pais = 52;
+		$telefono_casa->save();
+	}
+
+
 		return Redirect::action('CotizacionControlador@getCreate', $persona->id);
 	}
 
@@ -131,7 +152,7 @@ class ClienteControlador extends \ModuloControlador {
 	}
 	public function getAll() {			 
 
-			$cliente = VistaClientes::select('id', (DB::raw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) as nombre")))->get();
+			$cliente = VistaClientes::select('id','persona_id', (DB::raw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) as nombre")))->get();
 			return Response::Json($cliente);
 		}
 

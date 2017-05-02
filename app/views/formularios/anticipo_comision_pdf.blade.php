@@ -90,13 +90,16 @@ span {
 <tr class="alt"> <td><h3> Cliente <h3></td><td><h3>{{{$detalle_anticipo->cliente}}}</h3></td></tr>
 <tr><td><h3>Producto </h3></td><td><h3>{{{$detalle_anticipo->producto}}}</h3></td></tr>
 <tr class="alt"> <td><h3> Precio de venta <h3></td><td><h3>$ {{{number_format($detalle_anticipo->total, 2, ".", ",")}}}</h3></td></tr>
-<tr><td><h3>Monto Comisionado </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable, 2, ".", ",")}}}</h3></td></tr>
-<tr class="alt"> <td><h3> Porcentaje de comision <h3></td><td><h3>{{{$detalle_anticipo->porcentaje}}}%</h3></td></tr>
+<tr ><td><h3>Monto total Comisionado </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable, 2, ".", ",")}}}</h3></td></tr>
+<tr class="alt"><td><h3>Monto entregado </h3></td><td><h3>$ {{{number_format($detalle_anticipo->monto, 2, ".", ",")}}}</h3></td></tr>
+<tr ><td><h3>Pendiente por pagar </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable - $detalle_anticipo->monto, 2, ".", ",")}}}</h3></td></tr>
+<tr class="alt" > <td><h3> Porcentaje de comision <h3></td><td><h3>{{{$detalle_anticipo->porcentaje}}}%</h3></td></tr>
 
 </tbody>
 </table></div>
         
 <br>
+
               
                 <div class="box-footer clearfix">
                   
@@ -112,7 +115,7 @@ span {
        
         </div><!-- /.box-header --> 
 
-       <h2 align="right" >Total por pagar: <strong class="total">$ {{{number_format($detalle_anticipo->monto, 2, ".", ",")}}}</strong></h2>
+       <h2 align="right" >Total a pagar: <strong class="total">$ {{{number_format($detalle_anticipo->monto, 2, ".", ",")}}}</strong></h2>
         <br>
 <br><br>
         

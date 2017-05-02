@@ -6,17 +6,17 @@
 		function __construct(){
 			$this->data["module"] = "Servicios Funerales";
 
-			$this->data["icon"] = "hospital";
+			$this->data["icon"] = "hospital-o";
 			$this->department = Auth::user()->departamento->nombre;
 		}
 		
 
 		public function getIndex(){	
-			/*$data["sectores"] = Sector::all(); 			
- 			$data["recintos"]= Recinto::all();
-
-			return View::make($this->department.".main", $this->data)->nest('child','operaciones.lotesfunerarios', $data);*/
-        }
+		
+		$dataModule["servicios"] = VistaServicioFuneralCapilla::all();
+		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
+		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.serviciocapilla', $dataModule);}
+       
         public function getCreate(){
 			$modal['title'] = 'Nuevo Servicio';
 			$modal['button_cancel'] = 'Cancelar';

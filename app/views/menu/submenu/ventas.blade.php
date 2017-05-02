@@ -1,0 +1,1 @@
+<li><a href="{{ action('VentaControlador@getIndex') }}">Ventas activas</a></li>

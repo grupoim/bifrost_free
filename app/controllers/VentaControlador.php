@@ -1,7 +1,22 @@
 <?php 
 	class VentaControlador extends ModuloControlador{
+
+		function __construct(){
+		$this->data["module"] = "Seguimiento de ventas";
+		$this->data["icon"] = "shopping-cart";
+		$this->department = Auth::user()->departamento->nombre;
+	}
 		
 		public function getIndex(){
+
+		
+		$dataModule["cotizaciones"] = Venta::with('cliente.persona')
+		->leftJoin('plan_pago_venta', 'venta.id', '=', 'plan_pago_venta.venta_id')
+		->leftJoin('plan_pago', 'plan_pago_venta.plan_pago_id', '=', 'plan_pago.id')
+		->where('cotizacion',0)->get();
+		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
+		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.ventas', $dataModule);
+	
 			
 		}
 

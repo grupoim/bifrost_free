@@ -3,7 +3,7 @@
 		public $department;
 
 		function __construct(){
-		$this->data["module"] = 'Promotores y Asesores';
+		$this->data["module"] = 'Promotores y Asesores';		
 		$this->data["icon"] ='users';
 		$this->department = Auth::user()->departamento->nombre;
 		}
@@ -13,7 +13,6 @@
 			$dataModule["status"] = Session::pull('status');
 			$dataModule["edit"] = false;
 			$dataModule["vendedores"] = VistaAsesorPromotor::all();
-
 			$dataModule["promotores"] = VistaPromotores::all();			
 							
  			return View::make($this->department.".main", $this->data)->nest('child', 'sistemas.asesor', $dataModule);

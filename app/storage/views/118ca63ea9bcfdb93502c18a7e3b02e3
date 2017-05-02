@@ -5,7 +5,10 @@
 		<ul>
 			<?php echo $__env->make('menu.submenu.cotizacion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 		</ul>
-	</li>
+		<ul>
+			<?php echo $__env->make('menu.submenu.ventas', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+		</ul>
+	</li>	
 	<li class="has_sub">
 		<?php echo $__env->make('menu.administracion', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 		<ul>

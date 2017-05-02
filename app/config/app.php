@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'G$qu8bc25NJSehz?zB@#CJ*E#hcz+ZPe',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -124,6 +124,7 @@ return array(
 		'Thujohn\Pdf\PdfServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
+		
 
 	),
 
@@ -194,6 +195,7 @@ return array(
 		'PDF' 				=> 'Thujohn\Pdf\PdfFacade',
 		'DOPDF'   			=> 'Barryvdh\DomPDF\Facade',
 		'Excel' 			=> 'Maatwebsite\Excel\Facades\Excel',
+		
 	),
 
 );

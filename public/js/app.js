@@ -216,6 +216,8 @@ $(document).on('ready', function(){
 				window.location.replace(baseUrl  + "cliente/edit/" + item);
 			}
 		});
+
+		
 	});
 	$.ajax(baseUrl + "venta/estadisticos")
 	.success(function(data){

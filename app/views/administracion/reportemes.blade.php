@@ -1,4 +1,4 @@
-<?php $__env->startSection('scripts'); ?>
+@section('scripts')
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -75,8 +75,7 @@ Highcharts.theme = {
     },
     legend: {
         itemStyle: {
-            color: '#CCC',
-            fontSize: '10.5px'
+            color: '#CCC'
         },
         itemHoverStyle: {
             color: '#FFF'
@@ -304,20 +303,20 @@ Highcharts.chart('acumulados', {
       
     },
     series: [{
-        name:'<?php echo e($fechas['year3']); ?>', <?php $sum3 = 0; ?> 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year3']): ?> <?php $sum3 = $ac->total + $sum3; ?>   <?php echo e(round($sum3,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year3']}}}', <?php $sum3 = 0; ?> 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year3']) <?php $sum3 = $ac->total + $sum3; ?>   {{{round($sum3,0)}}}, @endif @endforeach ]
        },
        {
-        name:'<?php echo e($fechas['year2']); ?>', <?php $sum2 = 0; ?> 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year2']): ?> <?php $sum2 = $ac->total + $sum2; ?>   <?php echo e(round($sum2,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year2']}}}', <?php $sum2 = 0; ?> 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year2']) <?php $sum2 = $ac->total + $sum2; ?>   {{{round($sum2,0)}}}, @endif @endforeach ]
        },
        {
-        name:'<?php echo e($fechas['year1']); ?>', <?php $sum1 = 0; ?> 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year1']): ?> <?php $sum1 = $ac->total + $sum1; ?>   <?php echo e(round($sum1,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year1']}}}', <?php $sum1 = 0; ?> 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year1']) <?php $sum1 = $ac->total + $sum1; ?>   {{{round($sum1,0)}}}, @endif @endforeach ]
        },
       {
-        name:'<?php echo e($fechas['year']); ?>', <?php $sumx = 0; ?> 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year']): ?> <?php $sumx = $ac->total + $sumx; ?>   <?php echo e(round($sumx,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year']}}}', <?php $sumx = 0; ?> 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year']) <?php $sumx = $ac->total + $sumx; ?>   {{{round($sumx,0)}}}, @endif @endforeach ]
       }
 
      ]
@@ -343,9 +342,9 @@ Highcharts.chart('container', {
     },
     xAxis: {
         categories: [
-            <?php foreach($categories as $cat): ?>
-            '<?php echo e($cat->nombre); ?>',
-            <?php endforeach; ?>
+            @foreach($categories as $cat)
+            '{{{$cat->nombre}}}',
+            @endforeach
             
             
         ],
@@ -382,22 +381,22 @@ Highcharts.chart('container', {
    
 
    {
-        name: '<?php echo e($fechas['year3']); ?>',
-        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year3']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
+        name: '{{{$fechas['year3']}}}',
+        data: [@foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year3']) {{{round($d->monto,0)}}}, @endif @endforeach]
         
 
     },
 
    {
-        name: '<?php echo e($fechas['year2']); ?>',
-        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year2']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
+        name: '{{{$fechas['year2']}}}',
+        data: [@foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year2']) {{{round($d->monto,0)}}}, @endif @endforeach]
         
 
     },
 
     {
-        name: '<?php echo e($fechas['year1']); ?>',
-        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year1']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
+        name: '{{{$fechas['year1']}}}',
+        data: [@foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year1']) {{{round($d->monto,0)}}}, @endif @endforeach]
         
 
     },
@@ -405,8 +404,8 @@ Highcharts.chart('container', {
      
 
     {
-        name: '<?php echo e($fechas['year']); ?>',
-        data: [<?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year']): ?> <?php echo e(round($d->monto,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
+        name: '{{{$fechas['year']}}}',
+        data: [@foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year']) {{{round($d->monto,0)}}}, @endif @endforeach]
         
 
     },
@@ -441,29 +440,26 @@ Highcharts.chart('apiladas', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return '$'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
     legend: {
-        itemDistance: -2,
-        align: 'center',
+        itemDistance: -1,
+        align: 'right',
         x: -30,
         verticalAlign: 'top',
         y: -3,
-        floating: false,
+        floating: true,
         backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
         borderColor: '#CCC',
         borderWidth: 1,
-        shadow: false,
-        
+        shadow: false
     },
-
     tooltip: {
         headerFormat: '<b>{point.x}</b><br/>',
         pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
     },
-
     plotOptions: {
         column: {
             stacking: 'normal',
@@ -476,13 +472,13 @@ Highcharts.chart('apiladas', {
     
 
     series: [
-            <?php foreach($categories as $cat): ?>
-            {name:'<?php echo e($cat->nombre); ?>', 
-            data:[<?php foreach($serie as $ac): ?> <?php if($ac->id == $cat->id  and $ac->year == $fechas['year'] ): ?><?php echo e($ac->monto); ?>,<?php endif; ?>
-                 <?php endforeach; ?> 
+            @foreach($categories as $cat)
+            {name:'{{{$cat->nombre}}}', 
+            data:[@foreach($serie as $ac) @if($ac->id == $cat->id  and $ac->year == $fechas['year'] ){{{$ac->monto}}},@endif
+                 @endforeach 
                  ]
             },
-            <?php endforeach; ?>
+            @endforeach
             ]
 
 
@@ -530,20 +526,20 @@ Highcharts.chart('totales_mes', {
       
     },
     series: [{
-        name:'<?php echo e($fechas['year3']); ?>', 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year3']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year3']}}}', 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year3']) {{{round($ac->total,0)}}}, @endif @endforeach ]
        },
        {
-        name:'<?php echo e($fechas['year2']); ?>', 
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year2']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year2']}}}', 
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year2']) {{{round($ac->total,0)}}}, @endif @endforeach ]
        },
        {
-        name:'<?php echo e($fechas['year1']); ?>',
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year1']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year1']}}}',
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year1']) {{{round($ac->total,0)}}}, @endif @endforeach ]
        },
       {
-        name:'<?php echo e($fechas['year']); ?>',  
-        data: [<?php foreach($acumulado as $ac): ?> <?php if($ac->year == $fechas['year']): ?> <?php echo e(round($ac->total,0)); ?>, <?php endif; ?> <?php endforeach; ?> ]
+        name:'{{{$fechas['year']}}}',  
+        data: [@foreach($acumulado as $ac) @if($ac->year == $fechas['year']) {{{round($ac->total,0)}}}, @endif @endforeach ]
       }
 
      ]
@@ -562,7 +558,7 @@ Highcharts.chart('apiladas_mtto', {
         text: ''
     },
     xAxis: {
-        categories: [<?php foreach($categories_mtto as $cat): ?>'<?php echo $cat->nombre; ?>', <?php endforeach; ?>]
+        categories: [@foreach($categories_mtto as $cat)'{{$cat->nombre}}', @endforeach]
     },
     yAxis: {
         
@@ -608,7 +604,7 @@ Highcharts.chart('apiladas_mtto', {
     },
     
 
-    series: [<?php foreach($periodo_mtto as $cat): ?>{name:'<?php echo e($cat->nombre); ?>',data:[<?php foreach($mtto_totales as $ac): ?> <?php if($ac->periodo_id == $cat->id and ($ac->year == $year and $ac->month == $month)): ?><?php echo e($ac->monto); ?>,<?php endif; ?> <?php endforeach; ?>]},<?php endforeach; ?>
+    series: [@foreach($periodo_mtto as $cat){name:'{{{$cat->nombre}}}',data:[@foreach($mtto_totales as $ac) @if($ac->periodo_id == $cat->id and ($ac->year == $year and $ac->month == $month)){{{$ac->monto}}},@endif @endforeach]},@endforeach
             ]
 
 
@@ -631,9 +627,9 @@ Highcharts.chart('vendedores', {
     },
           xAxis: {
         categories: [
-            <?php foreach($vendedores as $ven): ?>
-            '<?php echo e($ven->asesor); ?>',
-            <?php endforeach; ?>
+            @foreach($vendedores as $ven)
+            '{{{$ven->asesor}}}',
+            @endforeach
         ],
          labels: {
             staggerLines: 1
@@ -649,7 +645,7 @@ Highcharts.chart('vendedores', {
         enabled: false
     },
     tooltip: {
-        pointFormat: true
+        pointFormat: false
     },
 
     plotOptions: {
@@ -657,14 +653,14 @@ Highcharts.chart('vendedores', {
             stacking: 'normal',
             dataLabels: {
                 enabled: true,
-                color: 'white'
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray'
             }
         }
     },
 
     series: [{
        
-        data: [<?php foreach($serie_vendedores['data'] as $d): ?> <?php echo e(round($d->monto,0)); ?>, <?php endforeach; ?> ],
+        data: [@foreach($serie_vendedores['data'] as $d) {{{round($d->monto,0)}}}, @endforeach ],
   
     }],
     
@@ -729,13 +725,13 @@ Highcharts.chart('promotorias', {
     
 
     series: [
-            <?php foreach($promotor as $pro): ?>
-            {name:'<?php echo e($pro->promotor); ?>', 
-            data:[<?php foreach($serie_promotoria as $sep): ?> <?php if($sep->promotor == $pro->promotor): ?><?php echo e($sep->total); ?>,<?php endif; ?>
-                 <?php endforeach; ?> 
+            @foreach($promotor as $pro)
+            {name:'{{{$pro->promotor}}}', 
+            data:[@foreach($serie_promotoria as $sep) @if($sep->promotor == $pro->promotor){{{$sep->total}}},@endif
+                 @endforeach 
                  ]
             },
-            <?php endforeach; ?>
+            @endforeach
             ],
            
 
@@ -754,7 +750,7 @@ Highcharts.chart('VentasTotal', {
         text: ''
     },
    xAxis: {
-        categories: [<?php foreach($totalmes as $t): ?> '<?php echo e($t->year); ?>', <?php endforeach; ?>]
+        categories: ['{{{$fechas['year3']}}}','{{{$fechas['year2']}}}','{{{$fechas['year1']}}}','{{{$fechas['year']}}}']
     },
     yAxis: {
         title: {
@@ -780,93 +776,17 @@ Highcharts.chart('VentasTotal', {
     },
 
     series: [{
-        name: '<?php echo e($fechas['mes']); ?>',
-        data: [<?php foreach($totalmes as $d): ?> <?php echo e(round($d->total,0)); ?>, <?php endforeach; ?>]
+        name: '{{{$mes}}}',
+        data: [@foreach($serie_total['data'] as $d) {{{round($d->total,0)}}}, @endforeach]
     }]
 
 });
 //fin ventas totales  febrero
 
-//grafica por meses mantenimiento
-Highcharts.chart('totales_mtto', {
-   
-   
-    chart: {
-        type: 'column',
-         
-    },
-
-
-    title: {
-        text: ''
-    },
-    subtitle: {
-        text: ''
-    },
-    xAxis: {
-        categories: [
-           
-            'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic',
-               
-        ],
-        crosshair: true
-    },
-     legend: {
-       
-        align: 'center',
-        verticalAlign: 'top'
-    },
-    yAxis: {
-      
-        title: {
-            text: '',
-
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:,.0f} </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-        
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0,
-            dataLabels: {
-                enabled: true,
-                color: 'white'
-            },
-        }
-    },
-   series: [ 
-
-    {
-        name: '<?php echo e($fechas['year1']); ?>',
-        data: [<?php foreach($mtto as $d): ?> <?php if($d->year == $fechas['year1'] and $d->month <= $month): ?> <?php echo e(round($d->total,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
-        
-
-    },
-
-     
-
-    {
-        name: '<?php echo e($fechas['year']); ?>',
-        data: [<?php foreach($mtto as $d): ?> <?php if($d->year == $fechas['year'] and  $d->month <= $month): ?> <?php echo e(round($d->total,0)); ?>, <?php endif; ?> <?php endforeach; ?>]
-        
-
-    },
-   
-    ]
-});
-
 </script> 
-<?php $__env->stopSection(); ?>
+@stop()
 
-<?php $__env->startSection('module'); ?>
+@section('module')
 
 
 <div class="widget">
@@ -903,44 +823,44 @@ Highcharts.chart('totales_mtto', {
     <tbody>
            
         <tr>
-            <th><?php echo e($fechas['year3']); ?></th>
+            <th>{{{$fechas['year3']}}}</th>
             <?php $sum3 = 0;?> 
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year3']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year3'])
                 <?php $sum3 = $d->total + $sum3; ?>
-                <td>$<?php echo e(number_format($sum3, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($sum3, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
         </tr>
        <tr>
-            <th><?php echo e($fechas['year2']); ?></th>
+            <th>{{{$fechas['year2']}}}</th>
             <?php $sum2 = 0;?> 
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year2']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year2'])
                 <?php $sum2 = $d->total + $sum2; ?>
-                <td>$<?php echo e(number_format($sum2, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($sum2, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
         </tr>
         <tr>
-            <th><?php echo e($fechas['year1']); ?></th>
+            <th>{{{$fechas['year1']}}}</th>
             <?php $sum1 = 0;?> 
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year1']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year1'])
                 <?php $sum1 = $d->total + $sum1; ?>
-                <td>$<?php echo e(number_format($sum1, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($sum1, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
         </tr>
         <tr>
-            <th><?php echo e($fechas['year']); ?></th>
+            <th>{{{$fechas['year']}}}</th>
             <?php $sumx = 0;?> 
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year'])
                 <?php $sumx = $d->total + $sumx; ?>
-                <td>$<?php echo e(number_format($sumx, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($sumx, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
 
 
         </tr>
@@ -967,7 +887,7 @@ Highcharts.chart('totales_mtto', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Comparativas por producto <?php echo e($fechas['mes']); ?>  <?php echo e($fechas['year3']); ?>, <?php echo e($fechas['year2']); ?>, <?php echo e($fechas['year1']); ?> y <?php echo e($fechas['year']); ?></div>
+        <div class="pull-left">Comparativas por producto {{{$fechas['mes']}}}  {{{$fechas['year3']}}}, {{{$fechas['year2']}}}, {{{$fechas['year1']}}} y {{{$fechas['year']}}}</div>
         <div class="pull-right">
         <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
         </div>  
@@ -1003,22 +923,22 @@ Highcharts.chart('totales_mtto', {
         <tr>
             
         
-            <th><?php echo e($fechas['year3']); ?></th>
+            <th>{{{$fechas['year3']}}}</th>
             
-           <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year3']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
+           @foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year3'])<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td> @endif @endforeach
         </tr>
         <tr>
-            <th><?php echo e($fechas['year2']); ?></th>
+            <th>{{{$fechas['year2']}}}</th>
              
-           <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year2']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
+           @foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year2'])<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td> @endif @endforeach
         </tr>
         <tr>
-            <th><?php echo e($fechas['year1']); ?></th>
-             <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year1']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
+            <th>{{{$fechas['year1']}}}</th>
+             @foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year1'])<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td> @endif @endforeach
         </tr>
         <tr>
-            <th><?php echo e($fechas['year']); ?></th>
-             <?php foreach($serie as $d): ?> <?php if($d->month == $fechas['month'] and $d->year == $fechas['year']): ?><td class="text-center">  $<?php echo e(number_format($d->monto, 0, '.', ',')); ?></td> <?php endif; ?> <?php endforeach; ?>
+            <th>{{{$fechas['year']}}}</th>
+             @foreach($serie as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year'])<td class="text-center">  ${{{number_format($d->monto, 0, '.', ',')}}}</td> @endif @endforeach
         </tr> 
        
     </tbody>
@@ -1045,7 +965,7 @@ Highcharts.chart('totales_mtto', {
 
 <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Ventas totales <?php echo e($mes); ?> de <?php echo e($year); ?></div>
+        <div class="pull-left">Ventas totales {{{$mes}}} de {{{$year}}}</div>
         <div class="pull-right">
        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
        </div>  
@@ -1068,18 +988,18 @@ Highcharts.chart('totales_mtto', {
     <tbody>
 
 
-<?php foreach($categories as $cat): ?>
+@foreach($categories as $cat)
          <tr>
             
-            <th class="text-left col-md-1"><?php echo e($cat->nombre); ?></th>
-          <?php foreach($serie as $ac): ?> <?php if($ac->id == $cat->id  and $ac->year == $fechas['year'] ): ?>
+            <th class="text-left col-md-3">{{{$cat->nombre}}}</th>
+          @foreach($serie as $ac) @if($ac->id == $cat->id  and $ac->year == $fechas['year'] )
                  
                 
-                <td class="text-center">$<?php echo e(number_format($ac->monto, 0, '.', ',')); ?> </td><?php endif; ?> 
-            <?php endforeach; ?>
+                <td class="text-left col-md-5">${{{number_format($ac->monto, 0, '.', ',')}}} </td>@endif 
+            @endforeach
 
 
-        </tr><?php endforeach; ?>
+        </tr>@endforeach
       
         
        
@@ -1134,50 +1054,50 @@ Highcharts.chart('totales_mtto', {
     <tbody>
            
          <tr>
-            <th><?php echo e($fechas['year3']); ?></th>
+            <th>{{{$fechas['year3']}}}</th>
              
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year3']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year3'])
                 
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
 
 
         </tr>
         <tr>
-            <th><?php echo e($fechas['year2']); ?></th>
+            <th>{{{$fechas['year2']}}}</th>
              
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year2']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year2'])
                 
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
 
 
         </tr>
          <tr>
-            <th><?php echo e($fechas['year1']); ?></th>
+            <th>{{{$fechas['year1']}}}</th>
              
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year1']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year1'])
                 
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
 
 
         </tr>
         <tr>
-            <th><?php echo e($fechas['year']); ?></th>
+            <th>{{{$fechas['year']}}}</th>
              
-            <?php foreach($acumulado as $d): ?> 
-                <?php if($d->year == $fechas['year']): ?>
+            @foreach($acumulado as $d) 
+                @if($d->year == $fechas['year'])
                 
-                <td>$<?php echo e(number_format($d->total, 0, '.', ',')); ?></td> 
-                <?php endif; ?>
-            <?php endforeach; ?>
+                <td>${{{number_format($d->total, 0, '.', ',')}}}</td> 
+                @endif
+            @endforeach
 
 
         </tr>
@@ -1202,14 +1122,8 @@ Highcharts.chart('totales_mtto', {
 </div>
 
 <div class="widget">
-    <div class="widget-head">
-        <div class="pull-left"> <strong> 
-        <?php foreach($mtto as $m): ?>
-           
-            <?php if($m->month == $month and $m->year == $year): ?>
-            <?php echo e($m->total); ?>            
-            <?php endif; ?>
-            <?php endforeach; ?> </strong>Propiedades con mantenimientos activos (unidades) <?php echo e($mes); ?> de <?php echo e($year); ?> </div>
+    <div class="widget-head">{{{$mtto}}}
+        <div class="pull-left"> <strong>{{{$mtto_totales->sum('monto')}}} </strong>Propiedades con mantenimientos activos (unidades) {{{$mes}}} de {{{$year}}}</div>
         <div class="pull-right">
        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
        </div>  
@@ -1226,23 +1140,23 @@ Highcharts.chart('totales_mtto', {
     <thead>
         <tr> 
             <th></th>
-           <?php foreach($categories_mtto as $cat): ?><th> <?php echo e($cat->nombre); ?> </th><?php endforeach; ?>
+           @foreach($categories_mtto as $cat)<th> {{{$cat->nombre}}} </th>@endforeach
         </tr>
     </thead>
     <tbody>
 
 
-<?php foreach($periodo_mtto as $cat): ?>
+@foreach($periodo_mtto as $cat)
          <tr>
             
-            <th class="text-left col-md-1"><?php echo e($cat->nombre); ?></th>
-           <?php foreach($mtto_totales as $ac): ?> 
+            <th class="text-left col-md-1">{{{$cat->nombre}}}</th>
+           @foreach($mtto_totales as $ac) 
                  
                 
-                <?php if($ac->periodo_id == $cat->id  and ($ac->year == $year and $ac->month == $month)): ?><td class="text-center col-md-1"><?php echo e(number_format($ac->monto, 0, '.', ',')); ?> </td><?php endif; ?> 
-            <?php endforeach; ?>
+                @if($ac->periodo_id == $cat->id  and ($ac->year == $year and $ac->month == $month))<td class="text-center col-md-1">{{{number_format($ac->monto, 0, '.', ',')}}} </td>@endif 
+            @endforeach
 
-        </tr><?php endforeach; ?>
+        </tr>@endforeach
       
         
        
@@ -1254,8 +1168,6 @@ Highcharts.chart('totales_mtto', {
     </div>
 
 
-    <!-- Empieza ventas totales mes febrero  -->
-    
     <div class="widget-foot">
         <div class="pull-right">
             <div class="btn-group">                
@@ -1264,33 +1176,6 @@ Highcharts.chart('totales_mtto', {
         <div class="clearfix"></div>
     </div>
 </div> 
-<div class="widget">
-              <div class="widget-head">
-                <div class="pull-left"><?php foreach($mtto as $m): ?>
-           
-            <?php if($m->month == $month and $m->year == $year): ?>
-            <?php echo e($m->total); ?>            
-            <?php endif; ?>
-            <?php endforeach; ?>  Mantenimientos activos <?php echo e($mes); ?> de <?php echo e($year); ?> </div>
-                <div class="widget-icons pull-right">
-                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-                </div>  
-                <div class="clearfix"></div>
-              </div>
-              <div class="widget-content">
-                <div class="padd">
-                 
-      
-                <div id="totales_mtto"></div>
-
-                 <!-- Content goes here -->
-                </div>
-                <div class="widget-foot">
-                  <!-- Footer goes here -->
-                </div>
-              </div>
-            </div>
 
 
 <!-- Empieza ventas totales mes febrero  -->
@@ -1298,7 +1183,7 @@ Highcharts.chart('totales_mtto', {
               <!-- Empieza Vendedores  -->
             <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Vendedores <?php echo e($mes); ?> <?php echo e($year); ?></div>
+                <div class="pull-left">Vendedores {{{$mes}}} {{{$year}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1322,7 +1207,7 @@ Highcharts.chart('totales_mtto', {
               <!-- Empieza Promotorias  -->
                      <div class="widget">
     <div class="widget-head">
-        <div class="pull-left">Promotorias <?php echo e($year); ?></div>
+        <div class="pull-left">Promotorias {{{$year}}}</div>
         <div class="pull-right">
        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>  
        </div>  
@@ -1345,17 +1230,17 @@ Highcharts.chart('totales_mtto', {
     <tbody>
 
 
-<?php foreach($promotor as $pro): ?>
+@foreach($promotor as $pro)
         <tr>
             
-            <th class="text-right" class="col-md-3"><?php echo e($pro->promotor); ?></th>
-           <?php foreach($serie_promotoria as $sep): ?> 
+            <th class="text-right" class="col-md-3">{{{$pro->promotor}}}</th>
+           @foreach($serie_promotoria as $sep) 
                  
                 
-                <?php if($sep->promotor == $pro->promotor): ?><td class="text-left">$<?php echo e(number_format($sep->total, 0, '.', ',')); ?> </td><?php endif; ?> 
-            <?php endforeach; ?>
+                @if($sep->promotor == $pro->promotor)<td class="text-left">${{{number_format($sep->total, 0, '.', ',')}}} </td>@endif 
+            @endforeach
 
-        </tr><?php endforeach; ?>
+        </tr>@endforeach
        
         
        
@@ -1400,6 +1285,4 @@ Highcharts.chart('totales_mtto', {
                 </div>
               </div>
             </div> 
-          <?php echo e($mtto); ?> 
-
-<?php $__env->stopSection(); ?>
+@stop
