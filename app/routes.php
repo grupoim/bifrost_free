@@ -16,7 +16,9 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/cotizacion', 'CotizacionControlador');
 	Route::controller('/cobranza', 'CobranzaControlador');
 	
-	Route::get('comision/detalle/{id?}', 'ComisionControlador@detalle');	
+	Route::get('comision/detalle/{id?}', 'ComisionControlador@detalle');
+	Route::get('venta/abonar/{id?}', 'VentaControlador@abonar');
+	Route::get('cotizacion/abonar/{id?}', 'CotizacionControlador@abonar');	
 	Route::controller('/comision', 'ComisionControlador');
 	Route::controller('/reporte-mensual', 'ReporteMensualControlador');	
 	Route::get('/reportes/{year}/{month?}', 'ReporteMensualControlador@detalle');

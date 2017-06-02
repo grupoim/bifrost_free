@@ -88,7 +88,7 @@ $("#ventas").chosen({
 					<a href="#myModal" data-toggle="modal" rel="#modal-form" title="Añade un pago al presente folio " class="btn btn-success" id="btnabono" ><i class="fa fa-plus" aria-hidden="true"></i> Abono</a>
 					@if($pendientes == 0)
 						<a href="{{action('ComisionControlador@getDownload', $periodo_comision->id)}}" title="Consulta para alta en Sistema PFG" class="btn btn-primary" data-toggle="modal" id="btnsql"><i class="fa fa-download" aria-hidden="true"></i> Sql PFG</a> 
-						<a href="{{action('ComisionControlador@getPdftotales', $periodo_comision->id)}}"  title="Descarga los totales a recibir por vendedor en un archivo pdf"class="btn btn-default" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Reporte</a> 
+						<a href="{{action('ComisionControlador@getPdftotales', $periodo_comision->id)}}"  title="Descarga los totales a recibir por vendedor en un archivo pdf"class="btn btn-default" target="blank" ><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Reporte</a> 
 						
 					@endif
 			

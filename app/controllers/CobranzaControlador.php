@@ -102,6 +102,7 @@ class CobranzaControlador extends ModuloControlador{
 		->whereRaw('pago.cancelado IS NULL')
 		->orWhere('pago.cancelado', '=', '0')
 		->where('recibo.cancelado', '=', '0')
+		->where('recibo.pagado', '=', '0')
 		->groupBy('recibo.id', 'pago.cancelado')
 		->get();
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.cobranza', $dataModule);

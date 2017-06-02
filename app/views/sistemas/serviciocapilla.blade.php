@@ -1,1 +1,1 @@
-@extends('ventas.serviciocapilla')
+@extends('capilla.serviciocapilla')

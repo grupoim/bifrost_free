@@ -13,7 +13,12 @@
 
 		public function getIndex(){	
 		
-		$dataModule["servicios"] = VistaServicioFuneralCapilla::all();
+		$dataModule["servicios"] = VistaServicioFuneralCapilla::select('vista_servicio_funeral_capilla.*','venta_servicio_funeral.prevision','venta_servicio_funeral.servicio_realizado',
+			'venta_servicio_funeral.prevision', 'venta_servicio_funeral.venta_producto_id as venta_producto_id','venta_servicio_funeral.cremacion',
+		'contrato.folio','contrato.id as contrato_id','contrato.impresiones')
+		->leftJoin('venta_servicio_funeral','vista_servicio_funeral_capilla.venta_producto_id', '=', 'venta_servicio_funeral.venta_producto_id')
+		->leftJoin('contrato', 'venta_servicio_funeral.contrato_id', '=', 'contrato.id')
+		->get();
 		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.serviciocapilla', $dataModule);}
        

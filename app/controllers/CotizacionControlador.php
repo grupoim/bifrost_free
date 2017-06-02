@@ -11,6 +11,7 @@ class CotizacionControlador extends ModuloControlador{
 
 	public function getIndex(){
 		$dataModule["cotizaciones"] = Venta::with('cliente.persona')->where('cotizacion', 1)->get();
+		$dataModule['formas_pago'] = FormaPago::all();
 		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.cotizacion', $dataModule);
 	}
@@ -176,14 +177,638 @@ public function postServicio(){
 		return Redirect::back();
 	}
 
+	
+	public function getAbonar($id){
+
+		$venta =  Venta::leftJoin('plan_pago_venta', 'venta.id', '=', 'plan_pago_venta.venta_id')
+		->leftJoin('plan_pago', 'plan_pago_venta.plan_pago_id', '=', 'plan_pago.id')
+		->where('venta.id', $id)
+		->where('cotizacion',1)->firstorFail();
+		
+		$last_receipt = Recibo::select('recibo.*', DB::raw('MAX(recibo.id) AS max'))->where('venta_id', $id)->where('pagado',1)->first();
+		
+		$total_pagado = Pago::select('pago.recibo_id as recibo_id',DB::raw('SUM(pago.monto) as abono'))
+			->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+			->where('pago.cancelado',0)
+			->where('recibo.venta_id', $id )			
+			->groupby('recibo.venta_id')->first();
+
+		if ($total_pagado != null) {
+			$pagado = $total_pagado->abono;
+		 }	else{
+		 	$pagado = 0;
+		 }
+
+
+		$venta_total = $venta->total;
+		$porcentaje_anticipo = $venta->porcentaje_anticipo;
+		$mensualidad = $venta->pago_regular;
+		$numero_mensualidades = $venta->numero_pagos;
+		$enganche_monto = ($venta_total * $porcentaje_anticipo)/100;
+
+		if ($porcentaje_anticipo > 0) {
+			$consecutivo = 0;
+			$primer_pago = $enganche_monto;
+			$leyenda = 'Enganche';
+			$enganche = 1;
+		}else{
+			$consecutivo = 1;
+			$primer_pago = $mensualidad;
+			$leyenda = 'Mensualidad';
+			$enganche = 0;
+		} 
+		$saldo_primer_pago = $primer_pago - $pagado;
+		$saldo_total = $venta->total - $pagado;
+
+		if ($pagado >= $primer_pago) {
+			$cotizacion = 0;
+			$autorizado = 1;
+		}else{
+			$cotizacion = 1;
+			$autorizado = 0;
+		}
+		$numero_mensualidades = $venta->numero_pagos;
+
+		return array(
+			'mensualidad' => $venta->pago_regular,
+			'numero_mensualidades' => $numero_mensualidades,
+			'primer_pago' => $primer_pago,
+			'consecutivo' => $consecutivo,
+			'leyenda' => $leyenda,
+			'venta_id' => $venta->venta_id,
+			'saldo_primer_pago'=> $saldo_primer_pago,
+			'cotizacion' => $cotizacion,
+			'autorizado' => $autorizado,
+			'pagado' => $pagado,
+			'enganche' => $enganche,
+			'enganche_monto' => $enganche_monto,
+			'porcentaje_anticipo' => $venta->porcentaje_anticipo,
+			'saldo_total' => $saldo_total,
+			'last_receipt' => $last_receipt,
+			 );
+
+
+	}
+
+	public function postAbonar(){
+
+		$optionpago = Input::get('optionpago');
+		$venta_id = Input::get('venta_id');
+		$total_primer_pago = Input::get('total_primer_pago');
+		$saldo_primer_pago = Input::get('saldo_primer_pago');
+		$mensualidad = input::get('mensualidad');
+		$consecutivo = Input::get('consecutivo');		
+		$forma_pago_id = Input::get('forma_pago_id');
+		$enganche = input::get('enganche');
+		$pagado = input::get('pagado');	
+		$numero_mensualidades = input::get('numero_mensualidades');
+		$saldo_total = input::get('saldo_total');
+		$hoy = carbon::now();
+
+		$venta = Venta::leftJoin('plan_pago_venta', 'venta.id', '=', 'plan_pago_venta.venta_id')
+		->leftJoin('plan_pago','plan_pago_venta.plan_pago_id', '=', 'plan_pago.id')
+		->where('venta.id', $venta_id)
+		->first();
+		
+	
+		
+		$step_meses = $venta->periodo;
+		$fecha_limite = $hoy->format('Y-m-d');
+		//verifica si ya hay pagos, si no hay, primero crea el recibo		
+
+	switch ($optionpago) {
+		case '1':
+			//verifica si ya hay pagos, si no hay, primero crea el recibo y lo abonas
+		$abono = input::get('abono');
+		if ($pagado == 0 and $saldo_primer_pago > 0) {
+
+			$recibo = new Recibo();
+			$recibo->consecutivo = $consecutivo;
+			$recibo->venta_id = $venta_id;
+			$recibo->fecha_limite = $fecha_limite;
+			$recibo->pagado = 1;
+			$recibo->monto = $total_primer_pago;
+			$recibo->save();		
+			
+			
+		}else{
+
+			$recibo = Recibo::where('consecutivo', $consecutivo)->firstOrFail();
+
+		}
+		//Se registra el pago al primer recibo
+			$pago = new Pago();
+			$pago->recibo_id = $recibo->id;
+			$pago->monto =  $abono;
+			$pago->forma_pago_id = $forma_pago_id;			
+			$pago->usuario_id = Auth::user()->id;
+			$pago->save();
+
+		
+			//se checa cuanto lleva abonado ese recibo
+		$pagado = Recibo::select('recibo.id as recibo_id','recibo.consecutivo',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $venta_id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->firstOrFail();
+		//si el monto total del recibo es igual a lo pagado, se actualiza el estatus a pagado y se genera el 
+		//siguiente recibo
+		$update_recibo = Recibo::find($pagado->recibo_id);
+			
+		
+		$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+		->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+		->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+		
+		if ($update_recibo->monto == $pagado->abono) {
+
+
+			$resto_total = $venta->total - $total_pago_venta->total_pago;
+			if ($resto_total > 0) {
+			//genera el siguiente recibo si aún hay adeudos
+
+			$last_fecha_limite = Carbon::parse($update_recibo->fecha_limite);
+			$new_fecha_limite = $last_fecha_limite->addMonths($step_meses);
+			
+			$next_recibo  = new Recibo();
+			$next_recibo->consecutivo = $update_recibo->consecutivo + 1;
+			$next_recibo->venta_id = $venta_id;
+			$next_recibo->fecha_limite = $new_fecha_limite;
+			$next_recibo->monto = $mensualidad;
+			$next_recibo->save();	# code...
+			}
+			
+		//actualiza la venta, deja de ser cotización al pagarse el total del anticipo
+			$update_recibo->pagado = 1;
+			$update_recibo->save();
+
+			$venta_update = Venta::find($venta_id);
+			$venta_update->cotizacion = 0;
+			$venta_update->save();
+		
+	}
+
+
+
+
+			return Redirect::action('VentaControlador@getRecibos',$venta_id);
+			break;
+
+		case '2':
+
+			$abono = input::get('monto');			
+
+			//-----revisa si es el primer pago
+
+			if ($pagado == 0) {
+			
+				//genera el primer recibo con el monto del primer pago
+				$recibo = new Recibo();
+				$recibo->consecutivo = $consecutivo;
+				$recibo->venta_id = $venta_id;
+				$recibo->fecha_limite = $fecha_limite;				
+				$recibo->monto = $total_primer_pago;
+				$recibo->save();
+
+				//revisa el monto del abono
+
+				if ($abono < $total_primer_pago) {
+					//Se registra el pago al primer recibo
+					$pago_anticipo = new Pago();
+					$pago_anticipo->recibo_id = $recibo->id;
+					$pago_anticipo->monto =  $abono;
+					$pago_anticipo->forma_pago_id = $forma_pago_id;			
+					$pago_anticipo->usuario_id = Auth::user()->id;
+					$pago_anticipo->save();
+
+				return Redirect::back();
+
+					
+				}
+				//el abono es mayor al primer pago, se paga el primer pago se actualiza el anticipo y la venta y con el resto se checan cuantas menusalidades se cubren
+				else{
+
+					
+					$pago_anticipo = new Pago();
+					$pago_anticipo->recibo_id = $recibo->id;
+					$pago_anticipo->monto =  $total_primer_pago;
+					$pago_anticipo->forma_pago_id = $forma_pago_id;			
+					$pago_anticipo->usuario_id = Auth::user()->id;
+					$pago_anticipo->save();
+
+
+					//paga anticipo
+					$recibo_anticipo = Recibo::find($recibo->id);
+					$recibo->pagado = 1;
+					$recibo->save();
+
+					//venta actualiza, deja de ser cotizacion
+					$venta_update = Venta::find($venta_id);
+					$venta_update->cotizacion = 0;
+					$venta_update->save();
+					// con lo que queda se completan las siguientes mensualidades
+					//verifico cuantas mensualidades me cubre el resto del abono y genero los pagos y los recibos
+					
+					$resto_abono = $abono - $total_primer_pago;
+										
+					$pagos = $resto_abono/$mensualidad;
+					$pagos_completos = intval($pagos);
+					$pago_parcial = $pagos - $pagos_completos;
+	
+					$monto_recibos_completos = $pagos_completos * $mensualidad;
+					$monto_resto = $resto_abono - $monto_recibos_completos;	
+					
+					$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+					->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+					->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+					
+					$resto_total = $venta->total - $total_pago_venta->total_pago;
+					$deadDate = explode('-', $recibo->fecha_limite);
+					$beginPlan = Carbon::createFromDate($deadDate[0], $deadDate[1], $deadDate[2], null);
+					$consecutivo_new = $recibo->consecutivo + 1;
+
+					
+						//si cubre mas de un pago completo se generan los completos mas el parcial
+					if ($pagos_completos >= 1 && $pago_parcial > 0 ) {
+							$subsecuente_r = $pagos_completos - 1;
+
+
+								for ($i=0; $i < $pagos_completos; $i++) { 
+						
+						$subsecuente_recibo = new Recibo();
+						$subsecuente_recibo->consecutivo = $consecutivo_new;
+						$subsecuente_recibo->venta_id = $venta_id;
+						$subsecuente_recibo->fecha_limite = $beginPlan->addMonths($step_meses);
+						$subsecuente_recibo->monto = $mensualidad;
+						$subsecuente_recibo->pagado = 1;
+						$subsecuente_recibo->save();
+
+						
+						$pago_subsecuente = new Pago();
+						$pago_subsecuente->recibo_id = $subsecuente_recibo->id;
+						$pago_subsecuente->forma_pago_id = $forma_pago_id;
+						$pago_subsecuente->monto = $mensualidad;
+						$pago_subsecuente->usuario_id = Auth::user()->id;
+						$pago_subsecuente->save();
+						
+						$consecutivo_new++;
+
+
+					}
+
+					//genera el parcial
+					if ($pago_parcial > 0 and $pagos_completos > 0) {
+		$step = $pagos_completos + 1;
+	}else
+	{
+		$step = $pagos_completos;
+	}
+
+
+		if ($resto_total > 0) {
+			$first = Recibo::find($recibo->id);
+			$first_fecha = Carbon::parse($first->fecha_limite);
+			
+		$last_fecha = $first_fecha->addMonths($step);
+		$ult_consecutivo = $first->consecutivo + $step;
+
+		$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+				
+				$saldo_venta =  $venta->total - $pago_venta->total_pago;
+				
+				$ch_last = Recibo::select('recibo.*', DB::raw('MAX(id) as max'))->where('cancelado')->first();
+				$ch_last_date = Carbon::parse($ch_last->fecha_limite);
+
+	if($numero_mensualidades <= $ch_last->consecutivo and  $saldo_venta > 1)
+	{
+	
+	$recibo_parcial = new Recibo();
+			$recibo_parcial->consecutivo = $ult_consecutivo;
+			$recibo_parcial->venta_id = $venta_id;
+			$recibo_parcial->fecha_limite = $last_fecha;
+			$recibo_parcial->monto = $mensualidad;
+			$recibo_parcial->save();
+	
+	if ($pago_parcial > 0) {
+	
+			$pago = new Pago();
+			$pago->recibo_id  = $recibo_parcial->id;
+			$pago->forma_pago_id = $forma_pago_id;
+			$pago->usuario_id = Auth::user()->id;
+			$pago->monto = $monto_resto;
+			$pago->save();
+
+		}
+		}
+		}
+
+
+					}else{
+						$subsecuente_r = 1;
+					}
+					
+					$step = $pagos_completos;
+					
+					
+				
+return Redirect::action('VentaControlador@getRecibos',$venta_id);
+
+
+
+
+				}
+
+
+			
+			}//fin primer pago
+			//no es el primer pago
+			else{
+				$recibo = Recibo::where('consecutivo', $consecutivo)->first();
+
+				//se checa cuanto lleva abonado ese recibo
+		$pagado = Recibo::select('recibo.id as recibo_id','recibo.consecutivo',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $venta_id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->firstOrFail();
+
+
+
+			}//----fin no es el primer pago
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			break;
+		
+		default:
+			$abono = input::get('monto');
+			break;
+	}
+		
+	if ($abono > $total_primer_pago) {
+		$primer_pago =  $total_primer_pago;
+	}else{
+		$primer_pago = $abono;
+	}
+
+	//registro del primer pago o enganche
+	//si no se ha pagado nada, se genera el  primer recibo
+		if ($pagado == 0) {
+
+			$recibo = new Recibo();
+			$recibo->consecutivo = $consecutivo;
+			$recibo->venta_id = $venta_id;
+			$recibo->fecha_limite = $fecha_limite;
+			$recibo->monto = $total_primer_pago;
+			$recibo->save();
+
+			//si ya se dio un abono, se busca el recibo con el consecutivo generado
+		}else{
+			$recibo = Recibo::where('consecutivo', $consecutivo)->firstOrFail();
+
+			}
+		//Se registra el pago al primer recibo
+			$pago = new Pago();
+			$pago->recibo_id = $recibo->id;
+			$pago->monto = $primer_pago;
+			$pago->forma_pago_id = $forma_pago_id;			
+			$pago->usuario_id = Auth::user()->id;
+			$pago->save();
+
+
+		//se checa cuanto lleva abonado ese recibo
+		$pagado = Recibo::select('recibo.id as recibo_id','recibo.consecutivo',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $venta_id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->firstOrFail();
+
+		//si el monto total del recibo es igual a lo pagado, se actualiza el estatus a pagado y se genera el 
+		//siguiente recibo
+		$update_recibo = Recibo::find($pagado->recibo_id);
+		
+		$venta = Venta::find($venta_id);
+		
+		$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+		->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+		->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+		
+		if ($update_recibo->monto == $pagado->abono) {
+
+			$update_recibo->pagado = 1;
+			$update_recibo->save();
+
+			$resto_total = $venta->total - $total_pago_venta->total_pago;
+			if ($resto_total > 0) {
+			//genera el siguiente recibo si aún hay adeudos
+
+			$last_fecha_limite = Carbon::parse($update_recibo->fecha_limite);
+			$new_fecha_limite = $last_fecha_limite->addMonth();
+			
+			$next_recibo  = new Recibo();
+			$next_recibo->consecutivo = $update_recibo->consecutivo + 1;
+			$next_recibo->venta_id = $venta_id;
+			$next_recibo->fecha_limite = $new_fecha_limite;
+			$next_recibo->monto = $mensualidad;
+			$next_recibo->save();	# code...
+			}
+			
+
+		//actualiza la venta, deja de ser cotización al pagarse el total del anticipo
+			
+			$venta->cotizacion = 0;
+			$venta->save();
+		
+	}
+
+	//fin abono de primer pago o enganche
+	
+
+		
+	//con el resto del primer abono se sacan cuantas mensualidades completa
+		$resto_abono = $abono - $total_primer_pago;	
+	
+	if ($resto_abono > 0 and $resto_total > 0) {
+		
+		$pagos = $resto_abono/$mensualidad;
+		$pagos_completos = intval($pagos);
+		$pago_parcial = $pagos - $pagos_completos;
+	
+		$monto_recibos_completos = $pagos_completos * $mensualidad;
+		$monto_resto = $resto_abono - $monto_recibos_completos;	
+		
+		
+		$segundo_recibo = Recibo::find($next_recibo->id);		
+		$fecha_limite_segundo = Carbon::parse($segundo_recibo->fecha_limite);
+		$tercer_fecha_limite = $fecha_limite_segundo->addMonths(1);
+		$tercer_consecutivo = $segundo_recibo->consecutivo + 1;
+
+		//si completos es mayor a uno, paga el segundo recibo y generas pagos_completos - 1 recibos
+
+		if ($pagos_completos >= 1) {
+			$pago_segundo_recibo = new Pago();
+			$pago_segundo_recibo->recibo_id = $segundo_recibo->id;
+			$pago_segundo_recibo->forma_pago_id = $forma_pago_id;
+			$pago_segundo_recibo->monto = $mensualidad;
+			$pago_segundo_recibo->usuario_id = Auth::user()->id;
+			$pago_segundo_recibo->save();
+
+		$segundo_recibo->pagado = 1;
+		$segundo_recibo->save();
+		}
+	
+		//si aún quedan pagos completos por saldar se generan n numero de recibos mas, si no se genera el nuevo
+		if (($pagos_completos - 1) > 0) {
+			
+			$months = 2;
+			for ($i=0; $i < $pagos_completos - 1 ; $i++) { 
+			
+				$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+				
+				$saldo_venta =  $venta->total - $pago_venta->total_pago;
+				
+				$ch_last = Recibo::select('recibo.*', DB::raw('MAX(id) as max'))->where('cancelado')->first();
+				$ch_last_date = Carbon::parse($ch_last->fecha_limite);
+			
+			
+			if ($numero_mensualidades <= $ch_last->consecutivo and  $saldo_venta > 1) {
+				$subsecuente_recibo = new Recibo();
+			$subsecuente_recibo->consecutivo = $tercer_consecutivo + $i;
+			$subsecuente_recibo->venta_id = $venta_id;
+			$subsecuente_recibo->fecha_limite = $ch_last_date->addMonths($months);
+			$subsecuente_recibo->monto = $mensualidad;
+			$subsecuente_recibo->pagado = 1;
+			$subsecuente_recibo->save();
+
+
+
+			$pago_subsecuente = new Pago();
+			$pago_subsecuente->recibo_id = $subsecuente_recibo->id;
+			$pago_subsecuente->forma_pago_id = $forma_pago_id;
+			$pago_subsecuente->monto = $mensualidad;
+			$pago_subsecuente->usuario_id = Auth::user()->id;
+			$pago_subsecuente->save();
+			
+			$months++;
+			}
+			
+
+			}# code...
+		}
+
+	
+
+	
+	if ($pago_parcial > 0 and $pagos_completos > 0) {
+		$step = $pagos_completos + 1;
+	}else
+	{
+		$step = $pagos_completos;
+	}
+
+
+		if ($resto_total > 0) {
+			$first = Recibo::find($recibo->id);
+			$first_fecha = Carbon::parse($first->fecha_limite);
+			
+		$last_fecha = $first_fecha->addMonths($step);
+		$ult_consecutivo = $first->consecutivo + $step;
+
+		$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+				
+				$saldo_venta =  $venta->total - $pago_venta->total_pago;
+				
+				$ch_last = Recibo::select('recibo.*', DB::raw('MAX(id) as max'))->where('cancelado')->first();
+				$ch_last_date = Carbon::parse($ch_last->fecha_limite);
+
+	if($numero_mensualidades <= $ch_last->consecutivo and  $saldo_venta > 1)
+	{
+	
+	$recibo_parcial = new Recibo();
+			$recibo_parcial->consecutivo = $ult_consecutivo;
+			$recibo_parcial->venta_id = $venta_id;
+			$recibo_parcial->fecha_limite = $last_fecha;
+			$recibo_parcial->monto = $mensualidad;
+			$recibo_parcial->save();
+	
+	if ($pago_parcial > 0) {
+	
+			$pago = new Pago();
+			$pago->recibo_id  = $recibo_parcial->id;
+			$pago->forma_pago_id = $forma_pago_id;
+			$pago->usuario_id = Auth::user()->id;
+			$pago->monto = $monto_resto;
+			$pago->save();
+
+		}
+		}
+		}
+
+		}	
+
+		$venta_up = Venta::find($venta_id);
+
+		if ($venta_up->cotizacion == 0) {
+		return Redirect::action('VentaControlador@getRecibos',$venta_id);
+		}else{
+			return Redirect::back();
+		}
+		
+	}
+		
+
 	public function getContratar($id){
+		
 		$cotizacion = Venta::with('planpagoventa')->find($id); 
 
-		$ultimo_recibo_venta = Recibo::select(DB::raw( 'IFNULL(MAX(recibo.consecutivo),0) AS last_consecutive'))->where('venta_id', $cotizacion->id)->get();
+		$recibos_generados = Recibo::where('venta_id', $cotizacion->id)->where('cancelado',0)->count();
+		
+		if ($recibos_generados != 0) {
+			$ultimo_recibo_venta = Recibo::select(DB::raw( 'IFNULL(MAX(recibo.consecutivo),0) AS last_consecutive'))->where('venta_id', $cotizacion->id)->get();
+			$last_consecutive = $ultimo_recibo_venta->last_consecutive;
 
-		/*$recibo = new Recibo();
+		}else{
+			$last_consecutive = 0;
+		}
+
+		//se genera el primer recibo de ventas
+		$recibo = new Recibo();
 		$recibo->fecha_limite = Carbon::now();
-		$recibo->consecutivo = $ultimo_recibo_venta + 1;
+		$recibo->consecutivo = $last_consecutive + 1;
 		
 		$plan_pago = PlanPago::find($cotizacion->planpagoventa[0]->plan_pago_id);
 		
@@ -197,10 +822,10 @@ public function postServicio(){
 		
 		$cotizacion->recibo()->save($recibo);
 		
-		$cotizacion->save();*/
-		//echo DNS1D::getBarcodeHTML("4445645656", "EAN13");
-		echo $ultimo_recibo_venta;
-		/*return Redirect::action('CotizacionControlador@getIndex');*/
+		$cotizacion->save();
+		/*echo DNS1D::getBarcodeHTML("4445645656", "EAN13");*/
+		/*echo $ultimo_recibo_venta;*/
+		return Redirect::action('CotizacionControlador@getIndex');
 	}
 
 	public function getVaciacart(){

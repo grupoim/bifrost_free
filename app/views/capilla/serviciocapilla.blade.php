@@ -17,10 +17,13 @@
 					<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 						<thead>
 							<tr>
-								<th class="col-md-1">Folio</th>								
+								<th class="col-md-1">ID</th>								
+								<th class="col-md-1">contrato</th>								
+								<th class ="col-md-2">Cliente</th>
 								<th class ="col-md-2">Cliente</th>
 								<th  class ="col-md-3">Producto</th>
 								<th  class ="col-md-1">Total</th>
+								<th  class ="col-md-1">cremacion</th>
 								{{--<th>Asesor</th>--}}
 								<th class ="col-md-2">Acciones</th>
 							</tr>
@@ -28,9 +31,12 @@
 						<tbody>
 							@foreach($servicios as $s)
 							<tr>
-								<td>{{{ $s->folio_solicitud }}}</td>
+								<td>{{{ $s->id }}}</td>
+								<td>{{{ $s->folio }}}</td>
+								<td>{{{ $s->venta_producto_id }}}</td>
 								<td>{{{ $s->cliente }}}</td>
 								<td><strong>{{{ $s->nombre}}}</strong></td>
+								<td><strong>{{{ $s->cremacion}}}</strong></td>
 								<td>$ {{{ number_format($s->total, 2, '.', ',') }}}</td>								
 								{{--<td><strong>{{{ $s->asesor}}}</strong></td>--}}
 								<td class="text-right">
