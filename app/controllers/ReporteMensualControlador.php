@@ -196,13 +196,12 @@ $vencido = $cartera_vencido->monto_vencido;
 //Consulta grafica distribucion captura mantenimiento
 $serie_distribucion = GraficaCapturaVendedor::select('totales_grafica.monto','vista_asesor_promotor.asesor','tipo_mantenimiento_captura.nombre as tipo')
 										->where('month',$month)->where('year',$year)
-										->where('grafica_captura_vendedor.captura',1)
 										->leftJoin('totales_grafica', 'grafica_captura_vendedor.totales_grafica_id', '=', 'totales_grafica.id')
 								        ->leftJoin('vista_asesor_promotor', 'grafica_captura_vendedor.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
 								        ->leftJoin('tipo_mantenimiento_captura','grafica_captura_vendedor.tipo_mantenimiento_captura_id','=','tipo_mantenimiento_captura.id')
 								        ->groupby('grafica_captura_vendedor.asesor_id','tipo_mantenimiento_captura.nombre')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
 								        ->get();
-$asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->where('grafica_captura_vendedor.captura',1)->groupby('asesor')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
+$asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->groupby('asesor')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
 								->where('month',$month)->where('year',$year)
 								->leftJoin('grafica_captura_vendedor','vista_asesor_promotor.asesor_id','=','grafica_captura_vendedor.asesor_id')
 								->leftJoin('totales_grafica','grafica_captura_vendedor.totales_grafica_id','=','totales_grafica.id')->get();
