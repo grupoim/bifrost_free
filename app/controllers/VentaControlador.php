@@ -11,10 +11,13 @@
 		public function getIndex(){
 
 		
+
+
 		$dataModule["cotizaciones"] = Venta::with('cliente.persona')
 		->leftJoin('plan_pago_venta', 'venta.id', '=', 'plan_pago_venta.venta_id')
 		->leftJoin('plan_pago', 'plan_pago_venta.plan_pago_id', '=', 'plan_pago.id')
 		->where('cotizacion',0)->get();
+		
 		
 		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();		
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.ventas', $dataModule);
@@ -54,7 +57,16 @@
 	public function getRecibos($id){
 			
 			$recibos = Recibo::where('venta_id', '=', $id)->get();
-			
+
+			$recibo = Recibo::select('recibo.*', DB::raw('max(id) as maximo'))->where('cancelado',0)->where('pagado',0)->where('venta_id', $id)->firstorFail();
+			/////////
+
+			$pagado = Recibo::select('recibo.id as recibo_id',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->first();
+
 			$total_pagado = Pago::select('pago.recibo_id as recibo_id',DB::raw('SUM(pago.monto) as abono'))
 			->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
 			->where('pago.cancelado',0)
@@ -65,6 +77,55 @@
 						->leftJoin('plan_pago_venta', 'venta.id', '=', 'plan_pago_venta.venta_id')
 						->leftJoin('plan_pago', 'plan_pago_venta.plan_pago_id', '=', 'plan_pago.id')
 						->where('venta.id',$id)->firstorFail();
+		
+
+		if ($pagado != null) {
+			$abonado_recibo = $pagado->abono;
+		 }	else{
+		 	$abonado_recibo = 0;
+		 }
+		$por_pagar = $recibo->monto - $abonado_recibo;
+
+		$hoy = carbon::now(); 
+		$date_recibo = Carbon::parse($recibo->fecha_limite);
+			
+         
+
+           $h_y = $hoy->year;
+           $h_m = $hoy->month;
+           $h_d = $hoy->day;
+
+           $d_y = $date_recibo->year;
+           $d_m = $date_recibo->month;
+           $d_d = $date_recibo->day;
+
+          $today = Carbon::create($h_y, $h_m, $h_d);
+          $d_recibo = Carbon::create($d_y, $d_m, $d_d);
+  			
+  		 $dias_atraso =  $d_recibo->diffInDays($today,false);
+  		 $meses_atraso = $d_recibo->diffInMonths($today,false);
+
+  		 $parcialidad = $por_pagar;
+		 $numero_mensualidades = $venta->numero_pagos;
+  		 
+  		 $max_pendientes = $numero_mensualidades - $recibo->consecutivo;
+
+  		 if ($parcialidad > 0 and $max_pendientes > $meses_atraso) {
+				$pagos_completos = $meses_atraso;
+				$resto = $parcialidad;
+			}else{
+				$pagos_completos = $max_pendientes;
+				$resto = 0;
+			}
+
+
+			$abono_pendiente = ($recibo->monto * $pagos_completos ) + $parcialidad;
+			////////
+			
+
+
+
+			
 
 			
 			$saldo_venta = $venta->total - $total_pagado->abono;
@@ -77,6 +138,8 @@
 			}
 			$dataModule['formas_pago'] = FormaPago::all();
 			
+			$dataModule['abono_pendiente'] = $abono_pendiente;
+			$dataModule['dias_atraso'] = $dias_atraso;
 			$dataModule['total_pagado'] = $total_pagado;
 			$dataModule["saldo_venta"] = $saldo_venta;
 			$dataModule["venta"] = $venta;
@@ -110,13 +173,7 @@
 										->where('pago.cancelado',0)
 										->where('recibo.id',$recibo_id)->first();
 
-		/*Pago::select('pago.recibo_id as recibo_id',DB::raw('SUM(pago.monto) as abono'))
-			->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
-			->where('recibo.venta_id', $id)
-			->where('pago.cancelado',0)
-			->where('pago.recibo_id',$recibo_id)
-			->groupby('recibo.id')->get();
-		*/
+		
 		
 
 		if ($pagado != null) {
@@ -144,9 +201,46 @@
 		$saldo = $venta->total- $abonado_venta;
 
 		$por_pagar = $recibo->monto - $abonado_recibo;
+
+		$hoy = carbon::now(); 
+		$date_recibo = Carbon::parse($recibo->fecha_limite);
+			
+         
+
+           $h_y = $hoy->year;
+           $h_m = $hoy->month;
+           $h_d = $hoy->day;
+
+           $d_y = $date_recibo->year;
+           $d_m = $date_recibo->month;
+           $d_d = $date_recibo->day;
+
+          $today = Carbon::create($h_y, $h_m, $h_d);
+          $d_recibo = Carbon::create($d_y, $d_m, $d_d);
+  			
+  		 $dias_atraso =  $d_recibo->diffInDays($today,false);
+  		 $meses_atraso = $d_recibo->diffInMonths($today,false);
+
+  		 $parcialidad = $por_pagar;
+
+  		 $numero_mensualidades = $venta->numero_pagos;
+  		 
+  		 $max_pendientes = $numero_mensualidades - $recibo->consecutivo;
+
+  		 if ($parcialidad > 0 and $max_pendientes > $meses_atraso) {
+				$pagos_completos = $meses_atraso;
+				$resto = $parcialidad;
+			}else{
+				$pagos_completos = $max_pendientes;
+				$resto = 0;
+			}
+
+			$abono_pendiente = ($recibo->monto * $pagos_completos ) + $parcialidad;
 	
-	$consecutivo = Recibo::select('recibo.*', DB::raw('max(consecutivo) as maximo'))->where('venta_id', $id)->get();
+		$consecutivo = Recibo::select('recibo.*', DB::raw('max(consecutivo) as maximo'))->where('venta_id', $id)->get();
 	return  array(
+		
+			'abono_pendiente' => $abono_pendiente,			
 			'total_recibo' => $recibo->monto,
 			'pagado'=>$abonado_recibo,
 			'por_pagar'=>$por_pagar,
@@ -229,6 +323,7 @@
 
 		$optionpago = Input::get('optionpago');
 		$saldo_recibo = Input::get('saldo_recibo');
+		
 		$saldo_venta = Input::get('saldo_venta');
 		$monto_diferente = Input::get('monto');
 		$forma_pago_id = Input::get('forma_pago_id');

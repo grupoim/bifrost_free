@@ -23,6 +23,12 @@ $('#monto').prop('disabled', true);
         $('#monto').prop('disabled', true);
           
     });
+
+    //pago de atrasado de recibo
+    $("#abono_pendiente_option").click(function () {
+        $('#monto').prop('disabled', true);
+          
+    });
     //pago de restante de recibo
     $("#saldo_option").click(function () {
         $('#monto').prop('disabled', true);
@@ -43,11 +49,13 @@ $.get('{{ action('VentaControlador@abonar') }}/'+{{{$recibos[0]->venta_id}}}+'/'
 	
 	/*$('input[name=monto]').val(data.saldo);*/
 	$('#por_pagar').text('$'+data.por_pagar.formatMoney(2, '.', ','));
+	$('#abono_pendiente').text('$'+data.abono_pendiente.formatMoney(2, '.', ','));
 	$('#saldo').text('$'+data.saldo.formatMoney(2, '.', ','));
 	$('#venta_id').val(data.venta_id);
 	$('#recibo_id').val(data.recibo_id);
 	$('#saldo_value').val(data.saldo);
 	$('#por_pagar_value').val(data.por_pagar);
+	$('#abono_pendiente_value').val(data.abono_pendiente);
 	$('textarea[name=observaciones_comision]').val(data.observaciones);
 	
 
@@ -72,34 +80,36 @@ $('#edit_button').on('click', function(){
 <div class="widget-head">
 		
 		<div class="pull-right">
-			
+			{{{$abono_pendiente}}}
 		</div>  
 		<div class="clearfix"></div>
 	</div>
+
+	
 <div class="col-md-12">
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<div class="alert alert-info text-center">
 			<h4> <i class="fa fa-shopping-cart"></i> Contrato <strong> $ {{{ number_format($venta->total, 2, '.', ',') }}} </strong></h4>
 
 		</div>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-3">
 	<div class="alert alert-success text-center">
-			<h4><i class="fa fa-money"></i> Saldo al corriente <strong> $ {{{ number_format($saldo_venta, 2, '.', ',') }}}</div>
+			<h4><i class="fa fa-money"></i> Saldo <strong> $ {{{ number_format($saldo_venta, 2, '.', ',') }}}</div>
 	</div>
-
-	{{--<div class="col-md-3">
-	<div class="well">
-		<h4><i class="fa fa-money"></i> Saldo atrasado <strong> $4000 </strong></h4>                        
-	</div>
-</div> --}}
-
-<div class="col-md-4">
+<div class="col-md-3">
 	<div class="alert alert-warning text-center">
 		<h4><i class="fa fa-exclamation-triangle"></i> Pagos <strong> $ {{{ number_format($venta->total - $saldo_venta, 2, '.', ',')}}}</strong></h4>
 
 	</div>
+</div>
+	<div class="col-md-3">
+	<div class="alert alert-danger text-center">
+		<h4><i class="fa fa-money"></i> Saldo atrasado <strong>@if($abono_pendiente > 0) $ {{{ number_format($abono_pendiente, 2, '.', ',') }}} <br>@if($dias_atraso > 0) {{{$dias_atraso}}} dias @endif @else $0 @endif</strong></h4>                        
+	</div>
 </div> 
+
+ 
 </div>
 <div class="clearfix"></div>
 <div class="col-md-8">
@@ -231,10 +241,19 @@ $('#edit_button').on('click', function(){
 	<label class="col-lg-3 control-label">Ellije una opción</label>
 	<div class="col-lg-9">
 		<div class="radio">
+			
+			@if($abono_pendiente < 0) 
 			<label>
 				<input type="radio" name="optionpago" id="por_pagar_option" value="1" checked>
-				Saldo de recibo <strong> <span id="por_pagar"></span></strong>
+				Resto del recibo <strong> <span id="por_pagar"></span></strong>
 			</label>
+			@else 
+			<label>
+				<input type="radio" name="optionpago" id="abono_pendiente_option" value="4" checked>
+				Pago para ponerse al corriente <strong> <span id="abono_pendiente"></span></strong>
+			</label>
+			@endif
+			
 		</div>
 		<div class="radio">
 			<label>

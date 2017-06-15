@@ -167,7 +167,7 @@ $('#edit_button').on('click', function(){
 <?php echo Form::open(array('action' => 'CotizacionControlador@postAbonar', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'edit_form')); ?>
 
 <div class="form-group">
-	<label class="col-lg-3 control-label">Ellije una opción</label>
+	<label class="col-lg-3 control-label">Elije una opción</label>
 	<div class="col-lg-9">
 		<div class="radio">
 			<label>
