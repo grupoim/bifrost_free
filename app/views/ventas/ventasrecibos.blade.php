@@ -3,6 +3,17 @@
 <script type="text/javascript">
 $(document).on('ready', function(){ 
 
+	$(document).on('click','.open_modal_reestructura',function(){
+
+$('#reestructura_window').modal('show');
+
+$('#reestructura_button').on('click', function(){
+		/*$('#edit_form').submit();*/
+	});
+
+
+});
+
 {{--funcion para formatear numeros --}}
         Number.prototype.formatMoney = function(c, d, t){
 			var n = this, 
@@ -72,7 +83,10 @@ $('#edit_button').on('click', function(){
 
 
 });
+
+
  });
+
 </script>
 @stop()
 
@@ -80,7 +94,7 @@ $('#edit_button').on('click', function(){
 <div class="widget-head">
 		
 		<div class="pull-right">
-			{{{$abono_pendiente}}}
+			
 		</div>  
 		<div class="clearfix"></div>
 	</div>
@@ -95,7 +109,7 @@ $('#edit_button').on('click', function(){
 	</div>
 	<div class="col-md-3">
 	<div class="alert alert-success text-center">
-			<h4><i class="fa fa-money"></i> Saldo <strong> $ {{{ number_format($saldo_venta, 2, '.', ',') }}}</div>
+			<h4><i class="fa fa-money"></i> Saldo <strong> $ @if($saldo_venta <= 0) 0.00 @else {{{ number_format($saldo_venta, 2, '.', ',') }}} @endif</div>
 	</div>
 <div class="col-md-3">
 	<div class="alert alert-warning text-center">
@@ -121,7 +135,7 @@ $('#edit_button').on('click', function(){
 		<div class="widget-head"> @if($db->base_datos_produccion == 0)<h2><span class="label label-danger"> <i class="icon-user"></i> Advertencia, estas en la base de datos de pruebas  </span> </h2> @endif
 			<div class="pull-left"><div class="pull-left"><h3> <strong> Saldo de Venta $ {{{ number_format($saldo_venta, 2, '.', ',') }}}  </strong> </h3></div>  </div>
 			<div class="widget-icons pull-right">			
-<button title="Reestructura el saldo total de la venta" type="button" class="btn btn-xl btn-info "><i class="fa fa-balance-scale" aria-hidden="true"></i> Reestructura</button>
+<button title="Reestructura el saldo total de la venta" type="button" class="btn btn-xl btn-info "><i class="fa fa-balance-scale open_modal_reestructura" aria-hidden="true"></i> Reestructura</button>
 			</div>  
 			<div class="clearfix"></div>
 		</div>
@@ -227,7 +241,7 @@ $('#edit_button').on('click', function(){
 </div>
 
 
-{{-- modal para editar comision --}}
+<!-- //MODAL pago -->
  <div class="modal fade" id="edit_window">
  	<div class="modal-dialog">
  		<div class="modal-content">
@@ -242,7 +256,7 @@ $('#edit_button').on('click', function(){
 	<div class="col-lg-9">
 		<div class="radio">
 			
-			@if($abono_pendiente < 0) 
+			@if($abono_pendiente <= 0) 
 			<label>
 				<input type="radio" name="optionpago" id="por_pagar_option" value="1" checked>
 				Resto del recibo <strong> <span id="por_pagar"></span></strong>
@@ -287,6 +301,7 @@ $('#edit_button').on('click', function(){
                       </div> 
 <input type="hidden" name="saldo_venta" id="saldo_value" value="">
 <input type="hidden" name="saldo_recibo" id="por_pagar_value" value="">
+<input type="hidden" name="abono_pendiente" id="abono_pendiente_value" value="">
 <input type="hidden" name="venta_id" id="venta_id" value="">
 <input type="hidden" name="recibo_id" id="recibo_id" value="">
 <input type="hidden" name="porcentaje_anticipo" id="porcentaje_anticipo" value="">
@@ -300,5 +315,27 @@ $('#edit_button').on('click', function(){
  		</div>
  	</div>
  </div>
+
+ <!--Modal de //MODAL reestructura -->
+ 
+ <div class="modal fade" id="reestructura_window">
+ 	<div class="modal-dialog">
+ 		<div class="modal-content">
+ 			<div class="modal-header">
+ 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+ 				<h4 class="modal-title">Agregar pago</h4>
+ 			</div>
+ 			<div class="modal-body"> 				
+MODAL BODY
+ 			</div>
+ 			<div class="modal-footer">
+ 				<button type="button" class="btn btn-default"  data-dismiss="modal">Cerrar</button>
+ 				<button type="sumbmit" class="btn btn-primary" id="reestructura_button"><i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar</button>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
+
+ <!-- -- >
 
 @stop

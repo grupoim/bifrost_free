@@ -323,6 +323,7 @@
 
 		$optionpago = Input::get('optionpago');
 		$saldo_recibo = Input::get('saldo_recibo');
+		$abono_pendiente = Input::get('abono_pendiente');
 		
 		$saldo_venta = Input::get('saldo_venta');
 		$monto_diferente = Input::get('monto');
@@ -458,7 +459,344 @@
 
 				break;
 			
+			case '3':
+				$abono = input::get('monto');			
+
+			//no es el primer pago
+		
+
+			//se checa cuanto lleva abonado ese recibo
+			$pagado_r = Recibo::select('recibo.id as recibo_id','recibo.consecutivo',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $venta_id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->firstOrFail();
+
+			//si el monto del abono es menor al resto del recibo, se paga todo el abono, 
+			$resto_recibo = $recibo->monto - $pagado_r->abono;
+			
+
+			 if ($abono < $resto_recibo ) {
+			 	$pago = new Pago();
+			 	$pago->recibo_id = $recibo->id;
+			 	$pago->forma_pago_id = $forma_pago_id;
+			 	$pago->monto = $abono;
+			 	$pago->usuario_id = Auth::user()->id;
+			 	$pago->save();
+
+			 //revisa cuanto se ha pagado de ese recibo
+
+			$pagado_recibo = Recibo::select('recibo.id as recibo_id','recibo.consecutivo',DB::raw('SUM(pago.monto) as abono'))
+										->leftJoin('pago','recibo.id', '=', 'pago.recibo_id')
+										->where('recibo.venta_id', $venta_id)
+										->where('pago.cancelado',0)
+										->where('recibo.id',$recibo->id)->firstOrFail();
+			 //si el monto del recibo es igual al recibo se actualiza a pagado, se verifica si hay adeudos y se genera el siguiente recibo 
+
+				if ($pagado_recibo->abono >= $recibo->monto) {
+					
+					$recibo_update = Recibo::find($recibo->id);
+
+					
+					$recibo_update->pagado = 1;
+					$recibo_update->save();					
+
+
+				$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+					
+
+					if ($pago_venta->total_pago < $venta->total) {
+						
+						$last_fecha_limite = Carbon::parse($recibo->fecha_limite);
+						$new_fecha_limite = $last_fecha_limite->addMonth();
+
+						$new_recibo = new Recibo();
+						$new_recibo->consecutivo = $recibo->consecutivo + 1;
+						$new_recibo->venta_id = $venta_id;
+						$new_recibo->fecha_limite = $new_fecha_limite;
+						$new_recibo->monto = $mensualidad;
+						$new_recibo->save();
+						return Redirect::back();
+					}
+
+				}
+
+				
+
+				}else{
+					//paga el resto del recibo y genera n numero de recibos que se cubran con el resto del abono
+
+					$pago = new Pago();
+					$pago->recibo_id = $recibo->id;
+					$pago->forma_pago_id = $forma_pago_id;
+					$pago->monto = $resto_recibo;
+					$pago->usuario_id = Auth::user()->id;
+					$pago->save();
+
+
+					$recibo_update = Recibo::find($recibo->id);
+
+					
+					$recibo_update->pagado = 1;
+					$recibo_update->save();
+
+					
+					$resto_abono = $abono - $resto_recibo;
+
+					$pagos = $resto_abono/$mensualidad;
+					$pagos_completos = intval($pagos);
+					$pago_parcial = $pagos - $pagos_completos;
+	
+					$monto_recibos_completos = $pagos_completos * $mensualidad;
+					$monto_resto = $resto_abono - $monto_recibos_completos;	
+					
+					$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+					->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+					->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+					
+					$resto_total = $venta->total - $total_pago_venta->total_pago;
+					$deadDate = explode('-', $recibo->fecha_limite);
+					$beginPlan = Carbon::createFromDate($deadDate[0], $deadDate[1], $deadDate[2], null);
+					$consecutivo_new = $recibo->consecutivo + 1;
+
+					//si cubre mas de un pago completo se generan los completos mas el parcial
+					
+							$subsecuente_r = $pagos_completos - 1;
+
+
+								for ($i=0; $i < $pagos_completos; $i++) { 
+						
+						$subsecuente_recibo = new Recibo();
+						$subsecuente_recibo->consecutivo = $consecutivo_new;
+						$subsecuente_recibo->venta_id = $venta_id;
+						$subsecuente_recibo->fecha_limite = $beginPlan->addMonths($step_meses);
+						$subsecuente_recibo->monto = $mensualidad;
+						$subsecuente_recibo->pagado = 1;
+						$subsecuente_recibo->save();
+
+						
+						$pago_subsecuente = new Pago();
+						$pago_subsecuente->recibo_id = $subsecuente_recibo->id;
+						$pago_subsecuente->forma_pago_id = $forma_pago_id;
+						$pago_subsecuente->monto = $mensualidad;
+						$pago_subsecuente->usuario_id = Auth::user()->id;
+						$pago_subsecuente->save();
+						
+						$consecutivo_new++;
+
+
+					}
+
+					//genera el parcial
+					if ($pago_parcial > 0 and $pagos_completos > 0) {
+		$step = $pagos_completos + 1;
+	}else
+	{
+		$step = $pagos_completos;
+	}
+			
+$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+					->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+					->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+					
+					$resto_total = $venta->total - $total_pago_venta->total_pago;
+if ($resto_total > 0) {
+			$first = Recibo::find($recibo->id);
+			$first_fecha = Carbon::parse($first->fecha_limite);
+			
+		$last_fecha = $first_fecha->addMonths($step);
+		$ult_consecutivo = $first->consecutivo + $step;
+
+		$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+				
+				$saldo_venta =  $venta->total - $pago_venta->total_pago;
+				
+				$ch_last = Recibo::select('recibo.*', DB::raw('MAX(id) as max'))->where('cancelado')->first();
+				$ch_last_date = Carbon::parse($ch_last->fecha_limite);
+
+	
+	
+	$recibo_parcial = new Recibo();
+			$recibo_parcial->consecutivo = $ult_consecutivo;
+			$recibo_parcial->venta_id = $venta_id;
+			$recibo_parcial->fecha_limite = $last_fecha;
+			$recibo_parcial->monto = $mensualidad;
+			$recibo_parcial->save();
+	
+	if ($pago_parcial > 0) {
+	
+			$pago = new Pago();
+			$pago->recibo_id  = $recibo_parcial->id;
+			$pago->forma_pago_id = $forma_pago_id;
+			$pago->usuario_id = Auth::user()->id;
+			$pago->monto = $monto_resto;
+			$pago->save();
+
+		}
+		
+
+
+				}
+
+		}
+
+return Redirect::action('VentaControlador@getRecibos',$venta_id);
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			break;
+
+
+			case '4':
+				
+				//paga el saldo del ultimo recibo
+			$abono = $abono_pendiente;
+			
+
+			$pago = new Pago();
+			$pago->recibo_id = $recibo_id;
+			$pago->forma_pago_id = $forma_pago_id;
+			$pago->monto = $saldo_recibo;
+			$pago->usuario_id =  Auth::user()->id;
+			$pago->save();
+
+			// se sacan n numero de recibos COMPLETOS con el resto del recibo y se genera el último
+			
+
+			////////////////////////
+			$recibo_update = Recibo::find($recibo->id);
+
+					
+					$recibo_update->pagado = 1;
+					$recibo_update->save();
+
+					
+					$resto_abono = $abono - $saldo_recibo;
+
+					$pagos = $resto_abono/$mensualidad;
+					$pagos_completos = intval($pagos);
+					$pago_parcial = $pagos - $pagos_completos;
+	
+					$monto_recibos_completos = $pagos_completos * $mensualidad;
+					$monto_resto = $resto_abono - $monto_recibos_completos;	
+					
+					$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+					->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+					->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+					
+					$resto_total = $venta->total - $total_pago_venta->total_pago;
+					$deadDate = explode('-', $recibo->fecha_limite);
+					$beginPlan = Carbon::createFromDate($deadDate[0], $deadDate[1], $deadDate[2], null);
+					$consecutivo_new = $recibo->consecutivo + 1;
+
+					//si cubre mas de un pago completo se generan los completos mas el parcial
+					
+							$subsecuente_r = $pagos_completos - 1;
+
+
+								for ($i=0; $i < $pagos_completos; $i++) { 
+						
+						$subsecuente_recibo = new Recibo();
+						$subsecuente_recibo->consecutivo = $consecutivo_new;
+						$subsecuente_recibo->venta_id = $venta_id;
+						$subsecuente_recibo->fecha_limite = $beginPlan->addMonths($step_meses);
+						$subsecuente_recibo->monto = $mensualidad;
+						$subsecuente_recibo->pagado = 1;
+						$subsecuente_recibo->save();
+
+						
+						$pago_subsecuente = new Pago();
+						$pago_subsecuente->recibo_id = $subsecuente_recibo->id;
+						$pago_subsecuente->forma_pago_id = $forma_pago_id;
+						$pago_subsecuente->monto = $mensualidad;
+						$pago_subsecuente->usuario_id = Auth::user()->id;
+						$pago_subsecuente->save();
+						
+						$consecutivo_new++;
+
+
+					}
+
+					//genera el parcial ultimo
+					
+		$step = $pagos_completos + 1;
+	
+			
+$total_pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+					->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+					->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)->first();
+					
+					$resto_total = $venta->total - $total_pago_venta->total_pago;
+if ($resto_total > 0) {
+			$first = Recibo::find($recibo->id);
+			$first_fecha = Carbon::parse($first->fecha_limite);
+			
+		$last_fecha = $first_fecha->addMonths($step);
+		$ult_consecutivo = $first->consecutivo + $step;
+
+		$pago_venta = Pago::select('pago.*', DB::raw('sum(pago.monto) as total_pago'))
+				->leftJoin('recibo','pago.recibo_id', '=', 'recibo.id')
+				->where('recibo.venta_id', $venta_id)->where('pago.cancelado',0)->where('recibo.cancelado',0)
+				->first();
+				
+				$saldo_venta =  $venta->total - $pago_venta->total_pago;
+				
+				$ch_last = Recibo::select('recibo.*', DB::raw('MAX(id) as max'))->where('cancelado')->first();
+				$ch_last_date = Carbon::parse($ch_last->fecha_limite);
+
+	
+	
+	$recibo_parcial = new Recibo();
+			$recibo_parcial->consecutivo = $ult_consecutivo;
+			$recibo_parcial->venta_id = $venta_id;
+			$recibo_parcial->fecha_limite = $last_fecha;
+			$recibo_parcial->monto = $mensualidad;
+			$recibo_parcial->save();
+	
+	
+		
+
+
+				}
+			///////////////////////
+
+
+				break;
+
 			default:
+		$abono = 5;
 		$abono = $monto_diferente;
 		$pago = new Pago;
 		$pago->recibo_id = $recibo_id;

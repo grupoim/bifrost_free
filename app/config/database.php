@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => '192.168.10.70',
-			'database'  => 'pfg_bifrost_test',
+			'database'  => 'pfg_bifrost',
 			'username'  => 'root',
 			'password'  => 'root',
 			'charset'   => 'utf8',
