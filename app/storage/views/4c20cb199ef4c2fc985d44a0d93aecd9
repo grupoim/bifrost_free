@@ -1,0 +1,222 @@
+<?php $__env->startSection('scripts'); ?>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ <script src="<?php echo URL::asset('js/jquery.maskedinput.min.js'); ?>"> </script>
+
+
+<script>
+	
+	//funcion Para el datepicker
+      $(function() {
+   
+//Array para dar formato en español
+ $.datepicker.regional['es'] = 
+ {
+ closeText: 'Cerrar', 
+ prevText: 'Previo', 
+ nextText: 'Próximo',
+ 
+ monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+ 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+ 'Jul','Ago','Sep','Oct','Nov','Dic'],
+ monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+ dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+ dateFormat: 'yy-mm-dd', firstDay: 0, 
+ initStatus: 'Selecciona la fecha', isRTL: false};
+$.datepicker.setDefaults($.datepicker.regional['es']);
+
+//miDate: fecha de comienzo D=días | M=mes | Y=año
+//maxDate: fecha tope D=días | M=mes | Y=año
+   $( "#datepicker" ).datepicker({ maxDate: "0"});
+
+ });//fin fuincion datepicker
+     //funcion Para el datepicker
+      $(function() {
+   
+//Array para dar formato en español
+ $.datepicker.regional['es'] = 
+ {
+ closeText: 'Cerrar', 
+ prevText: 'Previo', 
+ nextText: 'Próximo',
+ 
+ monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+ 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+ 'Jul','Ago','Sep','Oct','Nov','Dic'],
+ monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+ dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+ dateFormat: 'yy-mm-dd', firstDay: 0, 
+ initStatus: 'Selecciona la fecha', isRTL: false};
+$.datepicker.setDefaults($.datepicker.regional['es']);
+
+//miDate: fecha de comienzo D=días | M=mes | Y=año
+//maxDate: fecha tope D=días | M=mes | Y=año
+   $( "#datepicker2" ).datepicker({ maxDate: "0"});
+
+ });//fin fuincion datepicker
+             jQuery(function($){
+            $("#numero1").mask("9,99", {
+ 
+                // Generamos un evento en el momento que se rellena
+                completed:function(){
+                    $("#numero1").addClass("ok")
+                }
+            });
+ 
+            $("#movil").mask("(999) 999 - 9999");
+
+       
+        });
+</script>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('module'); ?>
+
+<?php echo Form::open(array('action' => 'OrdenCompraControlador@postOrden', 'class' => 'form-horizontal', 'role' => 'form', 'id' => 'registro')); ?>    
+<div class="col-md-11">
+
+  <div class="well"><h4>Datos para el rescate de <strong>Pedro Yepiz Garcia</strong></h4></div>
+
+     
+      <div class="form-group row">
+          <div class="col-lg-1"></div>
+         <div class="col-lg-3">
+         <label for="sel2">Colonia</label>
+          <select  class="form-control" id="parentesco_id" name="parentesco_id">
+              <option value="">Seleccione una opción</option>
+              <option>3 de Febrero</option>
+              <option>25 de Marzo (Sierra Ventana)</option>
+              <option>23 de Marzo</option>
+              <option>19 de Abril</option>
+              <option>Prima</option>
+              <option>5 de Mayo</option>
+              <option>5 de Mayo (F-93)</option>
+              <option>10 de Junio</option>
+            </select>
+            </div>  
+
+        <div class="col-lg-2">
+                 <label  class="control-label">Municipio</label> 
+                  <input type="text" class="form-control" disabled name="persona_id" id="persona_id" placeholder="--" />
+           </div>
+        <div class="col-lg-2">
+                 <label  class="control-label">Estado</label> 
+                  <input type="text" class="form-control" disabled name="persona_id" id="persona_id" placeholder="--" />
+           </div>
+            <div class="col-lg-2">
+              <label  class="control-label">Pais</label> 
+                  <input type="text" class="form-control" disabled name="persona_id" id="persona_id" placeholder="--" />
+           </div>
+              </div>
+     
+      <div class="form-group row ">
+     		 <div class=" col-lg-2"></div>
+              <div class=" col-lg-3">
+                    <label  class="control-label">Edificio de defuncion</label>
+                  <input type="text" class="form-control" name="edad" id="edad" placeholder="Nombre" />
+              </div>
+         <div class=" col-lg-2">
+                   <label  class="control-label">Planta</label>
+                  <input type="text" class="form-control" name="peso" id="peso" placeholder="Numero de piso" />
+              </div>
+
+
+          </div>
+               <div class="form-group row ">
+         <div class=" col-lg-2"></div>
+              <div class=" col-lg-3">
+                    <label  class="control-label">Calle</label>
+                  <input type="text" class="form-control" name="edad" id="edad" placeholder="Direccion" />
+              </div>
+         <div class=" col-lg-2">
+                   <label  class="control-label">Numero exterior</label>
+                   <div class="input-group">
+                    <span class="input-group-addon">#</span>
+                  <input type="text" class="form-control" name="peso" id="peso" placeholder="" />
+                  </div>
+              </div>
+        <div class="col-lg-2">
+                   <label  class="control-label">Numero interior</label>   
+                      <div class="input-group">
+                    <span class="input-group-addon">#</span>
+                  <input type="text" class="form-control" name="peso" id="peso" placeholder="" />
+                  </div>
+                  </div>
+              </div>
+
+          </div>
+
+     <div class="form-group">
+     		 <div class=" col-lg-2"></div>
+              <div class="col-lg-6 ">
+              <label  class="control-label">Referencias</label>
+                  <textarea type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripción"></textarea>
+              </div>
+
+          </div>
+
+   <div class="well"><h4>Asignar rescatista</h4></div>
+
+		      <div class="form-group row">
+       <div class=" col-lg-1"></div>
+           <div class="col-lg-4">
+              <label  class="control-label">Nombre completo</label> 
+                  <input type="text" class="form-control" name="persona_id" id="persona_id" placeholder="Pedro Yepiz Garcia" />
+           </div>
+        <div class="col-lg-3">
+         <label for="sel2">Parentesco con inhumado</label>
+      		<select  class="form-control" id="parentesco_id" name="parentesco_id">
+      				<option value="">Seleccione una opción</option>
+			        <option>Hermano</option>
+			        <option>Esposo</option>
+			        <option>Esposa</option>
+			        <option>Primo</option>
+			        <option>Prima</option>
+			        <option>Amigos</option>
+			        <option>Padre</option>
+			        <option>Madre</option>
+      			</select>
+            </div>
+        <div class="col-lg-3">
+         <label for="sel2">Tipo de telefono</label>
+      		<select  class="form-control" name="tipo_telefono_id" id="tipo_telefono_id">
+      				<option value="">Seleccione una opción</option>
+			        <option>Personal</option>
+			        <option>Empresa</option>
+			        <option>Casa</option>
+      			</select>
+            </div>
+              </div>
+  <div class="form-group row ">
+      <div class=" col-lg-3"></div>
+              <div class=" col-lg-2">
+                    <label  class="control-label">Codigo pais</label>
+                  <input type="text" class="form-control" name="codigo_pais"  placeholder="52" />
+              </div>
+         <div class=" col-lg-3">
+                   <label  class="control-label">Numero telefonico</label>
+                  <input type="text" class="form-control" name="telefono" id="movil" placeholder="" />
+              </div>
+
+          </div>
+
+       <div class="form-group row ">
+        <div class=" col-lg-4"></div>
+            <div class="col-lg-6 col-sm-6 col-xs-6 pad-adjust">
+                 <input type="submit"  class="btn btn-danger" value="Cancelar seguimiento" />
+       
+                  <input type="submit"  class="btn btn-success" value="Enviar datos" />
+              </div>
+          </div>
+     
+                   </div>
+           
+<?php echo Form::close(); ?>
+
+<?php $__env->stopSection(); ?>

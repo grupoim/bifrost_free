@@ -1,0 +1,1 @@
+<li><a href="{{ action('InventarioCafeteriaControlador@getIndex') }}">Inventario</a></li>

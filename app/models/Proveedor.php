@@ -9,6 +9,6 @@ class Proveedor extends Eloquent {
 	}
 
 	public function departamento() {
-		return $this->belongsTo('Departamento');
+		return $this->hasMany('Departamento');
 	}
 }

@@ -7,6 +7,9 @@ class Inhumado extends Eloquent {
 	public function persona() {
 		return $this->belongsTo('Persona');
 	}
+		public function causadefuncion() {
+		return $this->belongsTo('CausaDefuncion');
+	}
 
 	public function ventainhumacion() {
 		return $this->hasMany('VentaInhumacion');
@@ -14,5 +17,8 @@ class Inhumado extends Eloquent {
 
 	public function ventaexhumacion() {
 		return $this->hasMany('VentaExhumacion');
+	}
+		public function testigodeinhumado() {
+		return $this->hasMany('TestigoDeInhumado');
 	}
 }

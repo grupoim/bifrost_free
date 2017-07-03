@@ -443,7 +443,9 @@
 <script src="<?php echo URL::asset('js/bootstrap-typeahead.js'); ?>"></script>  <!-- Typahead plugin-->
 <script src="<?php echo URL::asset('js/charts.js'); ?>"></script> <!-- Charts & Graphs -->
 <script src="<?php echo URL::asset('js/app.js'); ?>"></script>
-
+<!-- jQuery codigo de barras -->
+<script src="<?php echo URL::asset('js/JsBarcode.all.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/JsBarcode.js'); ?>"></script>
 <?php echo $__env->yieldContent('scripts', ''); ?>
 </body>
 </html>

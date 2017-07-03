@@ -13,7 +13,7 @@ class Inventario extends Eloquent {
 	}
 
 	public function materialvalor() {
-		return $this->hasMany('MaterialValor')
+		return $this->hasMany('MaterialValor');
 	}
 
 	public function movimiento() {

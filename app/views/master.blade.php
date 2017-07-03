@@ -443,7 +443,9 @@
 <script src="{{ URL::asset('js/bootstrap-typeahead.js') }}"></script>  <!-- Typahead plugin-->
 <script src="{{ URL::asset('js/charts.js') }}"></script> <!-- Charts & Graphs -->
 <script src="{{ URL::asset('js/app.js') }}"></script>
-
+<!-- jQuery codigo de barras -->
+<script src="{{ URL::asset('js/JsBarcode.all.min.js') }}"></script>
+<script src="{{ URL::asset('js/JsBarcode.js') }}"></script>
 @yield('scripts', '')
 </body>
 </html>

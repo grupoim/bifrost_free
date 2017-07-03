@@ -1921,6 +1921,9 @@ footer .copy{
 tr.disabled td{
 	background-color: #DDD !important;
 }
+tr.escaso td{
+	background-color: #FFDCDC !important;
+}
 tr.gravedad td{
 	background-color: #fcf8e3 !important;
 }

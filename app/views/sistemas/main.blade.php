@@ -21,6 +21,7 @@
 		@include('menu.capilla')
 		<ul>
 			@include('menu.submenu.serviciofuneral')
+			@include('menu.submenu.inventariocafeteria')
 		</ul>
 	</li>
 	<li class="has_sub">

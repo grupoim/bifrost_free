@@ -87,8 +87,54 @@ checkBox.onchange();
       });
     });
 
+        $.ajax("{{ action('ProductoControlador@getProductos') }}")
+    .success(function(data){
+      $('#producto').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'nombre',
+        itemSelected: function(item){
+          $('#nombre').val(item);
+        }
+      });
     });
 
+     $.ajax("{{ action('ProductoControlador@getProductos') }}")
+    .success(function(data){
+      $('#producto2').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'nombre',
+        itemSelected: function(item){
+          $('#nombre').val(item);
+        }
+      });
+    });
+
+        $.ajax("{{ action('ProductoControlador@getProveedor') }}")
+    .success(function(data){
+      $('#proveedor_id').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'id',
+        itemSelected: function(item){
+          $('#id').val(item);
+        }
+      });
+    });;
+
+    $("#div_combo").hide();
+
+    $("#r1").click(function () {
+        $("#div_combo").show();
+
+    });
+       $("#r2").click(function () {
+        $("#div_combo").hide();
+
+    });
+
+    });
  var arrayValores= $.ajax("{{ action('ProductoControlador@getConstrucciones') }}");
         
   
@@ -101,7 +147,7 @@ checkBox.onchange();
 <div class="row">
 
 <ul id="myTab" class="nav nav-tabs">
-                      <li class= @if($tab == 'tab1' or $tab == '') "active" @else "" @endif><a href="#terreno-nicho" data-toggle="tab"><h5><strong><i class="fa fa-map-marker fa-fw"></i> Terreno/Nicho</strong></h5></a></li>
+                      <li class= @if($tab == 'tab1' or $tab == '')"active"  @else "" @endif><a href="#terreno-nicho" data-toggle="tab"><h5><strong><i class="fa fa-map-marker fa-fw"></i> Terreno/Nicho</strong></h5></a></li>
                       <li class= @if($tab == 'tab2' or $registro=='edit_tab2') "active" @else "" @endif><a href="#mtto" data-toggle="tab"><h5><strong><i class="fa fa-leaf fa-fw"></i> Mantenimiento</strong></h5></a></li>
                       <li class= @if($tab == 'tab3' or $registro=='edit_tab3') "active" @else "" @endif><a href="#paquete" data-toggle="tab"><h5><strong><i class="fa fa-cubes"></i> Productos y paquetes</strong></h5></a></li>
                       <li class= @if($tab == 'tab4' or $registro=='edit_tab4') "active" @else "" @endif><a href="#servicio" data-toggle="tab"><h5><strong><i class="fa fa-hospital-o fa-fw"></i> Servicio Funeral</strong></h5></a></li>
@@ -109,6 +155,7 @@ checkBox.onchange();
                       <li class= @if($tab == 'tab6' or $registro=='edit_tab6') "active" @else "" @endif><a href="#inhumacion" data-toggle="tab"><h5><strong><i class="fa fa-arrow-circle-down fa-fw"></i> Inhumación</strong></h5></a></li>
                       <li class= @if($tab == 'tab7' or $registro=='edit_tab7') "active" @else "" @endif><a href="#exhumacion" data-toggle="tab"><h5><strong><i class="fa fa-arrow-circle-up fa-fw"></i> Exhumación</strong></h5></a></li>
                       <li class= @if($tab == 'tab8' or $registro=='edit_tab8') "active" @else "" @endif><a href="#extra" data-toggle="tab"><h5><strong><i class="fa fa-cart-plus fa-fw"></i> Extra</strong></h5></a></li>
+                      <li class= @if($tab == 'tab9' or $registro=='edit_tab9') "active" @else "" @endif><a href="#cafeteria" data-toggle="tab"><h5><strong><i class="fa fa-cutlery"></i> Cafeteria</strong></h5></a></li>
 
                     </ul>
                     <div id="myTabContent" class="tab-content">
@@ -117,9 +164,10 @@ checkBox.onchange();
                       @include('sistemas.tabs.tab_terreno_nicho')                    
                       @include('sistemas.tabs.tab_mtto')  
                       @include('sistemas.tabs.tab_paquete')
+                      @include('sistemas.tabs.tab_cafeteria')
 
                                           
                       </div>
                     </div>
-                 </div> 
+            
 @stop

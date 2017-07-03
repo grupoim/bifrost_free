@@ -292,7 +292,13 @@ Highcharts.chart('container', {
         title: {
             text: '',
 
-        }
+        },
+       labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -361,7 +367,13 @@ Highcharts.chart('acumulados', {
         title: {
             text: '',
             
-        }
+        },
+       labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
     },
     legend: {
        
@@ -425,6 +437,12 @@ Highcharts.chart('apiladas', {
         title: {
             text: ''
         },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
         stackLabels: {
             enabled: true,
             style: {
@@ -494,7 +512,13 @@ Highcharts.chart('VentasTotal', {
     yAxis: {
         title: {
             text: ''
-        }
+        },
+        labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
     },
     legend: {
         layout: 'vertical',
@@ -544,7 +568,13 @@ Highcharts.chart('vendedores', {
         min: 0,
         title: {
             text: ''
-        }
+        },
+        labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
     },
     legend: {
         enabled: false
@@ -590,6 +620,12 @@ Highcharts.chart('promotorias', {
         title: {
             text: ''
         },
+        labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
         stackLabels: {
             enabled: true,
             style: {
@@ -598,7 +634,7 @@ Highcharts.chart('promotorias', {
             },
             formatter: function() {   
                         return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
-                    }
+                 },                  
         }
     },
     legend: {
@@ -630,7 +666,8 @@ Highcharts.chart('promotorias', {
 
     series: [
             @foreach($promotor as $pro)
-            {name:'{{{$pro->promotor}}}', 
+            {
+                name:'{{{$pro->promotor}}}', 
             data:[@foreach($serie_promotoria as $sep) @if($sep->promotor == $pro->promotor){{{$sep->total}}},@endif
                  @endforeach 
                  ]
@@ -641,6 +678,253 @@ Highcharts.chart('promotorias', {
 
 });
 // fin  de graficas promotorias
+
+// grafica de extras 
+Highcharts.chart('Extras', {
+
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Extras {{{$mes}}} {{{$serie['name']}}}'
+    },
+    tooltip: {
+           pointFormat: '{series.name}: ${point.y:,.0f}<br/>'
+    },
+          subtitle: {
+        text: 'Extras total:@foreach($serie_extra_total as $ex_total) ${{{number_format($ex_total->total, 0, '.', ',')}}}@endforeach'
+
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: ${point.y:,.0f}',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                },
+                connectorColor: 'silver'
+            }
+        }
+    },
+    series: [{
+        name: 'Total',
+        data: [
+         @foreach($serie_extra as $ext)
+            { name: '{{{$ext->nombre}}}', y: {{{round($ext->monto,0)}}} },
+               @endforeach            
+        ]
+    }]
+});
+    // fin de grafica extras
+
+//empieza grafica cartera cliente
+Highcharts.chart('Cartera', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+    },
+      subtitle: {
+          text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
+    },
+
+    xAxis: {
+        categories: ['{{{$mes}}}']
+      
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+        labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [
+        @foreach($cartera_categoria as $cat)
+        {
+        name:'{{{$cat->nombre}}}',
+        data:[@foreach($serie_cartera as $scats) @if($scats->nombre == $cat->nombre){{{$scats->monto}}},@endif 
+                 @endforeach 
+                 ]
+
+        },
+  @endforeach
+    ]
+});
+//termina grafica cartera cliente
+// grafica de cartera pastel
+Highcharts.chart('Cartera_pastel', {
+
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+    },
+
+    tooltip: {
+           pointFormat: '{series.name}: ${point.y:,.0f}<br/>'
+    },
+    subtitle: {
+          text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+               format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                },
+                connectorColor: 'silver'
+            }
+        }
+    },
+    series: [{
+        name: 'Total',
+        data: [
+         @foreach($serie_cartera as $cats)
+            { name: '{{{$cats->nombre}}}', y: {{{$cats->monto}}} },
+               @endforeach            
+        ]
+    }]
+});
+    // fin de grafica cartera pastel
+
+//termina grafica cartera cliente
+//empieza grafica cartera acumulada
+Highcharts.chart('Cartera_acumulado', {
+ chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+    },
+      subtitle: {
+          text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
+    },
+
+    xAxis: {
+        categories: ['{{{$mes}}}']
+      
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        },
+       labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Atrasado',
+        data: [{{{round($atrasado,0)}}}]
+
+    }, {
+        name: 'Vencido',
+        data: [{{{round($vencido,0)}}}]
+
+    }, {
+        name: 'Al corriente',
+        data: [{{{round($alcorriente,0)}}}]
+
+    }]
+});
+//termina grafica cartera acumulada
+//empieza grafica distribucion de captura de mantenimientos
+        
+
+Highcharts.chart('Distribucion_mantenimiento', {
+ chart: {
+        type: 'bar'
+    },
+    title: {
+     text: 'Distribución de capturas de mantenimiento {{{$mes}}} {{{$serie['name']}}}'
+    },
+     xAxis: {
+            categories: [
+            @foreach($asesores as $asesor)
+                    '{{{$asesor->asesor}}}', 
+            @endforeach
+        ],
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+    series: [
+        @foreach($tipos as $tipo)
+        {
+        name:'{{{$tipo->nombre}}}',
+        data:[@foreach($serie_distribucion as $sdist) @if($sdist->tipo == $tipo->nombre){{{$sdist->monto}}},@endif 
+                 @endforeach 
+                 ]
+
+        },
+  @endforeach]
+});
+//termina distribuccion de captura de mantenimientos
 </script>
 
 @stop()
@@ -649,17 +933,17 @@ Highcharts.chart('promotorias', {
 
 
 <div class="widget">
-	<div class="widget-head">
-		<div class="pull-left">Acumulados anual (Escala M = Millón)</div>
-		<div class="pull-right">
-		<a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>         
+    <div class="widget-head">
+        <div class="pull-left">Acumulados anual (Escala M = Millón)</div>
+        <div class="pull-right">
+        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>         
         </div>  
-		<div class="clearfix"></div>
-	</div>
-	
-	<div class="widget-content">
-		<div class="padd">
-		<div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div class="clearfix"></div>
+    </div>
+    
+    <div class="widget-content">
+        <div class="padd">
+        <div id="acumulados" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     
 <table class="table table-condensed">
     <thead>
@@ -717,19 +1001,19 @@ Highcharts.chart('promotorias', {
     <tfoot>
          
 </table>
-		
-		</div>
-	</div>
+        
+        </div>
+    </div>
 
 
-	<div class="widget-foot">
-		<div class="pull-right">
-			<div class="btn-group">
-				
-			</div>
-		</div>
-		<div class="clearfix"></div>
-	</div>
+    <div class="widget-foot">
+        <div class="pull-right">
+            <div class="btn-group">
+                
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
 </div>
 
 
@@ -969,8 +1253,202 @@ Highcharts.chart('promotorias', {
         <div class="clearfix"></div>
     </div>
 </div> 
+    <!-- Empieza extras -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Extras {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Extras" ></div>
+
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>  
+     <!-- grafica cartera clientes -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Cartera cliente {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Cartera" ></div>
+
+                 <!-- Content goes here -->
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
 
 
+@foreach($cartera_categoria as $cat)
+        <tr>
+            
+            <th class="text-center" class="col-md-3">{{{$cat->nombre}}}</th>
+           @foreach($serie_cartera as $scats)
+
+                @if($cat->nombre == $scats->nombre)<td class="text-left">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+
+            </div>  
+ <!-- Empieza cartera pastel -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Cartera_pastel" ></div>
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+
+            </div>  
+<!-- Empieza cartera acumulados -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Cartera_acumulado" ></div>
+
+     <table class="table table-condensed">
+                <thead>
+            <tr> 
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr> 
+            <th class="text-center" class="col-md-3">Atrasado</th>
+            <th class="text-center" class="col-md-3">Vencido</th>
+            <th class="text-center" class="col-md-3">Al corriente</th>
+       </tr>
+       <tr>     
+            <td class="text-center">${{{number_format($atrasado, 0, '.', ',')}}} </td>
+            <td class="text-center">${{{number_format($vencido, 0, '.', ',')}}} </td>
+            <td class="text-center">${{{number_format($alcorriente, 0, '.', ',')}}} </td>
+       </tr>          
+    </tbody>
+    <tfoot>
+         
+</table>
+                 <!-- Content goes here -->
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+
+            </div>
+<!-- Empieza distribucion de mantenimientos-->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Distribución de captura de mantenimientos {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Distribucion_mantenimiento" ></div>
 
 
+<table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+            
+ <th class="text-left" class="col-md-3"></th>
+ <th class="text-left" class="col-md-3">Nuevo</th>
+ <th class="text-left" class="col-md-3">Renovado</th>
+ <th class="text-left" class="col-md-3">Cobranza</th>
+@foreach($asesores as $asesor)
+        <tr>
+            
+            <th class="text-center" class="col-md-3">{{{$asesor->asesor}}}</th>
+
+           @foreach($serie_distribucion as $sdist)
+
+                @if($asesor->asesor == $sdist->asesor)<td class="text-left">{{{$sdist->monto}}} </td>@endif 
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+
+            </div>
 @stop

@@ -15,7 +15,6 @@
 			
 			$dataModule['mantenimientos'] = VistaPreciosMantenimiento::all();
 			$dataModule["config_gral"] = ConfiguracionGeneral::where('activo',1)->firstorfail();
-			
 			$dataModule['paquetes'] = Paquete::groupby('paquete_id')->get();
 			$dataModule['productos_combo'] = Producto::where('combo',1)->get();
 			$dataModule['productos'] = Producto::with('precio')->get();
@@ -23,12 +22,18 @@
 													->leftjoin('precio', 'producto.id', '=', 'precio.producto_id')
 													->where('precio.activo', 1)
 													->get();
+			$dataModule['productos_cafeteria'] = Producto::select('producto.nombre','producto.id')->leftjoin('departamento', 'departamento.id', '=', 'producto.departamento_id')
+													->where('producto.activo',1)
+													->get();
 			$dataModule['departamentos']= Departamento::all();
 			$dataModule['contenido_paquete'] = Paquete::select('paquete.id','paquete.paquete_id','paquete.producto_id as item_id','producto.nombre as nombre_paquete','px.nombre as item')
 														->leftjoin('producto','paquete.paquete_id','=','producto.id' )							
 														->leftjoin('producto as px', 'paquete.producto_id', '=', 'px.id')	
-														->get();		
-			
+														->get();
+			$dataModule['unidades'] = UnidadMedida::all();
+			$dataModule['proveedores'] = Proveedor::select('proveedor.nombre','proveedor.id')->leftjoin('departamento', 'departamento.id', '=', 'proveedor.departamento_id')
+													->where('proveedor.activo',1)
+													->get();			
 			return View::make($this->department.".main", $this->data)->nest('child','sistemas.main_productos',$dataModule);
 			
         }
@@ -50,6 +55,18 @@
 				->join('recinto', 'sector.id', '=', 'recinto.sector_id')->get();
 				return Response::Json($sectores_nicho);
 		}
+		public function getProductos(){
+				$producto_cafeteria = Producto::select('producto.nombre','producto.id')->leftjoin('departamento', 'departamento.id', '=', 'producto.departamento_id')
+													->where('producto.activo',1)
+													->get();
+				return Response::Json($producto_cafeteria);
+		}
+	public function getProveedor(){	
+	$proveedores = Proveedor::select('proveedor.nombre','proveedor.id')->leftjoin('departamento', 'departamento.id', '=', 'proveedor.departamento_id')
+													->where('proveedor.activo',1)->get();
+	return Response::Json($proveedores);
+
+	}
 		public function postMantenimiento(){		
 //validar formulario mtto
 			$rules = array(
@@ -368,4 +385,152 @@ public function postProductocombo(){
 	$precio_producto->save();
 return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab3')->with('registro', 'edit_tab3');
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////pendiente
+public function postProducto(){	
+//validar formulario productos
+$rules = array(
+					'nombre' => 'required',
+					'combo'=>'required',
+					'codigo'=>'required',					
+					'unidad_id'=>'required',
+					'departamento_id'=>'required',
+					'cantidad'=>'required|numeric',					
+				);
+				$messages = array(
+						'required'=>'El campo :attribute es obligatorio',						
+						'numeric'=>'Capture solo números'
+						
+					);
+			$validator = Validator::make(Input::all(), $rules, $messages);
+				if ($validator->fails())
+				 { 
+						
+						
+				return Redirect::back()->withInput()->withErrors($validator)->with('registro', 'edit_tab9')->with('tab', 'tab9');						
+				
+			}
+if ( Input::get('departamento_id') == 0 || Input::get('unidad_id') == 0) {
+	
+	 return Redirect::back()->with('status', 'vacios')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+	
+}else{
+ if(DB::table('producto')->select('nombre')->where('nombre','=',Input::get('nombre'))->where('activo',1)->get()) {	
+			$produc= Producto::where('nombre','=',Input::get('nombre'))->where('activo',1)->firstOrFail();
+			$id = Inventario::select('inventario.id')->where('producto.nombre','=',Input::get('nombre'))->where('activo',1)->leftjoin('producto', 'producto.id', '=', 'inventario.producto_id')->firstorfail();
+			$exc = Inventario::where('producto.nombre','=',Input::get('nombre'))->where('activo',1)->leftjoin('producto', 'producto.id', '=', 'inventario.producto_id')->firstorfail();
+
+		        $inventario = Inventario::find($id->id);
+		        $inventario->id = $id->id;
+		        $inventario->almacen_id = 1;
+		        $inventario->unidad_medida_id =Input::get('unidad_id');
+		        $inventario->existencia = $exc->existencia + Input::get('cantidad');
+		        $inventario->producto_id = $produc->id;
+		        $inventario->descripcion = Input::get('descripcion');
+		        $inventario->save();
+
+		        return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+
+			 }elseif (Input::get('combo') == 0) {
+
+			 	
+
+			 	$producto_cafeteria = new Producto;
+		        $producto_cafeteria->departamento_id =  Input::get('departamento_id');
+		        $producto_cafeteria->grabable = 0;
+		        $producto_cafeteria->nombre = Input::get('nombre');		        
+		        $producto_cafeteria->combo = Input::get('combo');
+		        $producto_cafeteria->codigo = Input::get('codigo');
+		        $producto_cafeteria->save();
+		
+		        $inventario = new Inventario;
+		        $inventario->almacen_id = 1;
+		        $inventario->unidad_medida_id = Input::get('unidad_id');
+		        $inventario->existencia = Input::get('cantidad');
+		        $inventario->producto_id = $producto_cafeteria->id;
+		        $inventario->descripcion = Input::get('descripcion');
+		        $inventario->save();
+
+		        $producto_proveedor = new ProductoProveedor;
+		        $producto_proveedor->proveedor_id = Input::get('proveedor_id');
+		        $producto_proveedor->producto_id = $producto_cafeteria->id;
+		        $producto_proveedor->save();
+
+
+
+		return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+			 	
+			 	}else
+			 	{
+
+				$producto_cafeteria = new Producto;
+		        $producto_cafeteria->departamento_id =  Input::get('departamento_id');
+		        $producto_cafeteria->grabable = 0;
+		        $producto_cafeteria->nombre = Input::get('nombre').' + '.Input::get('nombre2');		        
+		        $producto_cafeteria->combo = Input::get('combo');
+		        $producto_cafeteria->codigo = Input::get('codigo');
+		        $producto_cafeteria->save();
+		
+		        $inventario = new Inventario;
+		        $inventario->almacen_id = 1;
+		        $inventario->unidad_medida_id = Input::get('unidad_id');
+		        $inventario->existencia = Input::get('cantidad');
+		        $inventario->producto_id = $producto_cafeteria->id;
+		        $inventario->descripcion = Input::get('descripcion');
+		        $inventario->save();
+
+		        $producto_proveedor = new ProductoProveedor;
+		        $producto_proveedor->proveedor_id = Input::get('proveedor_id');
+		        $producto_proveedor->producto_id = $producto_cafeteria->id;
+		        $producto_proveedor->save();
+
+		return Redirect::back()->with('status', 'producto_created')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+
+
+			 	}
+
+
+
+
+	 }
+
+
+} //fin post productos
+
+public function postPrecio(){	
+//validar formulario precio
+$rules = array(					
+					'precio_producto'=>'required|numeric',					
+				);
+				$messages = array(
+						'required'=>'El campo :attribute es obligatorio',						
+						'numeric'=>'Capture solo números'
+						
+					);
+			$validator = Validator::make(Input::all(), $rules, $messages);
+				if ($validator->fails())
+				 { 
+						
+						
+				return Redirect::back()->withInput()->withErrors($validator)->with('registro', 'edit_tab9')->with('tab', 'tab9');						
+				
+			}
+			if (Input::get('producto_precio') == 0) {
+				return Redirect::back()->with('status', 'vacio')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+			}else { 
+			//validacion de precios repetidos en productos
+			if (DB::table('precio')->select('producto_id')->where('producto_id','=',Input::get('producto_precio'))->get()) {
+				return Redirect::back()->with('status', 'precio_repetido')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+			}
+			else{ 
+  				$precio = new Precio;
+		        $precio->producto_id = Input::get('producto_precio');
+		        $precio->monto = Input::get('precio_producto');
+		        $precio->save();
+
+		return Redirect::back()->with('status', 'precio_created')->with('tab', 'tab9')->with('registro', 'edit_tab9');
+	}
+}
+	
+ }// fin de post precios
 } // fin controlador----------------

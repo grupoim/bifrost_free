@@ -19,4 +19,7 @@ class Departamento extends Eloquent {
 	public function puesto() {
 		return $this->hasMany('Puesto');
 	}
+	public function proveedor() {
+		return $this->hasMany('proveedor');
+	}
 }

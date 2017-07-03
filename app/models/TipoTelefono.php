@@ -11,4 +11,8 @@ class TipoTelefono extends Eloquent {
 	public function telefonoasesor() {
 		return $this->hasMany('TelefonoAsesor');
 	}
+
+		public function contactotestigorescate() {
+		return $this->hasMany('ContactoTestigoRescate');
+	}
 }

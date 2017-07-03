@@ -47,6 +47,10 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/construccion', 'ConstruccionControlador');
 	Route::controller('/perfil-usuario', 'PerfilControlador');
 	Route::controller('/extra', 'ExtraControlador');
+	Route::controller('/inventario-capilla', 'InventarioCafeteriaControlador');
+	Route::controller('/orden-compra','OrdenCompraControlador');
+	
+
 });
 Route::controller('/login', 'LoginControlador');
 

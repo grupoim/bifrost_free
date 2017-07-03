@@ -1,0 +1,91 @@
+<?php $__env->startSection('scripts'); ?>
+
+
+<?php /* ocultar mensajes de alerta automaticamente =======*/ ?>
+    
+<script type="text/javascript">
+$(document).on('ready', function(){
+
+      window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 2000);
+   
+    <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
+
+
+
+        });
+ </script>
+ <?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('module'); ?>
+    <div class="widget">
+
+ <div class="widget-head">    
+            
+               <div align="rigth">Lista de acciones realizadas</div>                  
+                    
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+          
+                
+                <div class="padd">
+                          <div class="page-tables">
+                <!-- Table -->
+                <div class="table-responsive">
+                  <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
+                    <thead>
+                      <tr>
+                     	
+                        <th><strong>Usuario</strong></th>
+                        <th><strong>Acción</strong></th>
+                        <th><strong>Producto</strong></th>
+                        <th><strong>Fecha</strong></th>
+                        <th><strong>Fecha automatica</strong></th>
+                        <th><strong>Cantidad</strong></th>                       
+  
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+
+                      <?php foreach($movimientos as $movimiento): ?>
+
+                       
+                        <td><?php echo e($movimiento->pnombre); ?> <?php echo e($movimiento->p_paterno); ?> <?php echo e($movimiento->p_materno); ?></td>
+                        <td><?php echo e($movimiento->accion_id); ?></td> 
+                        <td><?php echo e($movimiento->producto); ?></td>
+                        <?php if($movimiento->fecha == 000-00-00): ?>
+                        <td><?php echo e($movimiento->fecha); ?></td>
+                        <?php else: ?>
+                        <td><?php echo e(date('d-m-Y', strtotime($movimiento->fecha))); ?></td>
+                        <?php endif; ?>
+                        <td><?php echo e(date('d-m-Y h:i:s a', strtotime($movimiento->created_at))); ?></td>
+                        <td><strong><?php echo e($movimiento->cantidad); ?></strong></td>                      
+                  				
+
+                      </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                    
+                  </table>
+                    
+   <div class="clearfix"></div>             
+                
+</div>
+      </div>   
+      </div>   
+    </div>
+    </div>
+    <div class="col-lg-2 control-label">                             
+       <a href= "<?php echo action('InventarioCafeteriaControlador@getIndex'); ?>" class="btn btn-primary" >Regresar</a> 
+
+     </div> 
+   
+
+<?php $__env->stopSection(); ?>
