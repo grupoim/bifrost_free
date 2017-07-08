@@ -12,10 +12,14 @@
 		
 
 		public function getIndex(){	
+			$data["status"] = Session::pull('status');
 			$data["sectores"] = Sector::all(); 			
  			$data["recintos"]= Recinto::all();
  			$data["parentezcos"]= Parentezco::all();
  			$data["tipo_telefonos"] = TipoTelefono::all();
+ 			$data["personas"] = TestigoDeInhumado::select('testigo_de_inhumado.persona_id as inhumado_persona_id','contacto_testigo_rescate.seguimiento_rescate','inhumado.id as inhumado_id')
+ 									->leftjoin('contacto_testigo_rescate','testigo_de_inhumado.id','=','contacto_testigo_rescate.testigo_de_inhumado_id')
+ 									->leftjoin('inhumado','testigo_de_inhumado.inhumado_id','=','inhumado.id')->firstOrFail();
  			$data["servicios"] = VentaProducto::select('persona.id as persona_id','persona.nombres as pnombre','persona.apellido_paterno as p_paterno','persona.apellido_materno as p_materno'
  				,'producto.nombre as producto','venta.folio_solicitud')->where('producto.departamento_id',5)->where('producto.servicio',1)->where('producto.activo',1)
  				 ->leftjoin('producto','venta_producto.producto_id','=','producto.id')
@@ -33,8 +37,14 @@
         	$causa_defuncion->infecciosa = Input::get('infecciosa');
         	$causa_defuncion->save();
 
+        	$persona_inhumado = new Persona;
+        	$persona_inhumado->nombres = Input::get('nombres_inhumado');
+        	$persona_inhumado->apellido_paterno = Input::get('apellido_paterno_inhumado');
+        	$persona_inhumado->apellido_materno = Input::get('apellido_materno_inhumado');
+        	$persona_inhumado->save();
+
         	$inhumado = new Inhumado;
-        	$inhumado->persona_id = Input::get('persona_id');
+        	$inhumado->persona_id = $persona_inhumado->id;
         	$inhumado->fecha_deceso = Input::get('fecha_deceso');
         	$inhumado->fecha_nacimiento = Input::get('fecha_nacimiento');
         	$inhumado->edad = Input::get('edad');
@@ -43,14 +53,14 @@
         	$inhumado->causa_defuncion_id = $causa_defuncion->id;
         	$inhumado->save();
 
-        	$persona = new Persona;
-        	$persona->nombres = Input::get('nombres');
-        	$persona->apellido_paterno = Input::get('apellido_paterno');
-        	$persona->apellido_materno = Input::get('apellido_materno');
-        	$persona->save();
+        	$persona_testigo = new Persona;
+        	$persona_testigo->nombres = Input::get('nombres');
+        	$persona_testigo->apellido_paterno = Input::get('apellido_paterno');
+        	$persona_testigo->apellido_materno = Input::get('apellido_materno');
+        	$persona_testigo->save();
 
         	$testigo_de_inhumado = new TestigoDeInhumado;
-        	$testigo_de_inhumado->persona_id = Input::get('persona_id');
+        	$testigo_de_inhumado->persona_id = $persona_testigo->id;
         	$testigo_de_inhumado->parentezco_id = Input::get('parentezco_id');
         	$testigo_de_inhumado->inhumado_id = $inhumado->id;
         	$testigo_de_inhumado->save();
@@ -63,7 +73,7 @@
         	$contacto_testigo_rescate->seguimiento_rescate = 1;
         	$contacto_testigo_rescate->save();
 
-
+			return Redirect::back()->with('status', 'registro_inhumado');
 
         }
 

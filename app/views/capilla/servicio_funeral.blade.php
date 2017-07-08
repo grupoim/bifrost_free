@@ -5,11 +5,26 @@
 
 
 <script>
-	
+	   $(document).on('ready', function(){
+      window.setTimeout(function() {
+  $("#alerta").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 4000);
+       });
+
   $(document).ready(function (e) {
   $('#registro').on('show.bs.modal', function(e) {    
   var id = $(e.relatedTarget).data().id;
-      $(e.currentTarget).find('#inhumado').val(id);
+      $(e.currentTarget).find('#registro').val(id);
+
+});
+});
+
+  $(document).ready(function (e) {
+  $('#rescate').on('show.bs.modal', function(e) {    
+  var id = $(e.relatedTarget).data().id;
+      $(e.currentTarget).find('#rescate').val(id);
 
 });
 });
@@ -85,7 +100,11 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 @stop
 
 @section('module')
-
+ @if($status=='registro_inhumado')
+                  <div class="alert alert-info alert-dismissible" role="alert" align="center" id="alerta">
+                 <strong><h4> Registro exitoso!... Defina la ruta del rescate</h4></strong>
+                </div> 
+  @endif 
 <div class="clearfix"></div>
 	
 
@@ -161,17 +180,26 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                        
                       @foreach($servicios as $servicio)
 
-						<td>{{$servicio->folio_solicitud}}</td>
-						<td> </td>
+                        @if($personas->inhumado_persona_id == $servicio->persona_id && $personas->seguimiento_rescate == 1)
+               
+						            <td>{{$servicio->folio_solicitud}}</td>
+						            <td> </td>
                         <td>{{$servicio->pnombre}} {{$servicio->p_paterno}} {{$servicio->p_materno}}</td>
                         <td>{{$servicio->producto}}</td> 
-                        <td>                        	
-                        <a class="btn btn-xs btn-default" data-id='{{$servicio->persona_id}}' data-toggle="modal" data-target="#registro"  title="Registrar servicio"> <i class="fa fa-pencil-square-o"></i></a>       
-						<a class="btn btn-xs btn-default" data-toggle="modal" data-target="#rescate" title="Realizar rescate"> <i class="fa fa-ambulance  "></i></a>
-
+                        <td>                       
+                        <a class="btn btn-xs btn-default" data-id='{{$personas->inhumado_id}}' data-toggle="modal" data-target="#rescate" title="Realizar rescate"> <i class="fa fa-ambulance  "></i></a>
                         </td>
-                        
+                          @else
+                        <td>{{$servicio->folio_solicitud}}</td>
+                        <td> </td>
+                        <td>{{$servicio->pnombre}} {{$servicio->p_paterno}} {{$servicio->p_materno}}</td>
+                        <td>{{$servicio->producto}}</td> 
+                        <td>                       
+                        <a class="btn btn-xs btn-default" data-id='{{$servicio->folio_solicitud}}' data-toggle="modal" data-target="#registro"  title="Registrar servicio"> <i class="fa fa-pencil-square-o"></i></a>       
+                        </td>
+                          @endif
                       </tr>
+       
                  	 @endforeach
                
                          
@@ -202,27 +230,28 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 
 
   {{ Form::open(array('action' => 'ServicioFuneralControlador@postInhumado', 'class' => 'form-horizontal', 'role' => 'form', 'files' => true)) }}
-<!-- contenido modal 
+
+
+<input type="text" id="registro">
+
       <div class="form-group row">
        	   <div class="col-lg-1"></div>
            <div class="col-lg-3">
               <label  class="control-label">Nombre</label> 
-                  <input type="text" class="form-control" name="nombres" id="nombres" placeholder="Nombre" />
+                  <input type="text" class="form-control" name="nombres_inhumado" id="nombres" placeholder="Nombre" />
            </div>
            <div class="col-lg-3">
               <label  class="control-label">Apellido paterno</label> 
-                  <input type="text" class="form-control" name="apellido_paterno" id="apellido_paterno" placeholder="Apellido paterno" />
+                  <input type="text" class="form-control" name="apellido_paterno_inhumado" id="apellido_paterno" placeholder="Apellido paterno" />
            </div>
            <div class="col-lg-3">
               <label  class="control-label">Apellido materno</label> 
-                  <input type="text" class="form-control" name="apellido_materno" id="apellido_materno" placeholder="Apellido materno" />
+                  <input type="text" class="form-control" name="apellido_materno_inhumado" id="apellido_materno" placeholder="Apellido materno" />
            </div>
 
-
               </div>
-              -->
+       
 
-              <input type="hidden" id="inhumado" name="persona_id">
      <div class="form-group row ">
 		<div class="col-lg-2"></div>
         <div class="col-lg-4">
@@ -352,7 +381,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                   <!-- contenido modal -->
    <div class="col-md-12">
 
-     
+     <input type="hidden" id="rescate" name="inhumado_id">
       <div class="form-group row">
           <div class="col-lg-1"></div>
          <div class="col-lg-3">
@@ -432,6 +461,21 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
 
    <div class="well"><h4>Asignar rescatista</h4></div>
 
+    <div class="form-group row">
+           <div class="col-lg-1"></div>
+           <div class="col-lg-3">
+              <label  class="control-label">Nombre</label> 
+                  <input type="text" class="form-control" name="nombres" id="nombres" placeholder="Nombre" />
+           </div>
+           <div class="col-lg-3">
+              <label  class="control-label">Apellido paterno</label> 
+                  <input type="text" class="form-control" name="apellido_paterno" id="apellido_paterno" placeholder="Apellido paterno" />
+           </div>
+           <div class="col-lg-3">
+              <label  class="control-label">Apellido materno</label> 
+                  <input type="text" class="form-control" name="apellido_materno" id="apellido_materno" placeholder="Apellido materno" />
+           </div>
+      </div>
 		      <div class="form-group row">
        <div class=" col-lg-2"></div>
            <div class="col-lg-4">

@@ -203,7 +203,9 @@ $serie_distribucion = GraficaCapturaVendedor::select('totales_grafica.monto','vi
 								        ->groupby('grafica_captura_vendedor.asesor_id','tipo_mantenimiento_captura.nombre')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
 								        ->get();
 $asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->where('grafica_captura_vendedor.captura',1)->groupby('asesor')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
-								->leftJoin('grafica_captura_vendedor','vista_asesor_promotor.asesor_id','=','grafica_captura_vendedor.asesor_id')->get();
+								->where('month',$month)->where('year',$year)
+								->leftJoin('grafica_captura_vendedor','vista_asesor_promotor.asesor_id','=','grafica_captura_vendedor.asesor_id')
+								->leftJoin('totales_grafica','grafica_captura_vendedor.totales_grafica_id','=','totales_grafica.id')->get();
 $tipos = TipoMantenimientoCaptura::orderBy('id','des')->get();					
 //Termina grafica distribucion captura mantenimiento
 								//termino consultas pedro
