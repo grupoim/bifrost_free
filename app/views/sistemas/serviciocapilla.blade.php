@@ -1,0 +1,1 @@
+@extends('capilla.serviciocapilla')
