@@ -103,7 +103,7 @@ $('#edit_button').on('click', function(){
 <div class="col-md-12">
 	<div class="col-md-3">
 		<div class="alert alert-info text-center">
-			<h4> <i class="fa fa-shopping-cart"></i> Contrato <strong> $ <?php echo e(number_format($venta->total, 2, '.', ',')); ?> </strong></h4>
+			<h4> <i class="fa fa-shopping-cart"></i> Contrato 555555555555555<strong> $ <?php echo e(number_format($venta->total, 2, '.', ',')); ?> </strong></h4>
 
 		</div>
 	</div>
