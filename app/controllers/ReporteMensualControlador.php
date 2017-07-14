@@ -333,6 +333,19 @@ switch ($month) {
 			$dataModule["vendedores"] = $vendedores;
 			$dataModule["totalmes"] = $totalmes;
 			$dataModule["promotor"] = $promotor;
+			////////////
+			$dataModule["serie_extra"] = $extra;
+			$dataModule["serie_extra_total"] = $extra_total;
+			$dataModule["serie_cartera"] = $cartera;
+			$dataModule["serie_cartera_total"] = $cartera_total;
+			$dataModule["cartera_categoria"] = $cartera_categoria;
+			$dataModule["alcorriente"] = $alcorriente;
+			$dataModule["atrasado"] = $atrasado;
+			$dataModule["vencido"] = $vencido;
+			$dataModule["serie_distribucion"] = $serie_distribucion;
+			$dataModule["asesores"] = $asesores;
+			$dataModule["tipos"] = $tipos;
+			////////////
 			
 
 
