@@ -202,7 +202,7 @@ $categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','='
 
 
 
-$serie = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)->where('year','>=', $year3)
+$serie = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre as name','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)->where('year','>=', $year3)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')	
 								->orderBy('producto_grafica.nombre','desc')->get();
@@ -315,6 +315,111 @@ switch ($month) {
 								 );
 							
 //fin graficas comparativas por producto
+
+							//graficas pedro
+							$asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->groupby('asesor')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
+								->where('month',$month)->where('year',$year)
+								->leftJoin('grafica_captura_vendedor','vista_asesor_promotor.asesor_id','=','grafica_captura_vendedor.asesor_id')
+								->leftJoin('totales_grafica','grafica_captura_vendedor.totales_grafica_id','=','totales_grafica.id')->get();
+//consultas pedro						
+//consulta extras individuales
+$extra = GraficaVentaProducto::select('producto_grafica.nombre','totales_grafica.monto','totales_grafica.year','totales_grafica.month')->where('producto_grafica.extra',1)
+									->where('month',$month)->where('year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->get();
+//suma de extras totales por mes
+$extra_total = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'))->where('producto_grafica.extra',1)
+									->where('month',$month)->where('year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->get();
+//consulta cartera clientes 
+$cartera = GraficaVentaProducto::select('producto_grafica.nombre','totales_grafica.monto','totales_grafica.year','totales_grafica.month')
+									->where('producto_grafica.cartera',1)
+									->where('month',$month)->where('year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->get();
+
+//suma de cartera cliente por mes
+$cartera_total = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'))
+									->where('producto_grafica.cartera',1)
+									->where('month',$month)->where('year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->get();
+//categoria cartera 
+$cartera_categoria = ProductoGrafica::where('activo',1)->where('cartera', 1)->get();
+
+/////////////////////////////////////////////////////////////////////////////////////////////7
+//consulta de cartera atrasados - vencidos y al corriente
+$cartera_alcorriente = GraficaVentaProducto::select('totales_grafica.monto as monto_corriente')
+									->where('producto_grafica.nombre','=','Al corriente 1 a 30 dias')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+$cartera_atrasado1 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado1')
+									->where('producto_grafica.nombre','=','Atrasado 31 a 60 dias')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+$cartera_atrasado2 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado2')
+									->where('producto_grafica.nombre','=','Atrasado 61 a 90 dias')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+$cartera_atrasado3 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado3')
+									->where('producto_grafica.nombre','=','Atrasado 91 a 120 dias')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+$cartera_vencido = GraficaVentaProducto::select('totales_grafica.monto as monto_vencido')
+									->where('producto_grafica.nombre','=','Vencido 121 dias en delante')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+$cartera_pvencer = GraficaVentaProducto::select('totales_grafica.monto as monto_vencer')
+									->where('producto_grafica.nombre','=','Por vencer')
+									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
+									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
+									->first();
+		
+if ($cartera_pvencer == false) {
+$alcorriente = 0;
+$atrasado = 0;
+$vencido = 0;
+	
+}else{
+$alcorriente = $cartera_pvencer->monto_vencer + $cartera_alcorriente->monto_corriente;
+$atrasado = $cartera_atrasado1->monto_atrasado1 + $cartera_atrasado2->monto_atrasado2 + $cartera_atrasado3->monto_atrasado3;
+$vencido = $cartera_vencido->monto_vencido;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Consulta grafica distribucion captura mantenimiento
+$serie_distribucion = GraficaCapturaVendedor::select('totales_grafica.monto','vista_asesor_promotor.asesor','tipo_mantenimiento_captura.nombre as tipo')
+										->where('month',$month)->where('year',$year)
+										->leftJoin('totales_grafica', 'grafica_captura_vendedor.totales_grafica_id', '=', 'totales_grafica.id')
+								        ->leftJoin('vista_asesor_promotor', 'grafica_captura_vendedor.asesor_id', '=', 'vista_asesor_promotor.asesor_id')
+								        ->leftJoin('tipo_mantenimiento_captura','grafica_captura_vendedor.tipo_mantenimiento_captura_id','=','tipo_mantenimiento_captura.id')
+								        ->groupby('grafica_captura_vendedor.asesor_id','tipo_mantenimiento_captura.nombre')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
+								        ->get();
+$asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->groupby('asesor')->orderBy('grafica_captura_vendedor.totales_grafica_id','asc')
+								->where('month',$month)->where('year',$year)
+								->leftJoin('grafica_captura_vendedor','vista_asesor_promotor.asesor_id','=','grafica_captura_vendedor.asesor_id')
+								->leftJoin('totales_grafica','grafica_captura_vendedor.totales_grafica_id','=','totales_grafica.id')->get();
+$tipos = TipoMantenimientoCaptura::orderBy('id','des')->get();					
+//Termina grafica distribucion captura mantenimiento
+								//termino consultas pedro
+							//fin grficas pedro
 
 
 			$dataModule["year"] = $year;
