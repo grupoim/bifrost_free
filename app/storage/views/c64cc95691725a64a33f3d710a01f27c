@@ -1,1 +1,0 @@
-<li><a href="<?php echo action('ContratacionControlador@getIndex'); ?>">Contratación</a></li>

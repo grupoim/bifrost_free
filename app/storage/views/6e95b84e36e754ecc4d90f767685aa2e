@@ -1,1 +1,0 @@
-<li><a href="<?php echo action('ConfiguracionControlador@getIndex'); ?>">Configuraciones Generales</a></li>

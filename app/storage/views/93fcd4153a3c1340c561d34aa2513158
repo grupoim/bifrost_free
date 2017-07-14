@@ -1,1 +1,0 @@
-<li><a href="<?php echo action('CobranzaControlador@getIndex'); ?>">Cobranza</a></li>
