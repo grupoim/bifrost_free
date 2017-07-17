@@ -1,6 +1,79 @@
 <?php $__env->startSection('scripts'); ?>
-  
+<script src="<?php echo URL::asset('js/jquery.maskedinput.min.js'); ?>"> </script>
+  <link rel="stylesheet" href="<?php echo URL::asset('css/multi-select.css'); ?>">  
+<script>  
+$(document).on('ready', function(){
 
+      window.setTimeout(function() {
+  $("#alerta").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 2000);
+   
+    <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
+
+
+
+        });
+
+             jQuery(function($){
+            $("#numero1").mask("9,99", {
+ 
+                // Generamos un evento en el momento que se rellena
+                completed:function(){
+                    $("#numero1").addClass("ok")
+                }
+            });
+ 
+            $("#telefono").mask("(999) 999 - 9999");
+
+       
+        });
+//multiselect
+         $('#custom-headers').multiSelect({
+  selectableHeader: "<div class='custom-header'>Selectable items</div>",
+  selectionHeader: "<div class='custom-header'>Selection items</div>",
+  selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+  selectionFooter: "<div class='custom-header'>Selection footer</div>"
+});
+// buscadores de multi select
+$('#custom-headers').multiSelect({
+  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+  afterInit: function(ms){
+    var that = this,
+        $selectableSearch = that.$selectableUl.prev(),
+        $selectionSearch = that.$selectionUl.prev(),
+        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+    .on('keydown', function(e){
+      if (e.which === 40){
+        that.$selectableUl.focus();
+        return false;
+      }
+    });
+
+    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+    .on('keydown', function(e){
+      if (e.which == 40){
+        that.$selectionUl.focus();
+        return false;
+      }
+    });
+  },
+  afterSelect: function(){
+    this.qs1.cache();
+    this.qs2.cache();
+  },
+  afterDeselect: function(){
+    this.qs1.cache();
+    this.qs2.cache();
+  }
+});
+
+</script>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('module'); ?>
     <?php if($status=='registro_rescatista'): ?>
@@ -8,12 +81,19 @@
                  <strong><h4> Registro exitoso!..Rescatista añadido correctamente</h4></strong>
                 </div> 
   <?php endif; ?>
+      <?php if($status=='registro_validacion'): ?>
+                  <div class="alert alert-danger" role="alert" align="center" id="alerta">
+                 <strong><h4> Rescatista ya ha sido registrado</h4></strong>
+                </div> 
+  <?php endif; ?>
   <div class="col-md-4">
-                        <div  class="alert alert-success  text-center">
+                        <div  class="alert alert-danger  text-center">
                           <h4><i class="fa fa-users"></i> Sala San Miguel </h4>
               <h4><strong>Detalles de velación</strong></h4>
-                                     
-                 <input type="hidden" value="" name="promotor">
+             <h4 align="left"><strong>Inhumado:</strong> Pedro Yepiz Garcia</h4>                 
+             <h4 align="left"><strong>Horario:</strong> 18 de Julio 10:00 am a 12:00 pm</h4>
+             <a alt="" href="" class="btn btn-default"><i class="fa fa-plus-square"></i> Mas información</a>
+
                              <br>         
                         </div>
                       </div>
@@ -139,7 +219,7 @@
                   <div class="form-group" >
                       <label class="col-lg-3 control-label"><strong>Telefono </strong></label>
                         <div class="col-lg-2">
-                               <input type="text" class="form-control" placeholder="52" value="52" name="codigo_pais" id="codigo_pais" required>
+                               <input type="number" class="form-control" placeholder="52" value="52" name="codigo_pais" id="codigo_pais" required>
                         </div>
                          <div class="col-lg-5">
                                <input type="text" class="form-control" placeholder="Numero" name="telefono" id="telefono" required>
@@ -172,4 +252,10 @@
    <?php echo Form::close(); ?>
 
 
+
+<select id='custom-headers' multiple='multiple' name="rescatista_">
+<?php foreach($rescatistas as $rescatista): ?>   
+ <option value="<?php echo $rescatista->rescatista_id; ?>"> <?php echo e($rescatista->rescatista); ?></option>                                            
+ <?php endforeach; ?>  
+</select>
 <?php $__env->stopSection(); ?>

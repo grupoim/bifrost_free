@@ -21,6 +21,9 @@
 		->get();
 		$dataModule['db'] = ConfiguracionGeneral::where('empresa_id', 1)->where('activo', 1)->firstorFail();	
 		$dataModule["tipo_telefonos"] = TipoTelefono::all();	
+		$dataModule["rescatistas"] = Rescatista::select('rescatista.id as rescatista_id', DB::raw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) as rescatista"))
+									->where('rescatista.activo',1)
+									->leftJoin('persona','rescatista.persona_id','=','persona.id')->get();
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.serviciocapilla', $dataModule);}
        
         public function getCreate(){
@@ -44,7 +47,16 @@
         }
 
         public function postRescatista(){
+        	
+        	if (DB::table('rescatista')->select('persona.nombres','persona.apellido_paterno','persona.apellido_materno')
+        		->where('nombres','=',Input::get('nombres'))
+        		->where('apellido_paterno','=',Input::get('apellido_paterno'))
+        		->where('apellido_materno','=',Input::get('apellido_materno'))
+        		->where('rescatista.activo',1)->leftJoin('persona','rescatista.persona_id','=','persona.id')->get()) {
 
+        	return  Redirect::back()->with('status', 'registro_validacion');
+        	}else{
+								
         	$persona = new Persona;
         	$persona->nombres = Input::get('nombres');
         	$persona->apellido_paterno = Input::get('apellido_paterno');
@@ -63,6 +75,7 @@
         	$contacto_rescatista->save();
 			
 			return  Redirect::back()->with('status', 'registro_rescatista');
+			}
 
         }
 	}

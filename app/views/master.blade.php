@@ -446,6 +446,9 @@
 <!-- jQuery codigo de barras -->
 <script src="{{ URL::asset('js/JsBarcode.all.min.js') }}"></script>
 <script src="{{ URL::asset('js/JsBarcode.js') }}"></script>
+ <!--Multi-select -->
+ <script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
+<script src="{{ URL::asset('js/jquery.quicksearch.js') }}"></script>
 @yield('scripts', '')
 </body>
 </html>
