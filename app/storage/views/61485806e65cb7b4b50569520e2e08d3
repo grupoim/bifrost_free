@@ -102,16 +102,19 @@ $('#custom-headers').multiSelect({
                         <div  class="alert alert-success  text-center">
                           <h4><i class="fa fa-users"></i> Sala San Gabriel </h4>
               <h4><strong>Detalles de velación</strong></h4>               
-                 <input type="hidden" value="" name="promotor">
+               <h4 align="left"><strong>Inhumado:</strong></h4>                 
+               <h4 align="left"><strong>Horario:</strong></h4>
+              <a alt="" href="" class="btn btn-default"><i class="fa fa-plus-square"></i> Realizar velación</a>
                              <br>
                        </div>
                       </div>
                         <div class="col-md-4">
                         <div  class="alert alert-success  text-center">
                           <h4><i class="fa fa-users"></i> Sala San Rafael </h4>
-              <h4><strong>Detalles de velación</strong></h4> 
-                     
-                 <input type="hidden" value="" name="promotor">
+              <h4><strong>Detalles de velación</strong></h4>   
+              <h4 align="left"><strong>Inhumado:</strong> </h4>                 
+             <h4 align="left"><strong>Horario:</strong> </h4>
+             <a alt="" href="" class="btn btn-default"><i class="fa fa-plus-square"></i> Realizar velación</a>
                              <br>
 
                         </div>

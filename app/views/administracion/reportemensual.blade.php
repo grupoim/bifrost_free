@@ -716,49 +716,62 @@ Highcharts.chart('Extras', {
         name: 'Total',
         data: [
          @foreach($serie_extra as $ext)
-            { name: '{{{$ext->nombre}}}', y: {{{round($ext->monto,0)}}} },
+            { name: '{{{$ext->nombre}}}', y: {{{$ext->monto}}} },
                @endforeach            
         ]
     }]
 });
     // fin de grafica extras
 
-//empieza grafica cartera cliente
+//empieza grafica cartera cliente ///////////////////////////////////////// MODIFICADO
 Highcharts.chart('Cartera', {
+   
+   
     chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
-    },
-      subtitle: {
-          text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
+        type: 'column',
+         
     },
 
+
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: ''
+    },
     xAxis: {
-        categories: ['{{{$mes}}}']
-      
+        categories: ['{{{$fechas['mes3']}}}','{{{$fechas['mes2']}}}','{{{$fechas['mes']}}}'
+            
+            
+        ],
+        crosshair: true
+    },
+     legend: {
+       
+        align: 'center',
+        verticalAlign: 'top'
     },
     yAxis: {
-        min: 0,
+      
         title: {
-            text: ''
+            text: '',
+
         },
-        labels: {
+       labels: {
         formatter: function() {
             return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
 
         },
     },
-
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
+            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
+        
     },
     plotOptions: {
         column: {
@@ -766,20 +779,24 @@ Highcharts.chart('Cartera', {
             borderWidth: 0
         }
     },
-    series: [
-        @foreach($cartera_categoria as $cat)
+    series: [    
+   
+
+        @foreach($categories_cartera as $cat)
         {
         name:'{{{$cat->nombre}}}',
-        data:[@foreach($serie_cartera as $scats) @if($scats->nombre == $cat->nombre){{{$scats->monto}}},@endif 
-                 @endforeach 
-                 ]
-
+        data:[@foreach($serie_cartera as $scats) @if($scats->nombre == $cat->nombre and $scats->month == $fechas['month3'] and $scats->year == $fechas['year']){{{$scats->monto}}},@endif 
+                                                 @if($scats->nombre == $cat->nombre and $scats->month == $fechas['month2'] and $scats->year == $fechas['year']){{{$scats->monto}}},@endif  
+                                                 @if($scats->nombre == $cat->nombre and $scats->month == $fechas['month'] and $scats->year == $fechas['year']){{{$scats->monto}}},@endif  @endforeach ]
         },
   @endforeach
+
+
     ]
 });
-//termina grafica cartera cliente
-// grafica de cartera pastel
+
+//termina grafica cartera cliente ///////////////////////////////////////////////////////////
+// grafica de cartera pastel /&//#$%"""""""""""""""""#$&"#$%&$%/&$/&2346" MODIFICADO
 Highcharts.chart('Cartera_pastel', {
 
     chart: {
@@ -814,17 +831,15 @@ Highcharts.chart('Cartera_pastel', {
     },
     series: [{
         name: 'Total',
-        data: [
-         @foreach($serie_cartera as $cats)
-            { name: '{{{$cats->nombre}}}', y: {{{$cats->monto}}} },
-               @endforeach            
-        ]
+        data: [@foreach($serie_cartera as $d) @if($d->month == $fechas['month'] and $d->year == $fechas['year']) { name:'{{{$d->nombre}}}', y: {{{$d->monto}}} }, @endif @endforeach]
+
     }]
 });
-    // fin de grafica cartera pastel
-
+    // fin de grafica cartera pastel 1246b c1111113478902634628903648274723894789237489723489
+</script>
+<script>
 //termina grafica cartera cliente
-//empieza grafica cartera acumulada
+//empieza grafica cartera acumulada MODIFICADO ///////////////////////////////////////////////////
 Highcharts.chart('Cartera_acumulado', {
  chart: {
         type: 'column'
@@ -837,7 +852,10 @@ Highcharts.chart('Cartera_acumulado', {
     },
 
     xAxis: {
-        categories: ['{{{$mes}}}']
+                categories: ['{{{$fechas['mes3']}}}','{{{$fechas['mes2']}}}','{{{$fechas['mes']}}}'
+            
+            
+        ],
       
     },
     yAxis: {
@@ -868,20 +886,39 @@ Highcharts.chart('Cartera_acumulado', {
         }
     },
     series: [{
-        name: 'Atrasado',
-        data: [{{{round($atrasado,0)}}}]
+        name:'Atrasado', 
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_atrasado3 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado3,0)}}}, @endif @endforeach  
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_atrasado2 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado2,0)}}}, @endif @endforeach  
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_atrasado = $sc->monto + $sum2; ?>  {{{round($sum_atrasado,0)}}}, @endif @endforeach  
+        ]
+       },
 
-    }, {
+        {
         name: 'Vencido',
-        data: [{{{round($vencido,0)}}}]
+       data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year']) {{{round($sc->monto,0)}}}, @endif 
+                                            @if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year']) {{{round($sc->monto,0)}}}, @endif
+                                            @if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month'] and $sc->year == $fechas['year']) {{{round($sc->monto,0)}}}, @endif @endforeach]
 
     }, {
-        name: 'Al corriente',
-        data: [{{{round($alcorriente,0)}}}]
+        name: 'Al corriente',   
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_alcorriente3 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente3,0)}}},@endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_alcorriente2 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente2,0)}}},@endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_alcorriente = $sc->monto + $sum2; ?> {{{round($sum_alcorriente,0)}}},@endif @endforeach
+     ]
+
 
     }]
 });
-//termina grafica cartera acumulada
+//termina grafica cartera acumulada /////////////////////////////////////////////////////////////////////
 //empieza grafica distribucion de captura de mantenimientos
         
 
@@ -1276,7 +1313,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
                 </div>
               </div>
             </div>  
-     <!-- grafica cartera clientes -->
+     <!-- grafica cartera clientes Modificado  -->
 <div class="widget">
               <div class="widget-head">
                 <div class="pull-left">Cartera cliente {{{$mes}}} {{{$serie['name']}}}</div>
@@ -1301,15 +1338,18 @@ Highcharts.chart('Distribucion_mantenimiento', {
         </tr>
     </thead>
     <tbody>
-
-
-@foreach($cartera_categoria as $cat)
+          <th class="text-center" class="col-md-3"></th>
+          <th class="text-center" class="col-md-3">{{{$fechas['mes3']}}}</th>
+          <th class="text-center" class="col-md-3">{{{$fechas['mes2']}}}</th>
+          <th class="text-center" class="col-md-3">{{{$fechas['mes']}}}</th>
+ <!-- Content goes here -->
+@foreach($categories_cartera as $cat)
         <tr>
             
             <th class="text-center" class="col-md-3">{{{$cat->nombre}}}</th>
-           @foreach($serie_cartera as $scats)
+             @foreach($serie_cartera as $scats)
 
-                @if($cat->nombre == $scats->nombre)<td class="text-left">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
+                @if($cat->nombre == $scats->nombre)<td class="text-center">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
             @endforeach
 
         </tr>@endforeach
@@ -1327,6 +1367,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
               </div>
 
             </div>  
+             <!--cierre de MODIFICADO -->
  <!-- Empieza cartera pastel -->
 <div class="widget">
               <div class="widget-head">
@@ -1373,15 +1414,31 @@ Highcharts.chart('Distribucion_mantenimiento', {
         </tr>
     </thead>
     <tbody>
+
         <tr> 
+            <th class="text-center" class="col-md-3"> </th>
             <th class="text-center" class="col-md-3">Atrasado</th>
             <th class="text-center" class="col-md-3">Vencido</th>
             <th class="text-center" class="col-md-3">Al corriente</th>
        </tr>
+
        <tr>     
-            <td class="text-center">${{{number_format($atrasado, 0, '.', ',')}}} </td>
-            <td class="text-center">${{{number_format($vencido, 0, '.', ',')}}} </td>
-            <td class="text-center">${{{number_format($alcorriente, 0, '.', ',')}}} </td>
+            <td class="text-center"><strong>{{{$fechas['mes3']}}}</strong></td>
+            <td class="text-center">${{{number_format($sum_atrasado3, 0, '.', ',')}}} </td>
+            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
+            <td class="text-center">${{{number_format($sum_alcorriente3, 0, '.', ',')}}} </td>
+       </tr>  
+            <tr>     
+           <td class="text-center"><strong>{{{$fechas['mes2']}}}</strong></td>
+            <td class="text-center">${{{number_format($sum_atrasado2, 0, '.', ',')}}} </td>
+            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
+            <td class="text-center">${{{number_format($sum_alcorriente2, 0, '.', ',')}}} </td>
+       </tr>  
+            <tr>     
+            <td class="text-center"><strong>{{{$fechas['mes']}}}</strong></td>
+            <td class="text-center">${{{number_format($sum_atrasado, 0, '.', ',')}}} </td>
+            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
+            <td class="text-center">${{{number_format($sum_alcorriente, 0, '.', ',')}}} </td>
        </tr>          
     </tbody>
     <tfoot>

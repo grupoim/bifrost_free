@@ -17,7 +17,14 @@ $month = $month->subMonths(1);
 $month = $month->format('m');
 
 
+$month2 = Carbon::now();
+$month2 = $month2->subMonths(2);
+$month2 = $month2->format('m');
 
+
+$month3 = Carbon::now();
+$month3 = $month3->subMonths(3);
+$month3 = $month3->format('m');
 
 
 $year = Carbon::now();
@@ -38,7 +45,7 @@ $year3 = $year3->format('Y');
 
 //graficas comparativas por producto
 $categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->get();
-
+$categories_cartera = ProductoGrafica::where('activo',1)->where('cartera', 1)->get(); // Dato modificado
 
 
 $datos = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year)->where('categoria',1)
@@ -123,14 +130,13 @@ $extra_total = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) 
 									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 									->get();
-//consulta cartera clientes 
+//consulta cartera clientes ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////MODIFICADO
 $cartera = GraficaVentaProducto::select('producto_grafica.nombre','totales_grafica.monto','totales_grafica.year','totales_grafica.month')
 									->where('producto_grafica.cartera',1)
-									->where('month',$month)->where('year',$year)
 									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 									->get();
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //suma de cartera cliente por mes
 $cartera_total = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'))
 									->where('producto_grafica.cartera',1)
@@ -138,58 +144,8 @@ $cartera_total = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto
 									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
 									->get();
-//categoria cartera 
-$cartera_categoria = ProductoGrafica::where('activo',1)->where('cartera', 1)->get();
 
-/////////////////////////////////////////////////////////////////////////////////////////////7
-//consulta de cartera atrasados - vencidos y al corriente
-$cartera_alcorriente = GraficaVentaProducto::select('totales_grafica.monto as monto_corriente')
-									->where('producto_grafica.nombre','=','Al corriente 1 a 30 dias')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-$cartera_atrasado1 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado1')
-									->where('producto_grafica.nombre','=','Atrasado 31 a 60 dias')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-$cartera_atrasado2 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado2')
-									->where('producto_grafica.nombre','=','Atrasado 61 a 90 dias')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-$cartera_atrasado3 = GraficaVentaProducto::select('totales_grafica.monto as monto_atrasado3')
-									->where('producto_grafica.nombre','=','Atrasado 91 a 120 dias')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-$cartera_vencido = GraficaVentaProducto::select('totales_grafica.monto as monto_vencido')
-									->where('producto_grafica.nombre','=','Vencido 121 dias en delante')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-$cartera_pvencer = GraficaVentaProducto::select('totales_grafica.monto as monto_vencer')
-									->where('producto_grafica.nombre','=','Por vencer')
-									->where('totales_grafica.month',$month)->where('totales_grafica.year',$year)
-									->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-									->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')
-									->first();
-		
-if ($cartera_pvencer == false) {
-$alcorriente = 0;
-$atrasado = 0;
-$vencido = 0;
-	
-}else{
-$alcorriente = $cartera_pvencer->monto_vencer + $cartera_alcorriente->monto_corriente;
-$atrasado = $cartera_atrasado1->monto_atrasado1 + $cartera_atrasado2->monto_atrasado2 + $cartera_atrasado3->monto_atrasado3;
-$vencido = $cartera_vencido->monto_vencido;
-}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,8 +205,102 @@ switch ($month) {
 		# code...
 		break;
 }
-
-
+switch ($month2) {
+	case 01:
+		$mes_string2 = 'Enero';# code...
+		break;
+	case 02:
+		$mes_string2 = 'Febrero';# code...
+		break;
+		case 03:
+		$mes_string2 = 'Marzo';# code...
+		break;
+		case 04:
+		$mes_string2 = 'Abril';# code...     
+		break;
+		case 05:
+		$mes_string2 = 'Mayo';# code...
+		break;
+		case 06:
+		$mes_string2 = 'Junio';# code...
+		break;
+		case 07:
+		$mes_string2 = 'Julio';# code...
+		break;
+		case 08:
+		$mes_string2 = 'Agosto';# code...
+		break;
+		case 09:
+		$mes_string2 = 'Septiembre';# code...
+		break;
+		case 10:
+		$mes_string2 = 'Octubre';# code...
+		break;
+		case 11:
+		$mes_string2 = 'Noviembre';# code...
+		break;
+		case 12:
+		$mes_string2 = 'Diciembre';# code...
+		break;
+	default:
+		# code...
+		break;
+}
+switch ($month3) {
+	case 01:
+		$mes_string3 = 'Enero';# code...
+		break;
+	case 02:
+		$mes_string3 = 'Febrero';# code...
+		break;
+		case 03:
+		$mes_string3 = 'Marzo';# code...
+		break;
+		case 04:
+		$mes_string3 = 'Abril';# code...     
+		break;
+		case 05:
+		$mes_string3 = 'Mayo';# code...
+		break;
+		case 06:
+		$mes_string3 = 'Junio';# code...
+		break;
+		case 07:
+		$mes_string3 = 'Julio';# code...
+		break;
+		case 08:
+		$mes_string3 = 'Agosto';# code...
+		break;
+		case 09:
+		$mes_string3 = 'Septiembre';# code...
+		break;
+		case 10:
+		$mes_string3 = 'Octubre';# code...
+		break;
+		case 11:
+		$mes_string3 = 'Noviembre';# code...
+		break;
+		case 12:
+		$mes_string3 = 'Diciembre';# code...
+		break;
+	default:
+		# code...
+		break;
+}
+		//////////////////////////////////////////////////////////////
+							$fechas = array(
+								'year' => $year,
+								'year1' => $year1,
+								'year2' => $year2,
+								'year3' => $year3,
+								'month' => $month,
+								'month2' => $month2,
+								'month3' => $month3,
+								'mes' => $mes_string,
+								'mes2' => $mes_string2,
+								'mes3' => $mes_string3,
+								 );
+///////////////////////////////////////////////////////////////////////MODIFICADO
 							$serie = array(
 								"name"=>  $year,
 								"data" =>  $datos,
@@ -307,6 +357,8 @@ switch ($month) {
 								"data" =>$vendedores, 
 							
 						);
+					
+
 
 
 			$dataModule["year"] = $year;
@@ -325,6 +377,7 @@ switch ($month) {
 			$dataModule["serie_promotoria"] = $promotoria;
 			$dataModule["acumulado"] = $acumulado;						
 			$dataModule["categories"] = $categories;
+			$dataModule["categories_cartera"] = $categories_cartera; //nuevo añadir 
 			$dataModule["datos"] = $datos;
 			$dataModule["vendedores"] = $vendedores;
 			$dataModule["promotor"] = $promotor;
@@ -332,13 +385,10 @@ switch ($month) {
 			$dataModule["serie_extra_total"] = $extra_total;
 			$dataModule["serie_cartera"] = $cartera;
 			$dataModule["serie_cartera_total"] = $cartera_total;
-			$dataModule["cartera_categoria"] = $cartera_categoria;
-			$dataModule["alcorriente"] = $alcorriente;
-			$dataModule["atrasado"] = $atrasado;
-			$dataModule["vencido"] = $vencido;
 			$dataModule["serie_distribucion"] = $serie_distribucion;
 			$dataModule["asesores"] = $asesores;
 			$dataModule["tipos"] = $tipos;
+			$dataModule["fechas"] = $fechas; //nuevo añadir
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.reportemensual' , $dataModule);
 	}
 
@@ -356,6 +406,7 @@ switch ($month) {
  		
 
 		}
+
 	public function getVendedores() {			 
 	
 	$vendedores = VistaAsesorPromotor::all();
