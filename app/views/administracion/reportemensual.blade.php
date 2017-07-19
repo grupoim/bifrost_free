@@ -1349,7 +1349,9 @@ Highcharts.chart('Distribucion_mantenimiento', {
             <th class="text-center" class="col-md-3">{{{$cat->nombre}}}</th>
              @foreach($serie_cartera as $scats)
 
-                @if($cat->nombre == $scats->nombre)<td class="text-center">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
+               @if($cat->nombre == $scats->nombre and $scats->month == $fechas['month3'])<td class="text-center">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
+                @if($cat->nombre == $scats->nombre and $scats->month == $fechas['month2'])<td class="text-center">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
+                @if($cat->nombre == $scats->nombre and $scats->month == $fechas['month'])<td class="text-center">${{{number_format($scats->monto, 0, '.', ',')}}} </td>@endif 
             @endforeach
 
         </tr>@endforeach
