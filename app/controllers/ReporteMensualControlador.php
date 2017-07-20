@@ -42,7 +42,7 @@ $year3 = $year3->subYears(3);
 $year3 = $year3->format('Y');
 
 //graficas comparativas por producto
-$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->orderBy('id', 'desc')->get();
+$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->get();
 
 $periodo_mtto = PeriodoMantenimiento::where('activo',1)->get();
 $categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','=',1 )->get();
@@ -51,8 +51,13 @@ $categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','='
 
 $serie = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)->where('year','>=', $year3)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
-								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')	
-								->orderBy('producto_grafica.nombre','desc')->get();
+								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')->get();
+
+$mtto_total = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)
+								->where('year','>=', $year3)
+								->where('producto_grafica_id',8)
+								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')->get(); 
 
 
 $acumulado = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month', 'totales_grafica.year')->groupby('year','month')
@@ -183,6 +188,7 @@ switch ($month) {
 			$dataModule["vendedores"] = $vendedores;
 			$dataModule["totalmes"] = $totalmes;
 			$dataModule["promotor"] = $promotor;
+
 			
 
 
@@ -205,7 +211,7 @@ $categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','='
 $serie = GraficaVentaProducto::select('producto_grafica.id','producto_grafica.nombre as name','totales_grafica.monto', 'totales_grafica.month', 'totales_grafica.year')->where('categoria',1)->where('year','>=', $year3)
 								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
 								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')	
-								->orderBy('producto_grafica.nombre','desc')->get();
+								->get();
 
 
 $acumulado = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) as total'), 'totales_grafica.month', 'totales_grafica.year')->groupby('year','month')
@@ -419,14 +425,40 @@ $asesores = VistaAsesorPromotor::select('vista_asesor_promotor.asesor')->groupby
 $tipos = TipoMantenimientoCaptura::orderBy('id','des')->get();					
 //Termina grafica distribucion captura mantenimiento
 								//termino consultas pedro
+
+$datos = GraficaVentaProducto::select('totales_grafica.monto')->where('month', $month)->where('year',$year)->where('categoria',1)
+								->leftJoin('totales_grafica', 'grafica_venta_producto.totales_grafica_id', '=', 'totales_grafica.id')
+								->leftJoin('producto_grafica', 'grafica_venta_producto.producto_grafica_id', '=', 'producto_grafica.id')	
+								->get();
+
+$seriep = array(
+								"name"=>  $year,
+								"data" =>  $datos,
+								);
+
 							//fin grficas pedro
 
-
+			$monto_prestamo = 1000;
+			$tasa_int_anual = 0.9135;
+			$iva = 16;
+			$periodo = 16;
+			$tasa_con_iva = $tasa_int_anual*(($iva /100)+1);
+			$tasa_mensual = $tasa_con_iva/(360/7);
+			
+			$pago = round($monto_prestamo* (($tasa_mensual*pow((1+$tasa_mensual), $periodo))/(pow(1+$tasa_mensual, $periodo) -1)),0);
+			
+			$pago_total = $pago*$periodo;
+			$dataModule["pago_total"] = $pago_total;
+			$dataModule["tasa_mensual"] = $tasa_mensual;
+			$dataModule["monto_prestamo"] = $monto_prestamo;
+			$dataModule["periodo"] = $periodo;
+			$dataModule["pago"] =  $pago;
 			$dataModule["year"] = $year;
 			$dataModule["month"] = $month;
 			$dataModule["fechas"] = $fechas;
 			$dataModule["mes"] = $mes_string;			
-			$dataModule["serie"] = $serie;			
+			$dataModule["serie"] = $serie;
+			$dataModule["seriep"] = $seriep;			
 			$dataModule["acumulado"] = $acumulado;														
 			$dataModule["categories"] = $categories;
 			$dataModule["mtto_totales"] = $mtto_totales;
@@ -451,7 +483,7 @@ $tipos = TipoMantenimientoCaptura::orderBy('id','des')->get();
 			$dataModule["asesores"] = $asesores;
 			$dataModule["tipos"] = $tipos;
 			////////////
-			
+
 
 
 		return View::make($this->department.".main", $this->data)->nest('child', $this->department.'.reportemensual' , $dataModule);

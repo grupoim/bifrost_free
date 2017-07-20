@@ -160,7 +160,7 @@ class ComisionControlador extends ModuloControlador{
 
 		$dataModule['esquemas'] = EsquemaComision::where('activo',1)->get();
 
-		$dataModule['promotorias'] = VistaAsesorPromotor::groupBy('vista_asesor_promotor.promotor')->get();
+		$dataModule['promotorias'] = VistaAsesorPromotor::where('promotor','<>', 'Gerencia')->groupBy('vista_asesor_promotor.promotor')->get();
 
 		
 

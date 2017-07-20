@@ -632,7 +632,7 @@ Highcharts.chart('vendedores', {
           xAxis: {
         categories: [
             <?php foreach($vendedores as $ven): ?>
-            '<?php echo e($ven->asesor); ?>',
+            '<?php echo utf8_encode($ven->asesor); ?> ',
             <?php endforeach; ?>
         ],
          labels: {
@@ -874,7 +874,7 @@ Highcharts.chart('Extras', {
         type: 'pie'
     },
     title: {
-        text: 'Extras <?php echo e($mes); ?> <?php echo e($serie['name']); ?>'
+        text: 'Extras <?php echo e($mes); ?> <?php echo e($seriep['name']); ?>'
     },
     tooltip: {
            pointFormat: '{series.name}: ${point.y:,.0f}<br/>'
@@ -914,7 +914,7 @@ Highcharts.chart('Cartera', {
         type: 'column'
     },
     title: {
-        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($serie['name']); ?>'
+        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($seriep['name']); ?>'
     },
       subtitle: {
           text: 'Cartera total:<?php foreach($serie_cartera_total as $car_total): ?> $<?php echo e(number_format($car_total->total, 0, '.', ',')); ?><?php endforeach; ?>'
@@ -974,7 +974,7 @@ Highcharts.chart('Cartera_pastel', {
         type: 'pie'
     },
     title: {
-        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($serie['name']); ?>'
+        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($seriep['name']); ?>'
     },
 
     tooltip: {
@@ -1015,7 +1015,7 @@ Highcharts.chart('Cartera_acumulado', {
         type: 'column'
     },
     title: {
-        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($serie['name']); ?>'
+        text: 'Cartera clientes <?php echo e($mes); ?> <?php echo e($seriep['name']); ?>'
     },
       subtitle: {
           text: 'Cartera total:<?php foreach($serie_cartera_total as $car_total): ?> $<?php echo e(number_format($car_total->total, 0, '.', ',')); ?><?php endforeach; ?>'
@@ -1075,7 +1075,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
         type: 'bar'
     },
     title: {
-     text: 'Distribución de capturas de mantenimiento <?php echo e($mes); ?> <?php echo e($serie['name']); ?>'
+     text: 'Distribución de capturas de mantenimiento <?php echo e($mes); ?> <?php echo e($seriep['name']); ?>'
     },
      xAxis: {
             categories: [
@@ -1116,7 +1116,45 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('module'); ?>
+<?php echo e($pago); ?>
 
+
+<div class="widget-content">
+        <div class="padd">
+<div class="page-tables">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
+    <thead>
+        <tr>
+            <th>Semana</th>
+            <th>Pago</th>
+            <th>Amortizado</th>
+            <th>Amortizado</th>
+        </tr>
+    </thead>
+    <tbody><?php $pago_t = $monto_prestamo;
+                $interes = $monto_prestamo*$tasa_mensual;
+               $capital = 5; ?>
+        <?php for($i = 1; $i<=$periodo; $i++): ?><tr>
+            
+            <td><?php echo e($i); ?></td>
+            <td><?php echo e($pago); ?></td>
+
+<?php $pago_t = $pago_t -  $pago; 
+$interes = $interes - $i; ?>
+ <td>$<?php echo e(number_format($pago_t, 0, '.', ',')); ?></td> 
+  <td>$<?php echo e(number_format($interes, 0, '.', ',')); ?></td> 
+           
+        </tr> <?php endfor; ?>
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div class="clearfix"></div>
 
 <div class="widget">
 	<div class="widget-head">
@@ -1330,7 +1368,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 
         </tr><?php endforeach; ?>
       
-        
+ 
        
     </tbody>
     <tfoot>
@@ -1652,7 +1690,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza extras -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Extras <?php echo e($mes); ?> <?php echo e($serie['name']); ?></div>
+                <div class="pull-left">Extras <?php echo e($mes); ?> <?php echo e($seriep['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1675,7 +1713,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
      <!-- grafica cartera clientes -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera cliente <?php echo e($mes); ?> <?php echo e($serie['name']); ?></div>
+                <div class="pull-left">Cartera cliente <?php echo e($mes); ?> <?php echo e($seriep['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1726,7 +1764,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
  <!-- Empieza cartera pastel -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera clientes <?php echo e($mes); ?> <?php echo e($serie['name']); ?></div>
+                <div class="pull-left">Cartera clientes <?php echo e($mes); ?> <?php echo e($seriep['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1749,7 +1787,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza cartera acumulados -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera clientes <?php echo e($mes); ?> <?php echo e($serie['name']); ?></div>
+                <div class="pull-left">Cartera clientes <?php echo e($mes); ?> <?php echo e($seriep['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1794,7 +1832,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza distribucion de mantenimientos-->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Distribución de captura de mantenimientos <?php echo e($mes); ?> <?php echo e($serie['name']); ?></div>
+                <div class="pull-left">Distribución de captura de mantenimientos <?php echo e($mes); ?> <?php echo e($seriep['name']); ?></div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>

@@ -632,7 +632,7 @@ Highcharts.chart('vendedores', {
           xAxis: {
         categories: [
             @foreach($vendedores as $ven)
-            '{{{$ven->asesor}}}',
+            '<?php echo utf8_encode($ven->asesor); ?> ',
             @endforeach
         ],
          labels: {
@@ -874,7 +874,7 @@ Highcharts.chart('Extras', {
         type: 'pie'
     },
     title: {
-        text: 'Extras {{{$mes}}} {{{$serie['name']}}}'
+        text: 'Extras {{{$mes}}} {{{$seriep['name']}}}'
     },
     tooltip: {
            pointFormat: '{series.name}: ${point.y:,.0f}<br/>'
@@ -914,7 +914,7 @@ Highcharts.chart('Cartera', {
         type: 'column'
     },
     title: {
-        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+        text: 'Cartera clientes {{{$mes}}} {{{$seriep['name']}}}'
     },
       subtitle: {
           text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
@@ -974,7 +974,7 @@ Highcharts.chart('Cartera_pastel', {
         type: 'pie'
     },
     title: {
-        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+        text: 'Cartera clientes {{{$mes}}} {{{$seriep['name']}}}'
     },
 
     tooltip: {
@@ -1015,7 +1015,7 @@ Highcharts.chart('Cartera_acumulado', {
         type: 'column'
     },
     title: {
-        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
+        text: 'Cartera clientes {{{$mes}}} {{{$seriep['name']}}}'
     },
       subtitle: {
           text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
@@ -1075,7 +1075,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
         type: 'bar'
     },
     title: {
-     text: 'Distribución de capturas de mantenimiento {{{$mes}}} {{{$serie['name']}}}'
+     text: 'Distribución de capturas de mantenimiento {{{$mes}}} {{{$seriep['name']}}}'
     },
      xAxis: {
             categories: [
@@ -1116,7 +1116,44 @@ Highcharts.chart('Distribucion_mantenimiento', {
 @stop()
 
 @section('module')
+{{{$pago}}}
 
+<div class="widget-content">
+        <div class="padd">
+<div class="page-tables">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
+    <thead>
+        <tr>
+            <th>Semana</th>
+            <th>Pago</th>
+            <th>Amortizado</th>
+            <th>Amortizado</th>
+        </tr>
+    </thead>
+    <tbody><?php $pago_t = $monto_prestamo;
+                $interes = $monto_prestamo*$tasa_mensual;
+               $capital = 5; ?>
+        @for($i = 1; $i<=$periodo; $i++)<tr>
+            
+            <td>{{{$i}}}</td>
+            <td>{{{$pago}}}</td>
+
+<?php $pago_t = $pago_t -  $pago; 
+$interes = $interes - $i; ?>
+ <td>${{{number_format($pago_t, 0, '.', ',')}}}</td> 
+  <td>${{{number_format($interes, 0, '.', ',')}}}</td> 
+           
+        </tr> @endfor
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div class="clearfix"></div>
 
 <div class="widget">
 	<div class="widget-head">
@@ -1330,7 +1367,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 
         </tr>@endforeach
       
-        
+ 
        
     </tbody>
     <tfoot>
@@ -1652,7 +1689,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza extras -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Extras {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="pull-left">Extras {{{$mes}}} {{{$seriep['name']}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1675,7 +1712,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
      <!-- grafica cartera clientes -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera cliente {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="pull-left">Cartera cliente {{{$mes}}} {{{$seriep['name']}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1726,7 +1763,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
  <!-- Empieza cartera pastel -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$seriep['name']}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1749,7 +1786,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza cartera acumulados -->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="pull-left">Cartera clientes {{{$mes}}} {{{$seriep['name']}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -1794,7 +1831,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 <!-- Empieza distribucion de mantenimientos-->
 <div class="widget">
               <div class="widget-head">
-                <div class="pull-left">Distribución de captura de mantenimientos {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="pull-left">Distribución de captura de mantenimientos {{{$mes}}} {{{$seriep['name']}}}</div>
                 <div class="widget-icons pull-right">
                   <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                   <a href="#" class="wclose"><i class="fa fa-times"></i></a>

@@ -1,0 +1,178 @@
+<?php $__env->startSection('scripts'); ?>
+<script>
+
+
+
+
+// Cargar  la lista de clientes
+    $.ajax("<?php echo action('ClienteControlador@getAll'); ?>")
+    .success(function(data){
+      $('#nombres').typeahead({
+        source: data,
+        display: 'nombre',
+        val: 'persona_id',
+        itemSelected: function(item){
+          window.location.replace(baseUrl  + "cliente/edit/" + item);          
+        }
+      });
+    });
+
+  $.ajax("http://localhost:8000/colonia/all")
+  .success(function(data){
+    $('#ubicacion').typeahead({
+      source: data,
+      display: 'ubicacion',
+      itemSelected: function(item){
+        $('#colonia_id').val(item);
+      }
+    });
+  });
+</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+<div class="row">
+  <div class="col-md-12">
+    <?php echo Form::open(array('action' => $edit ? array('ClienteControlador@postUpdate', $persona->id) : 'ClienteControlador@postStore', 'method' => 'post', 'class' => 'form-horizontal', 'role' => 'form')); ?>
+
+    <div class="form-group">
+      <label for="nombres" class="col-md-2 control-label">Nombre completo *</label>
+      <div class="col-md-6">
+        <?php if($edit): ?>
+        <div class="input-group">
+          <input type="text" value="<?php echo e(isset($persona->nombres) ? $persona->nombres : ''); ?>" class="form-control" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off" autofocus>
+          <input type="hidden" value="<?php echo e($persona->id); ?>" name="persona_id">
+          <span class="input-group-btn">
+            <a class="btn btn-primary" href="<?php echo action('ClienteControlador@getCreate'); ?>"><i class="fa fa-user-plus"></i></a>
+          </span>
+        </div>
+        <?php else: ?>
+          <input type="text" value="<?php echo e(isset($persona->nombres) ? $persona->nombres : ''); ?>" class="form-control buscaclientes" name="nombres" id="nombres" placeholder="Nombres" autocomplete="off" autofocus>
+        <?php endif; ?>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="apellido_paterno" class="col-md-2 control-label sr-only">Apellido Paterno *</label>
+      <div class="col-md-6">
+        <input type="text" value="<?php echo e(isset($persona->apellido_paterno) ? $persona->apellido_paterno : ''); ?>" name="apellido_paterno" id="apellido_paterno" class="form-control" placeholder="Apellido Paterno">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="apellido_materno" class="col-md-2 control-label sr-only">Apellido Materno *</label>
+      <div class="col-md-6">
+        <input type="text" value="<?php echo e(isset($persona->apellido_materno) ? $persona->apellido_materno : ''); ?>" name="apellido_materno" id="apellido_materno" class="form-control" placeholder="Apellido Materno">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sexo" class="col-md-2 control-label">Sexo </label>
+      <div class="col-md-5">
+        <div class="radio">
+          <label>
+            <input type="radio" name="sexo" id="sexo_masculino" 
+            <?php if($edit && $cliente): ?> 
+              <?php if($cliente->sexo == 'M'): ?> checked <?php endif; ?>
+            <?php endif; ?> value="M">Masculino
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="sexo" id="sexo_femenino" 
+            <?php if($edit && $cliente): ?> 
+              <?php if($cliente->sexo == 'F'): ?> checked <?php endif; ?>
+            <?php endif; ?> value="F">Femenino
+          </label>
+        </div>
+        <input type="hidden" value="<?php echo e(isset($cliente->id) ? $cliente->id : ''); ?>" name="cliente_id">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="estado_civil" class="col-md-2 control-label">Estado civil</label>
+      <div class="col-md-4">
+        <select name="estado_civil" id="estado_civil" class="form-control">
+          <?php foreach($civil_status as $status): ?>
+          <option value="<?php echo e($status->id); ?>" <?php if($edit && $cliente && $cliente->estado_civil_id == $status->id): ?> selected <?php endif; ?> ><?php echo e($status->descripcion); ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha de nacimiento</label>
+      <div class="col-md-4">
+        <div id="datetimepicker1" class="input-append input-group dtpicker">
+          <input data-format="yyyy-MM-dd" value="<?php echo e(isset($cliente->fecha_nacimiento) ? $cliente->fecha_nacimiento : '1989-03-31'); ?>" type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
+          <span class="input-group-addon add-on">
+            <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Email *</label>
+      <div class="col-md-4">
+        <input type="email" value="<?php echo e(isset($cliente->email) ? $cliente->email : 'demo@demo.com'); ?>" name="email" id="email" class="form-control" placeholder="ejemplo@dominio.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Teléfono *</label>
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-addon">Celular</span>
+          <input type="text" class="form-control" name="celular" id="celular" placeholder="Incluir lada" aria-describedby="basic-addon2" value="8112258265">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label sr-only">Teléfono </label>
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-addon">Casa</span>
+          <input type="text" class="form-control" id="telefono_casa" name="telefono_casa" placeholder="Incluir Lada" aria-describedby="basic-addon2">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="calle" class="col-md-2 control-label">Domicilio</label>
+      <div class="col-md-6">
+        <input type="text" value="<?php echo e(isset($cliente->calle) ? $cliente->calle : 'Aguanaval'); ?>" name="calle" id="calle" class="form-control" placeholder="Calle">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="numero_exterior" class="col-md-2 control-label sr-only">Ubicación</label>
+      <div class="col-md-6">
+        <?php if($edit && $persona->cliente): ?>
+        <input type="text" value="<?php echo e(isset($cliente->colonia->nombre) ? $cliente->colonia->nombre : ''); ?> C.P. <?php echo e(isset($cliente->colonia->codigo_postal) ? $cliente->colonia->codigo_postal : ''); ?>, <?php echo e(isset($cliente->colonia->municipio->nombre) ? $cliente->colonia->municipio->nombre : ''); ?>" class="form-control" name="ubicacion" id="ubicacion" autocomplete="off" placeholder="Colonia ó Código postal" aria-describedby="basic-addon2">
+        <?php else: ?>
+          <input type="text" class="form-control" name="ubicacion" id="ubicacion" autocomplete="off" placeholder="Colonia ó Código postal" aria-describedby="basic-addon2">
+        <?php endif; ?>
+        <input type="hidden" id="colonia_id" name="colonia_id" value="<?php echo e(isset($cliente->colonia->id) ? $cliente->colonia->id : '582'); ?>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="numero_exterior" class="col-md-2 control-label sr-only">Número exterior</label>
+      <div class="col-md-2">
+        <input type="text" value="<?php echo e(isset($cliente->numero_exterior) ? $cliente->numero_exterior : '660'); ?>" class="form-control" name="numero_exterior" id="numero_exterior" placeholder="Número exterior" aria-describedby="basic-addon2">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="numero_exterior" class="col-md-2 control-label sr-only">Número interior</label>
+      <div class="col-md-2">
+        <input type="text" value="<?php echo e(isset($cliente->numero_interior) ? $cliente->numero_interior : ''); ?>" class="form-control" name="numero_interior" name="numero_interior" placeholder="Número interior" aria-describedby="basic-addon2">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="referencias" class="col-md-2 control-label">Referencias</label>
+      <div class="col-md-6">
+        <textarea name="referencias" name="referencias" id="referencias" class="form-control" rows="2" placeholder="Indicaciones para llegar al domicilio"><?php echo e(isset($cliente->referencias) ? $cliente->referencias : ''); ?></textarea>
+      </div>
+    </div> 
+    <div class="clearfix"></div>
+    <div class="form-group">
+      <div class="col-md-4 col-md-offset-2">
+        <a href="<?php echo action('CotizacionControlador@getIndex'); ?>" class="btn btn-danger">Cancelar</a>
+        <input type="submit" class="btn btn-primary" value="<?php echo e($edit ? 'Cotizar' : 'Guardar'); ?>">
+      </div>
+    </div>
+    <?php echo Form::close(); ?>
+
+  </div>
+</div>
+<?php $__env->stopSection(); ?>
