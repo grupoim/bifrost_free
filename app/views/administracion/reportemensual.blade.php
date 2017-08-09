@@ -732,12 +732,11 @@ Highcharts.chart('Cartera', {
          
     },
 
-
     title: {
-        text: ''
+        text: 'Cartera clientes {{{$mes}}} {{{$serie['name']}}}'
     },
-    subtitle: {
-        text: ''
+      subtitle: {
+          text: 'Cartera total:@foreach($serie_cartera_total as $car_total) ${{{number_format($car_total->total, 0, '.', ',')}}}@endforeach'
     },
     xAxis: {
         categories: ['{{{$fechas['mes3']}}}','{{{$fechas['mes2']}}}','{{{$fechas['mes']}}}'
@@ -746,16 +745,10 @@ Highcharts.chart('Cartera', {
         ],
         crosshair: true
     },
-     legend: {
-       
-        align: 'center',
-        verticalAlign: 'top'
-    },
-    yAxis: {
-      
+   yAxis: {
+        min: 0,
         title: {
-            text: '',
-
+            text: ''
         },
        labels: {
         formatter: function() {
@@ -763,15 +756,15 @@ Highcharts.chart('Cartera', {
 
         },
     },
+
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>${point.y:,.0f} </b></td></tr>',
+            '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
-        
     },
     plotOptions: {
         column: {
@@ -836,8 +829,8 @@ Highcharts.chart('Cartera_pastel', {
     }]
 });
     // fin de grafica cartera pastel 1246b c1111113478902634628903648274723894789237489723489
-</script>
-<script>
+
+
 //termina grafica cartera cliente
 //empieza grafica cartera acumulada MODIFICADO ///////////////////////////////////////////////////
 Highcharts.chart('Cartera_acumulado', {
@@ -887,14 +880,14 @@ Highcharts.chart('Cartera_acumulado', {
     },
     series: [{
         name:'Atrasado', 
-        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @else <?php $sum3 = 0;?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?>@else <?php $sum2 = 0;?> @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_atrasado3 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado3,0)}}}, @endif @endforeach  
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @else <?php $sum3 = 0;?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @else <?php $sum2 = 0;?> @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_atrasado2 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado2,0)}}}, @endif @endforeach  
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?>@else <?php $sum3 = 0;?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?>@else <?php $sum2 = 0;?> @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_atrasado = $sc->monto + $sum2; ?>  {{{round($sum_atrasado,0)}}}, @endif @endforeach  
         ]
        },
@@ -907,11 +900,11 @@ Highcharts.chart('Cartera_acumulado', {
 
     }, {
         name: 'Al corriente',   
-        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_alcorriente3 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente3,0)}}},@endif @endforeach
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_alcorriente2 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente2,0)}}},@endif @endforeach
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_alcorriente = $sc->monto + $sum2; ?> {{{round($sum_alcorriente,0)}}},@endif @endforeach
      ]
 
@@ -962,13 +955,517 @@ Highcharts.chart('Distribucion_mantenimiento', {
   @endforeach]
 });
 //termina distribuccion de captura de mantenimientos
+
+//EMPIEZAN GRAFICAS DE GASTOS 
+//grafrica sueldo nomina
+
+Highcharts.chart('Sueldos_nomina', {
+    chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [
+            @foreach($categories_sueldos as $cat_s)
+            {name:'{{{$cat_s->nombre}}}', 
+            data:[@foreach($gastos as $g) @if($g->id == $cat_s->id and $g->sueldo_impuesto = 1 and $g->year == $fechas['year']){{{$g->total}}},@endif @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+});
+//termina grafica sueldo nomina
+
+
+//empieza grafica gastos administracion
+Highcharts.chart('Gastos_admon', {
+          chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    
+
+    series: [
+            @foreach($categories_gadmon as $cat_a)
+            {name:'{{{$cat_a->nombre}}}', 
+            data:[@foreach($gastos as $g) @if($g->id == $cat_a->id and $g->gasto_admon = 1 and $g->year == $fechas['year']){{{$g->total}}},@endif  @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+});
+//termina gastos administracion
+//empieza grafica gastos aperacion
+Highcharts.chart('Gastos_operacion', {
+          chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [
+            @foreach($categories_goperacion as $cat)
+            {name:'{{{$cat->nombre}}}', 
+            data:[@foreach($gastos as $g) @if($g->id == $cat->id and $g->gasto_operacion = 1 and $g->year == $fechas['year']){{{$g->total}}},@endif @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+});
+
+//termina grafica gastos aperacion
+//empieza grafica gastos mtto capilla
+Highcharts.chart('Gastos_mtto_capilla', {
+          chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [
+            @foreach($categories_mtto_cap as $cat_c)
+            {name:'{{{$cat_c->nombre}}}', 
+            data:[@foreach($gastos as $g) @if($g->id == $cat_c->id and $g->gasto_mtto_capilla = 1 and $g->year == $fechas['year']){{{$g->total}}},@endif @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+
+});
+
+//termina grafica gastos mtto capilla
+//empieza grafica gastos contruccion capilla
+Highcharts.chart('Gastos_const_capilla', {
+          chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [
+            @foreach($categories_const_cap as $cat_c)
+            {name:'{{{$cat_c->nombre}}}', 
+            data:[@foreach($gastos as $g) @if($g->id == $cat_c->id and $g->gasto_constr_capilla = 1 and $g->year == $fechas['year']){{{$g->total}}},@endif @endforeach 
+                 ]
+            },
+            @endforeach
+            ]
+
+
+});
+
+//termina grafica gastos construccion capilla
+
+
+//empieza grafica gasto corporativo
+Highcharts.chart('Cargo_corporativo', {
+    chart: {
+        type: 'column',
+         
+    },
+
+    title: {
+        text: ''
+    },
+      subtitle: {
+          text: ''
+    },
+    xAxis: {
+        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+  
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [    
+   
+
+        @foreach($categories_corp as $corp)
+        {
+        name:'{{{$corp->nombre}}}',
+        data:[@foreach($gastos as $g) @if($g->id == $corp->id and $g->cargo_corporativo = 1  and $g->year == $fechas['year']){{{$g->total}}},@endif  @endforeach ]
+        },
+  @endforeach
+
+
+    ]
+});
+
+//termina grafica cprporativo
+
+</script>
+<script >
+//empieza grafica gastos totales
+Highcharts.chart('Gasto_total', {
+          chart: {
+       
+       
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    },
+    yAxis: {
+        
+        title: {
+            text: ''
+        },
+                labels: {
+        formatter: function() {
+            return '$'+ Highcharts.numberFormat(this.value, 0, ',')  ;
+
+        },
+    },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            },
+            formatter: function() {   
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                    }
+        }
+    },
+    legend: {
+        itemDistance: 2,
+        align: 'right',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: ${point.y:,.0f}<br/>Total: ${point.stackTotal:,.0f}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                enabled: false,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [
+            
+            {  
+                 name:'Sueldo e impuestos de nomina',   
+            data:[@foreach($totales['sueldo_impuesto'] as $g){{{$g->total}}}, @endforeach]
+            },
+
+            {  
+                 name:'Gastos administracion',   
+            data:[@foreach($totales['gasto_admon'] as $g){{{$g->total}}}, @endforeach]
+            },
+            {  
+                 name:'Gastos de operacion',   
+            data:[@foreach($totales['gasto_operacion'] as $g){{{$g->total}}}, @endforeach]
+            },
+            {  
+                 name:'Gastos de mantenimiento capilla',   
+            data:[@foreach($totales['gasto_mtto_capilla'] as $g){{{$g->total}}}, @endforeach]
+            },
+            {  
+                 name:'Gastos de contruccion capilla',   
+            data:[@foreach($totales['gasto_constr_capilla'] as $g){{{$g->total}}}, @endforeach]
+            },
+            {  
+                 name:'Cargos del corporativo',   
+            data:[@foreach($totales['gasto_corp'] as $g){{{$g->total}}}, @endforeach]
+            },
+
+
+            ]
+
+
+});
+
+//termina grafica gastos totales
 </script>
 
 @stop()
 
 @section('module')
 
-
+     <!-- Empieza Vendedores  -->
 <div class="widget">
     <div class="widget-head">
         <div class="pull-left">Acumulados anual (Escala M = Millón)</div>
@@ -1409,43 +1906,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
       
                 <div id="Cartera_acumulado" ></div>
 
-     <table class="table table-condensed">
-                <thead>
-            <tr> 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-
-        <tr> 
-            <th class="text-center" class="col-md-3"> </th>
-            <th class="text-center" class="col-md-3">Atrasado</th>
-            <th class="text-center" class="col-md-3">Vencido</th>
-            <th class="text-center" class="col-md-3">Al corriente</th>
-       </tr>
-
-       <tr>     
-            <td class="text-center"><strong>{{{$fechas['mes3']}}}</strong></td>
-            <td class="text-center">${{{number_format($sum_atrasado3, 0, '.', ',')}}} </td>
-            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
-            <td class="text-center">${{{number_format($sum_alcorriente3, 0, '.', ',')}}} </td>
-       </tr>  
-            <tr>     
-           <td class="text-center"><strong>{{{$fechas['mes2']}}}</strong></td>
-            <td class="text-center">${{{number_format($sum_atrasado2, 0, '.', ',')}}} </td>
-            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
-            <td class="text-center">${{{number_format($sum_alcorriente2, 0, '.', ',')}}} </td>
-       </tr>  
-            <tr>     
-            <td class="text-center"><strong>{{{$fechas['mes']}}}</strong></td>
-            <td class="text-center">${{{number_format($sum_atrasado, 0, '.', ',')}}} </td>
-            <td class="text-center">@foreach($serie_cartera as $sc)@if($sc->nombre == 'Vencido 121 dias en delante' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])${{{number_format($sc->monto, 0, '.', ',')}}} @endif @endforeach</td>
-            <td class="text-center">${{{number_format($sum_alcorriente, 0, '.', ',')}}} </td>
-       </tr>          
-    </tbody>
-    <tfoot>
-         
-</table>
+     
                  <!-- Content goes here -->
                 </div>
                 <div class="widget-foot">
@@ -1510,4 +1971,397 @@ Highcharts.chart('Distribucion_mantenimiento', {
               </div>
 
             </div>
+
+            <!-- Empieza graficas Gastos nomina -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Sueldo e impuestos de nomina {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Sueldos_nomina" ></div>
+   <!-- Content goes here -->
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_sueldos as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+
+            </div>
+             <!-- termina gastos nomina-->
+<!-- Gastos administración -->
+            <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Gastos de administración {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Gastos_admon" ></div>
+                <br>               
+
+     
+      
+                <div id="Gastos_admon_gastos" ></div>
+
+ <!-- Content goes here -->
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_gadmon as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
+
+
+     <!-- termina gastos administracion -->
+     <!-- empieza grafica gasto de operacion -->
+       <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Gastos de operación {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Gastos_operacion" ></div>
+                               <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_goperacion as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+         
+</table>
+
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
+             <!-- termina grafica gasto de operacion -->
+                 <!-- Empieza graficas Gastos mtto capilla -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Gastos mantenimiento de capilla {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Gastos_mtto_capilla" ></div>
+
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                   <!-- Content goes here -->
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_mtto_cap as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+              </div>
+
+            </div>
+             <!-- termina gastos mtto capilla-->
+               <!-- Empieza graficas Gastos construccion capilla -->
+<div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Gastos contrucción de capilla {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Gastos_const_capilla" ></div>
+
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                   <!-- Content goes here -->
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_const_cap as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+              </div>
+
+            </div>
+             <!-- termina gastos construccion capilla-->
+ 
+       
+    </tbody>
+    <tfoot>
+              <!-- empieza grafica gasto corporativo -->
+       <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Cargos corporativo {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Cargo_corporativo" ></div>
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+@foreach($categories_corp as $cat)
+        <tr>
+            
+            <th class="text-left" class="col-md-3">{{{$cat->nombre}}}</th>
+             @foreach($gastos as $g)
+
+               @if($cat->id == $g->id and $g->year == $fechas['year'])<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endif 
+
+            @endforeach
+
+        </tr>@endforeach
+       
+        
+       
+    </tbody>
+    <tfoot>
+         
+</table>
+
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
+             <!-- termina grafica gasto corporativo -->
+            <!-- empieza grafica gasto totales -->
+       <div class="widget">
+              <div class="widget-head">
+                <div class="pull-left">Gastos totales {{{$mes}}} {{{$serie['name']}}}</div>
+                <div class="widget-icons pull-right">
+                  <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                  <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                </div>  
+                <div class="clearfix"></div>
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                 
+      
+                <div id="Gasto_total" ></div>
+
+                  <table class="table table-condensed">
+    <thead>
+        <tr> 
+          
+           <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+ <!-- Content goes here -->
+
+        <tr>
+              <th class="text-left" class="col-md-3">Sueldo e impuestos de nomina</th>
+             @foreach($totales['sueldo_impuesto'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr>     
+        <tr>
+              <th class="text-left" class="col-md-3">Gastos de administración</th>
+             @foreach($totales['gasto_admon'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr>
+         <tr>
+              <th class="text-left" class="col-md-3">Gastos de operación</th>
+             @foreach($totales['gasto_operacion'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr>
+         <tr>
+              <th class="text-left" class="col-md-3">Gastos de mantenimiento capilla</th>
+             @foreach($totales['gasto_mtto_capilla'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr>
+         <tr>
+              <th class="text-left" class="col-md-3">Gastos de construcción capilla</th>
+             @foreach($totales['gasto_constr_capilla'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr>    
+        <tr>
+              <th class="text-left" class="col-md-3">Otros cargos corporativo</th>
+             @foreach($totales['gasto_corp'] as $g)<td class="text-center">${{{number_format($g->total, 0, '.', ',')}}} </td>@endforeach
+             
+        </tr> 
+    </tbody>
+    <tfoot>
+         
+</table>
+                </div>
+                <div class="widget-foot">
+                  <!-- Footer goes here -->
+                </div>
+              </div>
+            </div>
+             <!-- termina grafica gastos totales -->
 @stop
