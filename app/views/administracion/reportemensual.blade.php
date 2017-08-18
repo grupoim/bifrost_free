@@ -1116,44 +1116,7 @@ Highcharts.chart('Distribucion_mantenimiento', {
 @stop()
 
 @section('module')
-{{{$pago}}}
 
-<div class="widget-content">
-        <div class="padd">
-<div class="page-tables">
-                <!-- Table -->
-                <div class="table-responsive">
-                    <table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
-    <thead>
-        <tr>
-            <th>Semana</th>
-            <th>Pago</th>
-            <th>Amortizado</th>
-            <th>Amortizado</th>
-        </tr>
-    </thead>
-    <tbody><?php $pago_t = $monto_prestamo;
-                $interes = $monto_prestamo*$tasa_mensual;
-               $capital = 5; ?>
-        @for($i = 1; $i<=$periodo; $i++)<tr>
-            
-            <td>{{{$i}}}</td>
-            <td>{{{$pago}}}</td>
-
-<?php $pago_t = $pago_t -  $pago; 
-$interes = $interes - $i; ?>
- <td>${{{number_format($pago_t, 0, '.', ',')}}}</td> 
-  <td>${{{number_format($interes, 0, '.', ',')}}}</td> 
-           
-        </tr> @endfor
-    </tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-
-<div class="clearfix"></div>
 
 <div class="widget">
 	<div class="widget-head">

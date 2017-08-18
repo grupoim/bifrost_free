@@ -8,7 +8,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="widget-content">
-		<div class="padd">
+		<div class="padd">		
 			@if(count($servicios) > 0)
 			<!-- Table Page -->
 			<div class="page-tables">
@@ -17,32 +17,39 @@
 					<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 						<thead>
 							<tr>
-								<th class="col-md-1">ID</th>								
+								{{--<th class="col-md-1">ID</th>--}}
 								<th class="col-md-1">contrato</th>								
 								<th class ="col-md-2">Cliente</th>
-								<th class ="col-md-2">Cliente</th>
-								<th  class ="col-md-3">Producto</th>
-								<th  class ="col-md-1">Total</th>
-								<th  class ="col-md-1">cremacion</th>
-								{{--<th>Asesor</th>--}}
-								<th class ="col-md-2">Acciones</th>
+								{{--<th class ="col-md-2">Cliente</th>--}}
+								<th  class ="col-md-2">Producto</th>
+								{{--<th  class ="col-md-1">Total</th>--}}
+								<th  class ="col-md-2">Total</th>
+								
+								{{--<th>Abonado</th>--}}
+								<th>Por pagar</th>
+								<th>Vendedor</th>
+								<th class ="col-md-1">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($servicios as $s)
-							<tr>
-								<td>{{{ $s->id }}}</td>
+							
+							<tr @if($s->servicio_realizado == 1) class="disabled" @endif>
+								{{--<td>{{{ $s->id }}}</td>--}}
 								<td>{{{ $s->folio }}}</td>
-								<td>{{{ $s->venta_producto_id }}}</td>
+								{{--<td>{{{ $s->venta_producto_id }}}</td>--}}
 								<td>{{{ $s->cliente }}}</td>
-								<td><strong>{{{ $s->nombre}}}</strong></td>
-								<td><strong>{{{ $s->cremacion}}}</strong></td>
-								<td>$ {{{ number_format($s->total, 2, '.', ',') }}}</td>								
-								{{--<td><strong>{{{ $s->asesor}}}</strong></td>--}}
+								<td>{{{ $s->nombre}}}</td>
+								<td>$ {{{ number_format($s->total, 2, '.', ',') }}}</td>
+								{{--<td>$ {{{ number_format($s->abono, 2, '.', ',') }}}</td>	--}}
+								{{--<td{{{$s->abono}}}</td>--}}
+								<td>$ {{{ number_format($s->total - $s->abono, 2, '.', ',') }}}</td>					
+								<td>{{{ $s->asesor}}}</td>
 								<td class="text-right">
-									zzz
+									<a href="{{action('ServicioFuneralControlador@getRecibos', $s->id)}}" name="id" value="{{{$s->id}}}"  title="Detalles" class="btn btn-xs btn-default"><i class="fa fa-search"></i> Detalles</a>
 								</td>
 							</tr>
+							
 							@endforeach
 						</tbody>
 					</table>

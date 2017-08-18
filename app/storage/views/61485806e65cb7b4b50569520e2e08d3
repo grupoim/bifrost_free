@@ -8,7 +8,7 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="widget-content">
-		<div class="padd">
+		<div class="padd">		
 			<?php if(count($servicios) > 0): ?>
 			<!-- Table Page -->
 			<div class="page-tables">
@@ -17,32 +17,39 @@
 					<table cellpadding="0" cellspacing="0" border="0" id="data-table" width="100%">
 						<thead>
 							<tr>
-								<th class="col-md-1">ID</th>								
+								<?php /*<th class="col-md-1">ID</th>*/ ?>
 								<th class="col-md-1">contrato</th>								
 								<th class ="col-md-2">Cliente</th>
-								<th class ="col-md-2">Cliente</th>
-								<th  class ="col-md-3">Producto</th>
-								<th  class ="col-md-1">Total</th>
-								<th  class ="col-md-1">cremacion</th>
-								<?php /*<th>Asesor</th>*/ ?>
-								<th class ="col-md-2">Acciones</th>
+								<?php /*<th class ="col-md-2">Cliente</th>*/ ?>
+								<th  class ="col-md-2">Producto</th>
+								<?php /*<th  class ="col-md-1">Total</th>*/ ?>
+								<th  class ="col-md-2">Total</th>
+								
+								<?php /*<th>Abonado</th>*/ ?>
+								<th>Por pagar</th>
+								<th>Vendedor</th>
+								<th class ="col-md-1">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($servicios as $s): ?>
-							<tr>
-								<td><?php echo e($s->id); ?></td>
+							
+							<tr <?php if($s->servicio_realizado == 1): ?> class="disabled" <?php endif; ?>>
+								<?php /*<td><?php echo e($s->id); ?></td>*/ ?>
 								<td><?php echo e($s->folio); ?></td>
-								<td><?php echo e($s->venta_producto_id); ?></td>
+								<?php /*<td><?php echo e($s->venta_producto_id); ?></td>*/ ?>
 								<td><?php echo e($s->cliente); ?></td>
-								<td><strong><?php echo e($s->nombre); ?></strong></td>
-								<td><strong><?php echo e($s->cremacion); ?></strong></td>
-								<td>$ <?php echo e(number_format($s->total, 2, '.', ',')); ?></td>								
-								<?php /*<td><strong><?php echo e($s->asesor); ?></strong></td>*/ ?>
+								<td><?php echo e($s->nombre); ?></td>
+								<td>$ <?php echo e(number_format($s->total, 2, '.', ',')); ?></td>
+								<?php /*<td>$ <?php echo e(number_format($s->abono, 2, '.', ',')); ?></td>	*/ ?>
+								<?php /*<td<?php echo e($s->abono); ?></td>*/ ?>
+								<td>$ <?php echo e(number_format($s->total - $s->abono, 2, '.', ',')); ?></td>					
+								<td><?php echo e($s->asesor); ?></td>
 								<td class="text-right">
-									zzz
+									<a href="<?php echo action('ServicioFuneralControlador@getRecibos', $s->id); ?>" name="id" value="<?php echo e($s->id); ?>"  title="Detalles" class="btn btn-xs btn-default"><i class="fa fa-search"></i> Detalles</a>
 								</td>
 							</tr>
+							
 							<?php endforeach; ?>
 						</tbody>
 					</table>

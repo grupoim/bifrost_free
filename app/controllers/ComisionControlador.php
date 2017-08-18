@@ -314,9 +314,24 @@ class ComisionControlador extends ModuloControlador{
     										->leftJoin('vista_comision', 'anticipo_comision.comision_id', '=', 'vista_comision.id')
     										->leftJoin('vista_asesor_promotor', 'vista_comision.asesor_id','=', 'vista_asesor_promotor.asesor_id')
     										->firstorFail();
+
+    	$total_count = AbonoComision::where('comision_id', '=', $detalle_anticipo->comision_id)->where('pagado', 1)->count();
+    	
+    	if ($total_count > 0 ) {
+    		$total_pagado = AbonoComision::where('comision_id', '=', $detalle_anticipo->comision_id)->where('pagado', 1)->sum('monto');
+
+    	}else{
+    		$total_pagado = 0;
+    	}
+    	
+    	
+
+    	$pagado = $detalle_anticipo->monto + $total_pagado;
     
 
     	$data['detalle_anticipo'] = $detalle_anticipo;
+    	$data['pagado'] = $pagado;
+
 				
 
     	$pdf = DOPDF::loadView('formularios.anticipo_comision_pdf',$data)->setPaper('letter');

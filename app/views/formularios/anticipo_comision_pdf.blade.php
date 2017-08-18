@@ -92,7 +92,7 @@ span {
 <tr class="alt"> <td><h3> Precio de venta <h3></td><td><h3>$ {{{number_format($detalle_anticipo->total, 2, ".", ",")}}}</h3></td></tr>
 <tr ><td><h3>Monto total Comisionado </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable, 2, ".", ",")}}}</h3></td></tr>
 <tr class="alt"><td><h3>Monto entregado </h3></td><td><h3>$ {{{number_format($detalle_anticipo->monto, 2, ".", ",")}}}</h3></td></tr>
-<tr ><td><h3>Pendiente por pagar </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable - $detalle_anticipo->monto, 2, ".", ",")}}}</h3></td></tr>
+<tr ><td><h3>Pendiente por pagar </h3></td><td><h3>$ {{{number_format($detalle_anticipo->total_comisionable - $pagado, 2, ".", ",")}}}</h3></td></tr>
 <tr class="alt" > <td><h3> Porcentaje de comision <h3></td><td><h3>{{{$detalle_anticipo->porcentaje}}}%</h3></td></tr>
 
 </tbody>
