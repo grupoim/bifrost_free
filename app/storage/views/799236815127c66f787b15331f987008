@@ -989,7 +989,7 @@ Highcharts.chart('Sueldos_nomina', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -1057,7 +1057,7 @@ Highcharts.chart('Gastos_admon', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total : $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -1125,7 +1125,7 @@ Highcharts.chart('Gastos_operacion', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -1192,7 +1192,7 @@ Highcharts.chart('Gastos_mtto_capilla', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -1260,7 +1260,7 @@ Highcharts.chart('Gastos_const_capilla', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -1334,7 +1334,7 @@ Highcharts.chart('Cargo_corporativo', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
