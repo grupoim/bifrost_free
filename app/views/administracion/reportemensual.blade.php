@@ -880,14 +880,14 @@ Highcharts.chart('Cartera_acumulado', {
     },
     series: [{
         name:'Atrasado', 
-        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @else <?php $sum3 = 0;?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?>@else <?php $sum2 = 0;?> @endif @endforeach
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?>  @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_atrasado3 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado3,0)}}}, @endif @endforeach  
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @else <?php $sum3 = 0;?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @else <?php $sum2 = 0;?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?>  @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?>  @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_atrasado2 = $sc->monto + $sum2; ?>  {{{round($sum_atrasado2,0)}}}, @endif @endforeach  
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?>@else <?php $sum3 = 0;?> @endif @endforeach 
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?>@else <?php $sum2 = 0;?> @endif @endforeach
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 31 a 60 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum3 = $sc->monto  ?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 61 a 90 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto + $sum3; ?> @endif @endforeach
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Atrasado 91 a 120 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_atrasado = $sc->monto + $sum2; ?>  {{{round($sum_atrasado,0)}}}, @endif @endforeach  
         ]
        },
@@ -900,11 +900,11 @@ Highcharts.chart('Cartera_acumulado', {
 
     }, {
         name: 'Al corriente',   
-        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
+        data: [@foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month3'] and $sc->year == $fechas['year'])<?php $sum_alcorriente3 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente3,0)}}},@endif @endforeach
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month2'] and $sc->year == $fechas['year'])<?php $sum_alcorriente2 = $sc->monto + $sum2; ?> {{{round($sum_alcorriente2,0)}}},@endif @endforeach
-               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?>@else <?php $sum2 = 0;?> @endif @endforeach 
+               @foreach($serie_cartera as $sc) @if($sc->nombre == 'Al corriente 1 a 30 dias' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum2 = $sc->monto  ?> @endif @endforeach 
                @foreach($serie_cartera as $sc) @if($sc->nombre == 'Por vencer' and $sc->month == $fechas['month'] and $sc->year == $fechas['year'])<?php $sum_alcorriente = $sc->monto + $sum2; ?> {{{round($sum_alcorriente,0)}}},@endif @endforeach
      ]
 
