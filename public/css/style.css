@@ -840,7 +840,12 @@ header .header-data .hdata em{
 .page-tables #data-table4{
 	margin-bottom: 20px;
 }
-
+.page-tables #data-table5{
+	margin-bottom: 20px;
+}
+.page-tables #data-table6{
+	margin-bottom: 20px;
+}
 .page-tables .dataTables_length{
 	margin-top:5px;
 	margin-bottom:5px;
@@ -937,6 +942,52 @@ header .header-data .hdata em{
 }
 
 .page-tables table#data-table4 td{
+	background:#fcfcfc;
+	border-top:1px solid #ddd;
+}
+/************** ***********/
+/********* *******/
+.page-tables #data-table5{
+	border:1px solid #ddd;
+}
+
+.page-tables table#data-table5 thead th{
+	padding:7px 10px;
+	font-weight:normal;
+	border-bottom:0px;
+}
+
+.page-tables table#data-table5 tfoot th{
+	border-top:1px solid #ddd;
+	padding:7px 10px;
+	font-weight:normal;
+	background:#fff;
+}
+
+.page-tables table#data-table5 td{
+	background:#fcfcfc;
+	border-top:1px solid #ddd;
+}
+/************** ***********/
+/********* *******/
+.page-tables #data-table6{
+	border:1px solid #ddd;
+}
+
+.page-tables table#data-table6 thead th{
+	padding:7px 10px;
+	font-weight:normal;
+	border-bottom:0px;
+}
+
+.page-tables table#data-table6 tfoot th{
+	border-top:1px solid #ddd;
+	padding:7px 10px;
+	font-weight:normal;
+	background:#fff;
+}
+
+.page-tables table#data-table6 td{
 	background:#fcfcfc;
 	border-top:1px solid #ddd;
 }

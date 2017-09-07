@@ -51,9 +51,9 @@ $(document).on('ready', function(){
                       </tr>
                     </thead>
                     <tbody>                      
-                      <tr>
+                      
                       @foreach($ordenes as $orden)
-                       
+                       <tr>
 
                         <td>{{{$orden->pnombre}}} {{{$orden->p_paterno}}} {{{$orden->p_materno}}}</td>
                         @if($orden->fecha == 000-00-00)

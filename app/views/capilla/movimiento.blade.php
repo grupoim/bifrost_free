@@ -52,10 +52,10 @@ $(document).on('ready', function(){
                     </thead>
                     <tbody>
                       
-                      <tr>
+                      
 
                       @foreach($movimientos as $movimiento)
-
+                  <tr>
                        
                         <td>{{{$movimiento->pnombre}}} {{{$movimiento->p_paterno}}} {{{$movimiento->p_materno}}}</td>
                         <td>{{{$movimiento->accion_id}}}</td> 

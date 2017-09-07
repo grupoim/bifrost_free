@@ -1,5 +1,5 @@
-@section('scripts')
-<script src="{{ URL::asset('js/chosen.jquery.js') }}"> </script>
+<?php $__env->startSection('scripts'); ?>
+<script src="<?php echo URL::asset('js/chosen.jquery.js'); ?>"> </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script type="text/javascript">
 $(document).on('ready', function(){
@@ -10,7 +10,7 @@ $(document).on('ready', function(){
   });
 }, 2000);
    
-    {{-- fin ocultar mensajes de alerta automaticamente ======= --}}
+    <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
             $(function() {
    
 //Array para dar formato en español
@@ -45,7 +45,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
   });
 
     // Cargar  la lista
-    $.ajax("{{ action('ArchivoDocumentosControlador@getPersonas') }}")
+    $.ajax("<?php echo action('ArchivoDocumentosControlador@getPersonas'); ?>")
     .success(function(data){
       $('#persona').typeahead({
         source: data,
@@ -68,30 +68,30 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
      });
  </script>
 
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('module')
+<?php $__env->startSection('module'); ?>
 
-   @if($status=='estatus-A')
+   <?php if($status=='estatus-A'): ?>
                   <div class="alert alert-info alert-info " role="alert" align="center" id="alerta">
                  <strong><h4> Se ha prestado un archivo</h4></strong>
                 </div> 
-  @endif 
-    @if($status=='estatus-B')
+  <?php endif; ?> 
+    <?php if($status=='estatus-B'): ?>
                   <div class="alert alert-success" role="alert" align="center" id="alerta">
                  <strong><h4> Archivo devuelto correctamente</h4></strong>
                 </div> 
-  @endif
- @if($status=='validar')
+  <?php endif; ?>
+ <?php if($status=='validar'): ?>
                   <div class="alert alert-info alert-danger" role="alert" align="center" id="alerta">
                  <strong><h4>El campo persona y folio son obligatorios</h4></strong>
                 </div> 
-  @endif
- @if($status=='prestamo')
+  <?php endif; ?>
+ <?php if($status=='prestamo'): ?>
                   <div class="alert alert-info alert-danger" role="alert" align="center" id="alerta">
                  <strong><h4>Este archivo esta en prestamo</h4></strong>
                 </div> 
-  @endif
+  <?php endif; ?>
 
 
  <div class="widget">
@@ -122,26 +122,26 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                       </tr>
                     </thead>
                     <tbody>  
-                       @foreach($archivos as $archivo)                                           
+                       <?php foreach($archivos as $archivo): ?>                                           
                       <tr>
-                        <td><strong>{{{$archivo->folio}}}</strong></td>
-                        <td>{{{$archivo->fecha_salida}}}</td>
-                        <td>{{{$archivo->fecha_regreso}}}</td>
-                        <td>{{{$archivo->comentario}}}</td>
-                        <td><strong>{{{$archivo->nombres}}} {{{$archivo->apellido_paterno}}} {{{$archivo->apellido_materno}}}</strong></td>
-                        <td> @if ( $archivo->activo == 1 )                   
+                        <td><strong><?php echo e($archivo->folio); ?></strong></td>
+                        <td><?php echo e($archivo->fecha_salida); ?></td>
+                        <td><?php echo e($archivo->fecha_regreso); ?></td>
+                        <td><?php echo e($archivo->comentario); ?></td>
+                        <td><strong><?php echo e($archivo->nombres); ?> <?php echo e($archivo->apellido_paterno); ?> <?php echo e($archivo->apellido_materno); ?></strong></td>
+                        <td> <?php if( $archivo->activo == 1 ): ?>                   
                           <span class="label label-danger">Prestado</span>                        
-                        @else                       
+                        <?php else: ?>                       
                         <span class="label label-success">Devuelto</span>
-                          @endif</td>
-                        <td> @if($archivo->activo == 1)
-                        <a  href=""  data-id="{{$archivo->id}}" data-toggle="modal" data-target="#entrega" title="Devolver archivo"  class="btn btn-xs btn-danger"  ><i class="fa fa-check"></i> </a>
-                        @else 
-                        <a class="btn btn-xs btn-success" disabled href="{{URL::to('archivo-control/alta/'.$archivo->id )}}"><i class="fa fa-check"></i></a>
-                         @endif
+                          <?php endif; ?></td>
+                        <td> <?php if($archivo->activo == 1): ?>
+                        <a  href=""  data-id="<?php echo $archivo->id; ?>" data-toggle="modal" data-target="#entrega" title="Devolver archivo"  class="btn btn-xs btn-danger"  ><i class="fa fa-check"></i> </a>
+                        <?php else: ?> 
+                        <a class="btn btn-xs btn-success" disabled href="<?php echo URL::to('archivo-control/alta/'.$archivo->id ); ?>"><i class="fa fa-check"></i></a>
+                         <?php endif; ?>
                       </td> 
                      </tr>
-                      @endforeach
+                      <?php endforeach; ?>
                     </tbody>                    
                   </table> 
                   <div class="clearfix"></div>                      
@@ -164,7 +164,8 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                 <div class="modal-body"> <!-- en action mando a llamar el Controlador@function (anteponiendo el post) -->
                   <!-- contenido modal -->
 
-{{ Form::open(array('action' => 'ArchivoDocumentosControlador@postRegistro', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'new_prestamo','files' => true )) }}
+<?php echo Form::open(array('action' => 'ArchivoDocumentosControlador@postRegistro', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'new_prestamo','files' => true )); ?>
+
   
                      <div class="form-group">
                                   <label class="col-lg-3 control-label">Folio</label>
@@ -179,9 +180,9 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                                   <div class="col-lg-7">
                                     <select class="form-control persona chosen-select" name="persona_id">
                                       <option value="0">Seleccione</option>                                                                   
-                                     @foreach($personas as $persona)
-                                      <option value="{{{$persona->id}}}">{{{$persona->nombre}}}</option>
-                                      @endforeach
+                                     <?php foreach($personas as $persona): ?>
+                                      <option value="<?php echo e($persona->id); ?>"><?php echo e($persona->nombre); ?></option>
+                                      <?php endforeach; ?>
                                     </select>
                                
                                   </div>
@@ -214,7 +215,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
             </div>
     </div>
   </div>
-   {{form::close()}}   
+   <?php echo form::close(); ?>   
 
 <div id="entrega" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -226,7 +227,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                 <div class="modal-body"> <!-- en action mando a llamar el Controlador@function (anteponiendo el post) -->
                   <!-- contenido modal -->
 
-     {{ Form::open(array('action' => 'ArchivoDocumentosControlador@postEntrega', 'class' => 'form-horizontal', 'role' => 'form', 'id' => 'registro')) }}  
+     <?php echo Form::open(array('action' => 'ArchivoDocumentosControlador@postEntrega', 'class' => 'form-horizontal', 'role' => 'form', 'id' => 'registro')); ?>  
   
                      <input  type="hidden" id="entrega" name="archivo_id">
                     <div class="form-group">
@@ -247,7 +248,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
             </div>
     </div>
   </div>
-   {{form::close()}}   
+   <?php echo form::close(); ?>   
 
 
-@stop
+<?php $__env->stopSection(); ?>

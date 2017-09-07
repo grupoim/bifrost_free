@@ -36,7 +36,7 @@ if (Input::get('fecha_salida') == false) {
         $archivo_documentos->comentario = Input::get('comentario');
         $archivo_documentos->persona_id = Input::get('persona_id');
         $archivo_documentos->save();
-		return  Redirect::back()->with('status', 'registro');
+		return  Redirect::back()->with('status', 'estatus-A');
 }else{
 		$archivo_documentos = new ArchivoDocumentos;
         $archivo_documentos->folio =  Input::get('folio');
@@ -45,47 +45,34 @@ if (Input::get('fecha_salida') == false) {
         $archivo_documentos->comentario = Input::get('comentario');
         $archivo_documentos->persona_id = Input::get('persona_id');
         $archivo_documentos->save();
-		return  Redirect::back()->with('status', 'registro');
+		return  Redirect::back()->with('status', 'estatus-A');
 }		
 }
 }
 }
 
 
-public function getBaja($id){
+public function postEntrega()
+{
 
-			
-			$archivo_documentos = ArchivoDocumentos::find($id);
+if (Input::get('fecha_regreso') == false) {
+			$id = ArchivoDocumentos::where('id','=',Input::get('archivo_id'))->where('activo',1)->firstOrFail();
+			$archivo_documentos = ArchivoDocumentos::find($id->id);
 			$archivo_documentos->activo = 0;
 			$archivo_documentos->fecha_regreso = strftime( "%Y-%m-%d %H-%M-%S", time() );
 			$archivo_documentos->save();
 			return Redirect::back()->with('status', 'estatus-B');
-}
-public function getAlta($id){
-
-			$archivo_documentos = ArchivoDocumentos::find($id);
-			$archivo_documentos->activo = 1;
-			$archivo_documentos->fecha_salida = strftime( "%Y-%m-%d %H-%M-%S", time() );
-			$archivo_documentos->fecha_regreso = false;
-			$archivo_documentos->save();
-			return Redirect::back()->with('status', 'estatus-A');
-}
-			public function getRecupera($id){			
-		
-			
-			$dataModule["fecha_regreso"] = ArchivoDocumentos::find($id);			
-
-			return View::make($this->department.".main", $this->data)->nest('child', 'formularios.ArchivoDocumentos', $dataModule);		
-			}	
-public function postEditar(){
-if (DB::table('archivo_documentos')->where('id','=',Input::get('id'))->where('activo',0)->get()) {
-	return Redirect::to('archivo-control/index')->with('status', 'editar');
 }else{
-			$archivo_documentos = ArchivoDocumentos::where('id','=',Input::get('id'))->firstOrFail();
+
+			$id = ArchivoDocumentos::where('id','=',Input::get('archivo_id'))->where('activo',1)->firstOrFail();
+			$archivo_documentos = ArchivoDocumentos::find($id->id);
 			$archivo_documentos->activo = 0;
-			$archivo_documentos->fecha_regreso = Input::get('fecha_regreso').strftime( " %H-%M-%S", time() );
+		    $archivo_documentos->fecha_regreso = Input::get('fecha_regreso').strftime( " %H-%M-%S", time() );
 			$archivo_documentos->save();
-			return Redirect::to('archivo-control/index')->with('status', 'estatus-B');
+			return Redirect::back()->with('status', 'estatus-B');
+
 }
+
+
 }
 }
