@@ -56,7 +56,7 @@ $(document).on('click','.open_modal_anticipo',function(){
 
 var id = $(this).val();
 
-$.get('{{ action('ComisionControlador@detalle') }}/'+ id, function (data) {
+$.get('{{ action('ComisionControlador@detalle') }}/' + id, function (data) {
 	$('input[name=anticipo_monto]').val(data.por_pagar);
 	$('#anticipo_asesor').text(data.vendedor);
 	//$('input[name=total_comisionable]').val(data.total_comisionable);

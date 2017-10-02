@@ -49,7 +49,8 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/extra', 'ExtraControlador');
 	Route::controller('/inventario-capilla', 'InventarioCafeteriaControlador');
 	Route::controller('/orden-compra','OrdenCompraControlador');
-	
+	Route::controller('/solicitud','SolicitudEmpleoControlador');
+	Route::controller('/prospectos','ProspectosControlador');
 
 });
 Route::controller('/login', 'LoginControlador');

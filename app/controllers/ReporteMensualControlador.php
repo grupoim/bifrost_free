@@ -222,7 +222,7 @@ $total_corp = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 								->get();
 
 //terminan consultas de graficas de gastos
-switch ($month) {
+switch (09) {
 	case 01:
 		$mes_string = 'Enero';# code...
 		break;
@@ -430,7 +430,7 @@ switch ($month3) {
 
 
 			$dataModule["year"] = $year;
-			$dataModule["mes"] = $month;			
+			$dataModule["mes"] = $mes_string;			
 			$dataModule["serie"] = $serie;
 			$dataModule["serie1"] = $serie1;
 			$dataModule["serie2"] = $serie2;

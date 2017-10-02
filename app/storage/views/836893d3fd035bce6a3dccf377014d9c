@@ -1,0 +1,6 @@
+<?php $__env->startSection('scripts'); ?>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+
+<?php $__env->stopSection(); ?>
