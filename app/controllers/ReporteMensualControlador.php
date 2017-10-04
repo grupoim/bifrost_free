@@ -222,32 +222,32 @@ $total_corp = GraficaVentaProducto::select(DB::raw('sum(totales_grafica.monto) a
 								->get();
 
 //terminan consultas de graficas de gastos
-switch (09) {
-	case 01:
+switch ($month) {
+	case 1:
 		$mes_string = 'Enero';# code...
 		break;
-	case 02:
+	case 2:
 		$mes_string = 'Febrero';# code...
 		break;
-		case 03:
+		case 3:
 		$mes_string = 'Marzo';# code...
 		break;
-		case 04:
+		case 4:
 		$mes_string = 'Abril';# code...     
 		break;
-		case 05:
+		case 5:
 		$mes_string = 'Mayo';# code...
 		break;
-		case 06:
+		case 6:
 		$mes_string = 'Junio';# code...
 		break;
-		case 07:
+		case 7:
 		$mes_string = 'Julio';# code...
 		break;
-		case 08:
+		case 8:
 		$mes_string = 'Agosto';# code...
 		break;
-		case 09:
+		case 9:
 		$mes_string = 'Septiembre';# code...
 		break;
 		case 10:
@@ -264,31 +264,31 @@ switch (09) {
 		break;
 }
 switch ($month2) {
-	case 01:
+	case 1:
 		$mes_string2 = 'Enero';# code...
 		break;
-	case 02:
+	case 2:
 		$mes_string2 = 'Febrero';# code...
 		break;
-		case 03:
+		case 3:
 		$mes_string2 = 'Marzo';# code...
 		break;
-		case 04:
+		case 4:
 		$mes_string2 = 'Abril';# code...     
 		break;
-		case 05:
+		case 5:
 		$mes_string2 = 'Mayo';# code...
 		break;
-		case 06:
+		case 6:
 		$mes_string2 = 'Junio';# code...
 		break;
-		case 07:
+		case 7:
 		$mes_string2 = 'Julio';# code...
 		break;
-		case 08:
+		case 8:
 		$mes_string2 = 'Agosto';# code...
 		break;
-		case 09:
+		case 9:
 		$mes_string2 = 'Septiembre';# code...
 		break;
 		case 10:
@@ -305,31 +305,31 @@ switch ($month2) {
 		break;
 }
 switch ($month3) {
-	case 01:
+	case 1:
 		$mes_string3 = 'Enero';# code...
 		break;
-	case 02:
+	case 2:
 		$mes_string3 = 'Febrero';# code...
 		break;
-		case 03:
+		case 3:
 		$mes_string3 = 'Marzo';# code...
 		break;
-		case 04:
+		case 4:
 		$mes_string3 = 'Abril';# code...     
 		break;
-		case 05:
+		case 5:
 		$mes_string3 = 'Mayo';# code...
 		break;
-		case 06:
+		case 6:
 		$mes_string3 = 'Junio';# code...
 		break;
-		case 07:
+		case 7:
 		$mes_string3 = 'Julio';# code...
 		break;
-		case 08:
+		case 8:
 		$mes_string3 = 'Agosto';# code...
 		break;
-		case 09:
+		case 9:
 		$mes_string3 = 'Septiembre';# code...
 		break;
 		case 10:
