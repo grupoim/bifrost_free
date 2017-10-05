@@ -450,7 +450,7 @@ Highcharts.chart('apiladas', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                     }
         }
     },
@@ -633,7 +633,7 @@ Highcharts.chart('promotorias', {
                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
             },
             formatter: function() {   
-                        return 'Total mensual: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
+                        return 'Total: $'+  Highcharts.numberFormat(this.total, 0, ',')  ;                                
                  },                  
         }
     },
