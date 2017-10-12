@@ -88,31 +88,33 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
 
 <table border="0px;" cellspacing="2" cellpadding="2"> <!-- Lo cambiaremos por CSS -->
             <tr>
-                <td ><h3>Nombre completo:<u class="total"> {{$dato->empleado}}</u></h3></td>
+                <td colspan="2" ><h3>Nombre completo:<u class="total"> {{$dato->empleado}}</u></h3></td>
                 <td><h3>Edad:<u class="total"> {{$dato->edad}}</u></h3></td>
-                @if($dato->sexo == 1)
+
+            </tr>
+            <tr>
+                <td colspan="3"><h3>Domicilio:<u class="total"> {{$dato->domicilio}}</u></h3></td>
+                
+            </tr>
+            <tr>
+                 <td><h3>Calle:<u class="total"> {{$dato->calle}}</u></h3></td>
+                <td><h3>Numero interior:<u class="total"> {{$dato->numero_interior}}</u></h3></td>
+                <td><h3>Numero exterior:<u class="total"> {{$dato->numero_exterior}}</u></h3></td>
+                
+            </tr>
+            <tr>
+                <td ><h3>Telefono:<u class="total"> {{$dato->telefono}} ({{$dato->tipo_telefono}})</u></h3></td>
+                <td><h3>Lugar nacimiento:<u class="total"> {{$dato->lugar_nacimiento}}</u></h3></td>
+                 @if($dato->sexo == 1)
                 <td><h3>Sexo:<u class="total"> Masculino</u></h3></td>
                 @else
                 <td><h3>Sexo:<u class="total"> Femenino</u></h3></td>
                 @endif
             </tr>
             <tr>
-                <td colspan="2"><h3>Domicilio:<u class="total"> {{$dato->domicilio}}</u></h3></td>
-                <td><h3>Calle:<u class="total"> {{$dato->calle}}</u></h3></td>
-            </tr>
-            <tr>
-                <td><h3>Numero interior:<u class="total"> {{$dato->numero_interior}}</u></h3></td>
-                <td><h3>Numero exterior:<u class="total"> {{$dato->numero_exterior}}</u></h3></td>
-                <td><h3>Estado civil:<u class="total"> {{$dato->estado_civil}}</u></h3></td>
-            </tr>
-            <tr>
-                <td><h3>Telefono:<u class="total"> {{$dato->telefono}}</u></h3></td>
-                <td><h3>Tipo telefono:<u class="total"> {{$dato->tipo_telefono}}</u></h3></td>
-                <td><h3>Lugar nacimiento:<u class="total"> {{$dato->lugar_nacimiento}}</u></h3></td>
-            </tr>
-            <tr>
+                 <td><h3>Estado civil:<u class="total"> {{$dato->estado_civil}}</u></h3></td>
                 <td><h3>Vive con:<u class="total"> {{$dato->vive_con}}</u></h3></td>
-                <td colspan="2"><h3>Personas que dependen de usted:<u class="total"> {{$dato->dependientes}}</u></h3></td>
+                <td colspan="2"><h3>Dependientes:<u class="total"> {{$dato->dependientes}}</u></h3></td>
 
             </tr>
         </table>
@@ -194,10 +196,8 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
           <br>
           <br>
           <br>
+          <br>  
           <br>
-          <br>
-          <br>
-          
 
         </div>
         <br>
