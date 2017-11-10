@@ -41,12 +41,13 @@ class ProspectosControlador extends \BaseController {
 
 		$solicitud = Solicitud::find($id->solicitud_id);
 		$solicitud->sueldo = Input::get('sueldo');
-		$solicitud->fecha_contratacion = Input::get('fecha_contratacion').strftime( " %H-%M-%S", time() );
+		$solicitud->fecha_contratacion = Input::get('fecha_contratacion');
 		$solicitud->save();
 
 		$prospecto = Prospectos::find($id->id);
 		$prospecto->contratado = 1;
 		$prospecto->save();
+
 
 		return  Redirect::back()->with('status', 'edit');
 
@@ -54,26 +55,58 @@ class ProspectosControlador extends \BaseController {
 	}
 
 	public function getContratados(){
-
-	  $dataModule["personal"] = Prospectos::select('solicitud.id as solicitud_id','solicitud.puesto','solicitud.sueldo','solicitud.fecha_contratacion', 'prospectos.contratado',DB::raw("CONCAT(persona.nombres, ' ', persona.apellido_paterno, ' ', persona.apellido_materno) as solicitante"),
-	  	'documentos.curp','documentos.rfc','documentos.imss',DB::raw("CONCAT(colonia.nombre, ' ', colonia.codigo_postal, ' ', municipio.nombre,' ', estado.nombre) as colonia"))
-											->where('prospectos.activo',1)->where('prospectos.contratado',1)
+	  $dataModule["status"] = Session::pull('status');
+	  $dataModule["personal"] = Prospectos::select('solicitud.id as solicitud_id','dato_solicitante.id as solicitante_id','solicitud.puesto','solicitud.sueldo','solicitud.fecha_contratacion', 'prospectos.contratado',DB::raw("CONCAT(persona.nombres, ' ', persona.apellido_paterno, ' ', persona.apellido_materno) as solicitante"),
+	  	'documentos.curp','documentos.rfc','documentos.imss','alta_seguro.alta','alta_seguro.baja',DB::raw("CONCAT(colonia.nombre, ' ', colonia.codigo_postal, ' ', municipio.nombre,' ', estado.nombre) as colonia"))
+											->where('prospectos.contratado',1)
 											->leftJoin('solicitud','prospectos.solicitud_id','=','solicitud.id')
-											->leftJoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')											
+											->leftJoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')	
+											->leftJoin('alta_seguro','dato_solicitante.id','=','alta_seguro.dato_solicitante_id')										
 											->leftJoin('persona','dato_solicitante.persona_id','=','persona.id')
 											->leftJoin('documentos','dato_solicitante.id','=','documentos.dato_solicitante_id')
 											->leftJoin('colonia','dato_solicitante.colonia_id','=','colonia.id')
 											->leftJoin('municipio','colonia.municipio_id','=','municipio.id')
 											->leftJoin('estado','municipio.estado_id','=','estado.id')
 											->get();
+		
+	
 	  return View::make($this->department.".main", $this->data)->nest('child', 'administracion.personal', $dataModule);
 	}
 	public function getDetalle($id)
 	{
-		return VistaRelacionPersonal::where('activo',1)->where('contratado',1)->find($id);
-
-
+		return VistaRelacionPersonal::where('contratado',1)->find($id);
 		
 	}
+	public function postAlta(){
+
+		$id = AltaSeguro::where('dato_solicitante_id','=', Input::get('dato_solicitante_id'))->firstorfail();
+
+		$altaseguro = AltaSeguro::find($id->id);
+		$altaseguro->clinica = Input::get('clinica');
+		$altaseguro->fecha_alta = Input::get('fecha_alta');
+		$altaseguro->alta = 1;
+		$altaseguro->save();
+
+		return  Redirect::back()->with('status', 'alta');
+	}
+
+
+	public function postBaja(){
+
+		$id = AltaSeguro::where('dato_solicitante_id','=', Input::get('dato_solicitante_id'))->firstorfail();
+		$bajaseguro = AltaSeguro::find($id->id);
+	    $bajaseguro->fecha_baja = Input::get('fecha_baja');
+		$bajaseguro->baja = 1;
+		$bajaseguro->save();
+
+		$prospecto_id = Prospectos::where('dato_solicitante_id','=', Input::get('dato_solicitante_id'))->firstorfail();
+		$prospectos = Prospectos::find($prospecto_id->id);
+		$prospectos->activo = 0;
+		$prospectos->save();
+
+		return  Redirect::back()->with('status', 'baja');
+
+	}
+
 	}
 

@@ -39,7 +39,7 @@ class SolicitudEmpleoControlador extends \BaseController {
 		$solicitud = new Solicitud;
 		$solicitud->puesto = Input::get('puesto');
 		$solicitud->sueldo = ' ';
-		$solicitud->fecha_solicitud = strftime( "%Y-%m-%d %H-%M-%S", time());
+		$solicitud->fecha_solicitud = strftime( "%Y-%m-%d", time());
 		$solicitud->zona = Input::get('zona');
 		$solicitud->cordinador_id = Input::get('cordinador');
 		$solicitud->save();
@@ -64,12 +64,33 @@ class SolicitudEmpleoControlador extends \BaseController {
 		$dato_solicitante->numero_exterior = Input::get('numero_exterior');
 		$dato_solicitante->lugar_nacimiento = Input::get('lugar_nacimiento');
 		$dato_solicitante->save();
-		//pospecto
+		
+
+		//alta seguro
+		$altaseguro = new AltaSeguro;
+		$altaseguro->clinica = Input::get('clinica');
+		$altaseguro->fecha_alta = " ";
+		$altaseguro->fecha_baja = " ";
+		$altaseguro->alta = 0;
+		$altaseguro->dato_solicitante_id = $dato_solicitante->id;
+		$altaseguro->save();
+		//prospecto
 		$prospecto = new Prospectos;
 		$prospecto->dato_solicitante_id = $dato_solicitante->id;
 		$prospecto->solicitud_id = $solicitud->id;
+		$prospecto->foto = Input::file('foto')->getClientOriginalName();
 		$prospecto->save();
-		//contacto del solicitante
+ 		
+ 		
+		if ($prospecto->save()) {
+
+			$file = Input::file('foto');
+			$destinoPath = public_path().'/img/upload/';
+			$subir = $file->move($destinoPath,$file->getClientOriginalName());
+
+		}
+
+				//contacto del solicitante
 		$contacto_solicitante = new ContactoSolicitante;
 		$contacto_solicitante->telefono = Input::get('telefono');
 		$contacto_solicitante->codigo_pais = Input::get('codigo_pais');
@@ -189,7 +210,8 @@ class SolicitudEmpleoControlador extends \BaseController {
     $escolaridad->titulo = $array_titulo[$estudio->id];
     $escolaridad->save();
 
-    }
+    }	
+
  	return Redirect::back()->with('status', 'registro');
 
 	}
@@ -250,6 +272,81 @@ class SolicitudEmpleoControlador extends \BaseController {
 		$canvas = $dom_pdf ->get_canvas();
 		$canvas->page_text(700, 600, " {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
       return $pdf->stream();
+
+	}
+
+	public function getRecupera($id){
+
+		  $dataModule["status"] = Session::pull('status','edit');
+		  $dataModule["estados"] =  Estado::all();
+		  $dataModule["estado_civil"] = EstadoCivil::all();
+		  $dataModule["datos"] = Datos::all();
+		  $dataModule["tipo_telefono"] = TipoTelefono::all();
+		  $dataModule["cordinador"] = Cordinador::select(DB::raw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) as cordinador"),'cordinador.id as cordinador_id')
+										->where('cordinador.activo',1)
+										->leftJoin('persona', 'cordinador.persona_id', '=', 'persona.id')
+										->get();
+		  $dataModule["colonias"] = Colonia::select('colonia.nombre as colonia','colonia.codigo_postal','municipio.nombre as municipio','estado.nombre as estado','colonia.id as colonia_id')
+	  							->leftjoin('municipio','colonia.municipio_id','=','municipio.id')
+	  							->leftjoin('estado','municipio.estado_id','=','estado.id')
+	  							->get();
+	  	 $dataModule["solicitud_edit"] = Prospectos::select('solicitud.puesto','cordinador.id as cordinador_id','solicitud.zona','persona.nombres','persona.apellido_paterno','persona.apellido_materno',
+	  	 	'dato_solicitante.edad','dato_solicitante.calle','dato_solicitante.numero_exterior','dato_solicitante.numero_interior','dato_solicitante.fecha_nacimiento','contacto_solicitante.telefono',
+	  	 	'tipo_telefono.id as tipo_id','dato_solicitante.sexo','estado_civil.id as estado_civil_id','datos.id as datos_id','documentos.curp','documentos.rfc','documentos.imss','alta_seguro.clinica'
+	  	 	 ,'dato_solicitante.lugar_nacimiento')
+	  	 						->where('prospectos.solicitud_id',$id)
+	  	 						->leftjoin('solicitud','prospectos.solicitud_id','=','solicitud.id')
+	  	 						->leftjoin('cordinador','solicitud.cordinador_id','=','cordinador.id')
+	  	 						->leftjoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')
+	  	 						->leftjoin('persona','dato_solicitante.persona_id','=','persona.id')
+	  	 						->leftjoin('contacto_solicitante','dato_solicitante.id','=','contacto_solicitante.dato_solicitante_id')
+	  	 						->leftjoin('tipo_telefono','contacto_solicitante.tipo_telefono_id','=','tipo_telefono.id')
+	  	 						->leftjoin('estado_civil','dato_solicitante.estado_civil_id','=','estado_civil.id')
+	  	 						->leftjoin('datos','dato_solicitante.datos_id','=','datos.id')
+	  	 						->leftjoin('documentos','dato_solicitante.id','=','documentos.dato_solicitante_id')
+	  	 						->leftjoin('alta_seguro','dato_solicitante.id','=','alta_seguro.dato_solicitante_id')
+	  	 						->leftjoin('colonia','dato_solicitante.colonia_id','=','colonia.id')
+	  	 						->leftjoin('municipio','colonia.municipio_id','=','municipio.id')
+	  							->leftjoin('estado','municipio.estado_id','=','estado.id')
+	  	 						->first();
+	  	 $dataModule["d_familiares"] = Prospectos::select('dato_familiar.nombre as familiar','datos.familiares','datos.nombre as datos','dato_familiar.calle',
+	  	 		'dato_familiar.numero_interior','dato_familiar.numero_exterior','dato_familiar.ocupacion','dato_familiar.vive')
+	  	 						->where('prospectos.solicitud_id',$id)
+	  	 						->leftjoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')
+	  	 						->leftjoin('dato_familiar','dato_solicitante.id','=','dato_familiar.dato_solicitante_id')
+	  	 						->leftjoin('datos','dato_familiar.datos_id','=','datos.id')
+	  	 						->get();
+	  	 $dataModule["referencia1"] = Prospectos::select('persona.nombres','persona.apellido_paterno','persona.apellido_materno','referencias.tiempo_conocerlo','contacto_referencia.telefono',
+		  	 	'tipo_telefono.id as tipo_id','referencias.numero_interior','referencias.numero_exterior','referencias.calle')
+	  	 						->where('prospectos.solicitud_id',$id)
+	  	 						->leftjoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')
+	  	 						->leftjoin('referencias','dato_solicitante.id','=','referencias.dato_solicitante_id')
+	  	 						->leftjoin('persona','referencias.persona_id','=','persona.id')
+	  	 						->leftjoin('contacto_referencia','referencias.id','=','contacto_referencia.referencias_id')
+	  	 						->leftjoin('tipo_telefono','contacto_referencia.tipo_telefono_id','=','tipo_telefono.id')
+	  	 						->first();
+	   	 $dataModule["referencia2"] = Prospectos::select('persona.nombres','persona.apellido_paterno','persona.apellido_materno','referencias.tiempo_conocerlo','contacto_referencia.telefono',
+	   	 		'tipo_telefono.id as tipo_id','referencias.numero_interior','referencias.numero_exterior','referencias.calle')
+	  	 						->where('prospectos.solicitud_id',$id)
+	  	 						->leftjoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')
+	  	 						->leftjoin('referencias','dato_solicitante.id','=','referencias.dato_solicitante_id')
+	  	 						->leftjoin('persona','referencias.persona_id','=','persona.id')
+	  	 						->leftjoin('contacto_referencia','referencias.id','=','contacto_referencia.referencias_id')
+	  	 						->leftjoin('tipo_telefono','contacto_referencia.tipo_telefono_id','=','tipo_telefono.id')
+	  	 						->get()->last();	
+	  	 $dataModule["escolaridad"]	= Prospectos::select('estudios.nombre as escuela','datos.nombre as datos','estudios.fecha_inicio','estudios.fecha_fin',
+	  	 		'estudios.años','estudios.calle','estudios.numero_exterior','estudios.numero_interior','estudios.titulo')
+	  	 						->where('prospectos.solicitud_id',$id)
+	  	 						->leftjoin('dato_solicitante','prospectos.dato_solicitante_id','=','dato_solicitante.id')
+	  	 						->leftjoin('estudios','dato_solicitante.id','=','estudios.dato_solicitante_id')
+	  	 						->leftjoin('datos','estudios.datos_id','=','datos.id')
+	  	 						->get();				
+
+		return View::make($this->department.".main", $this->data)->nest('child', 'administracion.solicitud', $dataModule);
+	}
+
+	public function postEditar(){
+
 
 	}
 }

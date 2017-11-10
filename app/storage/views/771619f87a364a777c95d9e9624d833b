@@ -15,10 +15,7 @@ body {
 #page-wrap {
   margin: 25px;
 }
-#page2{
-  margin: 25px;
-  padding:0.5%;
-}
+
 p {
   margin: 20px 0; 
 }
@@ -50,6 +47,7 @@ p {
   }
 
 
+
   hr {
   background-color: black;
 } 
@@ -65,7 +63,15 @@ th {     font-size: 12px;     font-weight: normal;     padding: 8px;     backgro
 
 td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
     color: #222;    border-top: 1px solid transparent; }
-
+p {
+  font-size: 14px;
+}
+span {
+  page-break-after: always;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
 
 </style>
     
@@ -73,48 +79,55 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
 </head>
 <body>
 
-<div class="col-md-12" id="page-wrap">
-       
+<div class="col-md-12" id="page-wrap"> 
                <img src="data:image/png;base64,<?php echo base64_encode(file_get_contents(public_path('img/todofacil.jpg'))); ?>" width="210" class="img-responsive" alt="Image"><h2 class="title1">Solicitud de empleo </h2>
+          <br>      
 
-<br><br>       
-                <h4>Fecha de la solicitud:<u class="total"><strong> <?php echo date('d-m-Y h:i:s a', strtotime($dato->fecha_solicitud)); ?></strong></h4></u><br>
-                <h4>Puesto que solicita: <u class="total"><?php echo $dato->puesto; ?></u></h4><br>
-                <h4>Cordinador: <u class="total"><?php echo $cordinador->cordinador; ?></u></h4><br>
-                <h4>Zona asignada: <u class="total"><?php echo $dato->zona; ?></u></h4>                 
+       <table border="0px;" cellspacing="2" cellpadding="2"> <!-- Lo cambiaremos por CSS -->
+            <tr>
+            <td><p>Fecha de solicitud:<u class="total"> <?php echo date('d-m-Y', strtotime($dato->fecha_solicitud)); ?></u></p><br>
+                <p>Puesto que solicita:<u class="total"> <?php echo $dato->puesto; ?></u></p><br>
+                <p>Coordinador:<u class="total"> <?php echo $cordinador->cordinador; ?></u></p><br>
+                <p>Zona asignada:<u class="total"> <?php echo $dato->zona; ?></u></p>
+            </td>
+            <td></td>
+            <td><img src="<?php echo public_path("img/upload/".$dato->foto); ?>" width="120" class="img-responsive" alt="Image"></td>
+            </tr>
+        </table>
+
                 <br><!-- /.box-header -->
 <div align="center" class="title" ><h3 >Datos del solicitante</h3></div>
   <br>
 
 <table border="0px;" cellspacing="2" cellpadding="2"> <!-- Lo cambiaremos por CSS -->
             <tr>
-                <td colspan="2" ><h3>Nombre completo:<u class="total"> <?php echo $dato->empleado; ?></u></h3></td>
-                <td><h3>Edad:<u class="total"> <?php echo $dato->edad; ?></u></h3></td>
+                <td colspan="2" ><p>Nombre completo:<u class="total"> <?php echo $dato->empleado; ?></u></p></td>
+                <td><p>Edad:<u class="total"> <?php echo $dato->edad; ?></u></p></td>
 
             </tr>
             <tr>
-                <td colspan="3"><h3>Domicilio:<u class="total"> <?php echo $dato->domicilio; ?></u></h3></td>
+                <td colspan="3"><p>Domicilio:<u class="total"> <?php echo $dato->domicilio; ?></u></p></td>
                 
             </tr>
             <tr>
-                 <td><h3>Calle:<u class="total"> <?php echo $dato->calle; ?></u></h3></td>
-                <td><h3>Numero interior:<u class="total"> <?php echo $dato->numero_interior; ?></u></h3></td>
-                <td><h3>Numero exterior:<u class="total"> <?php echo $dato->numero_exterior; ?></u></h3></td>
+                 <td><p>Calle:<u class="total"> <?php echo $dato->calle; ?></u></p></td>
+                <td><p>Numero interior:<u class="total"> <?php echo $dato->numero_interior; ?></u></p></td>
+                <td><p>Numero exterior:<u class="total"> <?php echo $dato->numero_exterior; ?></u></p></td>
                 
             </tr>
             <tr>
-                <td ><h3>Telefono:<u class="total"> <?php echo $dato->telefono; ?> (<?php echo $dato->tipo_telefono; ?>)</u></h3></td>
-                <td><h3>Lugar nacimiento:<u class="total"> <?php echo $dato->lugar_nacimiento; ?></u></h3></td>
+                <td ><p>Telefono:<u class="total"> <?php echo $dato->telefono; ?> (<?php echo $dato->tipo_telefono; ?>)</u></p></td>
+                <td><p>Lugar nacimiento:<u class="total"> <?php echo $dato->lugar_nacimiento; ?></u></p></td>
                  <?php if($dato->sexo == 1): ?>
-                <td><h3>Sexo:<u class="total"> Masculino</u></h3></td>
+                <td><p>Sexo:<u class="total"> Masculino</u></p></td>
                 <?php else: ?>
-                <td><h3>Sexo:<u class="total"> Femenino</u></h3></td>
+                <td><p>Sexo:<u class="total"> Femenino</u></p></td>
                 <?php endif; ?>
             </tr>
             <tr>
-                 <td><h3>Estado civil:<u class="total"> <?php echo $dato->estado_civil; ?></u></h3></td>
-                <td><h3>Vive con:<u class="total"> <?php echo $dato->vive_con; ?></u></h3></td>
-                <td colspan="2"><h3>Dependientes:<u class="total"> <?php echo $dato->dependientes; ?></u></h3></td>
+                 <td><p>Estado civil:<u class="total"> <?php echo $dato->estado_civil; ?></u></p></td>
+                <td><p>Vive con:<u class="total"> <?php echo $dato->vive_con; ?></u></p></td>
+                <td colspan="2"><p>Dependientes:<u class="total"> <?php echo $dato->dependientes; ?></u></p></td>
 
             </tr>
         </table>
@@ -123,9 +136,10 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
   <br>
             <table border="0px;" cellspacing="2" cellpadding="2"> <!-- Lo cambiaremos por CSS -->
             <tr>
-                <td ><h3>CURP:<u class="total"> <?php echo strtoupper($dato->curp); ?></u></h3></td>
-                <td><h3>RFC:<u class="total"> <?php echo strtoupper($dato->rfc); ?></u></h3></td>
-                <td><h3>IMSS:<u class="total"> <?php echo strtoupper($dato->imss); ?></u></h3></td>
+                <td ><p>CURP:<u class="total"> <?php echo strtoupper($dato->curp); ?></u></p></td>
+                <td><p>RFC:<u class="total"> <?php echo strtoupper($dato->rfc); ?></u></p></td>
+                <td><p>IMSS:<u class="total"> <?php echo strtoupper($dato->imss); ?></u></p></td>
+                <td><p>Clinica:<u class="total"> <?php echo $dato->clinica; ?></u></p></td>
             </tr>
 
         </table>
@@ -193,17 +207,11 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
 
 </tbody>
 </table>
-          <br>
-          <br>
-          <br>
-          <br>  
-          <br>
-
+        
         </div>
-        <br>
 
-<div class="col-md-12" id="page2" >
-
+     <span></span>
+<div class="col-md-12" id="page-wrap"> 
                   
      <div align="center" class="title" ><h3 >Escolaridad</h3></div>
   <br>
@@ -226,7 +234,7 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
   <td align="center"><?php echo e($estudio->nivel_estudio); ?></td>
    <td align="center"><?php echo e($estudio->escuela); ?></td>
   <td align="center"><?php echo $estudio->colonia; ?></td>
-  <td align="center"><strong><?php echo date('d-m-Y', strtotime($estudio->fecha_inicio)); ?>  <br><?php echo date('d-m-Y', strtotime($estudio->fecha_fin)); ?></strong></td>
+  <td align="center"><strong><?php echo $estudio->fecha_inicio; ?>  <br><?php echo $estudio->fecha_fin; ?></strong></td>
   <td align="center"><?php echo $estudio->años; ?></td>
   <td align="center"><?php echo $estudio->titulo; ?></td>
 
@@ -247,6 +255,10 @@ td {    padding: 30px;     background: #fff;     border-bottom: 1px solid #fff;
         <div align="center">
         <hr  align="center" width="30%">
         <strong> Firma del solicitante </strong>
+        </div>
+        <br>
+       <div class="box-footer clearfix">
+
         </div>
         </div>
 </body>
