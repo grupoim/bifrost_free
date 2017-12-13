@@ -197,17 +197,17 @@ class SolicitudEmpleoControlador extends \BaseController {
     $estudios = Datos::where('nivel_estudio',1)->where('activo',1)->get();
     foreach ($estudios as $estudio) {
     $escolaridad = new Estudios;
-    $escolaridad->nombre = $array_nombre_e[$estudio->id];
-    $escolaridad->fecha_inicio = $array_fecha_inicio[$estudio->id];
-    $escolaridad->fecha_fin = $array_fecha_fin[$estudio->id];
-    $escolaridad->años = $array_año[$estudio->id];
-    $escolaridad->calle = $array_calle_e[$estudio->id];
-    $escolaridad->numero_interior = $array_numero_interior_e[$estudio->id];
-    $escolaridad->numero_exterior = $array_numero_exterior_e[$estudio->id];
-    $escolaridad->datos_id = $array_id_e[$estudio->id];
-    $escolaridad->dato_solicitante_id = $dato_solicitante->id;
-    $escolaridad->colonia_id = $array_colonia_e[$estudio->id];
-    $escolaridad->titulo = $array_titulo[$estudio->id];
+   @$escolaridad->nombre = $array_nombre_e[$estudio->id];
+   @$escolaridad->fecha_inicio = $array_fecha_inicio[$estudio->id];
+   @$escolaridad->fecha_fin = $array_fecha_fin[$estudio->id];
+   @$escolaridad->años = $array_año[$estudio->id];
+   @$escolaridad->calle = $array_calle_e[$estudio->id];
+   @$escolaridad->numero_interior = $array_numero_interior_e[$estudio->id];
+   @$escolaridad->numero_exterior = $array_numero_exterior_e[$estudio->id];
+   @$escolaridad->datos_id = $array_id_e[$estudio->id];
+   @$escolaridad->dato_solicitante_id = $dato_solicitante->id;
+   @$escolaridad->colonia_id = $array_colonia_e[$estudio->id];
+   @$escolaridad->titulo = $array_titulo[$estudio->id];
     $escolaridad->save();
 
     }	

@@ -99,7 +99,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                                     <?php endif; ?> 
                              <?php endforeach; ?> 
                                       </td> 
-                                       <td><?php echo e(date('d-m-Y h:i:s a', strtotime($p->fecha_solicitud))); ?></td>                                 
+                                       <td><?php echo e(date('d-m-Y', strtotime($p->fecha_solicitud))); ?></td>                                 
                                       <td>
  									   <?php if( $p->contratado == 0 ): ?>     
                                       <a class="btn btn-xs btn-default" href="" data-id="<?php echo $p->solicitud_id; ?>"  data-toggle="modal" data-target="#contratar"   title="Contratar aspirante"><i  class="fa fa-check"></i></a>

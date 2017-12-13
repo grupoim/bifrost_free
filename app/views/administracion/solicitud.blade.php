@@ -16,10 +16,10 @@ $(document).on('ready', function(){
     'placeholder_text_multiple':'Da clic para escoger productos...',
     width: "280px"
   });
-        $(".titulo").chosen({   
+        $(".ocupacion").chosen({   
     no_results_text: "No hay resultados para:",    
     'placeholder_text_multiple':'Da clic para escoger productos...',
-    width: "100px"
+    width: "150px"
   });
     {{-- fin ocultar mensajes de alerta automaticamente ======= --}}
            
@@ -497,7 +497,7 @@ $(document).on('ready', function(){
                     <thead>
                       <tr>
                         <th></th>
-                        <th><strong>Familiar</strong></th>
+                        <th><strong></strong></th>
                         <th><strong>Nombre</strong></th>
                         <th><strong>Estatus</strong></th>
                         <th><strong>Domicilio</strong></th>
@@ -608,7 +608,7 @@ $(document).on('ready', function(){
                               @endforeach
                       </select>
                     @else
-                     <select class="form-control solicitud chosen-select" name="ocupacion_f[{{$d->id}}]" id="ocupacion_f">
+                     <select class="form-control ocupacion chosen-select" name="ocupacion_f[{{$d->id}}]" id="ocupacion_f">
                           <option value="0">Seleccione</option>
                              @foreach($datos as $dato)
                              @if($dato->ocupacion == 1) 
@@ -973,7 +973,7 @@ $(document).on('ready', function(){
                     <thead>
                       <tr>
                         <th></th>
-                        <th><strong>Estudios</strong></th>
+                        <th><strong></strong></th>
                         <th><strong>Nombre</strong></th>
                         <th><strong>Fechas De - A</strong></th>
                         <th><strong>Años</strong></th>
@@ -1016,7 +1016,7 @@ $(document).on('ready', function(){
                       @endif
                    </td>
                    <td>
-                      <div class="input-group" > 
+                      <div class="input-group"> 
                         <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>        
                           @if($status == 'edit')
                            @foreach($escolaridad as $esc)
@@ -1078,29 +1078,11 @@ $(document).on('ready', function(){
                   </div>  
                    </td>
                    <td>
-                   @if($status == 'edit')
-                     <select class="form-control titulo chosen-select"  name="titulo[{{$d->id}}]" id="titulo">
-                          <option value="0">Selec</option>
-                             @foreach($datos as $dato)
-                             @if($dato->titulo == 1)
-                              @foreach($escolaridad as $esc)
-                               @if($d->nombre == $esc->datos)  
-                               <option value="{{{$dato->nombre}}}" @if($status == 'edit') @if($dato->nombre == $esc->titulo) selected @endif @endif>{{{$dato->nombre}}}</option> 
-                               @endif
-                              @endforeach
-                             @endif 
-                              @endforeach
-                      </select>
-                   @else
-                      <select class="form-control titulo chosen-select" name="titulo[{{$d->id}}]" id="titulo">
-                          <option value="0">Selec</option>
-                             @foreach($datos as $d)
-                             @if($d->titulo == 1)
-                               <option value="{{{$d->nombre}}}" >{{{$d->nombre}}}</option> 
-                             @endif 
-                              @endforeach
-                      </select>
-                   @endif
+                     @foreach($datos as $dat)
+                        @if($dat->titulo == 1)
+                         <label class="radio-inline" ><input type="radio" name="titulo[{{$d->id}}]"  value="{{$dat->nombre}}" id="titulo[{{$d->id}}]" ><strong>{{$dat->nombre}}</strong> </label><br> 
+                        @endif 
+                     @endforeach
                    </td>
                      </tr>
                       @endif

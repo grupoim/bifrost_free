@@ -99,7 +99,7 @@ $.datepicker.setDefaults($.datepicker.regional['es']);
                                     @endif 
                              @endforeach 
                                       </td> 
-                                       <td>{{{date('d-m-Y h:i:s a', strtotime($p->fecha_solicitud))}}}</td>                                 
+                                       <td>{{{date('d-m-Y', strtotime($p->fecha_solicitud))}}}</td>                                 
                                       <td>
  									   @if ( $p->contratado == 0 )     
                                       <a class="btn btn-xs btn-default" href="" data-id="{{$p->solicitud_id}}"  data-toggle="modal" data-target="#contratar"   title="Contratar aspirante"><i  class="fa fa-check"></i></a>

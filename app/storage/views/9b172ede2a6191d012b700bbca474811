@@ -16,10 +16,10 @@ $(document).on('ready', function(){
     'placeholder_text_multiple':'Da clic para escoger productos...',
     width: "280px"
   });
-        $(".titulo").chosen({   
+        $(".ocupacion").chosen({   
     no_results_text: "No hay resultados para:",    
     'placeholder_text_multiple':'Da clic para escoger productos...',
-    width: "100px"
+    width: "150px"
   });
     <?php /* fin ocultar mensajes de alerta automaticamente ======= */ ?>
            
@@ -499,7 +499,7 @@ $(document).on('ready', function(){
                     <thead>
                       <tr>
                         <th></th>
-                        <th><strong>Familiar</strong></th>
+                        <th><strong></strong></th>
                         <th><strong>Nombre</strong></th>
                         <th><strong>Estatus</strong></th>
                         <th><strong>Domicilio</strong></th>
@@ -610,7 +610,7 @@ $(document).on('ready', function(){
                               <?php endforeach; ?>
                       </select>
                     <?php else: ?>
-                     <select class="form-control solicitud chosen-select" name="ocupacion_f[<?php echo $d->id; ?>]" id="ocupacion_f">
+                     <select class="form-control ocupacion chosen-select" name="ocupacion_f[<?php echo $d->id; ?>]" id="ocupacion_f">
                           <option value="0">Seleccione</option>
                              <?php foreach($datos as $dato): ?>
                              <?php if($dato->ocupacion == 1): ?> 
@@ -975,7 +975,7 @@ $(document).on('ready', function(){
                     <thead>
                       <tr>
                         <th></th>
-                        <th><strong>Estudios</strong></th>
+                        <th><strong></strong></th>
                         <th><strong>Nombre</strong></th>
                         <th><strong>Fechas De - A</strong></th>
                         <th><strong>Años</strong></th>
@@ -1018,7 +1018,7 @@ $(document).on('ready', function(){
                       <?php endif; ?>
                    </td>
                    <td>
-                      <div class="input-group" > 
+                      <div class="input-group"> 
                         <span class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>        
                           <?php if($status == 'edit'): ?>
                            <?php foreach($escolaridad as $esc): ?>
@@ -1080,29 +1080,11 @@ $(document).on('ready', function(){
                   </div>  
                    </td>
                    <td>
-                   <?php if($status == 'edit'): ?>
-                     <select class="form-control titulo chosen-select"  name="titulo[<?php echo $d->id; ?>]" id="titulo">
-                          <option value="0">Selec</option>
-                             <?php foreach($datos as $dato): ?>
-                             <?php if($dato->titulo == 1): ?>
-                              <?php foreach($escolaridad as $esc): ?>
-                               <?php if($d->nombre == $esc->datos): ?>  
-                               <option value="<?php echo e($dato->nombre); ?>" <?php if($status == 'edit'): ?> <?php if($dato->nombre == $esc->titulo): ?> selected <?php endif; ?> <?php endif; ?>><?php echo e($dato->nombre); ?></option> 
-                               <?php endif; ?>
-                              <?php endforeach; ?>
-                             <?php endif; ?> 
-                              <?php endforeach; ?>
-                      </select>
-                   <?php else: ?>
-                      <select class="form-control titulo chosen-select" name="titulo[<?php echo $d->id; ?>]" id="titulo">
-                          <option value="0">Selec</option>
-                             <?php foreach($datos as $d): ?>
-                             <?php if($d->titulo == 1): ?>
-                               <option value="<?php echo e($d->nombre); ?>" ><?php echo e($d->nombre); ?></option> 
-                             <?php endif; ?> 
-                              <?php endforeach; ?>
-                      </select>
-                   <?php endif; ?>
+                     <?php foreach($datos as $dat): ?>
+                        <?php if($dat->titulo == 1): ?>
+                         <label class="radio-inline" ><input type="radio" name="titulo[<?php echo $d->id; ?>]"  value="<?php echo $dat->nombre; ?>" id="titulo[<?php echo $d->id; ?>]" ><strong><?php echo $dat->nombre; ?></strong> </label><br> 
+                        <?php endif; ?> 
+                     <?php endforeach; ?>
                    </td>
                      </tr>
                       <?php endif; ?>
