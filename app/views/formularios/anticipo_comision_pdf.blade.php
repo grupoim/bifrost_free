@@ -9,7 +9,7 @@
   padding: 0; 
 }
 body { 
-  font: 16px/1.4 Georgia, Serif; 
+  font: 16px/1.4 Georgia, Serif;; 
   
   background-position: top, left;
   
@@ -71,7 +71,7 @@ span {
                   
                 </div> <div >
                   Por medio de la presente solicito al departamento de Administración que se realice el siguiente pago de comisión al asesor(ra) de ventas
-                  <strong><u>{{{$detalle_anticipo->vendedor}}}</strong> perteneciente a la promotoría <u><strong>{{{$detalle_anticipo->promotor}}}</strong></u> por el concepto de <strong>{{{$detalle_anticipo->motivos}}} </strong>
+                 <u> <strong>{{{$detalle_anticipo->vendedor}}}</strong></u> perteneciente a la promotoría  <u><strong> {{{$detalle_anticipo->promotor}}}</strong></u> por el concepto de  <u><strong>{{{$detalle_anticipo->motivos}}} </strong> </u>
                   de la venta realizada el <u><strong>{{{ date('d/m/Y', strtotime($detalle_anticipo->fecha)) }}} </strong></u>
                   <br>
                  

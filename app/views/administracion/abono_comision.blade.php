@@ -44,7 +44,7 @@ $("#ventas").chosen({
 
                    @foreach($promotorias as $promotor)
                    {{ Form::open(array('action' => 'ComisionControlador@postSend', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
-                   <div class="col-md-4">
+                   <div class="col-md-3">
                         <div  class="alert alert-success  text-center">
                           <h4><i class="fa fa-users"></i> {{{$promotor->promotor}}} <strong><span id = "total"></span></strong></h4>
 							<h3><strong>$ {{{number_format($promotor->total_promotoria, 2, ".", ",")}}} </strong> </h3>

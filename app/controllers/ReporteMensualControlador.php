@@ -113,31 +113,31 @@ $promotor = VistaAsesorPromotor::where('activo',1)->where('totales',1)->groupby(
 
 
 switch ($month) {
-	case 01:
+	case 1:
 		$mes_string = 'Enero';# code...
 		break;
-	case 02:
+	case 2:
 		$mes_string = 'Febrero';# code...
 		break;
-		case 03:
+		case 3:
 		$mes_string = 'Marzo';# code...
 		break;
-		case 04:
+		case 4:
 		$mes_string = 'Abril';# code...
 		break;
-		case 05:
+		case 5:
 		$mes_string = 'Mayo';# code...
 		break;
-		case 06:
+		case 6:
 		$mes_string = 'Junio';# code...
 		break;
-		case 07:
+		case 7:
 		$mes_string = 'Julio';# code...
 		break;
-		case 08:
+		case 8:
 		$mes_string = 'Agosto';# code...
 		break;
-		case 09:
+		case 9:
 		$mes_string = 'Septiembre';# code...
 		break;
 		case 10:
@@ -201,7 +201,7 @@ $year2 = $year-2;
 $year3 = $year-3;
 
 //graficas comparativas por producto
-$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->orderBy('id', 'desc')->get();
+$categories = ProductoGrafica::where('activo',1)->where('categoria', 1)->get();
 
 $periodo_mtto = PeriodoMantenimiento::where('activo',1)->get();
 $categories_mtto = ProductoGrafica::where('activo',1)->where('mantenimiento','=',1 )->get();
@@ -267,31 +267,31 @@ $promotor = VistaAsesorPromotor::where('activo',1)->where('totales',1)->groupby(
 
 
 switch ($month) {
-	case 01:
+	case 1:
 		$mes_string = 'Enero';# code...
 		break;
-	case 02:
+	case 2:
 		$mes_string = 'Febrero';# code...
 		break;
-		case 03:
+		case 3:
 		$mes_string = 'Marzo';# code...
 		break;
-		case 04:
+		case 4:
 		$mes_string = 'Abril';# code...
 		break;
-		case 05:
+		case 5:
 		$mes_string = 'Mayo';# code...
 		break;
-		case 06:
+		case 6:
 		$mes_string = 'Junio';# code...
 		break;
-		case 07:
+		case 7:
 		$mes_string = 'Julio';# code...
 		break;
-		case 08:
+		case 8:
 		$mes_string = 'Agosto';# code...
 		break;
-		case 09:
+		case 9:
 		$mes_string = 'Septiembre';# code...
 		break;
 		case 10:

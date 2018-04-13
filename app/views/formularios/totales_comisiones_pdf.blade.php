@@ -9,7 +9,7 @@
   padding: 0; 
 }
 body { 
-  font: 13px/1.4 Georgia, Serif; 
+  font: 13px/1.4 ; 
   
   background-position: top, left;
   

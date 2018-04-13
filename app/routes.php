@@ -14,8 +14,7 @@ Route::group(array('before' => 'auth'), function(){
 	Route::get('/', 'PanelControlador@index');
 	Route::controller('/login', 'LoginControlador');
 	Route::controller('/cotizacion', 'CotizacionControlador');
-	Route::controller('/cobranza', 'CobranzaControlador');
-	
+	Route::controller('/cobranza', 'CobranzaControlador');	
 	Route::get('comision/detalle/{id?}', 'ComisionControlador@detalle');
 	Route::get('venta/abonar/{id?}', 'VentaControlador@abonar');
 	Route::get('cotizacion/abonar/{id?}', 'CotizacionControlador@abonar');	
@@ -48,6 +47,7 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('/inventario-recub', 'InventarioRecubControlador');
 	Route::controller('/construccion', 'ConstruccionControlador');
 	Route::controller('/perfil-usuario', 'PerfilControlador');
+	Route::controller('/archivo-control', 'ArchivoDocumentosControlador');
 	Route::controller('/extra', 'ExtraControlador');
 });
 Route::controller('/login', 'LoginControlador');

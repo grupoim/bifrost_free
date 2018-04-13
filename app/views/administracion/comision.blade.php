@@ -258,7 +258,7 @@ $(document).on('click','.open_modal',function(){
 	
 	@foreach($promotorias as $promotoria)
 	{{ Form::open(array('action' => 'ComisionControlador@postPorcentaje', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'abono')) }}
-	<div class="col-md-4">
+	<div class="col-md-3">
                         @if($db->base_datos_produccion == 0)
                         <div  class="alert alert-danger  text-center">
                         @else

@@ -1,0 +1,187 @@
+<?php $__env->startSection('scripts'); ?>
+<script type="text/javascript">
+$(document).on("ready",function() {     
+  $('#btn_no').on('click', function() { 
+    $('#oculto').val(3);
+    $('#historial').submit();
+  });
+  $("#btn_si").on("click", function() { 
+    $("#oculto").val(2);
+    $("#historial").submit();      
+  });
+  $("#btn_send").on("click", function() { 
+    $("#oculto").val(1);
+    $("#historial").submit();
+  });
+});
+window.setTimeout(function() {
+  $(".msg_error").fadeTo(500, 0).slideUp(500, function(){
+    $(this).remove();
+  });
+}, 4000);
+</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('module'); ?>
+<div class="row">
+ <!-- inicio queja -->
+ <div class="col-md-8">  
+        <?php if($queja_r->cerrada == 1): ?>
+            <div class="alert alert-danger">
+                La queja se encuentra cerrada.
+            </div>
+        <?php endif; ?>
+  <div class="widget">
+    <!-- Widget title -->
+    <div class="widget-head">
+      <?php echo e($queja_r->rubro->departamento->nombre); ?>
+
+      <div class="pull-right"> 
+            <a href= "<?php echo action('QuejaControlador@getIndex'); ?>" class="btn btn-primary btn-sm" title="Volver">
+                <i class="fa fa-reply"></i> Volver
+            </a>                 
+      </div>  
+      <div class="clearfix"></div>
+    </div>
+    <div class="widget-content">
+      <div class="padd">
+        <p>Categoría: <strong><?php echo e($queja_r->rubro->descripcion); ?></strong> 
+        <span class="pull-right">
+          <?php if(count($queja_r->foto) > 0): ?>
+          
+            <a href="<?php echo URL::asset('img/upload/queja_file/'.$queja_r->foto); ?>" class="prettyPhoto[pp_gal]">
+              <i class="fa fa-image"></i> Imagen adjunta
+            </a> 
+          
+          <?php endif; ?>
+          </span>
+        </p>
+        <hr />
+        <p class="lead alert">
+          <?php echo e($queja_r->descripcion); ?>
+
+        </p>
+      </div>
+    </div>
+    <div class="widget-foot"> 
+      <div> Registrada por <strong><?php echo e($queja_r->usuario->persona->nombres); ?> <?php echo e($queja_r->usuario->persona->apellido_paterno); ?></strong> el día <?php echo e($queja_r->created_at->format('d/m/Y \\a \\l\\a\\s h:i A')); ?></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<?php if($errors->has('observaciones')): ?> 
+<div class="row">
+  <div class="col-md-8">
+  <div align="center" class="alert alert-danger msg_error"><?php echo $errors->first('observaciones'); ?></div> 
+  </div>
+</div>
+<?php endif; ?>      
+<div class="row">
+  <div class="col-md-8">
+  <?php if(count($queja_r->QuejaSeguimiento) > 0 or $queja_r->cerrada == 0): ?>
+    <div class="widget">
+      <!-- Widget title -->
+      <div class="widget-head">
+        <strong> Seguimiento</strong>
+        <div class="widget-icons pull-right">                  
+        </div>  
+        <div class="clearfix"></div>
+      </div>
+      <!-- End head -->
+      <!-- Start content -->
+      <div class="widget-content">
+        <div class="padd">
+          <ul class="chats">
+            <?php foreach($queja_r->QuejaSeguimiento as $historial): ?>  
+            <!-- -->
+                <?php if($historial->usuario_id == $queja_r->usuario_id): ?>
+                    <li class="by-me">
+                        <!-- Use the class "pull-left" in avatar -->
+                        <div class="avatar pull-left">
+                          <img src="<?php echo URL::asset('img/upload/usuarios/'.$historial->usuario->avatar); ?>" alt="" width="52" height="52"  />
+                        </div>
+
+                        <div class="chat-content">
+                          <!-- In meta area, first include "name" and then "time" -->
+                          <div class="chat-meta"><strong><?php echo e($historial->usuario->departamento->nombre); ?>: <?php echo e($historial->usuario->persona->nombres); ?></strong> <span class="pull-right"> El <?php echo e($historial->created_at->format('d/m/Y \\a \\l\\a\\s h:i A')); ?></span></div>
+                          <p class="lead"><?php echo e($historial->observaciones); ?></p>
+                          <?php if(count($historial->foto) > 0): ?>
+                            <a href="<?php echo URL::asset('img/upload/queja_seguimiento_file/'.$historial->foto); ?>" class="prettyPhoto[pp_gal]">
+                                <span>
+                                    <i class="fa fa-paperclip"></i> Ver Imagen
+                                <span>
+                            </a>
+                            <?php endif; ?>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li> 
+                <?php else: ?>
+                        <li class="by-other">
+                        <!-- Use the class "pull-right" in avatar -->
+                        <div class="avatar pull-right">
+                          <img src="<?php echo URL::asset('img/upload/usuarios/'.$historial->usuario->avatar); ?>" alt="" width="52" height="52" />
+                        </div>
+
+                        <div class="chat-content">
+                          <!-- In the chat meta, first include "time" then "name" -->
+                          <div class="chat-meta">El <?php echo e($historial->created_at->format('d/m/Y \\a \\l\\a\\s h:i A')); ?> <span class="pull-right"> <strong><?php echo e($historial->usuario->departamento->nombre); ?>: <?php echo e($historial->usuario->persona->nombres); ?></strong> </span></div>
+                          <p class="lead"><?php echo e($historial->observaciones); ?></p>
+                          <?php if(count($historial->foto) > 0): ?>
+                            <a href="<?php echo URL::asset('img/upload/queja_seguimiento_file/'.$historial->foto); ?>" class="prettyPhoto[pp_gal]">
+                                <span>
+                                    <i class="fa fa-paperclip"></i> Ver Imagen
+                                <span>
+                            </a>
+                            <?php endif; ?>
+                          <div class="clearfix"></div>
+                        </div>
+                      </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+          </ul>
+            </div>
+        </div>
+        <!-- End content -->
+        <!-- Widget footer -->
+        <div class="widget-foot">
+            <?php if($queja_r->cerrada != 1): ?>
+            <?php echo Form::open(array('action' => 'QuejaControlador@postSeguimiento', 'class' => 'form-horizontal', 'role' => 'form', 'id'=>'historial','files' => true)); ?> 
+                <input type="hidden" name="queja_id" value="<?php echo $queja_r->id; ?>">
+                <input type="hidden" name="usuario_id" value="<?php echo Auth::user()->id; ?>"> 
+                <input type="hidden"  id="oculto" name="oculto">       
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Tus observaciones" size="35" id="observaciones" name="observaciones" value= "">                    
+                    <span class="input-group-btn">
+                        <span class="btn btn-info btn-file">
+                            <i class="fa fa-photo"></i> <input type="file" name="foto">
+                        </span>  
+                        
+                         <?php if(Auth::user()->id <> $queja_r->usuario_id and Auth::user()->jefe == 1 ): ?>
+                        <button type="submit" class="btn btn-success" id = "btn_si" title="Cerrar">
+                            <i class="fa fa-thumbs-o-up"></i>
+                        </button> 
+                        <button type="submit" class="btn btn-danger"id = "btn_no" title="No aplica">
+                            <i class="fa fa-thumbs-o-down" ></i>
+                        </button> 
+
+                        <?php endif; ?>
+                        <button type="submit" class="btn btn-primary" id="btn_send" >
+                            <i class="fa fa-check"></i> Enviar
+                        </button>           
+                        <!---->
+                    </span> 
+                </div>
+                <span class="feedback"></span>  
+            <?php echo Form::close(); ?>
+
+            <?php endif; ?>
+        </div> <!-- End Footer -- >
+     </div> <!-- End Widget -->
+     <?php else: ?>
+        <div class="alert alert-warning">
+                Ésta queja no tiene seguimiento.
+        </div>
+     <?php endif; ?>
+ </div> <!-- End col -->
+</div> <!-- End row -->
+<?php $__env->stopSection(); ?>
