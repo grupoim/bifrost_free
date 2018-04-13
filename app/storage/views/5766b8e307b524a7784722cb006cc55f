@@ -56,16 +56,8 @@
                                               <option value="12">Diciembre</option>
                                             </select>                        </div>
                   </div>
-                  <div class="form-group" >
-                      <label class="col-lg-3 control-label"><strong>Monto </strong></label>
-                         <div class="col-lg-8">
-                            <div class="input-group">
-                               <span class="input-group-addon" >$</span> 
-                                  <input type="text" class="form-control"  onkeypress="return valida(event)"  name="Monto">	                                
-	                        </div> 
-	                      </div>
-	                  </div>
-	                    <div class="form-group">
+                  
+                    <div class="form-group">
                           <label class="col-lg-3 control-label">T. Propiedad</label>
                                 <div class="col-lg-8">
                                    <select class="form-control ventas chosen-select" name="producto" id="producto">
@@ -76,7 +68,7 @@
                                     </select>                                    
                                   </div>
                                 </div>
-                        <div class="form-group">
+                     <div class="form-group">
                               <label class="col-lg-3 control-label">Periodo mtto</label>
                                   <div class="col-lg-8">
                                     <select class="form-control " name="periodo_id">
@@ -87,6 +79,17 @@
                                     </select>                                    
                                   </div>
                                 </div>
+                  <div class="form-group" >
+                      <label class="col-lg-3 control-label"><strong>Monto </strong></label>
+                         <div class="col-lg-8">
+                            <div class="input-group">
+                               <span class="input-group-addon" >$</span> 
+                                  <input type="number" class="form-control"  onkeypress="return valida(event)"  name="Monto">	                                
+	                        </div> 
+	                      </div>
+	                  </div>
+	                    
+                       
 
      
       </div>

@@ -61,15 +61,7 @@
                                               <option value="12">Diciembre</option>
                                             </select>                        </div>
                   </div>
-                  <div class="form-group" >
-                      <label class="col-lg-3 control-label"><strong>Monto </strong></label>
-                         <div class="col-lg-8">
-                            <div class="input-group">
-                               <span class="input-group-addon" >$</span> 
-                                  <input type="text" class="form-control"  onkeypress="return valida(event)"  name="Monto">	                                
-	                        </div> 
-	                      </div>
-	                  </div>
+                  
                      <div class="form-group">
                          <label class="col-lg-3 control-label">Extra</label>
                               <div class="col-lg-8">
@@ -78,7 +70,17 @@
                                  <input type="text" id="extras" class="form-control"  placeholder="Descripción"  name="extra"> 
                              </div>
                           </div>
-                       </div> 
+                       </div>
+                  <div class="form-group" >
+                      <label class="col-lg-3 control-label"><strong>Monto </strong></label>
+                         <div class="col-lg-8">
+                            <div class="input-group">
+                               <span class="input-group-addon" >$</span> 
+                                  <input type="number" class="form-control"  onkeypress="return valida(event)"  name="Monto">	                                
+	                        </div> 
+	                      </div>
+	                  </div>
+                     
      
       </div>
       <div class="widget-foot">
